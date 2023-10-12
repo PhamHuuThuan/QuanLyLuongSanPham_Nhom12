@@ -11,12 +11,16 @@ public class BangPhanCongNhanVien {
 	private String ghiChu;
 	public BangPhanCongNhanVien(String maPhanCong, NhanVien nhanVien, PhongBan phongBan, String chucVu, Date ngayCongTac, String ghiChu) {
 		super();
-		this.maPhanCong = maPhanCong;
-		this.nhanVien = nhanVien;
-		this.phongBan = phongBan;
-		this.chucVu = chucVu;
-		this.ngayCongTac = ngayCongTac;
-		this.ghiChu = ghiChu;
+		try {
+			setMaPhanCong(maPhanCong);
+			setNhanVien(nhanVien);
+			setPhongBan(phongBan);
+			setChucVu(chucVu);
+			setNgayCongTac(ngayCongTac);
+			setGhiChu(ghiChu);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	public BangPhanCongNhanVien() {
 		super();
