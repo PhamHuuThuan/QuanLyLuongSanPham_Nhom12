@@ -15,6 +15,37 @@ public class NhanVien {
 	private String cCCD;
 	private String diaChi;
 	private String hinhAnh;
+	
+	@Override
+	public String toString() {
+		return "NhanVien [maNV=" + maNV + ", matKhau=" + matKhau + ", hoTen=" + hoTen + ", gioiTinh=" + gioiTinh
+				+ ", ngaySinh=" + ngaySinh + ", sdt=" + sdt + ", email=" + email + ", cCCD=" + cCCD + ", diaChi="
+				+ diaChi + ", hinhAnh=" + hinhAnh + "]";
+	}
+	public NhanVien(String maNV, String matKhau, String hoTen, boolean gioiTinh, java.util.Date ngaySinh, String sdt,
+			String email, String cCCD, String diaChi, String hinhAnh){
+		super();
+		try {
+			setMaNV(maNV);
+			setMatKhau(matKhau);
+			setHoTen(hoTen);
+			setGioiTinh(gioiTinh);
+			setNgaySinh(ngaySinh);
+			setSdt(sdt);
+			setEmail(email);
+			setcCCD(cCCD);
+			setDiaChi(diaChi);
+			setHinhAnh(hinhAnh);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+			
+	}
+	public NhanVien() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	public String getMaNV() {
 		return maNV;
 	}
@@ -149,29 +180,7 @@ public class NhanVien {
 	public void setHinhAnh(String hinhAnh) {
 		this.hinhAnh = hinhAnh;
 	}
-	public NhanVien(String maNV, String matKhau, String hoTen, boolean gioiTinh, java.util.Date ngaySinh, String sdt,
-			String email, String cCCD, String diaChi, String hinhAnh){
-		super();
-		try {
-			setMaNV(maNV);
-			setMatKhau(matKhau);
-			setHoTen(hoTen);
-			setGioiTinh(gioiTinh);
-			setNgaySinh(ngaySinh);
-			setSdt(sdt);
-			setEmail(email);
-			setcCCD(cCCD);
-			setDiaChi(diaChi);
-			setHinhAnh(hinhAnh);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-			
-	}
-	public NhanVien() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 //	public static void main(String[] args){
 //		NhanVien nv = new NhanVien("", "123456a@", "123", false, new java.util.Date(Date.UTC(103, 4, 14, 0, 0, 0)), "+84123456789", "", "", "", "");
 //	}
