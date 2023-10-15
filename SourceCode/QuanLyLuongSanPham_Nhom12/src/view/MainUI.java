@@ -1,4 +1,4 @@
-package customView;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -48,7 +48,7 @@ public class MainUI extends JFrame {
 		setLocationRelativeTo(null);
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setBounds(0, 0, 1500, 800);
-		add(new MenuUI(this), BorderLayout.CENTER);
+		add(new MenuUI(this), BorderLayout.NORTH);
 		
 	}
 	public void getFonts() {

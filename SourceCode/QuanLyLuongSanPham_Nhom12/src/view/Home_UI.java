@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
-public class ViewHome extends JFrame {
+public class Home_UI extends JFrame {
 
 	public String pathFileLanguage;
 	public String pathFileTheme;
@@ -42,7 +42,7 @@ public class ViewHome extends JFrame {
 		}
 	}
 
-	public ViewHome() {
+	public Home_UI() {
 
 		readPathFileLanguage();
 		readPathFileTheme();

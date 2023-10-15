@@ -1,7 +1,11 @@
-package customView;
+package view;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+
+import CustomUI.ImageScaler;
+import CustomUI.RoundedBorder;
+import Util.LuuTru;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -39,36 +43,13 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	
 	public String pathFileLanguage;
 	public String pathFileTheme;
-
-	private void readPathFileLanguage() {
-		try {
-			FileReader reader = new FileReader("src/config/languages/selectedLanguage.txt");
-			BufferedReader bufferedReader = new BufferedReader(reader);
-			pathFileLanguage = bufferedReader.readLine();
-			bufferedReader.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
-	private void readPathFileTheme() {
-		try {
-			FileReader reader = new FileReader("src/config/themes/selectedTheme.txt");
-			BufferedReader bufferedReader = new BufferedReader(reader);
-			pathFileTheme = bufferedReader.readLine();
-			bufferedReader.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-
-	
-
+	private LuuTru l;
 	
 	public MenuUI(MainUI main) {
 		this.main = main;
-		readPathFileLanguage();
-		readPathFileTheme();
+		l = new LuuTru();
+		pathFileLanguage = l.readFile("src/config/languages/selectedLanguage.txt");
+		pathFileTheme = l.readFile("src/config/themes/selectedTheme.txt");
 
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 		
@@ -76,8 +57,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 //		setBackground(Color.RED);
 		setLayout(new BorderLayout(0, 0));
 		setUIManagerColor();
-		readPathFileTheme();
-		
 		createGUI();
 		
 		menuTrangChu.addActionListener(this);
@@ -366,6 +345,9 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			menuHopDong.setBackground(Color.decode("#424242"));
 			menuHopDong.setForeground(Color.WHITE);
 			menuHopDong.setIcon(new ImageScaler("/image/contract_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.add(new HopDongUI(main), BorderLayout.CENTER);
+			main.validate();
 		}
 		if(o==menuSanPham) {
 			
