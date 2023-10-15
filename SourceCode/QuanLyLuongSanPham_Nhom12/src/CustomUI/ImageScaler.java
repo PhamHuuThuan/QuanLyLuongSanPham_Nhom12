@@ -1,4 +1,4 @@
-package customView;
+package CustomUI;
 
 import javax.swing.*;
 import java.awt.*;

@@ -14,9 +14,6 @@ import java.awt.Insets;
 
 import javax.swing.border.MatteBorder;
 
-import customView.MainUI;
-import customView.ViewMenu;
-
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
@@ -29,7 +26,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 @SuppressWarnings("serial")
-public class ViewLogin extends JFrame {
+public class Login_UI extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel_right;
@@ -49,7 +46,7 @@ public class ViewLogin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ViewLogin frame = new ViewLogin();
+					Login_UI frame = new Login_UI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +59,7 @@ public class ViewLogin extends JFrame {
 		this.dispose();
 	}
 
-	public ViewLogin() {
+	public Login_UI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 951, 456);
 		contentPane = new JPanel();

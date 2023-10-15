@@ -1,4 +1,4 @@
-package customView;
+package CustomUI;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 

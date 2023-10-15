@@ -16,20 +16,20 @@ import javax.swing.Timer;
 
 
 @SuppressWarnings("serial")
-public class ViewIntroPage extends JFrame{
+public class IntroPage_UI extends JFrame{
 	
 	private boolean isShowPageLogin = false;
 	private void OpenPageLogin() {
 		this.dispose();
 		
 		if(!isShowPageLogin) {
-			ViewLogin viewLogin = new ViewLogin();
+			Login_UI viewLogin = new Login_UI();
 			viewLogin.setVisible(true);
 			isShowPageLogin= true;
 		}
 	}
 	
-	public ViewIntroPage() {
+	public IntroPage_UI() {
 		this.setSize(1200,600);
 		this.setLocationRelativeTo(null);
 		this.setUndecorated(true);
@@ -102,7 +102,7 @@ public class ViewIntroPage extends JFrame{
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(()->{
-			new ViewIntroPage();
+			new IntroPage_UI();
 		});
 		
 	}
