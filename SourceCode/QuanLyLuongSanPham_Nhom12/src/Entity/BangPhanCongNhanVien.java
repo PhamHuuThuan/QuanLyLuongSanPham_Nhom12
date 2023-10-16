@@ -9,6 +9,8 @@ public class BangPhanCongNhanVien {
 	private String chucVu;		// Quan li, nhan vien, thuc tap
 	private Date ngayCongTac;
 	private String ghiChu;
+	
+	//Khởi tạo đối tượng bangphancongnhanvien đầy đủ tham số
 	public BangPhanCongNhanVien(String maPhanCong, NhanVien nhanVien, PhongBan phongBan, String chucVu, Date ngayCongTac, String ghiChu) {
 		super();
 		try {
@@ -22,6 +24,7 @@ public class BangPhanCongNhanVien {
 			// TODO: handle exception
 		}
 	}
+	//Khởi tạo đối tượng bangphancongnhanvien mặc định không có tham số
 	public BangPhanCongNhanVien() {
 		super();
 		// TODO Auto-generated constructor stub

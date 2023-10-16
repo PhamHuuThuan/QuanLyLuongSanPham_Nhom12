@@ -22,6 +22,7 @@ public class NhanVien {
 				+ ", ngaySinh=" + ngaySinh + ", sdt=" + sdt + ", email=" + email + ", cCCD=" + cCCD + ", diaChi="
 				+ diaChi + ", hinhAnh=" + hinhAnh + "]";
 	}
+	//Khởi tạo đối tượng nhân viên đầy đủ tham số
 	public NhanVien(String maNV, String matKhau, String hoTen, boolean gioiTinh, java.util.Date ngaySinh, String sdt,
 			String email, String cCCD, String diaChi, String hinhAnh){
 		super();
@@ -41,6 +42,7 @@ public class NhanVien {
 		}
 			
 	}
+	// Khởi tạo đối tượng nhân viên mặc định (không có tham số)
 	public NhanVien() {
 		super();
 		// TODO Auto-generated constructor stub
