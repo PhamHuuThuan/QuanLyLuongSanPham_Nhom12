@@ -16,6 +16,8 @@ public class BangLuongNhanVien {
 	private double thucLanh;
 	private YearMonth thangNam;
 	private String ghiChu;
+	
+	//Khởi tạo đối tượng bangluongnhanvien đầy đủ tham số
 	public BangLuongNhanVien(String maBangLuong, NhanVien nhanVien, ArrayList<BangChamCongNhanVien> dsChamCong,
 			float ngayLam, float ngayNghi, float ngayNghiPhep, double luongThang, double luongTangCa, double phuCap,
 			double thucLanh, YearMonth thangNam, String ghiChu) {
@@ -37,6 +39,7 @@ public class BangLuongNhanVien {
 			// TODO: handle exception
 		}
 	}
+	//Khởi tạo đối tượng bangluongnhanvien mặc định không có tham số
 	public BangLuongNhanVien() {
 		super();
 		// TODO Auto-generated constructor stub

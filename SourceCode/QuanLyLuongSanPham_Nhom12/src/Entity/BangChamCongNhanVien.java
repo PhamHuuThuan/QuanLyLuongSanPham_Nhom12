@@ -12,6 +12,8 @@ public class BangChamCongNhanVien {
 	private Timer gioDen;
 	private float gioTangCa;
 	private String ghiChu;
+	
+	//Khởi tạo đối tượng bangchamcongnhanvien đầy đủ tham số
 	public BangChamCongNhanVien(BangPhanCongNhanVien phanCong, Date ngayChamCong, int caLam, int trangThai,
 			Timer gioDen, float gioTangCa, String ghiChu) {
 		super();
@@ -27,6 +29,7 @@ public class BangChamCongNhanVien {
 			// TODO: handle exception
 		}
 	}
+	//Khởi tạo đối tượng bangchamcongnhanvien mặc định không có tham số
 	public BangChamCongNhanVien() {
 		super();
 		// TODO Auto-generated constructor stub

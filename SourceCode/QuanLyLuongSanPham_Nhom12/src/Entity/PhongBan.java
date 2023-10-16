@@ -5,6 +5,8 @@ public class PhongBan {
 	private String tenPhongBan;
 	private int soNhanVien;
 	private String moTa;
+	
+	//Khởi tạo đối tượng phòng ban đầy đủ tham số
 	public PhongBan(String maPhongBan, String tenPhongBan, int soNhanVien, String moTa) {
 		super();
 		try {
@@ -16,6 +18,7 @@ public class PhongBan {
 			// TODO: handle exception
 		}
 	}
+	//Khởi tạo đối tượng phòng mặc định không có tham số
 	public PhongBan() {
 		super();
 		// TODO Auto-generated constructor stub
