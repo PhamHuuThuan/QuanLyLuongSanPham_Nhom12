@@ -1,7 +1,12 @@
 package CustomUI;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class RoundedButton extends JButton {
 	private Color color;
@@ -17,16 +22,22 @@ public class RoundedButton extends JButton {
         this.alpha = alpha;
         setOpaque(false);
         setContentAreaFilled(false);
-        setBorderPainted(false);
+        //setBorderPainted(false);
     }
     public void setAlpha(float alpha) {
         this.alpha = alpha;
+        repaint();
+    }
+    public void setFocusButton(Color color, int thickness) {
+        this.color = color;
+        this.thickness = thickness;
         repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (!this.isEnabled()) {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         }
@@ -39,6 +50,7 @@ public class RoundedButton extends JButton {
     @Override
     protected void paintBorder(Graphics g) {
         Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(color);
         g2d.setStroke(new BasicStroke(thickness));
         g2d.draw(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, gap, gap));

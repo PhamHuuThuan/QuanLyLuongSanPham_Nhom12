@@ -9,10 +9,14 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.InputStream;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import Util.ImportFont;
 
@@ -21,6 +25,7 @@ public class MainUI extends JFrame {
 	private JPanel contentPane;
 	public Font roboto_light, roboto_bold, roboto_regular;
 	private ImportFont impFont;
+	public Color borderFocusColor;
 	/**
 	 * Launch the application.
 	 */
@@ -41,7 +46,7 @@ public class MainUI extends JFrame {
 	 * Create the frame.
 	 */
 	public MainUI() {
-		impFont = new ImportFont();
+		khoiTaoGiaTriDefault();
 		getFonts();
 		setTitle("TPT_FUNITURE");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,9 +60,15 @@ public class MainUI extends JFrame {
 		add(new MenuUI(this), BorderLayout.NORTH);
 		
 	}
+	// import font chữ Roboto để sử dụng
 	public void getFonts() {
-			roboto_light = impFont.importFontFromFile("/fonts/Roboto-Light.ttf");
-			roboto_bold = impFont.importFontFromFile("/fonts/Roboto-Bold.ttf");
-			roboto_regular = impFont.importFontFromFile("/fonts/Roboto-Regular.ttf");
+		impFont = new ImportFont();
+		roboto_light = impFont.importFontFromFile("/fonts/Roboto-Light.ttf");
+		roboto_bold = impFont.importFontFromFile("/fonts/Roboto-Bold.ttf");
+		roboto_regular = impFont.importFontFromFile("/fonts/Roboto-Regular.ttf");
+	}
+	//khởi tạo một số giá trị mặc định cần thiết cho ứng dụng
+	public void khoiTaoGiaTriDefault() {
+		borderFocusColor = new Color(0, 0, 255, 64);  // set màu mặc định cho border khi được focus
 	}
 }
