@@ -44,7 +44,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JTextField txtMaHD, txtTenHD, txtTenKH, txtDaiDien, txtGiaTri, txtTienCoc, txtThoaThuan, txtGhiChu;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnFocus;
 	private DefaultTableModel dtblModel;
 	private JTable tblHD;
 	private JTableHeader tbhHD;
@@ -303,7 +303,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.setBackground(bgColor);
 		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		
-		btnThem = new RoundedButton("Thêm", Color.BLACK, 20, 0, 1.0f);
+		btnThem = new RoundedButton("Thêm", null, 20, 0, 1.0f);
 		btnThem.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnThem.setForeground(Color.WHITE);
 		btnThem.setBackground(Color.decode("#3B71CA"));
@@ -312,7 +312,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.add(btnThem);
 		pnlChucNang.add(Box.createHorizontalStrut(75));
 		
-		btnSua = new RoundedButton("Sửa", Color.BLACK, 20, 0, 1.0f);
+		btnSua = new RoundedButton("Sửa", null, 20, 0, 1.0f);
 		btnSua.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnSua.setForeground(Color.WHITE);
 		btnSua.setBackground(Color.decode("#ffc107"));
@@ -321,7 +321,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.add(btnSua);
 		pnlChucNang.add(Box.createHorizontalStrut(75));
 		
-		btnXoa = new RoundedButton("Xóa", Color.BLACK, 20, 0, 1.0f);
+		btnXoa = new RoundedButton("Xóa", null, 20, 0, 1.0f);
 		btnXoa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnXoa.setForeground(Color.WHITE);
 		btnXoa.setBackground(Color.decode("#dc3545"));
@@ -331,7 +331,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		pnlChucNang.add(Box.createHorizontalStrut(100));
 		
-		btnLuu = new RoundedButton("Lưu", Color.BLACK, 20, 0, 0.6f);
+		btnLuu = new RoundedButton("Lưu", null, 20, 0, 0.6f);
 		btnLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnLuu.setForeground(Color.WHITE);
 		btnLuu.setBackground(Color.decode("#28a745"));
@@ -340,7 +340,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.add(btnLuu);
 		pnlChucNang.add(Box.createHorizontalStrut(75));
 		
-		btnHuy = new RoundedButton("Hủy", Color.BLACK, 20, 0, 0.6f);
+		btnHuy = new RoundedButton("Hủy", null, 20, 0, 0.6f);
 		btnHuy.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnHuy.setForeground(Color.WHITE);
 		btnHuy.setBackground(Color.decode("#ffc107"));
@@ -384,6 +384,12 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
 		
+		btnThem.addMouseListener(this);
+		btnSua.addMouseListener(this);
+		btnXoa.addMouseListener(this);
+		btnLuu.addMouseListener(this);
+		btnHuy.addMouseListener(this);
+		
 		//Không thể thao tác với button lưu và hủy
 		displayButtonSaveAndCancel(false);
 		
@@ -392,18 +398,18 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		Object o = e.getSource();
+		if (o instanceof RoundedButton) {
+			setBorderForFocusButton(o);
+	    }
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -412,7 +418,6 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
@@ -509,5 +514,29 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtThoaThuan.setText("");
 		cmbTrangThai.setSelectedIndex(0);
 		txtGhiChu.setText("");
+	}
+	//hiển thị border cho button được user nhấn
+	public void setBorderForFocusButton(Object o) {
+		if(btnFocus!=null && btnFocus!=o) {
+			btnFocus.setFocusButton(null, 0);
+		}
+		if(btnFocus==null) {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+		else if(btnFocus == btnThem || btnFocus == btnSua) {
+			if(o == btnHuy || o == btnLuu) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}else if(btnFocus == btnLuu || btnFocus == btnHuy) {
+			if(o == btnThem || o == btnSua || o == btnXoa) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}else {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
 	}
 }
