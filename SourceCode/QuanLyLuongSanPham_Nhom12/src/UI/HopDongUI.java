@@ -8,6 +8,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import org.jdesktop.swingx.*;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -25,7 +27,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JTextField;
-import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;

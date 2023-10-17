@@ -1,1 +1,1 @@
-config/languages/vietnamese
+config/languages/english
