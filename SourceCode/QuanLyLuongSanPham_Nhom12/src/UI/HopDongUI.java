@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -25,6 +26,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
 import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.CustomComboBoxUI;
@@ -44,13 +47,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JTextField txtMaHD, txtTenHD, txtTenKH, txtDaiDien, txtGiaTri, txtTienCoc, txtThoaThuan, txtGhiChu;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnFocus;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn,btnFocus;
 	private DefaultTableModel dtblModel;
 	private JTable tblHD;
 	private JTableHeader tbhHD;
 	private JPanel pnlChucNang;
 	private JComboBox cmbTrangThai;
 	private JXDatePicker dtpBatDau, dtpKetThuc;
+	private JLabel lblGiaTriText, lblTienCocText;
 	/**
 	 * Create the panel.
 	 */
@@ -63,7 +67,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		//tao jpanel chua Title va Thong tin HD
 		JPanel pnNorth = new JPanel();
-		pnNorth.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		pnNorth.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
 		pnNorth.setBackground(bgColor);
 		add(pnNorth, BorderLayout.NORTH);
 		pnNorth.setLayout(new BorderLayout(0, 0));
@@ -85,7 +89,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin hợp đồng");
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnThongTinHD.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(10, 50, 10, 50)));
+		pnThongTinHD.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		pnNorth.add(pnThongTinHD, BorderLayout.CENTER);
 		
 		// Tao box chua cac phan tu hang 1: maHD, tenHD, tenKH, nguoiDaiDien
@@ -102,7 +106,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtMaHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtMaHD.setForeground(textColor);
 		txtMaHD.setBackground(bgColor);
-		txtMaHD.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtMaHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		b1.add(txtMaHD);
 		b1.add(Box.createHorizontalStrut(30));
 		
@@ -115,7 +120,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtTenHD = new JTextField();
 		txtTenHD.setForeground(textColor);
 		txtTenHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtTenHD.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtTenHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtTenHD.setBackground(bgColor);
 		b1.add(txtTenHD);
 		b1.add(Box.createHorizontalStrut(30));
@@ -129,7 +135,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtTenKH = new JTextField();
 		txtTenKH.setForeground(textColor);
 		txtTenKH.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtTenKH.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtTenKH.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtTenKH.setBackground(bgColor);
 		b1.add(txtTenKH);
 		b1.add(Box.createHorizontalStrut(30));
@@ -143,7 +150,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtDaiDien = new JTextField();
 		txtDaiDien.setForeground(textColor);
 		txtDaiDien.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtDaiDien.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtDaiDien.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtDaiDien.setBackground(bgColor);
 		b1.add(txtDaiDien);
 		
@@ -214,9 +222,20 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtGiaTri = new JTextField();
 		txtGiaTri.setForeground(textColor);
 		txtGiaTri.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtGiaTri.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtGiaTri.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtGiaTri.setBackground(bgColor);
 		b2.add(txtGiaTri);
+		
+		JLabel lblVND1 = new JLabel("VNĐ");
+		lblVND1.setForeground(textColor);
+		lblVND1.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		b2.add(lblVND1);
+		
+		lblGiaTriText = new JLabel("");
+		lblGiaTriText.setForeground(textColor);
+		lblGiaTriText.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		b2.add(lblGiaTriText);
 
 		b2.add(Box.createHorizontalStrut(30));
 		
@@ -230,9 +249,20 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtTienCoc = new JTextField();
 		txtTienCoc.setForeground(textColor);
 		txtTienCoc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtTienCoc.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtTienCoc.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtTienCoc.setBackground(bgColor);
 		b2.add(txtTienCoc);
+		
+		JLabel lblVND2 = new JLabel("VNĐ");
+		lblVND2.setForeground(textColor);
+		lblVND2.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		b2.add(lblVND2);
+		
+		lblTienCocText = new JLabel("");
+		lblTienCocText.setForeground(textColor);
+		lblTienCocText.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		b2.add(lblTienCocText);
 		
 		pnThongTinHD.add(Box.createVerticalStrut(20));
 		
@@ -251,7 +281,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtThoaThuan = new JTextField();
 		txtThoaThuan.setForeground(Color.BLACK);
 		txtThoaThuan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtThoaThuan.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtThoaThuan.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtThoaThuan.setBackground(Color.WHITE);
 		b3.add(txtThoaThuan);
 		
@@ -290,7 +321,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtGhiChu = new JTextField();
 		txtGhiChu.setForeground(textColor);
 		txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtGhiChu.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, componentColor));
+		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtGhiChu.setBackground(bgColor);
 		b3.add(txtGhiChu);
 		
@@ -310,7 +342,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnThem.setIcon(new ImageScaler("/image/addHopDong_icon.png", 24, 24).getScaledImageIcon());
 		btnThem.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnThem);
-		pnlChucNang.add(Box.createHorizontalStrut(75));
+		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
 		btnSua = new RoundedButton("Sửa", null, 20, 0, 1.0f);
 		btnSua.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
@@ -319,7 +351,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnSua.setIcon(new ImageScaler("/image/editHopDong_Icon.png", 24, 24).getScaledImageIcon());
 		btnSua.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnSua);
-		pnlChucNang.add(Box.createHorizontalStrut(75));
+		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
 		btnXoa = new RoundedButton("Xóa", null, 20, 0, 1.0f);
 		btnXoa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
@@ -328,8 +360,17 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnXoa.setIcon(new ImageScaler("/image/deleteHD_Icon.png", 24, 24).getScaledImageIcon());
 		btnXoa.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnXoa);
+		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		pnlChucNang.add(Box.createHorizontalStrut(100));
+		btnIn = new RoundedButton("Xuất", null, 20, 0, 1.0f);
+		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnIn.setForeground(Color.WHITE);
+		btnIn.setBackground(Color.decode("#17a2b8"));
+		btnIn.setIcon(new ImageScaler("/image/printer_icon.png", 24, 24).getScaledImageIcon());
+		btnIn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+		pnlChucNang.add(btnIn);
+		
+		pnlChucNang.add(Box.createHorizontalStrut(200));
 		
 		btnLuu = new RoundedButton("Lưu", null, 20, 0, 0.6f);
 		btnLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
@@ -338,7 +379,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnLuu.setIcon(new ImageScaler("/image/save_Icon.png", 24, 24).getScaledImageIcon());
 		btnLuu.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnLuu);
-		pnlChucNang.add(Box.createHorizontalStrut(75));
+		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
 		btnHuy = new RoundedButton("Hủy", null, 20, 0, 0.6f);
 		btnHuy.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
@@ -381,12 +422,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnXoa.addActionListener(this);
+		btnIn.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
 		
 		btnThem.addMouseListener(this);
 		btnSua.addMouseListener(this);
 		btnXoa.addMouseListener(this);
+		btnIn.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
 		
@@ -395,6 +438,17 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		//Không thể chỉnh sửa txt
 		setEditableForTextField(false);
+		
+		//Set giá trị mặc định để hiển thị
+		txtMaHD.setText("HD12345");
+		txtTenKH.setText("Nguyễn Văn Phong");
+		txtTenHD.setText("Hợp đồng hợp tác ABC");
+		txtDaiDien.setText("Phạm Hữu Thuận");
+		txtGiaTri.setText(formatMoneyText("10000000000"));
+		lblGiaTriText.setText("    (" + formatMoneyToText(Double.parseDouble(txtGiaTri.getText().replaceAll(",", ""))) + " VNĐ)     ");
+		txtTienCoc.setText(formatMoneyText("1000000000"));
+		lblTienCocText.setText("     (" + formatMoneyToText(Double.parseDouble(txtTienCoc.getText().replaceAll(",", ""))) + " VNĐ)");
+		txtThoaThuan.setText("Thỏa thuận giữa 2 bên bao gồm: điều 1, điều 2, điều 3,...");
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -448,7 +502,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			
 		}
 	}
-	public void displayButtonSaveAndCancel(boolean display) {
+	private void displayButtonSaveAndCancel(boolean display) {
 		if(display == true) {
 			btnLuu.setEnabled(true);
 			btnLuu.setAlpha(1f);
@@ -461,6 +515,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnSua.setAlpha(0.6f);
 			btnXoa.setEnabled(false);
 			btnXoa.setAlpha(0.6f);
+			btnIn.setEnabled(false);
+			btnIn.setAlpha(0.6f);
 			
 		}else {
 			btnLuu.setEnabled(false);
@@ -474,9 +530,11 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnSua.setAlpha(1f);
 			btnXoa.setEnabled(true);
 			btnXoa.setAlpha(1f);
+			btnIn.setEnabled(true);
+			btnIn.setAlpha(1f);
 		}
 	}
-	public void setEditableForTextField(boolean edit) {
+	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtMaHD.setEditable(true);
 			txtTenHD.setEditable(true);
@@ -502,7 +560,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			txtGhiChu.setEditable(false);
 		}
 	}
-	public void xoaRong() {
+	private void xoaRong() {
 		txtMaHD.setText("");
 		txtTenHD.setText("");
 		txtTenKH.setText("");
@@ -514,9 +572,11 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtThoaThuan.setText("");
 		cmbTrangThai.setSelectedIndex(0);
 		txtGhiChu.setText("");
+		lblGiaTriText.setText("");
+		lblTienCocText.setText("");
 	}
 	//hiển thị border cho button được user nhấn
-	public void setBorderForFocusButton(Object o) {
+	private void setBorderForFocusButton(Object o) {
 		if(btnFocus!=null && btnFocus!=o) {
 			btnFocus.setFocusButton(null, 0);
 		}
@@ -530,7 +590,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				btnFocus.setFocusButton(main.borderFocusColor, 3);
 			}
 		}else if(btnFocus == btnLuu || btnFocus == btnHuy) {
-			if(o == btnThem || o == btnSua || o == btnXoa) {
+			if(o == btnThem || o == btnSua || o == btnXoa || o == btnIn) {
 				btnFocus = (RoundedButton) o;
 				btnFocus.setFocusButton(main.borderFocusColor, 3);
 			}
@@ -539,4 +599,35 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnFocus.setFocusButton(main.borderFocusColor, 3);
 		}
 	}
+	//format lai giá trị và tiền cọc
+	private String formatMoneyText(String money) {
+	    try {
+	        double value = Double.parseDouble(money.replaceAll("\\.", ""));
+	        DecimalFormat formatter = new DecimalFormat("#,###");
+	        return formatter.format(value);
+	    } catch (NumberFormatException ex) {
+	        // handle exception here
+	    }
+	    return null;
+	}
+	//chuyển đổi sang dạng chữ từ trong khoảng trăm - tỷ
+	private String formatMoneyToText(Double money) {
+		String text = "";
+        try {
+            if (money < 100) {
+            	text = String.valueOf(money);
+            } else if (money < 1000) {
+            	text = money / 100 + " trăm";
+            }else if (money < 1000000) {
+            	text = money / 1000 + " nghìn";
+            } else if (money < 1000000000) {
+            	text = money / 1000000 + " triệu";
+            } else {
+            	text = money / 1000000000 + " tỷ";
+            }
+        } catch (NumberFormatException ex) {
+            // handle exception here
+        }
+        return text;
+    }
 }
