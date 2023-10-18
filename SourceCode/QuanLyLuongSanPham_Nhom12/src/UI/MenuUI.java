@@ -464,8 +464,8 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	public void setUIManagerColor() {
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 		
-		UIManager.put("Menu.selectionBackground", Color.decode(read_file_themes.getString("color_main")));
-		UIManager.put("Menu.selectionForeground", Color.decode(read_file_themes.getString("color_main_sw")));
+		UIManager.put("Menu.selectionBackground", Color.decode(read_file_themes.getString("color_main_sw")));
+		UIManager.put("Menu.selectionForeground", Color.decode(read_file_themes.getString("color_main")));
 		UIManager.put("Button.focus", new Color(0,0,0,0));
 //		UIManager.put("MenuItem.selectionBackground", Color.decode("#ffe6cc"));
 	}
