@@ -60,7 +60,7 @@ public class IntroPage_UI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
             	if(progress == 30)
-            		sound.playSE(0);
+            		sound.playSE(0); // chạy âm thanh loading
                 if (progress < 70) {
                     progress++;
                     loadingBar.setValue(progress);

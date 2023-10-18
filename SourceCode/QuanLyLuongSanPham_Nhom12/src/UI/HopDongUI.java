@@ -35,6 +35,8 @@ import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Util.Sound;
+import Util.SoundPlay;
 import Util.XuatForm;
 import Util.XuatHopDongForm;
 import net.sf.jasperreports.engine.JRException;
@@ -60,6 +62,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private JXDatePicker dtpBatDau, dtpKetThuc;
 	private JLabel lblGiaTriText, lblTienCocText;
 	private XuatForm xf;
+	private SoundPlay music = new SoundPlay();
 	/**
 	 * Create the panel.
 	 */
@@ -653,6 +656,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				txtTienCoc.getText() + lblTienCocText.getText());
 		try {
 			xf.xuatHD(hd);
+			music.playSE(1);
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

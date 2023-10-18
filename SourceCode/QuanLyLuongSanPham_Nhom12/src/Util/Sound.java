@@ -17,6 +17,7 @@ public class Sound {
 	// set url tới file âm thanh
 	public Sound() {
 		soundURL[0] = getClass().getResource("/sound/loadingSound.wav");
+		soundURL[1] = getClass().getResource("/sound/export_Sound.wav");
 	}
 	
 	//set audio từ url
