@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 
@@ -34,6 +35,9 @@ import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Util.XuatForm;
+import Util.XuatHopDongForm;
+import net.sf.jasperreports.engine.JRException;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -55,11 +59,13 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private JComboBox cmbTrangThai;
 	private JXDatePicker dtpBatDau, dtpKetThuc;
 	private JLabel lblGiaTriText, lblTienCocText;
+	private XuatForm xf;
 	/**
 	 * Create the panel.
 	 */
 	public HopDongUI(MainUI main) {
 		this.main = main;
+		xf = new XuatForm();
 		
 		//set gia tri cho jpanel HopDong
 		setLayout(new BorderLayout(0, 0));
@@ -491,6 +497,9 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		if(o == btnXoa) {
 			
 		}
+		if(o == btnIn) {
+			xuatHopDong();
+		}
 		if(o == btnLuu) {
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
@@ -630,4 +639,23 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
         }
         return text;
     }
+	public void xuatHopDong() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		XuatHopDongForm hd = new XuatHopDongForm("Gò Vấp, ngày "+ LocalDate.now().getDayOfMonth() + " tháng " + LocalDate.now().getMonthValue() + " năm " + LocalDate.now().getYear(), 
+				txtMaHD.getText(), 
+				txtTenHD.getText(), 
+				txtTenKH.getText(), 
+				txtDaiDien.getText(), 
+				txtThoaThuan.getText(),
+				formatter.format(dtpBatDau.getDate()), 
+				formatter.format(dtpKetThuc.getDate()), 
+				txtGiaTri.getText() + lblGiaTriText.getText(), 
+				txtTienCoc.getText() + lblTienCocText.getText());
+		try {
+			xf.xuatHD(hd);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

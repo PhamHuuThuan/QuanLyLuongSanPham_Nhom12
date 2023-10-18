@@ -2,21 +2,12 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.io.InputStream;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import Util.ImportFont;
 
