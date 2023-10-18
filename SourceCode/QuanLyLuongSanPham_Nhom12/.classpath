@@ -8,5 +8,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/swingx-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-collections-3.2.1-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-logging-api-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/groovy-all-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/itext-2.1.7.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/jasperreports-5.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/jasper_report_lib/jasperreports-fonts-5.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
