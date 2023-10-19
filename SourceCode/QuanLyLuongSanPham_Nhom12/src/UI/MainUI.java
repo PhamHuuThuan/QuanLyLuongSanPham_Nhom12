@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Util.ImportFont;
+import Util.SoundPlay;
 
 public class MainUI extends JFrame {
 
@@ -17,6 +18,8 @@ public class MainUI extends JFrame {
 	public Font roboto_light, roboto_bold, roboto_regular;
 	private ImportFont impFont;
 	public Color borderFocusColor;
+	public JPanel pnlContent;
+	public SoundPlay music;
 	/**
 	 * Launch the application.
 	 */
@@ -49,6 +52,7 @@ public class MainUI extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setBounds(0, 0, 1500, 800);
 		add(new MenuUI(this), BorderLayout.NORTH);
+		add(pnlContent, BorderLayout.CENTER);
 		
 	}
 	// import font chữ Roboto để sử dụng
@@ -61,5 +65,7 @@ public class MainUI extends JFrame {
 	//khởi tạo một số giá trị mặc định cần thiết cho ứng dụng
 	public void khoiTaoGiaTriDefault() {
 		borderFocusColor = new Color(0, 0, 255, 64);  // set màu mặc định cho border khi được focus
+		pnlContent = new JPanel(new BorderLayout()); // Phần jpanel chứa các giao diện chức năng
+		music = new SoundPlay(); // Khởi tạo âm thanh ứng dụng
 	}
 }

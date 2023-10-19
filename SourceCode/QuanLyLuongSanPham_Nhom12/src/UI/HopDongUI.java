@@ -27,7 +27,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -35,14 +34,12 @@ import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
-import Util.Sound;
 import Util.SoundPlay;
 import Util.XuatForm;
 import Util.XuatHopDongForm;
 import net.sf.jasperreports.engine.JRException;
 
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JComboBox;
 import java.awt.FlowLayout;
@@ -62,7 +59,6 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private JXDatePicker dtpBatDau, dtpKetThuc;
 	private JLabel lblGiaTriText, lblTienCocText;
 	private XuatForm xf;
-	private SoundPlay music = new SoundPlay();
 	/**
 	 * Create the panel.
 	 */
@@ -486,12 +482,11 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		music.playSE(2);
+		main.music.playSE(2);
 		if(o == btnThem) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
-			xoaRong();
-			
+			xoaRong();	
 		}
 		if(o == btnSua) {
 			displayButtonSaveAndCancel(true);
@@ -573,6 +568,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			txtGhiChu.setEditable(false);
 		}
 	}
+	//Xóa toàn bộ dữ liệt trên bảng thông tin
 	private void xoaRong() {
 		txtMaHD.setText("");
 		txtTenHD.setText("");
@@ -659,7 +655,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				tienCocHD);
 		try {
 			xf.xuatHD(hd);
-			music.playSE(1);
+			main.music.playSE(1);
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
