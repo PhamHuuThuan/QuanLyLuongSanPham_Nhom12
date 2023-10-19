@@ -486,6 +486,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		music.playSE(2);
 		if(o == btnThem) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
@@ -644,6 +645,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
     }
 	public void xuatHopDong() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String giaTriHD = txtGiaTri.getText() + lblGiaTriText.getText();
+		String tienCocHD = txtTienCoc.getText() + lblTienCocText.getText();
 		XuatHopDongForm hd = new XuatHopDongForm("Gò Vấp, ngày "+ LocalDate.now().getDayOfMonth() + " tháng " + LocalDate.now().getMonthValue() + " năm " + LocalDate.now().getYear(), 
 				txtMaHD.getText(), 
 				txtTenHD.getText(), 
@@ -652,8 +655,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				txtThoaThuan.getText(),
 				formatter.format(dtpBatDau.getDate()), 
 				formatter.format(dtpKetThuc.getDate()), 
-				txtGiaTri.getText() + lblGiaTriText.getText(), 
-				txtTienCoc.getText() + lblTienCocText.getText());
+				giaTriHD, 
+				tienCocHD);
 		try {
 			xf.xuatHD(hd);
 			music.playSE(1);
