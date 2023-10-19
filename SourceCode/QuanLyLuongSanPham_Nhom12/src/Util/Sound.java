@@ -18,6 +18,7 @@ public class Sound {
 	public Sound() {
 		soundURL[0] = getClass().getResource("/sound/loadingSound.wav");
 		soundURL[1] = getClass().getResource("/sound/export_Sound.wav");
+		soundURL[2] = getClass().getResource("/sound/mouseClickSound.wav");
 	}
 	
 	//set audio từ url
