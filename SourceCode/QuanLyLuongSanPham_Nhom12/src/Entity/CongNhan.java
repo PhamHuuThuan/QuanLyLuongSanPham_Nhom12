@@ -16,6 +16,7 @@ public class CongNhan {
 	private java.util.Date ngayVaoLam;
 	private String anhDaiDien;
 
+<<<<<<< HEAD
 	
 	
 	@Override
@@ -24,6 +25,9 @@ public class CongNhan {
 				+ ", gioiTinh=" + gioiTinh + ", sDT=" + sDT + ", email=" + email + ", diaChi=" + diaChi + ", soCCCD="
 				+ soCCCD + ", ngayVaoLam=" + ngayVaoLam + ", anhDaiDien=" + anhDaiDien + "]";
 	}
+=======
+
+>>>>>>> main
 
 	public CongNhan(String maCN, String matKhau, String hoTen, Date ngaySinh, boolean gioiTinh, String sDT,
 			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien) {
@@ -202,4 +206,15 @@ public class CongNhan {
 		this.anhDaiDien = anhDaiDien;
 	}
 
+<<<<<<< HEAD
+=======
+	
+	
+	@Override
+	public String toString() {
+		return "CongNhan [maCN=" + maCN + ", matKhau=" + matKhau + ", hoTen=" + hoTen + ", ngaySinh=" + ngaySinh
+				+ ", gioiTinh=" + gioiTinh + ", sDT=" + sDT + ", email=" + email + ", diaChi=" + diaChi + ", soCCCD="
+				+ soCCCD + ", ngayVaoLam=" + ngayVaoLam + ", anhDaiDien=" + anhDaiDien + "]";
+	}
+>>>>>>> main
 }

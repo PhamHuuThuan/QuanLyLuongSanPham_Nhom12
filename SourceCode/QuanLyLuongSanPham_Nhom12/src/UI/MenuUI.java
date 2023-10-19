@@ -6,6 +6,7 @@ import javax.swing.UIManager;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedBorder;
 import Util.LuuTru;
+import Util.SoundPlay;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -44,10 +45,12 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	public String pathFileLanguage;
 	public String pathFileTheme;
 	private LuuTru l;
+	private SoundPlay music;
 	
 	public MenuUI(MainUI main) {
 		this.main = main;
 		l = new LuuTru();
+		music = new SoundPlay();
 		pathFileLanguage = l.readFile("src/config/languages/selectedLanguage.txt");
 		pathFileTheme = l.readFile("src/config/themes/selectedTheme.txt");
 
@@ -59,19 +62,23 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		setUIManagerColor();
 		createGUI();
 		
+		//thêm sự kiện cho các button
 		mniTrangChu.addActionListener(this);
-		mniTrangChu.addActionListener(this); 
 		mniPhongBan.addActionListener(this);
 		mniHopDong.addActionListener(this);
+		mnSanPham.addActionListener(this);
 		mniQuanLySP.addActionListener(this);
 		mniTimKiemSP.addActionListener(this);
+		mnCongDoan.addActionListener(this);
 		mniQLCD.addActionListener(this);
 		mniPCCD.addActionListener(this);
 		mniTimKiemCD.addActionListener(this);
+		mnCongNhan.addActionListener(this);
 		mniQuanLyCN.addActionListener(this);
 		mniTimKiemCN.addActionListener(this);
 		mniChamCongCN.addActionListener(this);
 		mniTinhLuongCN.addActionListener(this);
+		mnNhanVien.addActionListener(this);
 		mniQuanLyNV.addActionListener(this);
 		mniTimKiem.addActionListener(this);
 		mniPCNV.addActionListener(this);
@@ -86,6 +93,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mnNhanVien.addMouseListener(this);
 		
 	}
+	//Tạo giao diện menu
 	public void createGUI() {
 		
 		
@@ -328,6 +336,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		music.playSE(2);
 		if(o==mniTrangChu) {
 			setMenuColorDefault();
 			mniTrangChu.setBackground(Color.decode("#424242"));
@@ -352,6 +361,15 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		if(o==mnSanPham) {
 			
 		}
+		if(o==mnCongDoan) {
+					
+				}
+		if(o==mnCongNhan) {
+					
+				}
+		if(o==mnNhanVien) {
+			
+		}
 		if(o==mniThongKe) {
 			setMenuColorDefault();
 			mniThongKe.setBackground(Color.decode("#424242"));
@@ -365,6 +383,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			mniCaiDat.setIcon(new ImageScaler("/image/cogwheel_icon(1).png", 24, 24).getScaledImageIcon());
 		}
 	}
+	//set màu của menu ở trạng thái mặc định
 	public void setMenuColorDefault() {
 		
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
@@ -464,9 +483,9 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	public void setUIManagerColor() {
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 		
-		UIManager.put("Menu.selectionBackground", Color.decode(read_file_themes.getString("color_main")));
-		UIManager.put("Menu.selectionForeground", Color.decode(read_file_themes.getString("color_main_sw")));
-		
+		UIManager.put("Menu.selectionBackground", Color.decode(read_file_themes.getString("color_main_sw")));
+		UIManager.put("Menu.selectionForeground", Color.decode(read_file_themes.getString("color_main")));
+		UIManager.put("Button.focus", new Color(0,0,0,0));
 //		UIManager.put("MenuItem.selectionBackground", Color.decode("#ffe6cc"));
 	}
 }

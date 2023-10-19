@@ -14,10 +14,13 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import Util.SoundPlay;
+
 
 @SuppressWarnings("serial")
 public class IntroPage_UI extends JFrame{
 	
+	private SoundPlay sound = new SoundPlay();
 	private boolean isShowPageLogin = false;
 	private void OpenPageLogin() {
 		this.dispose();
@@ -54,9 +57,10 @@ public class IntroPage_UI extends JFrame{
 
         Timer timer = new Timer(10, new ActionListener() {
             int progress = 0;
-
             @Override
             public void actionPerformed(ActionEvent e) {
+            	if(progress == 30)
+            		sound.playSE(0); // chạy âm thanh loading
                 if (progress < 70) {
                     progress++;
                     loadingBar.setValue(progress);
