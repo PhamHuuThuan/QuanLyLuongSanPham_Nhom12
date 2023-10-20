@@ -82,7 +82,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnTitle.setBackground(bgColor);
 		pnNorth.add(pnTitle, BorderLayout.NORTH);
 		
-		JLabel lblTitle = new JLabel("QUẢN LÝ HỢP ĐỒNG");
+		JLabel lblTitle = new JLabel(main.read_file_languages.getString("title_contract"));
 		lblTitle.setForeground(textColor);
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnTitle.add(lblTitle);
@@ -92,7 +92,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnThongTinHD.setLayout(new BoxLayout(pnThongTinHD, BoxLayout.Y_AXIS));
 		pnThongTinHD.setBackground(bgColor);
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin hợp đồng");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("info_contract"));
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnThongTinHD.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		pnNorth.add(pnThongTinHD, BorderLayout.CENTER);
@@ -101,7 +101,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		Box b1 = Box.createHorizontalBox();
 		pnThongTinHD.add(b1);
 		
-		JLabel lblMaHD = new JLabel("Mã HĐ:");
+		JLabel lblMaHD = new JLabel(main.read_file_languages.getString("lblMaHD") + ":");
 		lblMaHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblMaHD.setForeground(textColor);
 		b1.add(lblMaHD);
@@ -116,7 +116,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		b1.add(txtMaHD);
 		b1.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblTenHD = new JLabel("Tên HĐ:");
+		JLabel lblTenHD = new JLabel(main.read_file_languages.getString("lblTenHD") + ":");
 		lblTenHD.setForeground(textColor);
 		lblTenHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b1.add(lblTenHD);
@@ -131,7 +131,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		b1.add(txtTenHD);
 		b1.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblTenKH = new JLabel("Khách hàng:");
+		JLabel lblTenKH = new JLabel(main.read_file_languages.getString("lblKH") + ":");
 		lblTenKH.setForeground(textColor);
 		lblTenKH.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b1.add(lblTenKH);
@@ -146,7 +146,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		b1.add(txtTenKH);
 		b1.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblDaiDien = new JLabel("Người đại diện:");
+		JLabel lblDaiDien = new JLabel(main.read_file_languages.getString("lblDaiDien") + ":");
 		lblDaiDien.setForeground(textColor);
 		lblDaiDien.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b1.add(lblDaiDien);
@@ -167,7 +167,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnThongTinHD.add(b2);
 		
 		// ngay bat dau
-		JLabel lblNgayBD = new JLabel("Ngày bắt đầu:");
+		JLabel lblNgayBD = new JLabel(main.read_file_languages.getString("lblNgayBD") + ":");
 		lblNgayBD.setForeground(textColor);
 		lblNgayBD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b2.add(lblNgayBD);
@@ -192,7 +192,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		b2.add(Box.createHorizontalStrut(30));
 		
 		// ngay ket thuc
-		JLabel lblNgayKetThuc = new JLabel("Ngày kết thúc");
+		JLabel lblNgayKetThuc = new JLabel(main.read_file_languages.getString("lblNgayKT") + ":");
 		lblNgayKetThuc.setForeground(textColor);
 		lblNgayKetThuc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b2.add(lblNgayKetThuc);
@@ -217,7 +217,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		b2.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblGiaTri = new JLabel("Giá trị:");
+		JLabel lblGiaTri = new JLabel(main.read_file_languages.getString("lblGiaTri") + ":");
 		lblGiaTri.setForeground(textColor);
 		lblGiaTri.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b2.add(lblGiaTri);
@@ -244,7 +244,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 
 		b2.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblTienCoc = new JLabel("Tiền cọc:");
+		JLabel lblTienCoc = new JLabel(main.read_file_languages.getString("lblTienCoc") + ":");
 		lblTienCoc.setForeground(textColor);
 		lblTienCoc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b2.add(lblTienCoc);
@@ -275,7 +275,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		Box b3 = Box.createHorizontalBox();
 		pnThongTinHD.add(b3);
 		
-		JLabel lblThoaThuan = new JLabel("Thỏa thuận:");
+		JLabel lblThoaThuan = new JLabel(main.read_file_languages.getString("lblThoaThuan") + ":");
 		lblThoaThuan.setForeground(Color.BLACK);
 		lblThoaThuan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b3.add(lblThoaThuan);
@@ -293,7 +293,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		b3.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblTrangThai = new JLabel("Trạng thái:");
+		JLabel lblTrangThai = new JLabel(main.read_file_languages.getString("lblTrangThai") + ":");
 		lblTrangThai.setForeground(Color.BLACK);
 		lblTrangThai.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b3.add(lblTrangThai);
@@ -307,7 +307,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		cmbTrangThai.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
-		cmbTrangThai.addItem("Đang thực hiện");
+		cmbTrangThai.addItem(main.read_file_languages.getString("lblTrangThai1"));
 		b3.add(cmbTrangThai);
 		cmbTrangThai.setBackground(bgColor);
 		cmbTrangThai.setForeground(textColor);
@@ -316,7 +316,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		Component horizontalStrut_3 = Box.createHorizontalStrut(30);
 		b3.add(horizontalStrut_3);
 		
-		JLabel lblGhiChu = new JLabel("Ghi chú:");
+		JLabel lblGhiChu = new JLabel(main.read_file_languages.getString("lblGhiChu") + ":");
 		lblGhiChu.setForeground(textColor);
 		lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b3.add(lblGhiChu);
@@ -340,7 +340,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.setBackground(bgColor);
 		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		
-		btnThem = new RoundedButton("Thêm", null, 20, 0, 1.0f);
+		btnThem = new RoundedButton(main.read_file_languages.getString("btnThem"), null, 20, 0, 1.0f);
 		btnThem.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnThem.setForeground(Color.WHITE);
 		btnThem.setBackground(Color.decode("#3B71CA"));
@@ -349,7 +349,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.add(btnThem);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnSua = new RoundedButton("Sửa", null, 20, 0, 1.0f);
+		btnSua = new RoundedButton(main.read_file_languages.getString("btnSua"), null, 20, 0, 1.0f);
 		btnSua.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnSua.setForeground(Color.WHITE);
 		btnSua.setBackground(Color.decode("#ffc107"));
@@ -358,7 +358,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.add(btnSua);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnXoa = new RoundedButton("Xóa", null, 20, 0, 1.0f);
+		btnXoa = new RoundedButton(main.read_file_languages.getString("btnXoa"), null, 20, 0, 1.0f);
 		btnXoa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnXoa.setForeground(Color.WHITE);
 		btnXoa.setBackground(Color.decode("#dc3545"));
@@ -367,7 +367,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.add(btnXoa);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnIn = new RoundedButton("Xuất", null, 20, 0, 1.0f);
+		btnIn = new RoundedButton(main.read_file_languages.getString("btnIn"), null, 20, 0, 1.0f);
 		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnIn.setForeground(Color.WHITE);
 		btnIn.setBackground(Color.decode("#17a2b8"));
@@ -377,7 +377,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		pnlChucNang.add(Box.createHorizontalStrut(200));
 		
-		btnLuu = new RoundedButton("Lưu", null, 20, 0, 0.6f);
+		btnLuu = new RoundedButton(main.read_file_languages.getString("btnLuu"), null, 20, 0, 0.6f);
 		btnLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnLuu.setForeground(Color.WHITE);
 		btnLuu.setBackground(Color.decode("#28a745"));
@@ -386,7 +386,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlChucNang.add(btnLuu);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnHuy = new RoundedButton("Hủy", null, 20, 0, 0.6f);
+		btnHuy = new RoundedButton(main.read_file_languages.getString("btnHuy"), null, 20, 0, 0.6f);
 		btnHuy.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnHuy.setForeground(Color.WHITE);
 		btnHuy.setBackground(Color.decode("#ffc107"));
@@ -398,7 +398,15 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		JPanel pnlBangHD = new JPanel();
 		pnlBangHD.setLayout(new BoxLayout(pnlBangHD, BoxLayout.X_AXIS));
 		add(pnlBangHD, BorderLayout.CENTER);
-		String cols[] = {"Mã HĐ", "Tên HĐ", "Khách hàng", "Người đại diện", "Ngày bắt đầu", "Ngày kết thúc", "Giá trị", "Trạng thái", "Ghi chú"};
+		String cols[] = {main.read_file_languages.getString("lblMaHD"),
+				main.read_file_languages.getString("lblTenHD"), 
+				main.read_file_languages.getString("lblKH"), 
+				main.read_file_languages.getString("lblDaiDien"), 
+				main.read_file_languages.getString("lblNgayBD"), 
+				main.read_file_languages.getString("lblNgayKT"), 
+				main.read_file_languages.getString("lblGiaTri"), 
+				main.read_file_languages.getString("lblTrangThai"), 
+				main.read_file_languages.getString("lblGhiChu")};
 		dtblModel = new DefaultTableModel(cols, 0);
 		tblHD = new JTable(dtblModel);
 		
