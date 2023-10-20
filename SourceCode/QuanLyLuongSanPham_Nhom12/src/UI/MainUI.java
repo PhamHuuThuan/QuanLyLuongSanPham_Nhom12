@@ -4,12 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Util.ImportFont;
+import Util.LuuTru;
 import Util.SoundPlay;
 
 public class MainUI extends JFrame {
@@ -20,6 +22,9 @@ public class MainUI extends JFrame {
 	public Color borderFocusColor;
 	public JPanel pnlContent;
 	public SoundPlay music;
+	public LuuTru l = new LuuTru();
+	public ResourceBundle read_file_languages = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
+	public ResourceBundle read_file_themes = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
 	/**
 	 * Launch the application.
 	 */
