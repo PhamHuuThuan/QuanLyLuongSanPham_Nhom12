@@ -50,6 +50,11 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		this.main = main;
 		l = new LuuTru();
 		main.music = new SoundPlay();
+		
+		
+		main.pnlContent.add(new Home_UI(), BorderLayout.CENTER);
+		
+
 		pathFileLanguage = l.readFile("src/config/languages/selectedLanguage.txt");
 		pathFileTheme = l.readFile("src/config/themes/selectedTheme.txt");
 
@@ -336,11 +341,16 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		main.music.playSE(2);
+		
 		if(o==mniTrangChu) {
 			setMenuColorDefault();
 			mniTrangChu.setBackground(Color.decode("#424242"));
 			mniTrangChu.setForeground(Color.WHITE);
 			mniTrangChu.setIcon(new ImageScaler("/image/home_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new Home_UI(), BorderLayout.CENTER); // thêm giao diện trang chur vào
+			main.validate(); // cập nhật lại
 		}
 		if(o==mniPhongBan) {
 			setMenuColorDefault();
