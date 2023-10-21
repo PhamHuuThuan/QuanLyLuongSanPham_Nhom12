@@ -27,12 +27,14 @@ import javax.swing.JLabel;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 import java.awt.Component;
 import javax.swing.JComboBox;
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
+import javax.swing.JSpinner;
 
 public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseListener{
 	private MainUI main;
@@ -75,7 +77,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlNorth.add(pnlTitle, BorderLayout.NORTH);
 		
 		//Tiêu đề
-		JLabel lblTitle = new JLabel("QUẢN LÝ SẢN PHẨM");
+		JLabel lblTitle = new JLabel(main.read_file_languages.getString("title_product"));
 		lblTitle.setForeground(textColor);
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle.add(lblTitle);
@@ -85,12 +87,14 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlDSHD.setLayout(new BorderLayout());
 		pnlDSHD.setBackground(bgColor);
 		TitledBorder titleBorderDSHD = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh sách hợp đồng");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("border_title_HD"));
 		pnlDSHD.setBorder(BorderFactory.createCompoundBorder(titleBorderDSHD, BorderFactory.createEmptyBorder(10, 5, 5, 5)));
 		add(pnlDSHD, BorderLayout.WEST);
 		
 		//Bảng hợp đồng
-		String colsHDName[] = {"Mã HĐ", "Tên HĐ", "Khách hàng"};
+		String colsHDName[] = {main.read_file_languages.getString("tbhMaHDSP"), 
+				main.read_file_languages.getString("lblTenHD"), 
+				main.read_file_languages.getString("lblKH")};
 		dtblModelHD = new DefaultTableModel(colsHDName, 0);
 		tblHD = new JTable(dtblModelHD);
 		
@@ -109,12 +113,12 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		JScrollPane scrHD = new JScrollPane(tblHD,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlDSHD.add(scrHD, BorderLayout.CENTER);
 		
-		//Tao jpanel Thong tin hop dong
+		//Tao jpanel Thong tin san pham
 		JPanel pnlThongTinSP = new JPanel();
 		pnlThongTinSP.setLayout(new BoxLayout(pnlThongTinSP, BoxLayout.Y_AXIS));
 		pnlThongTinSP.setBackground(bgColor);
 		TitledBorder titleBorderTTSP = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin sản phẩm");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("info_product"));
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnlThongTinSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		pnlNorth.add(pnlThongTinSP, BorderLayout.CENTER);
@@ -123,7 +127,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		Box b1 = Box.createHorizontalBox();
 		pnlThongTinSP.add(b1);
 		
-		JLabel lblMaHD = new JLabel("Mã HĐ:");
+		JLabel lblMaHD = new JLabel(main.read_file_languages.getString("lblMaHD") + ":");
 		lblMaHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblMaHD.setForeground(textColor);
 		b1.add(lblMaHD);
@@ -138,7 +142,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		b1.add(txtMaHD);
 		b1.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblMaSP = new JLabel("Mã Sản Phẩm:");
+		JLabel lblMaSP = new JLabel(main.read_file_languages.getString("lblMaSP") + ":");
 		lblMaSP.setForeground(textColor);
 		lblMaSP.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b1.add(lblMaSP);
@@ -153,7 +157,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		b1.add(txtMaSP);
 		b1.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblTenSP = new JLabel("Tên sản phẩm:");
+		JLabel lblTenSP = new JLabel(main.read_file_languages.getString("lblTenSP") + ":");
 		lblTenSP.setForeground(textColor);
 		lblTenSP.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b1.add(lblTenSP);
@@ -170,19 +174,17 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlThongTinSP.add(Box.createVerticalStrut(20));
 		
 		//Tao box chua thong tin hang 2: ngayBD, ngayKT, giatri, tiencoc
-		JPanel pnlBottom = new JPanel();
-		pnlBottom.setBackground(bgColor);
-		pnlThongTinSP.add(pnlBottom);
-		JPanel pnlLeft = new JPanel();
-		pnlLeft.setBackground(bgColor);
-		pnlBottom.add(pnlLeft, BorderLayout.WEST);
 		
-		JLabel lblDVT = new JLabel("Đơn vị tính:");
+		Box b2 = Box.createHorizontalBox();
+		b2.setBackground(bgColor);
+		pnlThongTinSP.add(b2);
+		
+		JLabel lblDVT = new JLabel(main.read_file_languages.getString("lblDVT") + ":");
 		lblDVT.setForeground(textColor);
 		lblDVT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		pnlLeft.add(lblDVT);
+		b2.add(lblDVT);
 		
-		pnlLeft.add(Box.createHorizontalStrut(10));
+		b2.add(Box.createHorizontalStrut(15));
 		
 		JComboBox cmbDVT = new JComboBox();
 		cmbDVT.setModel(new DefaultComboBoxModel(new String[] {"Cái", "Bộ", "Đôi(Cặp)", "Hộp", "Gói", "M2", "Kg", "Lít"}));
@@ -195,16 +197,16 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		cmbDVT.setBackground(bgColor);
 		cmbDVT.setForeground(textColor);
 		cmbDVT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		pnlLeft.add(cmbDVT);
+		b2.add(cmbDVT);
 
-		pnlLeft.add(Box.createHorizontalStrut(30));
+		b2.add(Box.createHorizontalStrut(40));
 		
-		JLabel lblDonGia = new JLabel("Đơn giá:");
+		JLabel lblDonGia = new JLabel(main.read_file_languages.getString("lblDonGia") + ":");
 		lblDonGia.setForeground(textColor);
 		lblDonGia.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		pnlLeft.add(lblDonGia);
+		b2.add(lblDonGia);
 		
-		pnlLeft.add(Box.createHorizontalStrut(10));
+		b2.add(Box.createHorizontalStrut(15));
 		
 		txtDonGia = new JTextField();
 		txtDonGia.setForeground(textColor);
@@ -213,35 +215,52 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 		txtDonGia.setBackground(bgColor);
 		txtDonGia.setColumns(7);
-		pnlLeft.add(txtDonGia);
+		b2.add(txtDonGia);
 		
 		JLabel lblVND2 = new JLabel("VNĐ");
 		lblVND2.setForeground(textColor);
 		lblVND2.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		pnlLeft.add(lblVND2);
+		b2.add(lblVND2);
 		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
-		pnlLeft.add(horizontalStrut_1);
+		b2.add(Box.createHorizontalStrut(40));
 		
-		JPanel pnlYC = new JPanel();
-		pnlYC.setBackground(bgColor);
-		pnlBottom.add(pnlYC, BorderLayout.CENTER);
-		JLabel lblYeuCau = new JLabel("Yêu cầu:");
+		JLabel lblSoLuong = new JLabel(main.read_file_languages.getString("lblSoLuong") + ":");
+		lblSoLuong.setForeground(textColor);
+		lblSoLuong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		b2.add(lblSoLuong);
+		
+		b2.add(Box.createHorizontalStrut(15));
+		
+		SpinnerNumberModel model = new SpinnerNumberModel(10, 1, 1000000, 100);
+		JSpinner spnSoLuong = new JSpinner(model);
+		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+				BorderFactory.createEmptyBorder(5, 0, 5, 0));
+		spnSoLuong.setBorder(cboBorder);
+		spnSoLuong.setBackground(bgColor);
+		spnSoLuong.setForeground(textColor);
+		spnSoLuong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		b2.add(spnSoLuong);
+		b2.add(Box.createHorizontalStrut(75));
+		
+		pnlThongTinSP.add(Box.createVerticalStrut(20));
+		
+		Box b3 = Box.createHorizontalBox();
+		pnlThongTinSP.add(b3);
+		b3.setBackground(bgColor);
+		JLabel lblYeuCau = new JLabel(main.read_file_languages.getString("lblYeuCau") + ":");
 		lblYeuCau.setForeground(textColor);
 		lblYeuCau.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		pnlYC.add(lblYeuCau, BorderLayout.CENTER);
+		b3.add(lblYeuCau);
+		b3.add(Box.createHorizontalStrut(35));
 		
 		JTextArea txaYeuCau = new JTextArea();
-		txaYeuCau.setColumns(18);
 		txaYeuCau.setRows(3);
-		txaYeuCau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+		txaYeuCau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		txaYeuCau.setForeground(textColor);
 		txaYeuCau.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		JScrollPane scrYC = new JScrollPane(txaYeuCau,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		pnlYC.add(scrYC, BorderLayout.EAST);
-		
-		pnlThongTinSP.add(Box.createVerticalStrut(20));
+		b3.add(scrYC);
 		
 		//Khởi tạo jpanel chức năng chứa các button chức năng: thêm, sửa, xóa, lưu, hủy
 		pnlChucNang = new JPanel();
@@ -250,7 +269,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlChucNang.setBackground(bgColor);
 		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		
-		btnThem = new RoundedButton("Thêm", null, 20, 0, 1.0f);
+		btnThem = new RoundedButton(main.read_file_languages.getString("btnThem"), null, 20, 0, 1.0f);
 		btnThem.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnThem.setForeground(Color.WHITE);
 		btnThem.setBackground(Color.decode("#3B71CA"));
@@ -259,7 +278,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlChucNang.add(btnThem);
 		pnlChucNang.add(Box.createHorizontalStrut(25));
 		
-		btnSua = new RoundedButton("Sửa", null, 20, 0, 1.0f);
+		btnSua = new RoundedButton(main.read_file_languages.getString("btnSua"), null, 20, 0, 1.0f);
 		btnSua.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnSua.setForeground(Color.WHITE);
 		btnSua.setBackground(Color.decode("#ffc107"));
@@ -268,7 +287,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlChucNang.add(btnSua);
 		pnlChucNang.add(Box.createHorizontalStrut(25));
 		
-		btnXoa = new RoundedButton("Xóa", null, 20, 0, 1.0f);
+		btnXoa = new RoundedButton(main.read_file_languages.getString("btnXoa"), null, 20, 0, 1.0f);
 		btnXoa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnXoa.setForeground(Color.WHITE);
 		btnXoa.setBackground(Color.decode("#dc3545"));
@@ -277,7 +296,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlChucNang.add(btnXoa);
 		pnlChucNang.add(Box.createHorizontalStrut(25));
 		
-		btnIn = new RoundedButton("Xuất", null, 20, 0, 1.0f);
+		btnIn = new RoundedButton(main.read_file_languages.getString("btnIn"), null, 20, 0, 1.0f);
 		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnIn.setForeground(Color.WHITE);
 		btnIn.setBackground(Color.decode("#17a2b8"));
@@ -287,7 +306,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		
 		pnlChucNang.add(Box.createHorizontalStrut(100));
 		
-		btnLuu = new RoundedButton("Lưu", null, 20, 0, 0.6f);
+		btnLuu = new RoundedButton(main.read_file_languages.getString("btnLuu"), null, 20, 0, 0.6f);
 		btnLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnLuu.setForeground(Color.WHITE);
 		btnLuu.setBackground(Color.decode("#28a745"));
@@ -296,7 +315,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		pnlChucNang.add(btnLuu);
 		pnlChucNang.add(Box.createHorizontalStrut(25));
 		
-		btnHuy = new RoundedButton("Hủy", null, 20, 0, 0.6f);
+		btnHuy = new RoundedButton(main.read_file_languages.getString("btnHuy"), null, 20, 0, 0.6f);
 		btnHuy.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnHuy.setForeground(Color.WHITE);
 		btnHuy.setBackground(Color.decode("#ffc107"));
@@ -308,7 +327,13 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		JPanel pnlBangSP = new JPanel();
 		pnlBangSP.setLayout(new BoxLayout(pnlBangSP, BoxLayout.X_AXIS));
 		pnlSanPham.add(pnlBangSP, BorderLayout.CENTER);
-		String cols[] = {"Mã HĐ", "Mã sản phẩm", "Tên sản phẩm", "Đơn vị tính", "Số lượng", "Đơn giá", "Yêu cầu"};
+		String cols[] = {main.read_file_languages.getString("tbhMaHDSP"),
+				main.read_file_languages.getString("lblMaSP"),
+				main.read_file_languages.getString("lblTenSP"), 
+				main.read_file_languages.getString("lblDVT"), 
+				main.read_file_languages.getString("lblSoLuong"), 
+				main.read_file_languages.getString("lblDonGia"), 
+				main.read_file_languages.getString("lblYeuCau")};
 		dtblModelSP = new DefaultTableModel(cols, 0);
 		tblSP = new JTable(dtblModelSP);
 		
