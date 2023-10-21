@@ -45,12 +45,11 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	public String pathFileLanguage;
 	public String pathFileTheme;
 	private LuuTru l;
-	private SoundPlay music;
 	
 	public MenuUI(MainUI main) {
 		this.main = main;
 		l = new LuuTru();
-		music = new SoundPlay();
+		main.music = new SoundPlay();
 		pathFileLanguage = l.readFile("src/config/languages/selectedLanguage.txt");
 		pathFileTheme = l.readFile("src/config/themes/selectedTheme.txt");
 
@@ -336,7 +335,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		music.playSE(2);
+		main.music.playSE(2);
 		if(o==mniTrangChu) {
 			setMenuColorDefault();
 			mniTrangChu.setBackground(Color.decode("#424242"));
@@ -355,11 +354,29 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			mniHopDong.setForeground(Color.WHITE);
 			mniHopDong.setIcon(new ImageScaler("/image/contract_icon(1).png", 24, 24).getScaledImageIcon());
 			
-			main.add(new HopDongUI(main), BorderLayout.CENTER);
-			main.validate();
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new HopDongUI(main), BorderLayout.CENTER); // thêm giao diện hợp đồng vào
+			main.validate(); // cập nhật lại
 		}
-		if(o==mnSanPham) {
+		if(o==mniQuanLySP) {
+			setMenuColorDefault();
+			mnSanPham.setBackground(Color.decode("#424242"));
+			mnSanPham.setForeground(Color.WHITE);
+			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
 			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new QuanLySanPhamUI(main), BorderLayout.CENTER);// thêm giao diện sản phẩm vào
+			main.validate(); // cập nhật lại
+		}
+		if(o==mniTimKiemSP) {
+			setMenuColorDefault();
+			mnSanPham.setBackground(Color.decode("#424242"));
+			mnSanPham.setForeground(Color.WHITE);
+			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new TimKiemSanPhamUI(main), BorderLayout.CENTER);// thêm giao diện tìm kiếm sản phẩm vào
+			main.validate(); // cập nhật lại	
 		}
 		if(o==mnCongDoan) {
 					
