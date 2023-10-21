@@ -323,7 +323,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		btnHuy.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnHuy);
 		
-		// tạo jpanel chứa table hợp đồng
+		// tạo jpanel chứa table sản phẩm
 		JPanel pnlBangSP = new JPanel();
 		pnlBangSP.setLayout(new BoxLayout(pnlBangSP, BoxLayout.X_AXIS));
 		pnlSanPham.add(pnlBangSP, BorderLayout.CENTER);
