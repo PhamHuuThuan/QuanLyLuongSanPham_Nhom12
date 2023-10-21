@@ -72,7 +72,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		
 		//tao jpanel chua Title va Thong tin san pham
 		JPanel pnlNorth = new JPanel();
-		pnlNorth.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+		pnlNorth.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		pnlNorth.setBackground(bgColor);
 		pnlSanPham.add(pnlNorth, BorderLayout.NORTH);
 		pnlNorth.setLayout(new BorderLayout(0, 0));
@@ -84,7 +84,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlNorth.add(pnlTitle, BorderLayout.NORTH);
 		
 		//Tiêu đề
-		JLabel lblTitle = new JLabel("TÌM KIẾM SẢN PHẨM");
+		JLabel lblTitle = new JLabel(main.read_file_languages.getString("title_product_search"));
 		lblTitle.setForeground(textColor);
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle.add(lblTitle);
@@ -98,7 +98,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlTimKiem.setLayout(new BoxLayout(pnlTimKiem, BoxLayout.Y_AXIS));
 		pnlTimKiem.setBackground(bgColor);
 		TitledBorder titleBorderTTSP = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Tìm kiếm");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("title_border_searchbox"));
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnlTimKiem.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
 		b.add(pnlTimKiem);
@@ -107,7 +107,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		Box b2 = Box.createHorizontalBox();
 		pnlTimKiem.add(b2);
 		
-		JLabel lblMaHDS = new JLabel("Mã HĐ:");
+		JLabel lblMaHDS = new JLabel(main.read_file_languages.getString("lblMaHD") + ":");
 		lblMaHDS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblMaHDS.setForeground(textColor);
 		b2.add(lblMaHDS);
@@ -127,7 +127,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		Component horizontalStrut_2 = Box.createHorizontalStrut(30);
 		b2.add(horizontalStrut_2);
 		
-		JLabel lblMaSPS = new JLabel("Mã Sản Phẩm:");
+		JLabel lblMaSPS = new JLabel(main.read_file_languages.getString("lblMaSPSearch") + ":");
 		lblMaSPS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblMaSPS.setForeground(textColor);
 		b2.add(lblMaSPS);
@@ -150,8 +150,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		Box b3 = Box.createHorizontalBox();
 		pnlTimKiem.add(b3);
 		
-		JLabel lblTenSPS = new JLabel("Tên SP"
-				+ ":");
+		JLabel lblTenSPS = new JLabel(main.read_file_languages.getString("lblTenSPSearch") + ":");
 		lblTenSPS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblTenSPS.setForeground(textColor);
 		b3.add(lblTenSPS);
@@ -170,7 +169,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(10);
 		b3.add(horizontalStrut_2_1);
 		
-		JLabel lblDVTS = new JLabel("Số lượng (>=):");
+		JLabel lblDVTS = new JLabel(main.read_file_languages.getString("lblSoLuong")+ " (>=):");
 		lblDVTS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblDVTS.setForeground(textColor);
 		b3.add(lblDVTS);
@@ -194,7 +193,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 
 		pnlTimKiem.add(Box.createVerticalStrut(20));
 		
-		JLabel lblDonGiaS = new JLabel("Đơn giá:");
+		JLabel lblDonGiaS = new JLabel(main.read_file_languages.getString("lblDonGia") + ":");
 		lblDonGiaS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblDonGiaS.setForeground(textColor);
 		b4.add(lblDonGiaS);
@@ -214,7 +213,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		Component horizontalStrut_3_2_1 = Box.createHorizontalStrut(10);
 		b4.add(horizontalStrut_3_2_1);
 		
-		JLabel lblNoi = new JLabel("- đến -");
+		JLabel lblNoi = new JLabel("-"+ main.read_file_languages.getString("lblNoi") +"-");
 		lblNoi.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		lblNoi.setForeground(textColor);
 		b4.add(lblNoi);
@@ -242,7 +241,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlThongTinSP.setLayout(new BoxLayout(pnlThongTinSP, BoxLayout.Y_AXIS));
 		pnlThongTinSP.setBackground(bgColor);
 		titleBorderTTSP = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin sản phẩm");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("info_product"));
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnlThongTinSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		b.add(pnlThongTinSP);
@@ -251,7 +250,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		Box b1 = Box.createHorizontalBox();
 		pnlThongTinSP.add(b1);
 		
-		JLabel lblMaHD = new JLabel("Mã hợp đồng:");
+		JLabel lblMaHD = new JLabel(main.read_file_languages.getString("lblMaHD") + ":");
 		lblMaHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		lblMaHD.setForeground(textColor);
 		b1.add(lblMaHD);
@@ -266,7 +265,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		b1.add(txtMaHD);
 		b1.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblMaSP = new JLabel("Mã sản phẩm:");
+		JLabel lblMaSP = new JLabel(main.read_file_languages.getString("lblMaSP") + ":");
 		lblMaSP.setForeground(textColor);
 		lblMaSP.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b1.add(lblMaSP);
@@ -281,7 +280,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		b1.add(txtMaSP);
 		b1.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblTenSP = new JLabel("Tên sản phẩm:");
+		JLabel lblTenSP = new JLabel(main.read_file_languages.getString("lblTenSP") + ":");
 		lblTenSP.setForeground(textColor);
 		lblTenSP.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b1.add(lblTenSP);
@@ -303,7 +302,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		b5.setBackground(bgColor);
 		pnlThongTinSP.add(b5);
 		
-		JLabel lblDVT = new JLabel("Đơn vị tính:");
+		JLabel lblDVT = new JLabel(main.read_file_languages.getString("lblDVT") + ":");
 		lblDVT.setForeground(textColor);
 		lblDVT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b5.add(lblDVT);
@@ -325,7 +324,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 
 		b5.add(Box.createHorizontalStrut(40));
 		
-		JLabel lblDonGia = new JLabel("Đơn giá:");
+		JLabel lblDonGia = new JLabel(main.read_file_languages.getString("lblDonGia") + ":");
 		lblDonGia.setForeground(textColor);
 		lblDonGia.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b5.add(lblDonGia);
@@ -348,7 +347,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		
 		b5.add(Box.createHorizontalStrut(40));
 		
-		JLabel lblSoLuong = new JLabel("Số lượng:");
+		JLabel lblSoLuong = new JLabel(main.read_file_languages.getString("lblSoLuong") + ":");
 		lblSoLuong.setForeground(textColor);
 		lblSoLuong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b5.add(lblSoLuong);
@@ -371,7 +370,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		Box b6 = Box.createHorizontalBox();
 		pnlThongTinSP.add(b6);
 		b6.setBackground(bgColor);
-		JLabel lblYeuCau = new JLabel("Yêu cầu:");
+		JLabel lblYeuCau = new JLabel(main.read_file_languages.getString("lblYeuCau") + ":");
 		lblYeuCau.setForeground(textColor);
 		lblYeuCau.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b6.add(lblYeuCau);
@@ -393,7 +392,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlChucNang.setBackground(bgColor);
 		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		
-		btnTimKiem = new RoundedButton("Tìm kiếm", null, 20, 0, 1.0f);
+		btnTimKiem = new RoundedButton(main.read_file_languages.getString("btnTimKiem"), null, 20, 0, 1.0f);
 		btnTimKiem.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setBackground(Color.decode("#3B71CA"));
@@ -402,7 +401,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlChucNang.add(btnTimKiem);
 		pnlChucNang.add(Box.createHorizontalStrut(25));
 		
-		btnXoaRong = new RoundedButton("Xóa rỗng", null, 20, 0, 1.0f);
+		btnXoaRong = new RoundedButton(main.read_file_languages.getString("btnXoaRong"), null, 20, 0, 1.0f);
 		btnXoaRong.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnXoaRong.setForeground(Color.WHITE);
 		btnXoaRong.setBackground(Color.decode("#ffc107"));
@@ -413,7 +412,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		// tạo jpanel chứa table sản phẩm
 		JPanel pnlBangSP = new JPanel();
 		titleBorderTTSP = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh sách sản phẩm");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("border_title_SP"));
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnlBangSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(0, 10, 5, 10)));
 		pnlBangSP.setBackground(bgColor);
@@ -425,7 +424,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlXuat.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnlBangSP.add(pnlXuat, BorderLayout.NORTH);
 		
-		btnXuat = new RoundedButton("Xuất DS", null, 5, 0, 1.0f);
+		btnXuat = new RoundedButton(main.read_file_languages.getString("btn_XuatDS"), null, 5, 0, 1.0f);
 		btnXuat.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnXuat.setForeground(Color.WHITE);
 		btnXuat.setBackground(Color.decode("#28a745"));
@@ -433,7 +432,13 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String cols[] = {"Mã HĐ", "Mã sản phẩm", "Tên sản phẩm", "Đơn vị tính", "Số lượng", "Đơn giá", "Yêu cầu"};
+		String cols[] = {main.read_file_languages.getString("tbhMaHDSP"),
+				main.read_file_languages.getString("lblMaSP"),
+				main.read_file_languages.getString("lblTenSP"), 
+				main.read_file_languages.getString("lblDVT"), 
+				main.read_file_languages.getString("lblSoLuong"), 
+				main.read_file_languages.getString("lblDonGia"), 
+				main.read_file_languages.getString("lblYeuCau")};
 		dtblModelSP = new DefaultTableModel(cols, 0);
 		tblSP = new JTable(dtblModelSP);
 
