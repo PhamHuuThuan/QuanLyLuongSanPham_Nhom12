@@ -368,8 +368,15 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			main.pnlContent.add(new QuanLySanPhamUI(main), BorderLayout.CENTER);// thêm giao diện sản phẩm vào
 			main.validate(); // cập nhật lại
 		}
-		if(o==mnSanPham) {
-					
+		if(o==mniTimKiemSP) {
+			setMenuColorDefault();
+			mnSanPham.setBackground(Color.decode("#424242"));
+			mnSanPham.setForeground(Color.WHITE);
+			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new TimKiemSanPhamUI(main), BorderLayout.CENTER);// thêm giao diện tìm kiếm sản phẩm vào
+			main.validate(); // cập nhật lại	
 		}
 		if(o==mnCongDoan) {
 					

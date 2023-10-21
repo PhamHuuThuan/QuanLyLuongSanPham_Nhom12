@@ -333,7 +333,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		pnThongTinHD.add(Box.createVerticalStrut(10));
 		
-		//Khởi tạo jpanel chức năng chứa các button chức năng: thêm, sửa, xóa, lưu, hủy
+		//Khởi tạo jpanel chức năng chứa các button chức năng: thêm, sửa, xóa, xuất, lưu, hủy
 		pnlChucNang = new JPanel();
 		pnNorth.add(pnlChucNang, BorderLayout.SOUTH);
 		pnlChucNang.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
