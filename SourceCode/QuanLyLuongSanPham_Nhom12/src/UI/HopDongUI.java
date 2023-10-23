@@ -2,7 +2,9 @@ package UI;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -24,9 +26,11 @@ import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -40,6 +44,7 @@ import Util.XuatHopDongForm;
 import net.sf.jasperreports.engine.JRException;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JComboBox;
 import java.awt.FlowLayout;
@@ -49,42 +54,244 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JTextField txtMaHD, txtTenHD, txtTenKH, txtDaiDien, txtGiaTri, txtTienCoc, txtThoaThuan, txtGhiChu;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn,btnFocus;
-	private DefaultTableModel dtblModel;
-	private JTable tblHD;
-	private JTableHeader tbhHD;
+	private JTextField txtMaHD, txtTenHD, txtTenKH, txtDaiDien, txtGiaTri, txtTienCoc, txtThoaThuan, txtGhi, txtMaSP, txtTenSP, txtDonGia, txtGhiChu;
+	private RoundedButton btnThemHD, btnSuaHD, btnXoaHD, btnThemSP, btnSuaSP, btnXoaSP, btnLuu, btnHuy, btnIn, btnFocus;
+	private DefaultTableModel dtblModelHD, dtblModelSP;
+	private JTable tblHD, tblSP;
+	private JTableHeader tbhHD, tbhSP;
 	private JPanel pnlChucNang;
 	private JComboBox cmbTrangThai;
 	private JXDatePicker dtpBatDau, dtpKetThuc;
 	private JLabel lblGiaTriText, lblTienCocText;
 	private XuatForm xf;
+	private Font fontText;
 	/**
 	 * Create the panel.
 	 */
 	public HopDongUI(MainUI main) {
 		this.main = main;
 		xf = new XuatForm();
+		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 12F);
 		
 		//set gia tri cho jpanel HopDong
 		setLayout(new BorderLayout(0, 0));
 		setBackground(bgColor);
 		
+		//tạo jpanel north
+		JPanel pnlNorth = new JPanel();
+		pnlNorth.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+		pnlNorth.setBackground(bgColor);
+		add(pnlNorth, BorderLayout.NORTH);
+		
+		//Tao jpanel Thong tin san pham
+				JPanel pnlThongTinSP = new JPanel();
+				pnlThongTinSP.setLayout(new BoxLayout(pnlThongTinSP, BoxLayout.Y_AXIS));
+				pnlThongTinSP.setBackground(bgColor);
+				TitledBorder titleBorderTTSP = BorderFactory.createTitledBorder(
+		                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("title_border_DSSP"));
+				titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 14F));
+				pnlNorth.setLayout(new BorderLayout(0, 0));
+				pnlThongTinSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
+				pnlThongTinSP.setSize(new Dimension(400, 300));
+				pnlNorth.add(pnlThongTinSP, BorderLayout.EAST);
+				
+				// Tao box chua cac phan tu hang 1: maHD, ma SP, tenSP
+				Box b1 = Box.createHorizontalBox();
+				pnlThongTinSP.add(b1);
+				
+				JLabel lblMaSP = new JLabel(main.read_file_languages.getString("lblMaSP") + ":");
+				lblMaSP.setForeground(textColor);
+				lblMaSP.setFont(fontText);
+				b1.add(lblMaSP);
+				b1.add(Box.createHorizontalStrut(5));
+				
+				txtMaSP = new JTextField();
+				txtMaSP.setForeground(textColor);
+				txtMaSP.setFont(fontText);
+				txtMaSP.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+						BorderFactory.createEmptyBorder(2, 10, 2, 10)));
+				txtMaSP.setBackground(bgColor);
+				b1.add(txtMaSP);
+				b1.add(Box.createHorizontalStrut(10));
+				
+				JLabel lblTenSP = new JLabel(main.read_file_languages.getString("lblTenSP") + ":");
+				lblTenSP.setForeground(textColor);
+				lblTenSP.setFont(fontText);
+				b1.add(lblTenSP);
+				b1.add(Box.createHorizontalStrut(5));
+				
+				txtTenSP = new JTextField();
+				txtTenSP.setForeground(textColor);
+				txtTenSP.setFont(fontText);
+				txtTenSP.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+						BorderFactory.createEmptyBorder(2, 10, 2, 10)));
+				txtTenSP.setBackground(bgColor);
+				b1.add(txtTenSP);
+				
+				pnlThongTinSP.add(Box.createVerticalStrut(20));
+				
+				//Tao box chua thong tin hang 2: ngayBD, ngayKT, giatri, tiencoc
+				
+				Box b2 = Box.createHorizontalBox();
+				b2.setBackground(bgColor);
+				pnlThongTinSP.add(b2);
+				
+				JLabel lblDVT = new JLabel(main.read_file_languages.getString("lblDVT") + ":");
+				lblDVT.setForeground(textColor);
+				lblDVT.setFont(fontText);
+				b2.add(lblDVT);
+				
+				b2.add(Box.createHorizontalStrut(5));
+				
+				JComboBox cmbDVT = new JComboBox();
+				cmbDVT.setModel(new DefaultComboBoxModel(new String[] {"Cái", "Bộ", "Đôi(Cặp)", "Hộp", "Gói", "M2", "Kg", "Lít"}));
+				Border cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+						BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				cmbDVT.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
+				cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+						BorderFactory.createEmptyBorder(0, 5, 0, 5));
+				cmbDVT.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
+				cmbDVT.setBackground(bgColor);
+				cmbDVT.setForeground(textColor);
+				cmbDVT.setFont(fontText);
+				b2.add(cmbDVT);
+
+				b2.add(Box.createHorizontalStrut(10));
+				
+				JLabel lblDonGia = new JLabel(main.read_file_languages.getString("lblDonGia") + ":");
+				lblDonGia.setForeground(textColor);
+				lblDonGia.setFont(fontText);
+				b2.add(lblDonGia);
+				
+				b2.add(Box.createHorizontalStrut(5));
+				
+				txtDonGia = new JTextField();
+				txtDonGia.setForeground(textColor);
+				txtDonGia.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+				txtDonGia.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+						BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+				txtDonGia.setBackground(bgColor);
+				b2.add(txtDonGia);
+				
+				JLabel lblVND2 = new JLabel("VNĐ");
+				lblVND2.setForeground(textColor);
+				lblVND2.setFont(fontText);
+				b2.add(lblVND2);
+				
+				b2.add(Box.createHorizontalStrut(10));
+				
+				JLabel lblSoLuong = new JLabel(main.read_file_languages.getString("lblSoLuong") + ":");
+				lblSoLuong.setForeground(textColor);
+				lblSoLuong.setFont(fontText);
+				b2.add(lblSoLuong);
+				
+				b2.add(Box.createHorizontalStrut(5));
+				
+				SpinnerNumberModel model = new SpinnerNumberModel(10, 1, 100000, 100);
+				JSpinner spnSoLuong = new JSpinner(model);
+				cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+						BorderFactory.createEmptyBorder(5, 0, 5, 0));
+				spnSoLuong.setBorder(cboBorder);
+				spnSoLuong.setBackground(bgColor);
+				spnSoLuong.setForeground(textColor);
+				spnSoLuong.setFont(fontText);
+				b2.add(spnSoLuong);
+				
+				pnlThongTinSP.add(Box.createVerticalStrut(20));
+				
+				Box b3 = Box.createHorizontalBox();
+				pnlThongTinSP.add(b3);
+				b3.setBackground(bgColor);
+				JLabel lblYeuCau = new JLabel(main.read_file_languages.getString("lblYeuCau") + ":");
+				lblYeuCau.setForeground(textColor);
+				lblYeuCau.setFont(fontText);
+				b3.add(lblYeuCau);
+				b3.add(Box.createHorizontalStrut(35));
+				
+				JTextArea txaYeuCau = new JTextArea();
+				txaYeuCau.setRows(3);
+				txaYeuCau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
+						BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+				txaYeuCau.setForeground(textColor);
+				txaYeuCau.setFont(fontText);
+				JScrollPane scrYC = new JScrollPane(txaYeuCau, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				b3.add(scrYC);
+				pnlThongTinSP.add(Box.createVerticalStrut(10));
+				
+				Box b8 = Box.createHorizontalBox();
+				pnlThongTinSP.add(b8);
+				pnlThongTinSP.add(Box.createVerticalStrut(10));
+				
+				btnThemSP = new RoundedButton(main.read_file_languages.getString("btnThem"), null, 15, 0, 1.0f);
+				btnThemSP.setFont(fontText);
+				btnThemSP.setForeground(Color.WHITE);
+				btnThemSP.setBackground(Color.decode("#3B71CA"));
+				btnThemSP.setIcon(new ImageScaler("/image/addHopDong_icon.png", 20, 20).getScaledImageIcon());
+				btnThemSP.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+				b8.add(btnThemSP);
+				b8.add(Box.createHorizontalStrut(25));
+				
+				btnSuaSP = new RoundedButton(main.read_file_languages.getString("btnSua"), null, 15, 0, 1.0f);
+				btnSuaSP.setFont(fontText);
+				btnSuaSP.setForeground(Color.WHITE);
+				btnSuaSP.setBackground(Color.decode("#ffc107"));
+				btnSuaSP.setIcon(new ImageScaler("/image/editHopDong_Icon.png", 20, 20).getScaledImageIcon());
+				btnSuaSP.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+				b8.add(btnSuaSP);
+				b8.add(Box.createHorizontalStrut(25));
+				
+				btnXoaSP = new RoundedButton(main.read_file_languages.getString("btnXoa"), null, 15, 0, 1.0f);
+				btnXoaSP.setFont(fontText);
+				btnXoaSP.setForeground(Color.WHITE);
+				btnXoaSP.setBackground(Color.decode("#dc3545"));
+				btnXoaSP.setIcon(new ImageScaler("/image/deleteHD_Icon.png", 20, 20).getScaledImageIcon());
+				btnXoaSP.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+				b8.add(btnXoaSP);
+				
+				// tạo jpanel chứa table sản phẩm
+				JPanel pnlBangSP = new JPanel();
+				pnlBangSP.setLayout(new BoxLayout(pnlBangSP, BoxLayout.X_AXIS));
+				pnlThongTinSP.add(pnlBangSP, BorderLayout.CENTER);
+				String cols[] = {
+						main.read_file_languages.getString("lblMaSP"),
+						main.read_file_languages.getString("lblTenSP"), 
+						main.read_file_languages.getString("lblSoLuong"), 
+						main.read_file_languages.getString("lblDonGia")};
+				dtblModelSP = new DefaultTableModel(cols, 4);
+				tblSP = new JTable(dtblModelSP);
+				
+				tbhSP = new JTableHeader(tblSP.getColumnModel());
+				tbhSP.setReorderingAllowed(false);
+				tbhSP.setBackground(componentColor);
+				tbhSP.setForeground(Color.WHITE);
+				tbhSP.setFont(fontText);
+				tblSP.setTableHeader(tbhSP);
+				
+				tblSP.setRowHeight(20);
+				tblSP.setPreferredScrollableViewportSize(tblSP.getPreferredSize());
+				tblSP.setFillsViewportHeight(true);
+				
+				//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
+				JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				scrSP.setPreferredSize(new Dimension(500, tblSP.getRowHeight() * 5));
+				pnlBangSP.add(scrSP);
+		
+		
 		//tao jpanel chua Title va Thong tin HD
-		JPanel pnNorth = new JPanel();
-		pnNorth.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
-		pnNorth.setBackground(bgColor);
-		add(pnNorth, BorderLayout.NORTH);
-		pnNorth.setLayout(new BorderLayout(0, 0));
+		JPanel pnlHopDong = new JPanel();
+		pnlHopDong.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+		pnlHopDong.setBackground(bgColor);
+		pnlNorth.add(pnlHopDong, BorderLayout.CENTER);
+		pnlHopDong.setLayout(new BorderLayout(0, 0));
 		
 		//Tao jpanel Title
 		JPanel pnTitle = new JPanel();
 		pnTitle.setBackground(bgColor);
-		pnNorth.add(pnTitle, BorderLayout.NORTH);
+		pnlNorth.add(pnTitle, BorderLayout.NORTH);
 		
 		JLabel lblTitle = new JLabel(main.read_file_languages.getString("title_contract"));
 		lblTitle.setForeground(textColor);
-		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
+		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 18F));
 		pnTitle.add(lblTitle);
 		
 		//Tao jpanel Thong tin hop dong
@@ -93,90 +300,91 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnThongTinHD.setBackground(bgColor);
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("info_contract"));
-		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnThongTinHD.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
-		pnNorth.add(pnThongTinHD, BorderLayout.CENTER);
+		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 14F));
+		pnThongTinHD.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(10, 30, 0, 30)));
+		pnlHopDong.add(pnThongTinHD, BorderLayout.CENTER);
 		
 		// Tao box chua cac phan tu hang 1: maHD, tenHD, tenKH, nguoiDaiDien
-		Box b1 = Box.createHorizontalBox();
-		pnThongTinHD.add(b1);
+		Box b4 = Box.createHorizontalBox();
+		pnThongTinHD.add(b4);
 		
 		JLabel lblMaHD = new JLabel(main.read_file_languages.getString("lblMaHD") + ":");
-		lblMaHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblMaHD.setFont(fontText);
 		lblMaHD.setForeground(textColor);
-		b1.add(lblMaHD);
-		b1.add(Box.createHorizontalStrut(10));
+		b4.add(lblMaHD);
+		b4.add(Box.createHorizontalStrut(5));
 		
 		txtMaHD = new JTextField();
-		txtMaHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtMaHD.setFont(fontText);
 		txtMaHD.setForeground(textColor);
 		txtMaHD.setBackground(bgColor);
 		txtMaHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		b1.add(txtMaHD);
-		b1.add(Box.createHorizontalStrut(30));
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+		b4.add(txtMaHD);
+		b4.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblTenHD = new JLabel(main.read_file_languages.getString("lblTenHD") + ":");
 		lblTenHD.setForeground(textColor);
-		lblTenHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b1.add(lblTenHD);
-		b1.add(Box.createHorizontalStrut(10));
+		lblTenHD.setFont(fontText);
+		b4.add(lblTenHD);
+		b4.add(Box.createHorizontalStrut(10));
 		
 		txtTenHD = new JTextField();
 		txtTenHD.setForeground(textColor);
-		txtTenHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtTenHD.setFont(fontText);
 		txtTenHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTenHD.setBackground(bgColor);
-		b1.add(txtTenHD);
-		b1.add(Box.createHorizontalStrut(30));
+		b4.add(txtTenHD);
+		b4.add(Box.createHorizontalStrut(30));
 		
 		JLabel lblTenKH = new JLabel(main.read_file_languages.getString("lblKH") + ":");
 		lblTenKH.setForeground(textColor);
-		lblTenKH.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b1.add(lblTenKH);
-		b1.add(Box.createHorizontalStrut(10));
+		lblTenKH.setFont(fontText);
+		b4.add(lblTenKH);
+		b4.add(Box.createHorizontalStrut(10));
 		
 		txtTenKH = new JTextField();
 		txtTenKH.setForeground(textColor);
-		txtTenKH.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtTenKH.setFont(fontText);
 		txtTenKH.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTenKH.setBackground(bgColor);
-		b1.add(txtTenKH);
-		b1.add(Box.createHorizontalStrut(30));
-		
-		JLabel lblDaiDien = new JLabel(main.read_file_languages.getString("lblDaiDien") + ":");
-		lblDaiDien.setForeground(textColor);
-		lblDaiDien.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b1.add(lblDaiDien);
-		b1.add(Box.createHorizontalStrut(10));
-		
-		txtDaiDien = new JTextField();
-		txtDaiDien.setForeground(textColor);
-		txtDaiDien.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtDaiDien.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtDaiDien.setBackground(bgColor);
-		b1.add(txtDaiDien);
+		b4.add(txtTenKH);
 		
 		pnThongTinHD.add(Box.createVerticalStrut(20));
 		
 		//Tao box chua thong tin hang 2: ngayBD, ngayKT, giatri, tiencoc
-		Box b2 = Box.createHorizontalBox();
-		pnThongTinHD.add(b2);
+		Box b5 = Box.createHorizontalBox();
+		pnThongTinHD.add(b5);
+		
+		JLabel lblDaiDien = new JLabel(main.read_file_languages.getString("lblDaiDien") + ":");
+		lblDaiDien.setForeground(textColor);
+		lblDaiDien.setFont(fontText);
+		b5.add(lblDaiDien);
+		b5.add(Box.createHorizontalStrut(10));
+		
+		txtDaiDien = new JTextField();
+		txtDaiDien.setForeground(textColor);
+		txtDaiDien.setFont(fontText);
+		txtDaiDien.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+		txtDaiDien.setBackground(bgColor);
+		b5.add(txtDaiDien);
+		
+		b5.add(Box.createHorizontalStrut(30));
 		
 		// ngay bat dau
 		JLabel lblNgayBD = new JLabel(main.read_file_languages.getString("lblNgayBD") + ":");
 		lblNgayBD.setForeground(textColor);
-		lblNgayBD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblNgayBD);
+		lblNgayBD.setFont(fontText);
+		b5.add(lblNgayBD);
 		
-		b2.add(Box.createHorizontalStrut(10));
+		b5.add(Box.createHorizontalStrut(10));
 		
 		dtpBatDau = new JXDatePicker(new Date());
 		dtpBatDau.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
-		dtpBatDau.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dtpBatDau.setFont(fontText);
 		dtpBatDau.setBackground(bgColor);
 		dtpBatDau.setForeground(textColor);
 		dtpBatDau.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
@@ -187,17 +395,17 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpBatDau.getEditor().setBackground(bgColor);
 		dtpBatDau.getEditor().setForeground(textColor);
-		b2.add(dtpBatDau);
+		b5.add(dtpBatDau);
 		
-		b2.add(Box.createHorizontalStrut(30));
+		b5.add(Box.createHorizontalStrut(30));
 		
 		// ngay ket thuc
 		JLabel lblNgayKetThuc = new JLabel(main.read_file_languages.getString("lblNgayKT") + ":");
 		lblNgayKetThuc.setForeground(textColor);
-		lblNgayKetThuc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblNgayKetThuc);
+		lblNgayKetThuc.setFont(fontText);
+		b5.add(lblNgayKetThuc);
 		
-		b2.add(Box.createHorizontalStrut(10));
+		b5.add(Box.createHorizontalStrut(10));
 		
 		
 		dtpKetThuc = new JXDatePicker(new Date());
@@ -206,188 +414,188 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		dtpKetThuc.getEditor().setBackground(bgColor);
 		dtpKetThuc.setLocale(new Locale("vi", "VN"));
 		dtpKetThuc.setForeground(textColor);
-		dtpKetThuc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dtpKetThuc.setFont(fontText);
 		dtpKetThuc.setBackground(bgColor);
 		JButton btnDateKT = (JButton) dtpKetThuc.getComponent(1);
 		btnDateKT.setIcon(new ImageScaler("/image/calendarfinish_icon.png", 18, 18).getScaledImageIcon());
 		btnDateKT.setBackground(bgColor);
 		btnDateKT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		b2.add(dtpKetThuc);
-		
-		b2.add(Box.createHorizontalStrut(30));
-		
-		JLabel lblGiaTri = new JLabel(main.read_file_languages.getString("lblGiaTri") + ":");
-		lblGiaTri.setForeground(textColor);
-		lblGiaTri.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblGiaTri);
-		
-		b2.add(Box.createHorizontalStrut(10));
-		
-		txtGiaTri = new JTextField();
-		txtGiaTri.setForeground(textColor);
-		txtGiaTri.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtGiaTri.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtGiaTri.setBackground(bgColor);
-		b2.add(txtGiaTri);
-		
-		JLabel lblVND1 = new JLabel("VNĐ");
-		lblVND1.setForeground(textColor);
-		lblVND1.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblVND1);
-		
-		lblGiaTriText = new JLabel("");
-		lblGiaTriText.setForeground(textColor);
-		lblGiaTriText.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblGiaTriText);
-
-		b2.add(Box.createHorizontalStrut(30));
-		
-		JLabel lblTienCoc = new JLabel(main.read_file_languages.getString("lblTienCoc") + ":");
-		lblTienCoc.setForeground(textColor);
-		lblTienCoc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblTienCoc);
-		
-		b2.add(Box.createHorizontalStrut(10));
-		
-		txtTienCoc = new JTextField();
-		txtTienCoc.setForeground(textColor);
-		txtTienCoc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtTienCoc.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtTienCoc.setBackground(bgColor);
-		b2.add(txtTienCoc);
-		
-		JLabel lblVND2 = new JLabel("VNĐ");
-		lblVND2.setForeground(textColor);
-		lblVND2.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblVND2);
-		
-		lblTienCocText = new JLabel("");
-		lblTienCocText.setForeground(textColor);
-		lblTienCocText.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b2.add(lblTienCocText);
+		b5.add(dtpKetThuc);
 		
 		pnThongTinHD.add(Box.createVerticalStrut(20));
 		
 		//Tạo box chứa thông tin hàng 3: thỏa thuận, trạng thái, ghi chú
-		Box b3 = Box.createHorizontalBox();
-		pnThongTinHD.add(b3);
+		Box b6 = Box.createHorizontalBox();
+		pnThongTinHD.add(b6);
+		
+		JLabel lblGiaTri = new JLabel(main.read_file_languages.getString("lblGiaTri") + ":");
+		lblGiaTri.setForeground(textColor);
+		lblGiaTri.setFont(fontText);
+		b6.add(lblGiaTri);
+		b6.add(Box.createHorizontalStrut(10));
+		
+		txtGiaTri = new JTextField();
+		txtGiaTri.setForeground(textColor);
+		txtGiaTri.setFont(fontText);
+		txtGiaTri.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+		txtGiaTri.setBackground(bgColor);
+		b6.add(txtGiaTri);
+		
+		JLabel lblVND1 = new JLabel("VNĐ");
+		lblVND1.setForeground(textColor);
+		lblVND1.setFont(fontText);
+		b6.add(lblVND1);
+		
+		lblGiaTriText = new JLabel("");
+		lblGiaTriText.setForeground(textColor);
+		lblGiaTriText.setFont(fontText);
+		b6.add(lblGiaTriText);
+
+		b6.add(Box.createHorizontalStrut(30));
+		
+		JLabel lblTienCoc = new JLabel(main.read_file_languages.getString("lblTienCoc") + ":");
+		lblTienCoc.setForeground(textColor);
+		lblTienCoc.setFont(fontText);
+		b6.add(lblTienCoc);
+		
+		b6.add(Box.createHorizontalStrut(10));
+		
+		txtTienCoc = new JTextField();
+		txtTienCoc.setForeground(textColor);
+		txtTienCoc.setFont(fontText);
+		txtTienCoc.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+		txtTienCoc.setBackground(bgColor);
+		b6.add(txtTienCoc);
+		
+		JLabel lblVND3 = new JLabel("VNĐ");
+		lblVND3.setForeground(textColor);
+		lblVND3.setFont(fontText);
+		b6.add(lblVND3);
+		
+		lblTienCocText = new JLabel("");
+		lblTienCocText.setForeground(textColor);
+		lblTienCocText.setFont(fontText);
+		b6.add(lblTienCocText);
+		b6.add(Box.createHorizontalStrut(30));
 		
 		JLabel lblThoaThuan = new JLabel(main.read_file_languages.getString("lblThoaThuan") + ":");
 		lblThoaThuan.setForeground(Color.BLACK);
-		lblThoaThuan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b3.add(lblThoaThuan);
+		lblThoaThuan.setFont(fontText);
+		b6.add(lblThoaThuan);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(10);
-		b3.add(horizontalStrut);
+		b6.add(horizontalStrut);
 		
 		txtThoaThuan = new JTextField();
 		txtThoaThuan.setForeground(Color.BLACK);
-		txtThoaThuan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtThoaThuan.setFont(fontText);
 		txtThoaThuan.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtThoaThuan.setBackground(Color.WHITE);
-		b3.add(txtThoaThuan);
+		b6.add(txtThoaThuan);
 		
-		b3.add(Box.createHorizontalStrut(30));
+		Box b7 = Box.createHorizontalBox();
+		pnThongTinHD.add(Box.createVerticalStrut(20));
+		pnThongTinHD.add(b7);
 		
 		JLabel lblTrangThai = new JLabel(main.read_file_languages.getString("lblTrangThai") + ":");
 		lblTrangThai.setForeground(Color.BLACK);
-		lblTrangThai.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b3.add(lblTrangThai);
+		lblTrangThai.setFont(fontText);
+		b7.add(lblTrangThai);
 		
-		b3.add(Box.createHorizontalStrut(10));
+		b7.add(Box.createHorizontalStrut(10));
 		
 		cmbTrangThai = new JComboBox();
-		Border cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		cmbTrangThai.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		cmbTrangThai.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbTrangThai.addItem(main.read_file_languages.getString("lblTrangThai1"));
-		b3.add(cmbTrangThai);
+		b7.add(cmbTrangThai);
 		cmbTrangThai.setBackground(bgColor);
 		cmbTrangThai.setForeground(textColor);
-		cmbTrangThai.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		cmbTrangThai.setFont(fontText);
 		
 		Component horizontalStrut_3 = Box.createHorizontalStrut(30);
-		b3.add(horizontalStrut_3);
+		b7.add(horizontalStrut_3);
 		
 		JLabel lblGhiChu = new JLabel(main.read_file_languages.getString("lblGhiChu") + ":");
 		lblGhiChu.setForeground(textColor);
-		lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b3.add(lblGhiChu);
+		lblGhiChu.setFont(fontText);
+		b7.add(lblGhiChu);
 		
-		b3.add(Box.createHorizontalStrut(10));
+		b7.add(Box.createHorizontalStrut(10));
 		
 		txtGhiChu = new JTextField();
 		txtGhiChu.setForeground(textColor);
-		txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtGhiChu.setFont(fontText);
 		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtGhiChu.setBackground(bgColor);
-		b3.add(txtGhiChu);
+		b7.add(txtGhiChu);
 		
-		pnThongTinHD.add(Box.createVerticalStrut(10));
+		pnThongTinHD.add(Box.createVerticalStrut(20));
 		
 		//Khởi tạo jpanel chức năng chứa các button chức năng: thêm, sửa, xóa, xuất, lưu, hủy
 		pnlChucNang = new JPanel();
-		pnNorth.add(pnlChucNang, BorderLayout.SOUTH);
+		pnlHopDong.add(pnlChucNang, BorderLayout.SOUTH);
 		pnlChucNang.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		pnlChucNang.setBackground(bgColor);
-		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 		
-		btnThem = new RoundedButton(main.read_file_languages.getString("btnThem"), null, 20, 0, 1.0f);
-		btnThem.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
-		btnThem.setForeground(Color.WHITE);
-		btnThem.setBackground(Color.decode("#3B71CA"));
-		btnThem.setIcon(new ImageScaler("/image/addHopDong_icon.png", 24, 24).getScaledImageIcon());
-		btnThem.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-		pnlChucNang.add(btnThem);
-		pnlChucNang.add(Box.createHorizontalStrut(50));
+		btnThemHD = new RoundedButton(main.read_file_languages.getString("btnThem"), null, 15, 0, 1.0f);
+		btnThemHD.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
+		btnThemHD.setForeground(Color.WHITE);
+		btnThemHD.setBackground(Color.decode("#3B71CA"));
+		btnThemHD.setIcon(new ImageScaler("/image/addHopDong_icon.png", 24, 24).getScaledImageIcon());
+		btnThemHD.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+		pnlChucNang.add(btnThemHD);
+		pnlChucNang.add(Box.createHorizontalStrut(20));
 		
-		btnSua = new RoundedButton(main.read_file_languages.getString("btnSua"), null, 20, 0, 1.0f);
-		btnSua.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
-		btnSua.setForeground(Color.WHITE);
-		btnSua.setBackground(Color.decode("#ffc107"));
-		btnSua.setIcon(new ImageScaler("/image/editHopDong_Icon.png", 24, 24).getScaledImageIcon());
-		btnSua.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-		pnlChucNang.add(btnSua);
-		pnlChucNang.add(Box.createHorizontalStrut(50));
+		btnSuaHD = new RoundedButton(main.read_file_languages.getString("btnSua"), null, 15, 0, 1.0f);
+		btnSuaHD.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
+		btnSuaHD.setForeground(Color.WHITE);
+		btnSuaHD.setBackground(Color.decode("#ffc107"));
+		btnSuaHD.setIcon(new ImageScaler("/image/editHopDong_Icon.png", 24, 24).getScaledImageIcon());
+		btnSuaHD.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+		pnlChucNang.add(btnSuaHD);
+		pnlChucNang.add(Box.createHorizontalStrut(20));
 		
-		btnXoa = new RoundedButton(main.read_file_languages.getString("btnXoa"), null, 20, 0, 1.0f);
-		btnXoa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
-		btnXoa.setForeground(Color.WHITE);
-		btnXoa.setBackground(Color.decode("#dc3545"));
-		btnXoa.setIcon(new ImageScaler("/image/deleteHD_Icon.png", 24, 24).getScaledImageIcon());
-		btnXoa.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-		pnlChucNang.add(btnXoa);
-		pnlChucNang.add(Box.createHorizontalStrut(50));
+		btnXoaHD = new RoundedButton(main.read_file_languages.getString("btnXoa"), null, 15, 0, 1.0f);
+		btnXoaHD.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
+		btnXoaHD.setForeground(Color.WHITE);
+		btnXoaHD.setBackground(Color.decode("#dc3545"));
+		btnXoaHD.setIcon(new ImageScaler("/image/deleteHD_Icon.png", 24, 24).getScaledImageIcon());
+		btnXoaHD.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+		pnlChucNang.add(btnXoaHD);
+		pnlChucNang.add(Box.createHorizontalStrut(20));
 		
-		btnIn = new RoundedButton(main.read_file_languages.getString("btnIn"), null, 20, 0, 1.0f);
-		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnIn = new RoundedButton(main.read_file_languages.getString("btnIn"), null, 15, 0, 1.0f);
+		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnIn.setForeground(Color.WHITE);
 		btnIn.setBackground(Color.decode("#17a2b8"));
 		btnIn.setIcon(new ImageScaler("/image/printer_icon.png", 24, 24).getScaledImageIcon());
 		btnIn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnIn);
 		
-		pnlChucNang.add(Box.createHorizontalStrut(200));
+		pnlChucNang.add(Box.createHorizontalStrut(100));
 		
-		btnLuu = new RoundedButton(main.read_file_languages.getString("btnLuu"), null, 20, 0, 0.6f);
-		btnLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnLuu = new RoundedButton(main.read_file_languages.getString("btnLuu"), null, 15, 0, 0.6f);
+		btnLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnLuu.setForeground(Color.WHITE);
 		btnLuu.setBackground(Color.decode("#28a745"));
 		btnLuu.setIcon(new ImageScaler("/image/save_Icon.png", 24, 24).getScaledImageIcon());
 		btnLuu.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnLuu);
-		pnlChucNang.add(Box.createHorizontalStrut(50));
+		pnlChucNang.add(Box.createHorizontalStrut(20));
 		
-		btnHuy = new RoundedButton(main.read_file_languages.getString("btnHuy"), null, 20, 0, 0.6f);
-		btnHuy.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnHuy = new RoundedButton(main.read_file_languages.getString("btnHuy"), null, 15, 0, 0.6f);
+		btnHuy.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnHuy.setForeground(Color.WHITE);
 		btnHuy.setBackground(Color.decode("#ffc107"));
 		btnHuy.setIcon(new ImageScaler("/image/cancelHD_Icon.png", 24, 24).getScaledImageIcon());
@@ -398,7 +606,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		JPanel pnlBangHD = new JPanel();
 		pnlBangHD.setLayout(new BoxLayout(pnlBangHD, BoxLayout.X_AXIS));
 		add(pnlBangHD, BorderLayout.CENTER);
-		String cols[] = {main.read_file_languages.getString("lblMaHD"),
+		String colsHD[] = {main.read_file_languages.getString("lblMaHD"),
 				main.read_file_languages.getString("lblTenHD"), 
 				main.read_file_languages.getString("lblKH"), 
 				main.read_file_languages.getString("lblDaiDien"), 
@@ -407,14 +615,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				main.read_file_languages.getString("lblGiaTri"), 
 				main.read_file_languages.getString("lblTrangThai"), 
 				main.read_file_languages.getString("lblGhiChu")};
-		dtblModel = new DefaultTableModel(cols, 0);
-		tblHD = new JTable(dtblModel);
+		dtblModelHD = new DefaultTableModel(colsHD, 0);
+		tblHD = new JTable(dtblModelHD);
 		
 		tbhHD = new JTableHeader(tblHD.getColumnModel());
 		tbhHD.setReorderingAllowed(false);
 		tbhHD.setBackground(componentColor);
 		tbhHD.setForeground(Color.WHITE);
-		tbhHD.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		tbhHD.setFont(fontText);
 		tblHD.setTableHeader(tbhHD);
 		
 		tblHD.setRowHeight(20);
@@ -432,16 +640,16 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		JScrollPane scrHD = new JScrollPane(tblHD,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangHD.add(scrHD);
 		
-		btnThem.addActionListener(this);
-		btnSua.addActionListener(this);
-		btnXoa.addActionListener(this);
+		btnThemHD.addActionListener(this);
+		btnSuaHD.addActionListener(this);
+		btnXoaHD.addActionListener(this);
 		btnIn.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
 		
-		btnThem.addMouseListener(this);
-		btnSua.addMouseListener(this);
-		btnXoa.addMouseListener(this);
+		btnThemHD.addMouseListener(this);
+		btnSuaHD.addMouseListener(this);
+		btnXoaHD.addMouseListener(this);
 		btnIn.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
@@ -453,15 +661,15 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		setEditableForTextField(false);
 		
 		//Set giá trị mặc định để hiển thị
-		txtMaHD.setText("HD12345");
-		txtTenKH.setText("Nguyễn Văn Phong");
-		txtTenHD.setText("Hợp đồng hợp tác ABC");
-		txtDaiDien.setText("Phạm Hữu Thuận");
-		txtGiaTri.setText(formatMoneyText("10000000000"));
-		lblGiaTriText.setText("    (" + formatMoneyToText(Double.parseDouble(txtGiaTri.getText().replaceAll(",", ""))) + " VNĐ)     ");
-		txtTienCoc.setText(formatMoneyText("1000000000"));
-		lblTienCocText.setText("     (" + formatMoneyToText(Double.parseDouble(txtTienCoc.getText().replaceAll(",", ""))) + " VNĐ)");
-		txtThoaThuan.setText("Thỏa thuận giữa 2 bên bao gồm: điều 1, điều 2, điều 3,...");
+//		txtMaHD.setText("HD12345");
+//		txtTenKH.setText("Nguyễn Văn Phong");
+//		txtTenHD.setText("Hợp đồng hợp tác ABC");
+//		txtDaiDien.setText("Phạm Hữu Thuận");
+//		txtGiaTri.setText(formatMoneyText("10000000000"));
+//		lblGiaTriText.setText("    (" + formatMoneyToText(Double.parseDouble(txtGiaTri.getText().replaceAll(",", ""))) + " VNĐ)     ");
+//		txtTienCoc.setText(formatMoneyText("1000000000"));
+//		lblTienCocText.setText("     (" + formatMoneyToText(Double.parseDouble(txtTienCoc.getText().replaceAll(",", ""))) + " VNĐ)");
+//		txtThoaThuan.setText("Thỏa thuận giữa 2 bên bao gồm: điều 1, điều 2, điều 3,...");
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -491,17 +699,17 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		main.music.playSE(2);
-		if(o == btnThem) {
+		if(o == btnThemHD) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
 			xoaRong();	
 		}
-		if(o == btnSua) {
+		if(o == btnSuaHD) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
 			
 		}
-		if(o == btnXoa) {
+		if(o == btnXoaHD) {
 			
 		}
 		if(o == btnIn) {
@@ -525,12 +733,12 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnHuy.setEnabled(true);
 			btnHuy.setAlpha(1f);
 			
-			btnThem.setEnabled(false);
-			btnThem.setAlpha(0.6f);
-			btnSua.setEnabled(false);
-			btnSua.setAlpha(0.6f);
-			btnXoa.setEnabled(false);
-			btnXoa.setAlpha(0.6f);
+			btnThemHD.setEnabled(false);
+			btnThemHD.setAlpha(0.6f);
+			btnSuaHD.setEnabled(false);
+			btnSuaHD.setAlpha(0.6f);
+			btnXoaHD.setEnabled(false);
+			btnXoaHD.setAlpha(0.6f);
 			btnIn.setEnabled(false);
 			btnIn.setAlpha(0.6f);
 			
@@ -540,12 +748,12 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnHuy.setEnabled(false);
 			btnHuy.setAlpha(0.6f);
 			
-			btnThem.setEnabled(true);
-			btnThem.setAlpha(1f);
-			btnSua.setEnabled(true);
-			btnSua.setAlpha(1f);
-			btnXoa.setEnabled(true);
-			btnXoa.setAlpha(1f);
+			btnThemHD.setEnabled(true);
+			btnThemHD.setAlpha(1f);
+			btnSuaHD.setEnabled(true);
+			btnSuaHD.setAlpha(1f);
+			btnXoaHD.setEnabled(true);
+			btnXoaHD.setAlpha(1f);
 			btnIn.setEnabled(true);
 			btnIn.setAlpha(1f);
 		}
@@ -601,13 +809,13 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnFocus = (RoundedButton) o;
 			btnFocus.setFocusButton(main.borderFocusColor, 3);
 		}
-		else if(btnFocus == btnThem || btnFocus == btnSua) {
+		else if(btnFocus == btnThemHD || btnFocus == btnSuaHD) {
 			if(o == btnHuy || o == btnLuu) {
 				btnFocus = (RoundedButton) o;
 				btnFocus.setFocusButton(main.borderFocusColor, 3);
 			}
 		}else if(btnFocus == btnLuu || btnFocus == btnHuy) {
-			if(o == btnThem || o == btnSua || o == btnXoa || o == btnIn) {
+			if(o == btnThemHD || o == btnSuaHD || o == btnXoaHD || o == btnIn) {
 				btnFocus = (RoundedButton) o;
 				btnFocus.setFocusButton(main.borderFocusColor, 3);
 			}

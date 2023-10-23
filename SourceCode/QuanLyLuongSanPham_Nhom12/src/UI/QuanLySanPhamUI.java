@@ -82,7 +82,7 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle.add(lblTitle);
 		
-		//Danh sách hợp đồng
+		//Danh sách sản phẩm
 		JPanel pnlDSHD = new JPanel();
 		pnlDSHD.setLayout(new BorderLayout());
 		pnlDSHD.setBackground(bgColor);

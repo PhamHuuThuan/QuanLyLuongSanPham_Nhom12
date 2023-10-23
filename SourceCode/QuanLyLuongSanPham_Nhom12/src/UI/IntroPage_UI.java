@@ -37,6 +37,7 @@ public class IntroPage_UI extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setUndecorated(true);
 		
+		
 		ImageIcon gifAnimation = new ImageIcon("assets/crop_v8.gif");
 		JLabel gifAniLabel = new JLabel(gifAnimation);
 		
