@@ -28,6 +28,10 @@ import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
+
+import CustomUI.RoundedButton;
+import CustomUI.RoundedPanel;
+
 import java.awt.Font;
 
 @SuppressWarnings("serial")
@@ -77,7 +81,7 @@ public class Home_UI extends JPanel {
 		topRow.add(Box.createHorizontalStrut(10)); 
 		
 		
-		JPanel pnl_box_1 = new JPanel();
+		RoundedPanel pnl_box_1 = new RoundedPanel( new Color(64, 0, 128), 20, 3);
 		pnl_box_1.setBorder(new LineBorder(new Color(64, 0, 128), 3, true));
 		topRow.add(pnl_box_1);
 
@@ -94,8 +98,7 @@ public class Home_UI extends JPanel {
 		
 		topRow.add(Box.createHorizontalStrut(20)); 
 
-		JPanel pnl_box_2 = new JPanel();
-		pnl_box_2.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		RoundedPanel pnl_box_2 = new RoundedPanel(new Color(0, 0, 0), 20, 3);
 		topRow.add(pnl_box_2);
 		pnl_box_2.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -109,8 +112,7 @@ public class Home_UI extends JPanel {
 		
 		topRow.add(Box.createHorizontalStrut(20)); 
 
-		JPanel pnl_box_3 = new JPanel();
-		pnl_box_3.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		RoundedPanel pnl_box_3 = new RoundedPanel(new Color(0, 0, 0), 20, 3);
 		topRow.add(pnl_box_3);
 		pnl_box_3.setLayout(new GridLayout(0, 1, 0, 0));
 
