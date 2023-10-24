@@ -73,10 +73,8 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mnSanPham.addActionListener(this);
 		mniQuanLySP.addActionListener(this);
 		mniTimKiemSP.addActionListener(this);
-		mnCongDoan.addActionListener(this);
 		mniQLCD.addActionListener(this);
 		mniPCCD.addActionListener(this);
-		mniTimKiemCD.addActionListener(this);
 		mnCongNhan.addActionListener(this);
 		mniQuanLyCN.addActionListener(this);
 		mniTimKiemCN.addActionListener(this);
@@ -92,7 +90,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mniCaiDat.addActionListener(this);
 		
 		mnSanPham.addMouseListener(this);
-		mnCongDoan.addMouseListener(this);
 		mnCongNhan.addMouseListener(this);
 		mnNhanVien.addMouseListener(this);
 		
@@ -160,7 +157,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mnSanPham.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 20F));
 		mnSanPham.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnSanPham.getPopupMenu().setPopupSize(new Dimension(168, 75));
+		mnSanPham.getPopupMenu().setPopupSize(new Dimension(192, 113));
 		mnSanPham.getPopupMenu().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#424242")));
 		mnuBar.add(mnSanPham);
 		
@@ -176,37 +173,36 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
 		mnSanPham.add(mniTimKiemSP);
 		
-		mnCongDoan = new JMenu(read_file_languages.getString("text_stage"));
-		mnCongDoan.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 20F));
-		mnCongDoan.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1,Color.decode(read_file_themes.getString("color_main_sw"))), 
-				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnCongDoan.getPopupMenu().setPopupSize(new Dimension(168, 113));
-		mnCongDoan.getPopupMenu().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#424242")));
-		mnuBar.add(mnCongDoan);
+//		mnCongDoan = new JMenu(read_file_languages.getString("text_stage"));
+//		mnCongDoan.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 20F));
+//		mnCongDoan.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1,Color.decode(read_file_themes.getString("color_main_sw"))), 
+//				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
+//		mnCongDoan.getPopupMenu().setPopupSize(new Dimension(168, 113));
+//		mnCongDoan.getPopupMenu().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#424242")));
+//		mnuBar.add(mnCongDoan);
 		
-		mniQLCD = new JMenuItem(read_file_languages.getString("text_manage"));
+		mniQLCD = new JMenuItem(read_file_languages.getString("text_manage_CD"));
 		mniQLCD.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		mniQLCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnCongDoan.add(mniQLCD);
+		mnSanPham.add(mniQLCD);
 		
 		mniPCCD = new JMenuItem(read_file_languages.getString("text_assignment"));
 		mniPCCD.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		mniPCCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnCongDoan.add(mniPCCD);
 		
-		mniTimKiemCD = new JMenuItem(read_file_languages.getString("text_search"));
-		mniTimKiemCD.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		mniTimKiemCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
-				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnCongDoan.add(mniTimKiemCD);
+//		mniTimKiemCD = new JMenuItem(read_file_languages.getString("text_search"));
+//		mniTimKiemCD.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
+//		mniTimKiemCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
+//				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
+//		mnCongDoan.add(mniTimKiemCD);
 		
 		mnCongNhan = new JMenu(read_file_languages.getString("text_worder"));
 		mnCongNhan.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 20F));
 		mnCongNhan.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnCongNhan.getPopupMenu().setPopupSize(new Dimension(168, 150));
+		mnCongNhan.getPopupMenu().setPopupSize(new Dimension(192, 188));
 		mnCongNhan.getPopupMenu().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#424242")));
 		mnuBar.add(mnCongNhan);
 		
@@ -221,6 +217,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mniTimKiemCN.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
 		mnCongNhan.add(mniTimKiemCN);
+		mnCongNhan.add(mniPCCD);
 		
 		mniChamCongCN = new JMenuItem(read_file_languages.getString("text_timekeeping"));
 		mniChamCongCN.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
@@ -238,7 +235,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mnNhanVien.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 20F));
 		mnNhanVien.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnNhanVien.getPopupMenu().setPopupSize(new Dimension(168, 188));
+		mnNhanVien.getPopupMenu().setPopupSize(new Dimension(192, 188));
 		mnNhanVien.getPopupMenu().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#424242")));
 		mnuBar.add(mnNhanVien);
 		
@@ -388,14 +385,18 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			main.pnlContent.add(new TimKiemSanPhamUI(main), BorderLayout.CENTER);// thêm giao diện tìm kiếm sản phẩm vào
 			main.validate(); // cập nhật lại	
 		}
-		if(o==mnCongDoan) {
-					
-				}
 		if(o==mnCongNhan) {
 					
 				}
-		if(o==mnNhanVien) {
+		if(o==mniQuanLyNV) {
+			setMenuColorDefault();
+			mnNhanVien.setBackground(Color.decode("#424242"));
+			mnNhanVien.setForeground(Color.WHITE);
+			mnNhanVien.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
 			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new QuanLyNhanVienUI(main), BorderLayout.CENTER);// thêm giao diện nhân viên vào
+			main.validate(); // cập nhật lại
 		}
 		if(o==mniThongKe) {
 			setMenuColorDefault();
@@ -439,13 +440,13 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mniQuanLySP.setBackground(Color.decode(read_file_themes.getString("color_main")));
 		mniQuanLySP.setForeground(Color.decode(read_file_themes.getString("color_main_sw")));
 		
-		mnCongDoan.setIcon(new ImageScaler("/image/timeline_icon.png", 24, 24).getScaledImageIcon());
-		mnCongDoan.setBackground(Color.decode(read_file_themes.getString("color_main")));
-		mnCongDoan.setForeground(Color.decode(read_file_themes.getString("color_main_sw")));
-		
-		mniTimKiemCD.setIcon(new ImageScaler("/image/magnifying-glass_icon.png", 24, 24).getScaledImageIcon());
-		mniTimKiemCD.setBackground(Color.decode(read_file_themes.getString("color_main")));
-		mniTimKiemCD.setForeground(Color.decode(read_file_themes.getString("color_main_sw")));
+//		mnCongDoan.setIcon(new ImageScaler("/image/timeline_icon.png", 24, 24).getScaledImageIcon());
+//		mnCongDoan.setBackground(Color.decode(read_file_themes.getString("color_main")));
+//		mnCongDoan.setForeground(Color.decode(read_file_themes.getString("color_main_sw")));
+//		
+//		mniTimKiemCD.setIcon(new ImageScaler("/image/magnifying-glass_icon.png", 24, 24).getScaledImageIcon());
+//		mniTimKiemCD.setBackground(Color.decode(read_file_themes.getString("color_main")));
+//		mniTimKiemCD.setForeground(Color.decode(read_file_themes.getString("color_main_sw")));
 		
 		mniQLCD.setIcon(new ImageScaler("/image/add-package_icon.png", 24, 24).getScaledImageIcon());
 		mniQLCD.setBackground(Color.decode(read_file_themes.getString("color_main")));
