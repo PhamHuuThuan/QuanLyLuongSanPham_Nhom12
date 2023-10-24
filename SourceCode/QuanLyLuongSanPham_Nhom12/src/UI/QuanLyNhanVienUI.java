@@ -158,6 +158,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		radNam.setForeground(textColor);
 		radNam.setFont(fontText);
 		b1.add(radNam);
+		b1.add(Box.createHorizontalStrut(10));
 		
 		JRadioButton radNu = new JRadioButton("Nữ");
 		radNu.setBackground(bgColor);
