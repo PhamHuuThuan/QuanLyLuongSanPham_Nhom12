@@ -58,11 +58,13 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	private JXDatePicker dtpNgaySinh;
 	private JTextField txtCCCD;
 	private JTextField txtDiaChi;
+	private Font fontText;
 	/**
 	 * Create the panel.
 	 */
 	public QuanLyNhanVienUI(MainUI main) {
 		this.main = main;
+		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 16F);
 		
 		//set gia tri cho jpanel NhanVien
 		setLayout(new BorderLayout(0, 0));
@@ -100,13 +102,13 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnThongTinNV.add(b1);
 		
 		JLabel lblMaNV = new JLabel("Mã NV:");
-		lblMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblMaNV.setFont(fontText);
 		lblMaNV.setForeground(textColor);
 		b1.add(lblMaNV);
 		b1.add(Box.createHorizontalStrut(10));
 		
 		txtMaNV = new JTextField();
-		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtMaNV.setFont(fontText);
 		txtMaNV.setForeground(textColor);
 		txtMaNV.setBackground(bgColor);
 		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
@@ -116,13 +118,13 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		JLabel lblTenHD = new JLabel("Mật khẩu:");
 		lblTenHD.setForeground(textColor);
-		lblTenHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblTenHD.setFont(fontText);
 		b1.add(lblTenHD);
 		b1.add(Box.createHorizontalStrut(10));
 		
 		txtMatKhau = new JTextField();
 		txtMatKhau.setForeground(textColor);
-		txtMatKhau.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtMatKhau.setFont(fontText);
 		txtMatKhau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtMatKhau.setBackground(bgColor);
@@ -131,13 +133,13 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		JLabel lblTenKH = new JLabel("Họ tên:");
 		lblTenKH.setForeground(textColor);
-		lblTenKH.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblTenKH.setFont(fontText);
 		b1.add(lblTenKH);
 		b1.add(Box.createHorizontalStrut(10));
 		
 		txtTenKH = new JTextField();
 		txtTenKH.setForeground(textColor);
-		txtTenKH.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtTenKH.setFont(fontText);
 		txtTenKH.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtTenKH.setBackground(bgColor);
@@ -146,9 +148,22 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		JLabel lblDaiDien = new JLabel("Giới tính:");
 		lblDaiDien.setForeground(textColor);
-		lblDaiDien.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblDaiDien.setFont(fontText);
 		b1.add(lblDaiDien);
 		b1.add(Box.createHorizontalStrut(10));
+		
+		JRadioButton radNam = new JRadioButton("Nam");
+		radNam.setSelected(true);
+		radNam.setBackground(bgColor);
+		radNam.setForeground(textColor);
+		radNam.setFont(fontText);
+		b1.add(radNam);
+		
+		JRadioButton radNu = new JRadioButton("Nữ");
+		radNu.setBackground(bgColor);
+		radNu.setForeground(textColor);
+		radNu.setFont(fontText);
+		b1.add(radNu);
 		
 		pnThongTinNV.add(Box.createVerticalStrut(20));
 		
@@ -158,14 +173,14 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	
 		JLabel lblNgaySinh = new JLabel("Ngày sinh:");
 		lblNgaySinh.setForeground(textColor);
-		lblNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblNgaySinh.setFont(fontText);
 		b2.add(lblNgaySinh);
 		
 		b2.add(Box.createHorizontalStrut(10));
 		
 		dtpNgaySinh = new JXDatePicker(new Date());
 		dtpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
-		dtpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dtpNgaySinh.setFont(fontText);
 		dtpNgaySinh.setBackground(bgColor);
 		dtpNgaySinh.setForeground(textColor);
 		dtpNgaySinh.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
@@ -182,14 +197,14 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		JLabel lblSDT = new JLabel("SĐT:");
 		lblSDT.setForeground(textColor);
-		lblSDT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblSDT.setFont(fontText);
 		b2.add(lblSDT);
 		
 		b2.add(Box.createHorizontalStrut(10));
 		
 		txtGiaTri = new JTextField();
 		txtGiaTri.setForeground(textColor);
-		txtGiaTri.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtGiaTri.setFont(fontText);
 		txtGiaTri.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtGiaTri.setBackground(bgColor);
@@ -199,18 +214,59 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setForeground(textColor);
-		lblEmail.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblEmail.setFont(fontText);
 		b2.add(lblEmail);
 		
 		b2.add(Box.createHorizontalStrut(10));
 		
 		txtEmail = new JTextField();
 		txtEmail.setForeground(textColor);
-		txtEmail.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtEmail.setFont(fontText);
 		txtEmail.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtEmail.setBackground(bgColor);
 		b2.add(txtEmail);
+		
+		Component horizontalStrut_2 = Box.createHorizontalStrut(30);
+		b2.add(horizontalStrut_2);
+		
+		JLabel lblCCCD = new JLabel("CCCD:");
+		lblCCCD.setForeground(Color.BLACK);
+		lblCCCD.setFont(fontText);
+		b2.add(lblCCCD);
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
+		b2.add(horizontalStrut_1);
+		
+		txtCCCD = new JTextField();
+		txtCCCD.setForeground(Color.BLACK);
+		txtCCCD.setFont(fontText);
+		txtCCCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
+						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtCCCD.setBackground(Color.WHITE);
+		b2.add(txtCCCD);
+		
+		Component horizontalStrut_4 = Box.createHorizontalStrut(30);
+		b2.add(horizontalStrut_4);
+		
+		JLabel lblDiaChi = new JLabel("Địa chỉ:");
+		lblDiaChi.setForeground(Color.BLACK);
+		lblDiaChi.setFont(fontText);
+		b2.add(lblDiaChi);
+		
+		Component horizontalStrut_1_1 = Box.createHorizontalStrut(10);
+		b2.add(horizontalStrut_1_1);
+		
+		txtDiaChi = new JTextField();
+		txtDiaChi.setForeground(Color.BLACK);
+		txtDiaChi.setFont(fontText);
+		txtDiaChi.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
+
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtDiaChi.setBackground(Color.WHITE);
+		b2.add(txtDiaChi);
 		
 		pnThongTinNV.add(Box.createVerticalStrut(20));
 		
@@ -220,7 +276,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		JLabel lblHinhAnh = new JLabel("Hình ảnh:");
 		lblHinhAnh.setForeground(Color.BLACK);
-		lblHinhAnh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblHinhAnh.setFont(fontText);
 		b3.add(lblHinhAnh);
 		
 //		JFileChooser fileAnh = new JFileChooser();
@@ -229,7 +285,11 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		Component horizontalStrut = Box.createHorizontalStrut(10);
 		b3.add(horizontalStrut);
 		
-		JButton btnChonAnh = new JButton("Chọn ảnh");
+		RoundedButton btnChonAnh = new RoundedButton("Image", null, 5, 0, 1f);
+		btnChonAnh.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
+		btnChonAnh.setForeground(Color.WHITE);
+		btnChonAnh.setBackground(componentColor);
+		btnChonAnh.setIcon(new ImageScaler("/image/add-image.png", 16, 16).getScaledImageIcon());
 		b3.add(btnChonAnh);
 		
 		b3.add(Box.createHorizontalStrut(30));
@@ -240,14 +300,14 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		JLabel lblGhiChu = new JLabel("Ghi chú:");
 		lblGhiChu.setForeground(textColor);
-		lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblGhiChu.setFont(fontText);
 		b3.add(lblGhiChu);
 		
 		b3.add(Box.createHorizontalStrut(10));
 		
 		txtGhiChu = new JTextField();
 		txtGhiChu.setForeground(textColor);
-		txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtGhiChu.setFont(fontText);
 		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtGhiChu.setBackground(bgColor);
@@ -328,7 +388,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		tbhHD.setReorderingAllowed(false);
 		tbhHD.setBackground(componentColor);
 		tbhHD.setForeground(Color.WHITE);
-		tbhHD.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		tbhHD.setFont(fontText);
 		tblHD.setTableHeader(tbhHD);
 		
 		tblHD.setRowHeight(20);
@@ -371,54 +431,6 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtTenKH.setText("Nguyễn Văn Phong");
 		txtMatKhau.setText("12345abc@");
 		
-		JRadioButton radNam = new JRadioButton("Nam");
-		radNam.setSelected(true);
-		b1.add(radNam);
-		
-		JRadioButton radNu = new JRadioButton("Nữ");
-		b1.add(radNu);
-		txtGiaTri.setText(" ");
-		txtEmail.setText(" ");
-		
-		Component horizontalStrut_2 = Box.createHorizontalStrut(30);
-		b2.add(horizontalStrut_2);
-		
-		JLabel lblCCCD = new JLabel("CCCD:");
-		lblCCCD.setForeground(Color.BLACK);
-		lblCCCD.setFont(null);
-		b2.add(lblCCCD);
-		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
-		b2.add(horizontalStrut_1);
-		
-		txtCCCD = new JTextField();
-		txtCCCD.setText(" ");
-		txtCCCD.setForeground(Color.BLACK);
-		txtCCCD.setFont(null);
-		txtCCCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtCCCD.setBackground(Color.WHITE);
-		b2.add(txtCCCD);
-		
-		Component horizontalStrut_4 = Box.createHorizontalStrut(30);
-		b2.add(horizontalStrut_4);
-		
-		JLabel lblDiaChi = new JLabel("Địa chỉ:");
-		lblDiaChi.setForeground(Color.BLACK);
-		lblDiaChi.setFont(null);
-		b2.add(lblDiaChi);
-		
-		Component horizontalStrut_1_1 = Box.createHorizontalStrut(10);
-		b2.add(horizontalStrut_1_1);
-		
-		txtDiaChi = new JTextField();
-		txtDiaChi.setText(" ");
-		txtDiaChi.setForeground(Color.BLACK);
-		txtDiaChi.setFont(null);
-		txtDiaChi.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtDiaChi.setBackground(Color.WHITE);
-		b2.add(txtDiaChi);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
