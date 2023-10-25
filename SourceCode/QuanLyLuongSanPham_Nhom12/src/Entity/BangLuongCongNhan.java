@@ -15,32 +15,19 @@ public class BangLuongCongNhan {
 	private double thucLanh;
 	private YearMonth thangNam;
 	
-	
-	
-<<<<<<< HEAD
-	
-=======
->>>>>>> main
-	@Override
-	public String toString() {
-		return "BangLuongCongNhan [maBangLuong=" + maBangLuong + ", congNhan=" + congNhan + ", danhSachChamCong="
-				+ danhSachChamCong + ", soLuongCongDoanLam=" + soLuongCongDoanLam + ", soNgayLam=" + soNgayLam
-				+ ", soNgayNghi=" + soNgayNghi + ", soNgayPhep=" + soNgayPhep + ", thucLanh=" + thucLanh + ", thangNam="
-				+ thangNam + "]";
-	}
 	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, ArrayList<BangChamCongCongNhan> danhSachChamCong,
 			int soLuongCongDoanLam, int soNgayLam, int soNgayNghi, int soNgayPhep, double thucLanh,
 			YearMonth thangNam) {
 		super();
-		this.maBangLuong = maBangLuong;
-		this.congNhan = congNhan;
-		this.danhSachChamCong = danhSachChamCong;
-		this.soLuongCongDoanLam = soLuongCongDoanLam;
-		this.soNgayLam = soNgayLam;
-		this.soNgayNghi = soNgayNghi;
-		this.soNgayPhep = soNgayPhep;
-		this.thucLanh = thucLanh;
-		this.thangNam = thangNam;
+		setMaBangLuong(maBangLuong);
+		setCongNhan(congNhan);
+		setDanhSachChamCong(danhSachChamCong);
+		setSoLuongCongDoanLam(soLuongCongDoanLam);
+		setSoNgayLam(soNgayLam);
+		setSoNgayNghi(soNgayNghi);
+		setSoNgayPhep(soNgayPhep);
+		setThucLanh(thucLanh);
+		setThangNam(thangNam);
 	}
 	public BangLuongCongNhan() {
 		super();
@@ -99,10 +86,13 @@ public class BangLuongCongNhan {
 	public void setThangNam(YearMonth thangNam) {
 		this.thangNam = thangNam;
 	}
-	
-	
-
-	
+	@Override
+	public String toString() {
+		return "BangLuongCongNhan [maBangLuong=" + maBangLuong + ", congNhan=" + congNhan + ", danhSachChamCong="
+				+ danhSachChamCong + ", soLuongCongDoanLam=" + soLuongCongDoanLam + ", soNgayLam=" + soNgayLam
+				+ ", soNgayNghi=" + soNgayNghi + ", soNgayPhep=" + soNgayPhep + ", thucLanh=" + thucLanh + ", thangNam="
+				+ thangNam + "]";
+	}
 	
 
 }

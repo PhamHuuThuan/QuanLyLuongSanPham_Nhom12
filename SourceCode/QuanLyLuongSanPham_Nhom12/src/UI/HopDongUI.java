@@ -32,16 +32,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JTextField;
-<<<<<<< HEAD
 import javax.swing.SpinnerNumberModel;
-=======
-<<<<<<< HEAD
-=======
-import javax.swing.SwingUtilities;
->>>>>>> 8c46c642b3806a9430e40c735952ef82a0f23f83
 
+import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.JXDatePicker;
->>>>>>> main
 
 import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;

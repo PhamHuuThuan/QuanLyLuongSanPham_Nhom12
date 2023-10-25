@@ -8,25 +8,10 @@ public class CongDoan {
 	private int thuTu;
 	private int soLuong;
 	private double donGia;
-<<<<<<< HEAD
-	private boolean tinhTrang;
-	private Date ngayHoanThanh;
-	private SanPham sanPham;
 
-	
-
-	@Override
-	public String toString() {
-		return "CongDoan [maCD=" + maCD + ", tenCD=" + tenCD + ", thuTu=" + thuTu + ", soLuong=" + soLuong + ", donGia="
-				+ donGia + ", tinhTrang=" + tinhTrang + ", ngayHoanThanh=" + ngayHoanThanh + "]";
-	}
-=======
 	private boolean tinhTrang;// true: đã hoàn thành | false: chưa hoàn thành
 	private Date ngayHoanThanh;
 	private SanPham sanPham;
-
-
->>>>>>> main
 
 	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong, double donGia, boolean tinhTrang,
 			Date ngayHoanThanh, SanPham sanPham) {
@@ -45,33 +30,27 @@ public class CongDoan {
 		}
 
 	}
+
 	public CongDoan() {
 		super();
-		
+
 	}
 
 	public String getMaCD() {
 		return maCD;
 	}
 
-<<<<<<< HEAD
-	public void setMaCD(String maCD) {
-		this.maCD = maCD;
-=======
-	public void setMaCD(String maCD) throws Exception  {
-		if(maCD==null || maCD.trim().length()<=0) {
+	public void setMaCD(String maCD) throws Exception {
+		if (maCD == null || maCD.trim().length() <= 0) {
 			throw new Exception("Mã công đoạn không được rỗng!");
 		}
-		if(!maCD.matches("\\S+")){
-		    throw new Exception("Mã công đoạn không được chứa khoảng trắng!");
-		}
-		else if(!maCD.matches("^CD\\d{7}$")){
-		    throw new Exception("Mã công đoạn có dạng CD1234567");
-		}
-		else {
+		if (!maCD.matches("\\S+")) {
+			throw new Exception("Mã công đoạn không được chứa khoảng trắng!");
+		} else if (!maCD.matches("^CD\\d{7}$")) {
+			throw new Exception("Mã công đoạn có dạng CD1234567");
+		} else {
 			this.maCD = maCD;
 		}
->>>>>>> main
 	}
 
 	public String getTenCD() {
@@ -86,14 +65,10 @@ public class CongDoan {
 		return thuTu;
 	}
 
-<<<<<<< HEAD
-	public void setThuTu(int thuTu) {
-=======
 	public void setThuTu(int thuTu) throws Exception {
-		if(thuTu <0) {
+		if (thuTu < 0) {
 			throw new Exception("Thứ tự phải lớn hơn 0!");
 		}
->>>>>>> main
 		this.thuTu = thuTu;
 	}
 
@@ -101,14 +76,10 @@ public class CongDoan {
 		return soLuong;
 	}
 
-<<<<<<< HEAD
-	public void setSoLuong(int soLuong) {
-=======
 	public void setSoLuong(int soLuong) throws Exception  {
 		if(soLuong <0) {
 			throw new Exception("Số lượng phải lớn hơn 0!");
 		}
->>>>>>> main
 		this.soLuong = soLuong;
 	}
 
@@ -143,23 +114,10 @@ public class CongDoan {
 	public void setSanPham(SanPham sanPham) {
 		this.sanPham = sanPham;
 	}
-	
-<<<<<<< HEAD
 
-=======
-	
 	@Override
 	public String toString() {
 		return "CongDoan [maCD=" + maCD + ", tenCD=" + tenCD + ", thuTu=" + thuTu + ", soLuong=" + soLuong + ", donGia="
 				+ donGia + ", tinhTrang=" + tinhTrang + ", ngayHoanThanh=" + ngayHoanThanh + "]";
 	}
->>>>>>> main
 }
-
-
-
-
-
-
-
-
