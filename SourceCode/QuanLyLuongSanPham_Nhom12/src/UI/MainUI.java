@@ -49,6 +49,7 @@ public class MainUI extends JFrame {
 		getFonts();
 		setTitle("TPT_FUNITURE");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setUndecorated(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
