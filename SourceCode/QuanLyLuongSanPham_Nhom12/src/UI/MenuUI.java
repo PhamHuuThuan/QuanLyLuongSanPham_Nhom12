@@ -52,7 +52,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		main.music = new SoundPlay();
 		
 		
-		main.pnlContent.add(new Home_UI(), BorderLayout.CENTER);
+		main.pnlContent.add(new TrangChu_UI(), BorderLayout.CENTER);
 		
 
 		pathFileLanguage = l.readFile("src/config/languages/selectedLanguage.txt");
@@ -132,7 +132,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		JMenuBar mnuBar = new JMenuBar();
 		mnuBar.setLayout(new GridLayout(1, 9));
 		mnuBar.setBackground(Color.decode(read_file_themes.getString("color_main")));
-		mnuBar.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+		mnuBar.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 		pnlMenu.add(mnuBar, BorderLayout.CENTER);
 		
 		mniTrangChu = new JMenuItem(read_file_languages.getString("text_home"));
@@ -346,7 +346,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			mniTrangChu.setIcon(new ImageScaler("/image/home_icon(1).png", 24, 24).getScaledImageIcon());
 			
 			main.pnlContent.removeAll(); // Remove all nội dung
-			main.pnlContent.add(new Home_UI(), BorderLayout.CENTER); // thêm giao diện trang chur vào
+			main.pnlContent.add(new TrangChu_UI(), BorderLayout.CENTER); // thêm giao diện trang chur vào
 			main.validate(); // cập nhật lại
 		}
 		if(o==mniPhongBan) {
@@ -354,6 +354,10 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			mniPhongBan.setBackground(Color.decode("#424242"));
 			mniPhongBan.setForeground(Color.WHITE);
 			mniPhongBan.setIcon(new ImageScaler("/image/door-open_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new PhongBan_UI(main), BorderLayout.CENTER); // thêm giao diện phong ban vào
+			main.validate(); // cập nhật lại
 		}
 		if(o==mniHopDong) {
 			setMenuColorDefault();

@@ -61,7 +61,7 @@ public class Login_UI extends JFrame {
 
 	public Login_UI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 951, 456);
+		setBounds(100, 100, 1111, 456);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,19 +72,19 @@ public class Login_UI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		ImageIcon gifAnimation = new ImageIcon("assets/logo_v1.png");
+		ImageIcon gifAnimation = new ImageIcon("assets/logo_intro.png");
 		JLabel widthtLogo = new JLabel(gifAnimation);
-		widthtLogo.setBounds(0, 0, 411, 456);
+		widthtLogo.setBounds(0, 0, 570, 456);
 
 		JPanel panel_logo = new JPanel();
-		panel_logo.setBounds(0, 0, 412, 456);
+		panel_logo.setBounds(0, 0, 571, 456);
 		panel_logo.setLayout(null);
 		panel_logo.add(widthtLogo);
 		contentPane.add(panel_logo);
 
 		panel_right = new JPanel();
 		panel_right.setBackground(Color.decode("#424242"));
-		panel_right.setBounds(411, 0, 540, 456);
+		panel_right.setBounds(571, 0, 540, 456);
 		contentPane.add(panel_right);
 		panel_right.setLayout(null);
 
