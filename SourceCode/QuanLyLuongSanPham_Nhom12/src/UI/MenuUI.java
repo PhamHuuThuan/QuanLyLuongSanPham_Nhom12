@@ -5,8 +5,10 @@ import javax.swing.UIManager;
 
 import CustomUI.ImageScaler;
 import CustomUI.RoundedBorder;
+import Util.ConvertTime;
 import Util.LuuTru;
 import Util.SoundPlay;
+import groovyjarjarantlr.Utils;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -14,10 +16,12 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -25,6 +29,11 @@ import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -35,6 +44,9 @@ import java.awt.Dimension;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	private MainUI main;
@@ -45,6 +57,20 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	public String pathFileLanguage;
 	public String pathFileTheme;
 	private LuuTru l;
+	private JPanel pnlControl;
+	private JLabel lblHello;
+	private JLabel lblNameUser;
+	private JButton btnControlAccout;
+	
+	
+	private Component horizontalStrut;
+	private JPanel pnlLeftBox;
+	private JLabel lblLogo;
+	private Component horizontalStrut_1;
+	private JPanel pnlClock;
+	private JLabel lblTime,lblDate;
+	private Thread clock;
+	
 	
 	public MenuUI(MainUI main) {
 		this.main = main;
@@ -61,7 +87,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 		
 		setBackground(Color.decode(read_file_themes.getString("color_main")));
-//		setBackground(Color.RED);
 		setLayout(new BorderLayout(0, 0));
 		setUIManagerColor();
 		createGUI();
@@ -88,6 +113,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mniTinhLuong.addActionListener(this);
 		mniThongKe.addActionListener(this);
 		mniCaiDat.addActionListener(this);
+		btnControlAccout.addActionListener(this);
 		
 		mnSanPham.addMouseListener(this);
 		mnCongNhan.addMouseListener(this);
@@ -109,20 +135,69 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		JPanel pnlTitle = new JPanel();
 		pnlTitle.setBackground(Color.decode(read_file_themes.getString("color_main")));
 		pnlHead.add(pnlTitle, BorderLayout.CENTER);
-		pnlTitle.setLayout(new BoxLayout(pnlTitle, BoxLayout.X_AXIS));
+		pnlTitle.setLayout(new GridLayout(0, 3, 0, 0));
 		
-		JLabel lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageScaler("/image/logo_v3_color-no-bgr-342e993c.png", 48, 48).getScaledImageIcon());
+		pnlLeftBox = new JPanel();
+		pnlLeftBox.setBackground(new Color(255, 255, 255));
+		pnlTitle.add(pnlLeftBox);
+		pnlLeftBox.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageScaler("/image/logo_v3_color-no-bgr-342e993c.png",40,40).getScaledImageIcon());
 		lblLogo.setBorder(new RoundedBorder(Color.decode(read_file_themes.getString("color_main_sw")), 5, 2));
-		pnlTitle.add(lblLogo);
+		pnlLeftBox.add(lblLogo);
 		
-		Component horizontalBox = Box.createHorizontalStrut(20);
-		pnlTitle.add(horizontalBox);
+		horizontalStrut_1 = Box.createHorizontalStrut(30);
+		pnlLeftBox.add(horizontalStrut_1);
+		
+		pnlClock = new JPanel();
+		pnlClock.setBackground(Color.decode(read_file_themes.getString("color_main")));
+		pnlLeftBox.add(pnlClock);
+		pnlClock.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		lblDate = new JLabel("?");
+		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDate.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 19F));
+		lblDate.setForeground(Color.decode("#b22323"));
+		pnlClock.add(lblDate);
+		
+		lblTime = new JLabel("?");
+		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTime.setFont(main.roboto_bold.deriveFont(Font.BOLD, 20F));
+		lblTime.setForeground(Color.decode("#b22323"));
+		pnlClock.add(lblTime);
+		
+		clock();
+		
 		
 		JLabel lblHeader = new JLabel(read_file_languages.getString("text_heading_title_menu"));
-		lblHeader.setFont(main.roboto_bold.deriveFont(Font.BOLD, 26F));
+		lblHeader.setFont(main.roboto_bold.deriveFont(Font.BOLD, 21F));
 		lblHeader.setForeground(Color.decode(read_file_themes.getString("color_main_sw")));
 		pnlTitle.add(lblHeader);
+		
+		pnlControl = new JPanel();
+		pnlTitle.add(pnlControl);
+		pnlControl.setBackground(Color.decode(read_file_themes.getString("color_main")));
+		pnlControl.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		
+		lblHello = new JLabel("Xin chào, ");
+		lblHello.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 20F));
+		pnlControl.add(lblHello);
+		
+		lblNameUser = new JLabel("Nguyễn Văn Phong");
+		lblNameUser.setFont(main.roboto_bold.deriveFont(Font.BOLD, 20F));
+		pnlControl.add(lblNameUser);
+		
+		horizontalStrut = Box.createHorizontalStrut(10);
+		pnlControl.add(horizontalStrut);
+		
+		btnControlAccout = new JButton("");
+		btnControlAccout.setBorder(null);
+		btnControlAccout.setBackground(null);
+		btnControlAccout.setOpaque(false);
+		btnControlAccout.setIcon(new ImageScaler("/image/icon_control_account.png", 40, 40).getScaledImageIcon());
+		pnlControl.add(btnControlAccout);
+		
 		
 		JPanel pnlMenu = new JPanel();
 		pnlMenu.setBackground(Color.decode(read_file_themes.getString("color_main")));
@@ -132,7 +207,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		JMenuBar mnuBar = new JMenuBar();
 		mnuBar.setLayout(new GridLayout(1, 9));
 		mnuBar.setBackground(Color.decode(read_file_themes.getString("color_main")));
-		mnuBar.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+		mnuBar.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		pnlMenu.add(mnuBar, BorderLayout.CENTER);
 		
 		mniTrangChu = new JMenuItem(read_file_languages.getString("text_home"));
@@ -338,6 +413,14 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		main.music.playSE(2);
+		if(o==btnControlAccout) {
+			setMenuColorDefault();
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new TrangCaNhan(), BorderLayout.CENTER); // thêm giao diện trang ca nhan vào
+			main.validate(); // cập nhật lại
+		}
+		
 		
 		if(o==mniTrangChu) {
 			setMenuColorDefault();
@@ -520,4 +603,46 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		UIManager.put("Button.focus", new Color(0,0,0,0));
 //		UIManager.put("MenuItem.selectionBackground", Color.decode("#ffe6cc"));
 	}
+	
+	public void clock() {
+        clock = new Thread() {
+            @Override
+            public void run() {
+                for (;;) {
+                    try {
+                        LocalDateTime currentTime = LocalDateTime.now();
+                        int day = currentTime.getDayOfMonth();
+                        int month = currentTime.getMonthValue();
+                        int year = currentTime.getYear();
+                        int hour = currentTime.getHour();
+                        int minute = currentTime.getMinute();
+                        int second = currentTime.getSecond();
+                        lblTime.setText(ConvertTime.convertLocalTimeToString(LocalTime.of(hour, minute,second)));
+                        lblDate.setText(String.format("%s-%s-%d", day < 10 ? "0" + day : day,
+                                        month < 10 ? "0" + month : month, year));
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        System.err.println(e);
+                    }
+                }
+            }
+	};
+
+        clock.start();
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

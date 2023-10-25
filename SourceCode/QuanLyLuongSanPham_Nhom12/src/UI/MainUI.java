@@ -4,10 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import Util.ImportFont;
@@ -25,6 +29,8 @@ public class MainUI extends JFrame {
 	public LuuTru l = new LuuTru();
 	public ResourceBundle read_file_languages = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
 	public ResourceBundle read_file_themes = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
+	
+	private JLabel clockLabel;
 	/**
 	 * Launch the application.
 	 */
@@ -60,6 +66,7 @@ public class MainUI extends JFrame {
 		add(new MenuUI(this), BorderLayout.NORTH);
 		add(pnlContent, BorderLayout.CENTER);
 		
+		
 	}
 	// import font chữ Roboto để sử dụng
 	public void getFonts() {
@@ -74,4 +81,5 @@ public class MainUI extends JFrame {
 		pnlContent = new JPanel(new BorderLayout()); // Phần jpanel chứa các giao diện chức năng
 		music = new SoundPlay(); // Khởi tạo âm thanh ứng dụng
 	}
+	
 }
