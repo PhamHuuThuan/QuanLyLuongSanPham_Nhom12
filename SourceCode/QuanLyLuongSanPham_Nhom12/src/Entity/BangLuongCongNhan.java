@@ -17,6 +17,10 @@ public class BangLuongCongNhan {
 	
 	
 	
+<<<<<<< HEAD
+	
+=======
+>>>>>>> main
 	@Override
 	public String toString() {
 		return "BangLuongCongNhan [maBangLuong=" + maBangLuong + ", congNhan=" + congNhan + ", danhSachChamCong="
