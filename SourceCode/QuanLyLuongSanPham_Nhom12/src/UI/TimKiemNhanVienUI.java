@@ -53,8 +53,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JTextField txtMaHD, txtMaSP, txtTenSP, txtDonGia;
-	private RoundedButton btnTim, btnXoaRong, btnFocus;
+	private RoundedButton btnTim, btnXoaRong, btnXuat, btnFocus;
 	private DefaultTableModel dtblModelSP;
 	private JTable tblSP;
 	private JTableHeader tbhSP;
@@ -285,216 +284,216 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		lblDiaChiS.setPreferredSize(lblPBS.getPreferredSize());
 		
 		//Tao jpanel Thong tin nhan vien
-				JPanel pnThongTinNV = new JPanel();
-				pnThongTinNV.setLayout(new BorderLayout());
-				pnThongTinNV.setBackground(bgColor);
-				TitledBorder titleBorder = BorderFactory.createTitledBorder(
-		                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin nhân viên");
-				titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-				pnThongTinNV.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
-				b.add(pnThongTinNV);
-				
-				JPanel pnlAnhDaiDien = new JPanel();
-				pnlAnhDaiDien.setLayout(new BoxLayout(pnlAnhDaiDien, BoxLayout.Y_AXIS));
-				pnlAnhDaiDien.setBackground(bgColor);
-				pnThongTinNV.add(pnlAnhDaiDien, BorderLayout.WEST);
-				
-				JLabel lblAnh = new JLabel("");
-				lblAnh.setPreferredSize(new Dimension(75, 125));
-				lblAnh.setIcon(new ImageScaler("/image/team_icon.png", 75, 125).getScaledImageIcon());
-				lblAnh.setBorder(BorderFactory.createLineBorder(componentColor));
-				pnlAnhDaiDien.add(lblAnh, BorderLayout.CENTER);
-				
-				txtMaNV = new JTextField();
-				txtMaNV.setHorizontalAlignment(SwingConstants.CENTER);
-				txtMaNV.setColumns(5);
-				pnlAnhDaiDien.add(txtMaNV, BorderLayout.SOUTH);
-				pnlAnhDaiDien.add(Box.createVerticalStrut(100));
-				txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				txtMaNV.setForeground(textColor);
-				txtMaNV.setBackground(bgColor);
-				txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-				
-				
-				JPanel pnlTTRight = new JPanel();
-				pnlTTRight.setLayout(new BoxLayout(pnlTTRight, BoxLayout.Y_AXIS));
-				pnlTTRight.setBackground(bgColor);
-				pnThongTinNV.add(pnlTTRight, BorderLayout.CENTER);
-				
-				JPanel pnlB5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				pnlB5.setBackground(bgColor);
-				pnlTTRight.add(pnlB5);
-				
-				JLabel lblTenNV = new JLabel("Họ tên:");
-				lblTenNV.setForeground(textColor);
-				lblTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				pnlB5.add(lblTenNV);
-				
-				txtTenNV = new JTextField();
-				txtTenNV.setColumns(8);
-				txtTenNV.setForeground(textColor);
-				txtTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				txtTenNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-				txtTenNV.setBackground(bgColor);
-				pnlB5.add(txtTenNV);
-				pnlB5.add(Box.createHorizontalStrut(20));
-				
-				JLabel lblTenHD = new JLabel("Mật khẩu:");
-				pnlB5.add(lblTenHD);
-				lblTenHD.setForeground(textColor);
-				lblTenHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				
-				txtMatKhau = new JTextField();
-				pnlB5.add(txtMatKhau);
-				pnlB5.add(Box.createHorizontalStrut(20));
-				txtMatKhau.setColumns(8);
-				txtMatKhau.setForeground(textColor);
-				txtMatKhau.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				txtMatKhau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-				txtMatKhau.setBackground(bgColor);
-				
-				JLabel lblGioiTinh = new JLabel("Giới tính:");
-				pnlB5.add(lblGioiTinh);
-				lblGioiTinh.setForeground(textColor);
-				lblGioiTinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				
-				JRadioButton rbtnNamS_1 = new JRadioButton("Nam");
-				rbtnNamS_1.setForeground(textColor);
-				rbtnNamS_1.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				rbtnNamS_1.setBackground(Color.WHITE);
-				pnlB5.add(rbtnNamS_1);
-				pnlB5.add(Box.createHorizontalStrut(5));
-				
-				JRadioButton rbtnNuS_1 = new JRadioButton("Nữ");
-				rbtnNuS_1.setForeground(textColor);
-				rbtnNuS_1.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				rbtnNuS_1.setBackground(Color.WHITE);
-				pnlB5.add(rbtnNuS_1);
-				
-				btnDateBD.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
-				btnDateBD.setBackground(bgColor);
-				btnDateBD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
-						BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-				
-				JPanel pnlB6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				pnlB6.setBackground(bgColor);
-				pnlTTRight.add(pnlB6);
-				
-				JLabel lblNgaySinh = new JLabel("Ngày sinh:");
-				lblNgaySinh.setForeground(textColor);
-				lblNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				pnlB6.add(lblNgaySinh);
-				
-				dtpNgaySinh = new JXDatePicker(new Date());
-				dtpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
-				dtpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				dtpNgaySinh.setBackground(bgColor);
-				dtpNgaySinh.setForeground(textColor);
-				dtpNgaySinh.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
-				JButton btnDateSN = (JButton) dtpNgaySinh.getComponent(1);
-				dtpNgaySinh.getEditor().setBackground(bgColor);
-				dtpNgaySinh.getEditor().setForeground(textColor);
-				pnlB6.add(dtpNgaySinh);
-				pnlB6.add(Box.createHorizontalStrut(20));
-								
-				JLabel lblSDT = new JLabel("SĐT:");
-				pnlB6.add(lblSDT);
-				lblSDT.setForeground(textColor);
-				lblSDT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				
-				txtSDT = new JTextField();
-				txtSDT.setColumns(8);
-				pnlB6.add(txtSDT);
-				txtSDT.setForeground(textColor);
-				txtSDT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				txtSDT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-				txtSDT.setBackground(bgColor);
-				
-				pnlB6.add(Box.createHorizontalStrut(20));
-				
-				JLabel lblEmail = new JLabel("Email:");
-				pnlB6.add(lblEmail);
-				lblEmail.setForeground(textColor);
-				lblEmail.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				
-				txtEmail = new JTextField();
-				txtEmail.setColumns(8);
-				pnlB6.add(txtEmail);
-				txtEmail.setForeground(textColor);
-				txtEmail.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				txtEmail.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-				txtEmail.setBackground(bgColor);
-				
-				JPanel pnlB7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				pnlB7.setBackground(bgColor);
-				pnlTTRight.add(pnlB7);
-				
-				JLabel lblPhongBan = new JLabel("Phòng ban:");
-				lblPhongBan.setForeground(textColor);
-				lblPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				pnlB7.add(lblPhongBan);
-				
-				JComboBox cmbPhongBan = new JComboBox();
-				cmbPhongBan.setModel(new DefaultComboBoxModel(new String[] {"Nhân sự", "Kế toán"}));
-				cmbPhongBan.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
-				cmbPhongBan.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
-				cmbPhongBan.setBackground(bgColor);
-				cmbPhongBan.setForeground(textColor);
-				cmbPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				pnlB7.add(cmbPhongBan);
-				pnlB7.add(Box.createHorizontalStrut(20));
-				
-				JLabel lblChucVu = new JLabel("Chức vụ:");
-				pnlB7.add(lblChucVu);
-				lblChucVu.setForeground(textColor);
-				lblChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				
-				txtChucVu = new JTextField();
-				txtChucVu.setColumns(8);
-				pnlB7.add(txtChucVu);
-				pnlB7.add(Box.createHorizontalStrut(20));
-				txtChucVu.setForeground(textColor);
-				txtChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				txtChucVu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-										BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-				txtChucVu.setBackground(Color.WHITE);
-				
-				JLabel lblNgayVL = new JLabel("Ngày VL:");
-				pnlB7.add(lblNgayVL);
-				lblNgayVL.setForeground(textColor);
-				lblNgayVL.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				
-				JXDatePicker txtNgayVL = new JXDatePicker((Date) null);
-				pnlB7.add(txtNgayVL);
-				txtNgayVL.getEditor().setForeground(Color.BLACK);
-				txtNgayVL.getEditor().setBackground(Color.WHITE);
-				txtNgayVL.setLocale(new Locale("vi", "VN"));
-				txtNgayVL.setForeground(Color.BLACK);
-				txtNgayVL.setFont(null);
-				txtNgayVL.setBackground(Color.WHITE);
-				
-				JPanel pnlB8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				pnlB8.setBackground(bgColor);
-				pnlTTRight.add(pnlB8);
-				
-				JLabel lblGhiChu = new JLabel("Ghi chú:");
-				lblGhiChu.setForeground(textColor);
-				lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				pnlB8.add(lblGhiChu);
-				
-				txtGhiChu = new JTextField();
-				txtGhiChu.setColumns(40);
-				txtGhiChu.setForeground(textColor);
-				txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-				txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-				txtGhiChu.setBackground(bgColor);
-				pnlB8.add(txtGhiChu);
+		JPanel pnThongTinNV = new JPanel();
+		pnThongTinNV.setLayout(new BorderLayout());
+		pnThongTinNV.setBackground(bgColor);
+		TitledBorder titleBorder = BorderFactory.createTitledBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin nhân viên");
+		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
+		pnThongTinNV.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
+		b.add(pnThongTinNV);
+		
+		JPanel pnlAnhDaiDien = new JPanel();
+		pnlAnhDaiDien.setLayout(new BoxLayout(pnlAnhDaiDien, BoxLayout.Y_AXIS));
+		pnlAnhDaiDien.setBackground(bgColor);
+		pnThongTinNV.add(pnlAnhDaiDien, BorderLayout.WEST);
+		
+		JLabel lblAnh = new JLabel("");
+		lblAnh.setPreferredSize(new Dimension(75, 125));
+		lblAnh.setIcon(new ImageScaler("/image/team_icon.png", 75, 125).getScaledImageIcon());
+		lblAnh.setBorder(BorderFactory.createLineBorder(componentColor));
+		pnlAnhDaiDien.add(lblAnh, BorderLayout.CENTER);
+		
+		txtMaNV = new JTextField();
+		txtMaNV.setHorizontalAlignment(SwingConstants.CENTER);
+		txtMaNV.setColumns(5);
+		pnlAnhDaiDien.add(txtMaNV, BorderLayout.SOUTH);
+		pnlAnhDaiDien.add(Box.createVerticalStrut(100));
+		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtMaNV.setForeground(textColor);
+		txtMaNV.setBackground(bgColor);
+		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		
+		
+		JPanel pnlTTRight = new JPanel();
+		pnlTTRight.setLayout(new BoxLayout(pnlTTRight, BoxLayout.Y_AXIS));
+		pnlTTRight.setBackground(bgColor);
+		pnThongTinNV.add(pnlTTRight, BorderLayout.CENTER);
+		
+		JPanel pnlB5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB5.setBackground(bgColor);
+		pnlTTRight.add(pnlB5);
+		
+		JLabel lblTenNV = new JLabel("Họ tên:");
+		lblTenNV.setForeground(textColor);
+		lblTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		pnlB5.add(lblTenNV);
+		
+		txtTenNV = new JTextField();
+		txtTenNV.setColumns(8);
+		txtTenNV.setForeground(textColor);
+		txtTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtTenNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtTenNV.setBackground(bgColor);
+		pnlB5.add(txtTenNV);
+		pnlB5.add(Box.createHorizontalStrut(20));
+		
+		JLabel lblTenHD = new JLabel("Mật khẩu:");
+		pnlB5.add(lblTenHD);
+		lblTenHD.setForeground(textColor);
+		lblTenHD.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
+		txtMatKhau = new JTextField();
+		pnlB5.add(txtMatKhau);
+		pnlB5.add(Box.createHorizontalStrut(20));
+		txtMatKhau.setColumns(8);
+		txtMatKhau.setForeground(textColor);
+		txtMatKhau.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtMatKhau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtMatKhau.setBackground(bgColor);
+		
+		JLabel lblGioiTinh = new JLabel("Giới tính:");
+		pnlB5.add(lblGioiTinh);
+		lblGioiTinh.setForeground(textColor);
+		lblGioiTinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
+		JRadioButton rbtnNamS_1 = new JRadioButton("Nam");
+		rbtnNamS_1.setForeground(textColor);
+		rbtnNamS_1.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		rbtnNamS_1.setBackground(Color.WHITE);
+		pnlB5.add(rbtnNamS_1);
+		pnlB5.add(Box.createHorizontalStrut(5));
+		
+		JRadioButton rbtnNuS_1 = new JRadioButton("Nữ");
+		rbtnNuS_1.setForeground(textColor);
+		rbtnNuS_1.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		rbtnNuS_1.setBackground(Color.WHITE);
+		pnlB5.add(rbtnNuS_1);
+		
+		btnDateBD.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
+		btnDateBD.setBackground(bgColor);
+		btnDateBD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		
+		JPanel pnlB6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB6.setBackground(bgColor);
+		pnlTTRight.add(pnlB6);
+		
+		JLabel lblNgaySinh = new JLabel("Ngày sinh:");
+		lblNgaySinh.setForeground(textColor);
+		lblNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		pnlB6.add(lblNgaySinh);
+		
+		dtpNgaySinh = new JXDatePicker(new Date());
+		dtpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
+		dtpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dtpNgaySinh.setBackground(bgColor);
+		dtpNgaySinh.setForeground(textColor);
+		dtpNgaySinh.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
+		JButton btnDateSN = (JButton) dtpNgaySinh.getComponent(1);
+		dtpNgaySinh.getEditor().setBackground(bgColor);
+		dtpNgaySinh.getEditor().setForeground(textColor);
+		pnlB6.add(dtpNgaySinh);
+		pnlB6.add(Box.createHorizontalStrut(20));
+						
+		JLabel lblSDT = new JLabel("SĐT:");
+		pnlB6.add(lblSDT);
+		lblSDT.setForeground(textColor);
+		lblSDT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
+		txtSDT = new JTextField();
+		txtSDT.setColumns(8);
+		pnlB6.add(txtSDT);
+		txtSDT.setForeground(textColor);
+		txtSDT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtSDT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtSDT.setBackground(bgColor);
+		
+		pnlB6.add(Box.createHorizontalStrut(20));
+		
+		JLabel lblEmail = new JLabel("Email:");
+		pnlB6.add(lblEmail);
+		lblEmail.setForeground(textColor);
+		lblEmail.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
+		txtEmail = new JTextField();
+		txtEmail.setColumns(8);
+		pnlB6.add(txtEmail);
+		txtEmail.setForeground(textColor);
+		txtEmail.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtEmail.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtEmail.setBackground(bgColor);
+		
+		JPanel pnlB7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB7.setBackground(bgColor);
+		pnlTTRight.add(pnlB7);
+		
+		JLabel lblPhongBan = new JLabel("Phòng ban:");
+		lblPhongBan.setForeground(textColor);
+		lblPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		pnlB7.add(lblPhongBan);
+		
+		JComboBox cmbPhongBan = new JComboBox();
+		cmbPhongBan.setModel(new DefaultComboBoxModel(new String[] {"Nhân sự", "Kế toán"}));
+		cmbPhongBan.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
+		cmbPhongBan.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
+		cmbPhongBan.setBackground(bgColor);
+		cmbPhongBan.setForeground(textColor);
+		cmbPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		pnlB7.add(cmbPhongBan);
+		pnlB7.add(Box.createHorizontalStrut(20));
+		
+		JLabel lblChucVu = new JLabel("Chức vụ:");
+		pnlB7.add(lblChucVu);
+		lblChucVu.setForeground(textColor);
+		lblChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
+		txtChucVu = new JTextField();
+		txtChucVu.setColumns(8);
+		pnlB7.add(txtChucVu);
+		pnlB7.add(Box.createHorizontalStrut(20));
+		txtChucVu.setForeground(textColor);
+		txtChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtChucVu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+								BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtChucVu.setBackground(Color.WHITE);
+		
+		JLabel lblNgayVL = new JLabel("Ngày VL:");
+		pnlB7.add(lblNgayVL);
+		lblNgayVL.setForeground(textColor);
+		lblNgayVL.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
+		JXDatePicker txtNgayVL = new JXDatePicker((Date) null);
+		pnlB7.add(txtNgayVL);
+		txtNgayVL.getEditor().setForeground(Color.BLACK);
+		txtNgayVL.getEditor().setBackground(Color.WHITE);
+		txtNgayVL.setLocale(new Locale("vi", "VN"));
+		txtNgayVL.setForeground(Color.BLACK);
+		txtNgayVL.setFont(null);
+		txtNgayVL.setBackground(Color.WHITE);
+		
+		JPanel pnlB8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB8.setBackground(bgColor);
+		pnlTTRight.add(pnlB8);
+		
+		JLabel lblGhiChu = new JLabel("Ghi chú:");
+		lblGhiChu.setForeground(textColor);
+		lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		pnlB8.add(lblGhiChu);
+		
+		txtGhiChu = new JTextField();
+		txtGhiChu.setColumns(40);
+		txtGhiChu.setForeground(textColor);
+		txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtGhiChu.setBackground(bgColor);
+		pnlB8.add(txtGhiChu);
 		
 		//Khởi tạo jpanel chức năng chứa các button chức năng: thêm, sửa, xóa, lưu, hủy
 		pnlChucNang = new JPanel();
@@ -527,10 +526,23 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		titleBorderTTSP = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh sách nhân viên");
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnlBangNV.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
-		pnlBangNV.setLayout(new BoxLayout(pnlBangNV, BoxLayout.X_AXIS));
+		pnlBangNV.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(0, 20, 10, 20)));
+		pnlBangNV.setLayout(new BorderLayout(0, 0));
 		pnlBangNV.setBackground(bgColor);
 		pnlSanPham.add(pnlBangNV, BorderLayout.CENTER);
+		
+		JPanel pnlXuat = new JPanel();
+		pnlXuat.setBackground(bgColor);
+		pnlXuat.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		pnlBangNV.add(pnlXuat, BorderLayout.NORTH);
+		
+		btnXuat = new RoundedButton(main.read_file_languages.getString("btn_XuatDS"), null, 5, 0, 1.0f);
+		btnXuat.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
+		btnXuat.setForeground(Color.WHITE);
+		btnXuat.setBackground(Color.decode("#28a745"));
+		btnXuat.setIcon(new ImageScaler("/image/printer_icon.png", 20, 20).getScaledImageIcon());
+		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		pnlXuat.add(btnXuat);
 		
 		String cols[] = {"Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ", "Phòng ban", "Chức vụ", "Ngày công tác"};
 		dtblModelSP = new DefaultTableModel(cols, 0);
