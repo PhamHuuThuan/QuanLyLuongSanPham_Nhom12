@@ -54,9 +54,9 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private RoundedButton btnTim, btnXoaRong, btnXuat, btnFocus;
-	private DefaultTableModel dtblModelSP;
-	private JTable tblSP;
-	private JTableHeader tbhSP;
+	private DefaultTableModel dtbModelNV;
+	private JTable tblNV;
+	private JTableHeader tbhNV;
 	private JPanel pnlChucNang;
 	private JTextField txtMaNVS, txtMaNV, txtMatKhau, txtTenNV, txtSDT, txtEmail, txtCCCD, txtDiaChi, txtGhiChu;
 	private JTextField txtTenNVS;
@@ -188,10 +188,10 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		dtpNgaySinhS.setBackground(bgColor);
 		dtpNgaySinhS.setForeground(textColor);
 		dtpNgaySinhS.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
-		JButton btnDateBD = (JButton) dtpNgaySinhS.getComponent(1);
-		btnDateBD.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
-		btnDateBD.setBackground(bgColor);
-		btnDateBD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+		JButton btnDateNSS = (JButton) dtpNgaySinhS.getComponent(1);
+		btnDateNSS.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
+		btnDateNSS.setBackground(bgColor);
+		btnDateNSS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpNgaySinhS.getEditor().setBackground(bgColor);
 		dtpNgaySinhS.getEditor().setForeground(textColor);
@@ -373,11 +373,6 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		rbtnNuS_1.setBackground(Color.WHITE);
 		pnlB5.add(rbtnNuS_1);
 		
-		btnDateBD.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
-		btnDateBD.setBackground(bgColor);
-		btnDateBD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		
 		JPanel pnlB6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB6.setBackground(bgColor);
 		pnlTTRight.add(pnlB6);
@@ -393,7 +388,11 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		dtpNgaySinh.setBackground(bgColor);
 		dtpNgaySinh.setForeground(textColor);
 		dtpNgaySinh.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
-		JButton btnDateSN = (JButton) dtpNgaySinh.getComponent(1);
+		JButton btnDateNS = (JButton) dtpNgaySinh.getComponent(1);
+		btnDateNS.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
+		btnDateNS.setBackground(bgColor);
+		btnDateNS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpNgaySinh.getEditor().setBackground(bgColor);
 		dtpNgaySinh.getEditor().setForeground(textColor);
 		pnlB6.add(dtpNgaySinh);
@@ -433,6 +432,22 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		pnlB7.setBackground(bgColor);
 		pnlTTRight.add(pnlB7);
 		
+		JLabel lblDiaChi = new JLabel("Địa chỉ:");
+		pnlB7.add(lblDiaChi);
+		lblDiaChi.setForeground(textColor);
+		lblDiaChi.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
+		txtDiaChi = new JTextField();
+		txtDiaChi.setForeground(textColor);
+		txtDiaChi.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtDiaChi.setColumns(8);
+		txtDiaChi.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtDiaChi.setBackground(bgColor);
+		pnlB7.add(txtDiaChi);
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		pnlB7.add(horizontalStrut);
+		
 		JLabel lblPhongBan = new JLabel("Phòng ban:");
 		lblPhongBan.setForeground(textColor);
 		lblPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -456,26 +471,11 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtChucVu = new JTextField();
 		txtChucVu.setColumns(8);
 		pnlB7.add(txtChucVu);
-		pnlB7.add(Box.createHorizontalStrut(20));
 		txtChucVu.setForeground(textColor);
 		txtChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtChucVu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 								BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 		txtChucVu.setBackground(Color.WHITE);
-		
-		JLabel lblNgayVL = new JLabel("Ngày VL:");
-		pnlB7.add(lblNgayVL);
-		lblNgayVL.setForeground(textColor);
-		lblNgayVL.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		
-		JXDatePicker txtNgayVL = new JXDatePicker((Date) null);
-		pnlB7.add(txtNgayVL);
-		txtNgayVL.getEditor().setForeground(Color.BLACK);
-		txtNgayVL.getEditor().setBackground(Color.WHITE);
-		txtNgayVL.setLocale(new Locale("vi", "VN"));
-		txtNgayVL.setForeground(Color.BLACK);
-		txtNgayVL.setFont(null);
-		txtNgayVL.setBackground(Color.WHITE);
 		
 		JPanel pnlB8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB8.setBackground(bgColor);
@@ -545,27 +545,27 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		pnlXuat.add(btnXuat);
 		
 		String cols[] = {"Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ", "Phòng ban", "Chức vụ", "Ngày công tác"};
-		dtblModelSP = new DefaultTableModel(cols, 0);
-		tblSP = new JTable(dtblModelSP);
+		dtbModelNV = new DefaultTableModel(cols, 0);
+		tblNV = new JTable(dtbModelNV);
 
-		tbhSP = new JTableHeader(tblSP.getColumnModel());
-		tbhSP.setReorderingAllowed(false);
-		tbhSP.setBackground(componentColor);
-		tbhSP.setForeground(Color.WHITE);
-		tbhSP.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		tblSP.setTableHeader(tbhSP);
+		tbhNV = new JTableHeader(tblNV.getColumnModel());
+		tbhNV.setReorderingAllowed(false);
+		tbhNV.setBackground(componentColor);
+		tbhNV.setForeground(Color.WHITE);
+		tbhNV.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		tblNV.setTableHeader(tbhNV);
 		
-		tblSP.setRowHeight(20);
-		tblSP.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblSP.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblSP.getColumnModel().getColumn(2).setPreferredWidth(75);
-		tblSP.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblSP.getColumnModel().getColumn(4).setPreferredWidth(150);
-		tblSP.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblSP.getColumnModel().getColumn(6).setPreferredWidth(100);
+		tblNV.setRowHeight(20);
+		tblNV.getColumnModel().getColumn(0).setPreferredWidth(75);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(75);
+		tblNV.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(6).setPreferredWidth(100);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
-		JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane scrSP = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangNV.add(scrSP);
 		
 		pnlNorth.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
