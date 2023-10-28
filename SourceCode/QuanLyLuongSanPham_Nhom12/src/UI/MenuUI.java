@@ -59,7 +59,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 	private LuuTru l;
 	private JPanel pnlControl;
 	private JLabel lblHello;
-	private JLabel lblNameUser;
+	private JLabel lblNameUser; 
 	private JButton btnControlAccout;
 	
 	
@@ -348,7 +348,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mniThongKe.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 20F));
 		mniThongKe.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-		mnuBar.add(mniThongKe);
+		mnuBar.add(mniThongKe); 
 		
 		mniCaiDat = new JMenuItem(read_file_languages.getString("text_orther"));
 		mniCaiDat.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 20F));
@@ -357,6 +357,11 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 		mnuBar.add(mniCaiDat);
 		
 		setMenuColorDefault();
+		
+		
+		mniTrangChu.setBackground(Color.decode("#424242"));
+		mniTrangChu.setForeground(Color.WHITE);
+		mniTrangChu.setIcon(new ImageScaler("/image/home_icon(1).png", 24, 24).getScaledImageIcon());
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -417,7 +422,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			setMenuColorDefault();
 			
 			main.pnlContent.removeAll(); // Remove all nội dung
-			main.pnlContent.add(new TrangCaNhan(), BorderLayout.CENTER); // thêm giao diện trang ca nhan vào
+			main.pnlContent.add(new TrangCaNhan(main), BorderLayout.CENTER); // thêm giao diện trang ca nhan vào
 			main.validate(); // cập nhật lại
 		}
 		

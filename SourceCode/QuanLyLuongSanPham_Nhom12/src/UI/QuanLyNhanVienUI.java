@@ -57,7 +57,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	private JPanel pnlChucNang;
 	private JXDatePicker dtpNgaySinh;
 	private JTextField txtCCCD;
-	private JTextField txtDiaChi;
+	private JTextField txtDiaChi; 
 	private Font fontText;
 	/**
 	 * Create the panel.

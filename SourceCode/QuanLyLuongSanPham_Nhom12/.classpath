@@ -6,6 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-beanutils-1.8.3.jar"/>
 	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-collections-3.2.1-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-digester-2.1.jar"/>

@@ -33,7 +33,7 @@ public class Login_UI extends JFrame {
 	private JPanel panel_in_right;
 	private JLabel text_heading_login;
 	private JPanel panel_input_user;
-	private JLabel text_heading_user;
+	private JLabel text_heading_user; 
 	private JTextField input_user;
 	private JPanel panel_input_password;
 	private JLabel text_heading_password;
