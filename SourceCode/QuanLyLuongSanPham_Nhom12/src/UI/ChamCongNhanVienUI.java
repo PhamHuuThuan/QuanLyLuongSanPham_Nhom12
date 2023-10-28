@@ -56,6 +56,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private JTextField  txtGhiChu;
 	private JComboBox cmbPhongBan, cmbCaLam, cmbTrangThai;
 	private JSpinner spnGioDen, spnTangCa;
+	private JTextField txtMaNV;
 	/**
 	 * Create the panel.
 	 */
@@ -302,16 +303,35 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		JPanel pnlB4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB4.setBackground(bgColor);
 		pnlTTRight.add(pnlB4);
-		
-		JLabel lblGhiChu = new JLabel("Ghi chú:");
-		pnlB4.add(lblGhiChu);
-		lblGhiChu.setForeground(textColor);
-		lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 10, 0, 5));
 		
+		JLabel lblMaNV = new JLabel("Mã NV:");
+		lblMaNV.setForeground(textColor);
+		lblMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		lblMaNV.setPreferredSize(lblGioDen.getPreferredSize());
+		pnlB4.add(lblMaNV);
+		
+		txtMaNV = new JTextField();
+		txtMaNV.setForeground(textColor);
+		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtMaNV.setPreferredSize(cmbCaLam.getPreferredSize());
+		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtMaNV.setBackground(Color.WHITE);
+		pnlB4.add(txtMaNV);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		pnlB4.add(horizontalStrut);
+		
+		JLabel lblGhiChu = new JLabel("Ghi chú:");
+		pnlB4.add(lblGhiChu);
+		lblGhiChu.setPreferredSize(lblTrangThai.getPreferredSize());
+		lblGhiChu.setForeground(textColor);
+		lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		
 		txtGhiChu = new JTextField();
-		txtGhiChu.setColumns(26);
+		txtGhiChu.setPreferredSize(cmbCaLam.getPreferredSize());
 		txtGhiChu.setForeground(textColor);
 		txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
