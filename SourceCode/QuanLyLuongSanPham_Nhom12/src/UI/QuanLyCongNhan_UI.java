@@ -400,14 +400,14 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		tblCN.setTableHeader(tbhCN);
 
 		tblCN.setRowHeight(20);
-		tblCN.getColumnModel().getColumn(0).setPreferredWidth(100);
+		tblCN.getColumnModel().getColumn(0).setPreferredWidth(90);
 		tblCN.getColumnModel().getColumn(1).setPreferredWidth(200);
-		tblCN.getColumnModel().getColumn(2).setPreferredWidth(175);
+		tblCN.getColumnModel().getColumn(2).setPreferredWidth(115);
 		tblCN.getColumnModel().getColumn(3).setPreferredWidth(175);
 		tblCN.getColumnModel().getColumn(4).setPreferredWidth(150);
-		tblCN.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblCN.getColumnModel().getColumn(6).setPreferredWidth(200);
-		tblCN.getColumnModel().getColumn(7).setPreferredWidth(100);
+		tblCN.getColumnModel().getColumn(5).setPreferredWidth(140);
+		tblCN.getColumnModel().getColumn(6).setPreferredWidth(170);
+		tblCN.getColumnModel().getColumn(7).setPreferredWidth(160);
 		tblCN.getColumnModel().getColumn(8).setPreferredWidth(150);
 		pnlTable.setLayout(new BorderLayout(0, 0));
 

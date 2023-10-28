@@ -191,7 +191,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		btnControlAccout.setBorder(null);
 		btnControlAccout.setBackground(null);
 		btnControlAccout.setOpaque(false);
-		btnControlAccout.setIcon(new ImageScaler("/image/icon_control_account.png", 40, 40).getScaledImageIcon());
+		btnControlAccout.setIcon(new ImageScaler("/image/icon_control_account.png", 44, 44).getScaledImageIcon());
 		pnlControl.add(btnControlAccout);
 
 		JPanel pnlMenu = new JPanel();

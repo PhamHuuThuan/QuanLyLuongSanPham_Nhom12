@@ -14,6 +14,8 @@ import java.awt.Insets;
 
 import javax.swing.border.MatteBorder;
 
+import CustomUI.RoundedButton;
+
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
@@ -28,6 +30,7 @@ import javax.swing.JComboBox;
 @SuppressWarnings("serial")
 public class Login_UI extends JFrame {
 
+	private static MainUI main;
 	private JPanel contentPane;
 	private JPanel panel_right;
 	private JPanel panel_in_right;
@@ -46,7 +49,7 @@ public class Login_UI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login_UI frame = new Login_UI();
+					Login_UI frame = new Login_UI(main);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,7 +62,8 @@ public class Login_UI extends JFrame {
 		this.dispose();
 	}
 
-	public Login_UI() {
+	public Login_UI(MainUI main) {
+		this.main = main;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1111, 456);
 		contentPane = new JPanel();
@@ -111,8 +115,8 @@ public class Login_UI extends JFrame {
 
 		text_heading_login = new JLabel("ĐĂNG NHẬP");
 		text_heading_login.setHorizontalAlignment(SwingConstants.CENTER);
-		text_heading_login.setForeground(new Color(255, 255, 255));
-		text_heading_login.setFont(new Font("Tahoma", Font.BOLD, 25));
+		text_heading_login.setForeground(Color.WHITE);
+		text_heading_login.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		text_heading_login.setBounds(163, 0, 182, 31);
 		panel_in_right.add(text_heading_login);
 
@@ -124,7 +128,7 @@ public class Login_UI extends JFrame {
 
 		text_heading_user = new JLabel("TÀI KHOẢN");
 		text_heading_user.setForeground(new Color(255, 255, 255));
-		text_heading_user.setFont(new Font("Tahoma", Font.BOLD, 18));
+		text_heading_user.setFont(new Font("Segoe UI", Font.BOLD, 19));
 		text_heading_user.setBounds(12, 0, 214, 38);
 		panel_input_user.add(text_heading_user);
 
@@ -163,8 +167,8 @@ public class Login_UI extends JFrame {
 		input_password.setBounds(12, 38, 424, 35);
 		panel_input_password.add(input_password);
 
-		JButton button_login = new JButton("ĐĂNG NHẬP");
-		button_login.setFont(new Font("Tahoma", Font.BOLD, 15));
+		RoundedButton button_login = new RoundedButton("ĐĂNG NHẬP", null, 15, 0, 2f);
+		button_login.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		button_login.setBounds(20, 282, 429, 35);
 		panel_in_right.add(button_login);
 
