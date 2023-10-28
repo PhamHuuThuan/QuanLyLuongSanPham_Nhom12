@@ -36,10 +36,14 @@ public class TrangCaNhan extends JPanel{
 	private MainUI main;
 	private Font fontText;
 	private JFrame frameEditTrangCaNhan; 
-	private JTextField textName;
-	private JTextField textMa;
+	private JTextField txtName;
+	private JTextField txtMa;
 	private JComboBox<String> cmbGioiTinh;
 	private JTextField jdcNgaySinh;	
+	private JTextField txtSoDt;
+	private JTextField txtEmail;
+	private JTextField txtSoCCCD;
+	private JTextField txtNgayVaoLam;
 	
 	public TrangCaNhan(MainUI main) {
 		this.main = main;
@@ -49,9 +53,10 @@ public class TrangCaNhan extends JPanel{
 		setLayout(new BorderLayout(0, 0));
 		 
 		JPanel pnlTitile = new JPanel();
+		pnlTitile.setBackground(new Color(255, 255, 255));
 		add(pnlTitile, BorderLayout.NORTH);
 		
-		JLabel lblTitle = new JLabel("Trang cá nhân");
+		JLabel lblTitle = new JLabel("TRANG CÁ NHÂN");
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitile.add(lblTitle);
 		
@@ -63,45 +68,76 @@ public class TrangCaNhan extends JPanel{
 		pnlBodyTrangCaNhan.add(scrollPane);
 		
 		JPanel pnlIfnormation = new JPanel();
+		pnlIfnormation.setBackground(new Color(255, 255, 255));
 		scrollPane.setViewportView(pnlIfnormation);
 		pnlIfnormation.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin c\u00E1 nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(20, 15, 15, 15)));
 		pnlIfnormation.setLayout(new BoxLayout(pnlIfnormation, BoxLayout.X_AXIS));
 		
-		JPanel panel_4 = new JPanel();
-		pnlIfnormation.add(panel_4);
-		panel_4.setLayout(new GridLayout(10, 1, 0, 0));
+		JPanel pnlBox_left = new JPanel();
+		pnlBox_left.setBackground(new Color(255, 255, 255));
+		pnlIfnormation.add(pnlBox_left);
+		pnlBox_left.setLayout(new GridLayout(10, 1, 0, 0));
 		
 		JLabel lblName = new JLabel("Họ Tên");
-		panel_4.add(lblName);
+		pnlBox_left.add(lblName);
 		
 		JLabel lblMa = new JLabel("Mã CN");
-		panel_4.add(lblMa);
+		pnlBox_left.add(lblMa);
 		
 		JLabel lblGioiTinh = new JLabel("Giới tính");
-		panel_4.add(lblGioiTinh);
+		pnlBox_left.add(lblGioiTinh);
 		
 		JLabel lblNgaySinh = new JLabel("Ngày sinh");
-		panel_4.add(lblNgaySinh);
+		pnlBox_left.add(lblNgaySinh);
 		
-		JPanel panel_2 = new JPanel();
-		pnlIfnormation.add(panel_2);
-		panel_2.setLayout(new GridLayout(10, 2, 0, 0));
+		JLabel lblSoDienThoai = new JLabel("Số điện thoại");
+		pnlBox_left.add(lblSoDienThoai);
 		
-		textName = new JTextField("Nguyễn Văn Phong");
-		panel_2.add(textName);
-		textName.setColumns(10);
+		JLabel lblEmail = new JLabel("Email");
+		pnlBox_left.add(lblEmail);
 		
-		textMa = new JTextField("CN00004");
-		panel_2.add(textMa);
-		textMa.setColumns(10);
+		JLabel lblSoCCCD = new JLabel("SỐ CCCD");
+		pnlBox_left.add(lblSoCCCD);
+		
+		JLabel lblNgayVaoLam = new JLabel("Ngày vào làm");
+		pnlBox_left.add(lblNgayVaoLam);
+		
+		JPanel pngBox_right = new JPanel();
+		pngBox_right.setBackground(new Color(255, 255, 255));
+		pnlIfnormation.add(pngBox_right);
+		pngBox_right.setLayout(new GridLayout(10, 2, 0, 0));
+		
+		txtName = new JTextField("Nguyễn Văn Phong");
+		pngBox_right.add(txtName);
+		txtName.setColumns(10);
+		
+		txtMa = new JTextField("CN00004");
+		pngBox_right.add(txtMa);
+		txtMa.setColumns(10);
 		
 		cmbGioiTinh = new JComboBox<>();
 		cmbGioiTinh.addItem("nam");
 		cmbGioiTinh.addItem("nữ");
-		panel_2.add(cmbGioiTinh);
+		pngBox_right.add(cmbGioiTinh);
 		
 		jdcNgaySinh = new JTextField("12/02/2000");
-		panel_2.add(jdcNgaySinh);
+		pngBox_right.add(jdcNgaySinh);
+		
+		txtSoDt = new JTextField("0992888832");
+		pngBox_right.add(txtSoDt);
+		txtSoDt.setColumns(10);
+		
+		txtEmail = new JTextField("abcd_admin@gmail.com");
+		pngBox_right.add(txtEmail);
+		txtEmail.setColumns(10);
+		
+		txtSoCCCD = new JTextField("123981230982");
+		pngBox_right.add(txtSoCCCD);
+		txtSoCCCD.setColumns(10);
+		
+		txtNgayVaoLam = new JTextField("12/09/2018");
+		pngBox_right.add(txtNgayVaoLam);
+		txtNgayVaoLam.setColumns(10);
 		
 		JPanel pnlControl = new JPanel();
 		pnlBodyTrangCaNhan.add(pnlControl);
@@ -164,7 +200,10 @@ public class TrangCaNhan extends JPanel{
 		JLabel lblVersion = new JLabel("Version 2.1.0");
 		panel.add(lblVersion);
 		
-		JButton btnLogOut = new JButton("Đăng xuất ");
+		JButton btnLogOut = new JButton("ĐĂNG XUẤT");
+		btnLogOut.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnLogOut.setForeground(new Color(255, 255, 255));
+		btnLogOut.setBackground(new Color(186, 81, 69));
 		btnLogOut.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -179,20 +218,27 @@ public class TrangCaNhan extends JPanel{
 			}
 		});
 		panel.add(btnLogOut);
-		
 	}
 	
 	public void EditTrangCaNhan(boolean editer) {
 		 if(editer==true) {
-			 textName.setEditable(true);
-			 textMa.setEditable(true);
+			 txtName.setEditable(true);
+			 txtMa.setEditable(true);
 			 cmbGioiTinh.setEnabled(true);
 			 jdcNgaySinh.setEditable(true);
+			 txtSoDt.setEditable(true);
+			 txtEmail.setEditable(true);
+			 txtSoCCCD.setEditable(true);
+			 txtNgayVaoLam.setEditable(true);
 		 }else {
-			 textName.setEditable(false);
-			 textMa.setEditable(false);
+			 txtName.setEditable(false);
+			 txtMa.setEditable(false);
 			 cmbGioiTinh.setEnabled(false);
 			 jdcNgaySinh.setEditable(false);
+			 txtSoDt.setEditable(false);
+			 txtEmail.setEditable(false);
+			 txtSoCCCD.setEditable(false);
+			 txtNgayVaoLam.setEditable(false);
 		 }
 	}
 	
