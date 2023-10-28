@@ -16,123 +16,173 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import CustomUI.ImageScaler;
+import CustomUI.RoundedButton;
 
 import java.awt.Panel;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
-import org.jdesktop.swingx.JXDatePicker;
-
-import javax.swing.border.EtchedBorder;
 import java.awt.Color;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 
-public class TrangCaNhan extends JPanel{
+public class TrangCaNhan extends JPanel implements ActionListener {
 	private MainUI main;
+	private Color componentColor = Color.decode("#424242");
 	private Font fontText;
-	private JFrame frameEditTrangCaNhan; 
-	private JTextField textName;
-	private JTextField textMa;
+	private JFrame frameEditTrangCaNhan;
+	private JTextField txtName;
+	private JTextField txtMa;
 	private JComboBox<String> cmbGioiTinh;
-	private JTextField jdcNgaySinh;	
-	
+	private JTextField jdcNgaySinh;
+	private JTextField txtSoDt;
+	private JTextField txtEmail;
+	private JTextField txtSoCCCD;
+	private JTextField txtNgayVaoLam;
+	private RoundedButton btnLogOut;
+
 	public TrangCaNhan(MainUI main) {
 		this.main = main;
 		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 16F);
-		
 
 		setLayout(new BorderLayout(0, 0));
-		 
+
 		JPanel pnlTitile = new JPanel();
+		pnlTitile.setBorder(new EmptyBorder(5, 0, 10, 0));
+		pnlTitile.setBackground(new Color(255, 255, 255));
 		add(pnlTitile, BorderLayout.NORTH);
-		
-		JLabel lblTitle = new JLabel("Trang cá nhân");
+
+		JLabel lblTitle = new JLabel("TRANG CÁ NHÂN");
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitile.add(lblTitle);
-		
+
 		JPanel pnlBodyTrangCaNhan = new JPanel();
 		add(pnlBodyTrangCaNhan);
 		pnlBodyTrangCaNhan.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		JScrollPane scrollPane = new JScrollPane();
-		pnlBodyTrangCaNhan.add(scrollPane);
-		
+
 		JPanel pnlIfnormation = new JPanel();
-		scrollPane.setViewportView(pnlIfnormation);
-		pnlIfnormation.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin c\u00E1 nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(20, 15, 15, 15)));
+		pnlIfnormation.setBackground(new Color(255, 255, 255));
+		pnlBodyTrangCaNhan.add(pnlIfnormation);
+
+		TitledBorder titleBorder = BorderFactory
+				.createTitledBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin cá nhân");
+		pnlIfnormation.setBorder(
+				BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
+		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 19F));
 		pnlIfnormation.setLayout(new BoxLayout(pnlIfnormation, BoxLayout.X_AXIS));
-		
-		JPanel panel_4 = new JPanel();
-		pnlIfnormation.add(panel_4);
-		panel_4.setLayout(new GridLayout(10, 1, 0, 0));
-		
+
+		JPanel pnlBox_left = new JPanel();
+		pnlBox_left.setBackground(new Color(255, 255, 255));
+		pnlIfnormation.add(pnlBox_left);
+		pnlBox_left.setLayout(new GridLayout(10, 1, 0, 0));
+
 		JLabel lblName = new JLabel("Họ Tên");
-		panel_4.add(lblName);
-		
+		lblName.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblName);
+
 		JLabel lblMa = new JLabel("Mã CN");
-		panel_4.add(lblMa);
-		
+		lblMa.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblMa);
+
 		JLabel lblGioiTinh = new JLabel("Giới tính");
-		panel_4.add(lblGioiTinh);
-		
+		lblGioiTinh.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblGioiTinh);
+
 		JLabel lblNgaySinh = new JLabel("Ngày sinh");
-		panel_4.add(lblNgaySinh);
-		
-		JPanel panel_2 = new JPanel();
-		pnlIfnormation.add(panel_2);
-		panel_2.setLayout(new GridLayout(10, 2, 0, 0));
-		
-		textName = new JTextField("Nguyễn Văn Phong");
-		panel_2.add(textName);
-		textName.setColumns(10);
-		
-		textMa = new JTextField("CN00004");
-		panel_2.add(textMa);
-		textMa.setColumns(10);
-		
+		lblNgaySinh.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblNgaySinh);
+
+		JLabel lblSoDienThoai = new JLabel("Số điện thoại");
+		lblSoDienThoai.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblSoDienThoai);
+
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblEmail);
+
+		JLabel lblSoCCCD = new JLabel("SỐ CCCD");
+		lblSoCCCD.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblSoCCCD);
+
+		JLabel lblNgayVaoLam = new JLabel("Ngày vào làm");
+		lblNgayVaoLam.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblNgayVaoLam);
+
+		JPanel pngBox_right = new JPanel();
+		pngBox_right.setBackground(new Color(255, 255, 255));
+		pnlIfnormation.add(pngBox_right);
+		pngBox_right.setLayout(new GridLayout(10, 2, 0, 0));
+
+		txtName = new JTextField("Nguyễn Văn Phong");
+		pngBox_right.add(txtName);
+		txtName.setColumns(10);
+
+		txtMa = new JTextField("CN00004");
+		pngBox_right.add(txtMa);
+		txtMa.setColumns(10);
+
 		cmbGioiTinh = new JComboBox<>();
 		cmbGioiTinh.addItem("nam");
 		cmbGioiTinh.addItem("nữ");
-		panel_2.add(cmbGioiTinh);
-		
+		pngBox_right.add(cmbGioiTinh);
+
 		jdcNgaySinh = new JTextField("12/02/2000");
-		panel_2.add(jdcNgaySinh);
-		
+		pngBox_right.add(jdcNgaySinh);
+
+		txtSoDt = new JTextField("0992888832");
+		pngBox_right.add(txtSoDt);
+		txtSoDt.setColumns(10);
+
+		txtEmail = new JTextField("abcd_admin@gmail.com");
+		pngBox_right.add(txtEmail);
+		txtEmail.setColumns(10);
+
+		txtSoCCCD = new JTextField("123981230982");
+		pngBox_right.add(txtSoCCCD);
+		txtSoCCCD.setColumns(10);
+
+		txtNgayVaoLam = new JTextField("12/09/2018");
+		pngBox_right.add(txtNgayVaoLam);
+		txtNgayVaoLam.setColumns(10);
+
 		JPanel pnlControl = new JPanel();
 		pnlBodyTrangCaNhan.add(pnlControl);
 		pnlControl.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel pnlBoxInfor = new JPanel();
+		pnlBoxInfor.setBackground(new Color(255, 255, 255));
 		pnlBoxInfor.setBorder(new EmptyBorder(10, 30, 20, 30));
 		pnlControl.add(pnlBoxInfor);
 		pnlBoxInfor.setLayout(new BorderLayout(0, 10));
-		
+
 		JLabel lblAvatar = new JLabel("");
-		lblAvatar.setIcon(new ImageScaler("/image/image_account.jpg",340,340).getScaledImageIcon());
+		lblAvatar.setIcon(new ImageScaler("/image/image_account.jpg", 340, 340).getScaledImageIcon());
 		lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlBoxInfor.add(lblAvatar);
-		
+
 		Panel panel_1 = new Panel();
 		pnlBoxInfor.add(panel_1, BorderLayout.SOUTH);
-		
-		JButton btnEditInfo = new JButton("Cập nhật thông tin cá nhân");
+
+		RoundedButton btnEditInfo = new RoundedButton("Cập nhật thông tin cá nhân", null, 15, 0, 2f);
+		btnEditInfo.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnEditInfo.setForeground(Color.decode("#FFFFFF"));
+		btnEditInfo.setBackground(Color.decode("#424242"));
+		btnEditInfo.setIcon(new ImageScaler("/image/icon_edit.png", 25, 25).getScaledImageIcon());
 		btnEditInfo.setVisible(true);
 		panel_1.add(btnEditInfo);
-		
+
 		JButton btnSave = new JButton("Lưu");
 		btnSave.setVisible(false);
 		panel_1.add(btnSave);
-		
+
 		JButton btnCannelEdit = new JButton("Hủy");
 		btnCannelEdit.setVisible(false);
 		panel_1.add(btnCannelEdit);
 		EditTrangCaNhan(false);
-		
+
 		btnEditInfo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -142,7 +192,7 @@ public class TrangCaNhan extends JPanel{
 				EditTrangCaNhan(true);
 			}
 		});
-		
+
 		btnCannelEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -152,48 +202,67 @@ public class TrangCaNhan extends JPanel{
 				EditTrangCaNhan(false);
 			}
 		});
-		
-		
-		
-		Panel panel = new Panel();
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setHgap(70);
-		flowLayout.setVgap(10);
-		pnlControl.add(panel, BorderLayout.SOUTH);
-		
+
+		Panel pnlHandle = new Panel();
+		pnlHandle.setBackground(new Color(255, 255, 255));
+		pnlControl.add(pnlHandle, BorderLayout.SOUTH);
+		FlowLayout fl_pnlHandle = new FlowLayout(FlowLayout.CENTER, 90, 10);
+		fl_pnlHandle.setAlignOnBaseline(true);
+		pnlHandle.setLayout(fl_pnlHandle);
+
 		JLabel lblVersion = new JLabel("Version 2.1.0");
-		panel.add(lblVersion);
-		
-		JButton btnLogOut = new JButton("Đăng xuất ");
-		btnLogOut.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(main, "Bạn có muốn đăng xuất khỏi hệ thống?","ĐĂNG XUẤT HỆ THỐNG",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE );
-				if(result==JOptionPane.YES_OPTION) {
-					main.setVisible(false);
-					Login_UI loginUi = new Login_UI();
-					loginUi.setVisible(true);
-				}else if(result==JOptionPane.NO_OPTION) {
-					
-				}
-			}
-		});
-		panel.add(btnLogOut);
-		
+		lblVersion.setFont(main.roboto_regular.deriveFont(Font.ITALIC, 17F));
+		pnlHandle.add(lblVersion);
+
+		btnLogOut = new RoundedButton("ĐĂNG XUẤT", null, 15, 0, 2f);
+		btnLogOut.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnLogOut.setForeground(Color.WHITE);
+		btnLogOut.setBackground(new Color(186, 81, 69));
+		btnLogOut.setIcon(new ImageScaler("/image/icon_logout.png", 30, 30).getScaledImageIcon());
+
+		pnlHandle.add(btnLogOut);
+
+		btnLogOut.addActionListener(this);
 	}
-	
+
 	public void EditTrangCaNhan(boolean editer) {
-		 if(editer==true) {
-			 textName.setEditable(true);
-			 textMa.setEditable(true);
-			 cmbGioiTinh.setEnabled(true);
-			 jdcNgaySinh.setEditable(true);
-		 }else {
-			 textName.setEditable(false);
-			 textMa.setEditable(false);
-			 cmbGioiTinh.setEnabled(false);
-			 jdcNgaySinh.setEditable(false);
-		 }
+		if (editer == true) {
+			txtName.setEditable(true);
+			txtMa.setEditable(true);
+			cmbGioiTinh.setEnabled(true);
+			jdcNgaySinh.setEditable(true);
+			txtSoDt.setEditable(true);
+			txtEmail.setEditable(true);
+			txtSoCCCD.setEditable(true);
+			txtNgayVaoLam.setEditable(true);
+		} else {
+			txtName.setEditable(false);
+			txtMa.setEditable(false);
+			cmbGioiTinh.setEnabled(false);
+			jdcNgaySinh.setEditable(false);
+			txtSoDt.setEditable(false);
+			txtEmail.setEditable(false);
+			txtSoCCCD.setEditable(false);
+			txtNgayVaoLam.setEditable(false);
+		}
 	}
-	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if (o == btnLogOut) {
+			int result = JOptionPane.showConfirmDialog(main, "Bạn có muốn đăng xuất khỏi hệ thống?",
+					"ĐĂNG XUẤT HỆ THỐNG", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (result == JOptionPane.YES_OPTION) {
+				main.setVisible(false);
+//				System.exit(0);
+				Login_UI loginUi = new Login_UI(main);
+				loginUi.setVisible(true);
+			} else if (result == JOptionPane.NO_OPTION) {
+
+			}
+		}
+
+	}
+
 }

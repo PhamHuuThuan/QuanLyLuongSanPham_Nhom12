@@ -19,14 +19,14 @@ import Util.SoundPlay;
 
 @SuppressWarnings("serial")
 public class IntroPage_UI extends JFrame{
-	
+	private MainUI main;
 	private SoundPlay sound = new SoundPlay();
 	private boolean isShowPageLogin = false;
 	private void OpenPageLogin() {
 		this.dispose();
 		
 		if(!isShowPageLogin) {
-			Login_UI viewLogin = new Login_UI();
+			Login_UI viewLogin = new Login_UI(main);
 			viewLogin.setVisible(true);
 			isShowPageLogin= true; 
 		}
