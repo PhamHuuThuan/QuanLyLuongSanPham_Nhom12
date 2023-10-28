@@ -28,7 +28,7 @@ public class IntroPage_UI extends JFrame{
 		if(!isShowPageLogin) {
 			Login_UI viewLogin = new Login_UI();
 			viewLogin.setVisible(true);
-			isShowPageLogin= true;
+			isShowPageLogin= true; 
 		}
 	}
 	
