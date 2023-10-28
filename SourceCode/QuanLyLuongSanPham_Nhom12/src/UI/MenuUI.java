@@ -478,9 +478,8 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			mnSanPham.setForeground(Color.WHITE);
 			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
 			
-			
 			main.pnlContent.removeAll(); // Remove all nội dung
-			main.pnlContent.add(new QuanLyCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện quản lí công đoạn vào
+//			main.pnlContent.add(new QuanLyCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện quản lí công đoạn vào
 			main.validate(); // cập nhật lại	
 		}
 		if(o==mnCongNhan) {
