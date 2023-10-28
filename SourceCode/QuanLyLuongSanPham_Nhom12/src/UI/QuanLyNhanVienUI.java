@@ -52,8 +52,8 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	private JTextField txtMaNV, txtMatKhau, txtTenKH, txtGiaTri, txtEmail, txtGhiChu;
 	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn,btnFocus;
 	private DefaultTableModel dtblModel;
-	private JTable tblHD;
-	private JTableHeader tbhHD;
+	private JTable tblNV;
+	private JTableHeader tbhNV;
 	private JPanel pnlChucNang;
 	private JXDatePicker dtpNgaySinh;
 	private JTextField txtCCCD;
@@ -383,28 +383,28 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		add(pnlBangNV, BorderLayout.CENTER);
 		String cols[] = {"Mã NV", "Họ tên", "Giới tính", "Ngày sinh", "SDT", "Email", "CCCD", "Địa chỉ", "Ghi chú"};
 		dtblModel = new DefaultTableModel(cols, 0);
-		tblHD = new JTable(dtblModel);
+		tblNV = new JTable(dtblModel);
 		
-		tbhHD = new JTableHeader(tblHD.getColumnModel());
-		tbhHD.setReorderingAllowed(false);
-		tbhHD.setBackground(componentColor);
-		tbhHD.setForeground(Color.WHITE);
-		tbhHD.setFont(fontText);
-		tblHD.setTableHeader(tbhHD);
+		tbhNV = new JTableHeader(tblNV.getColumnModel());
+		tbhNV.setReorderingAllowed(false);
+		tbhNV.setBackground(componentColor);
+		tbhNV.setForeground(Color.WHITE);
+		tbhNV.setFont(fontText);
+		tblNV.setTableHeader(tbhNV);
 		
-		tblHD.setRowHeight(20);
-		tblHD.getColumnModel().getColumn(0).setPreferredWidth(100);
-		tblHD.getColumnModel().getColumn(1).setPreferredWidth(200);
-		tblHD.getColumnModel().getColumn(2).setPreferredWidth(175);
-		tblHD.getColumnModel().getColumn(3).setPreferredWidth(175);
-		tblHD.getColumnModel().getColumn(4).setPreferredWidth(150);
-		tblHD.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblHD.getColumnModel().getColumn(6).setPreferredWidth(200);
-		tblHD.getColumnModel().getColumn(7).setPreferredWidth(100);
-		tblHD.getColumnModel().getColumn(7).setPreferredWidth(150);
+		tblNV.setRowHeight(20);
+		tblNV.getColumnModel().getColumn(0).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(200);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(175);
+		tblNV.getColumnModel().getColumn(3).setPreferredWidth(175);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(6).setPreferredWidth(200);
+		tblNV.getColumnModel().getColumn(7).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(7).setPreferredWidth(150);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng nhân viên
-		JScrollPane scrHD = new JScrollPane(tblHD,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane scrHD = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangNV.add(scrHD);
 		
 		btnThem.addActionListener(this);
