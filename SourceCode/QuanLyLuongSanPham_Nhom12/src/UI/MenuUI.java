@@ -472,6 +472,17 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			main.pnlContent.add(new TimKiemSanPhamUI(main), BorderLayout.CENTER);// thêm giao diện tìm kiếm sản phẩm vào
 			main.validate(); // cập nhật lại	
 		}
+		if(o==mniQLCD) {
+			setMenuColorDefault();
+			mnSanPham.setBackground(Color.decode("#424242"));
+			mnSanPham.setForeground(Color.WHITE);
+			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new QuanLyCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện quản lí công đoạn vào
+			main.validate(); // cập nhật lại	
+		}
 		if(o==mnCongNhan) {
 					
 				}
@@ -505,11 +516,22 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener{
 			main.pnlContent.add(new PhanCongNhanVienUI(main), BorderLayout.CENTER);// thêm giao diện phân công nhân viên vào
 			main.validate(); // cập nhật lại
 		}
+		if(o==mniChamCongNV) {
+			setMenuColorDefault();
+			mnNhanVien.setBackground(Color.decode("#424242"));
+			mnNhanVien.setForeground(Color.WHITE);
+			mnNhanVien.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new ChamCongNhanVienUI(main), BorderLayout.CENTER);// thêm giao diện chấm công nhân viên vào
+			main.validate(); // cập nhật lại
+		}
 		if(o==mniThongKe) {
 			setMenuColorDefault();
 			mniThongKe.setBackground(Color.decode("#424242"));
 			mniThongKe.setForeground(Color.WHITE);
 			mniThongKe.setIcon(new ImageScaler("/image/trend_icon(1).png", 24, 24).getScaledImageIcon());
+
 		}
 		if(o==mniCaiDat) {
 			setMenuColorDefault();
