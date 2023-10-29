@@ -104,8 +104,13 @@ public class CongDoan {
 	}
 
 	public void setNgayHoanThanh(Date ngayHoanThanh) {
-		this.ngayHoanThanh = ngayHoanThanh;
-	}
+        Date ngayHienTai = new Date();
+        if (ngayHoanThanh.compareTo(ngayHienTai) >= 0) {
+            this.ngayHoanThanh = ngayHoanThanh;
+        } else {
+            System.out.println("Ngày hoàn thành không hợp lệ.");
+        }
+    }
 
 	public SanPham getSanPham() {
 		return sanPham;

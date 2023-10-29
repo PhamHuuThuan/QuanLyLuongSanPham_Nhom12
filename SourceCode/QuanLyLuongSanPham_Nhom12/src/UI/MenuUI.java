@@ -257,17 +257,15 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 //		mnCongDoan.getPopupMenu().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#424242")));
 //		mnuBar.add(mnCongDoan);
 
-		mniQLCD = new JMenuItem(read_file_languages.getString("text_manage_CD"));
+		mniQLCD = new JMenuItem(read_file_languages.getString("text_assignment"));
 		mniQLCD.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		mniQLCD.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))),
+		mniQLCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
 		mnSanPham.add(mniQLCD);
-
+		
 		mniPCCD = new JMenuItem(read_file_languages.getString("text_assignment"));
 		mniPCCD.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		mniPCCD.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))),
+		mniPCCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
 
 //		mniTimKiemCD = new JMenuItem(read_file_languages.getString("text_search"));
@@ -389,7 +387,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mnSanPham.setForeground(Color.WHITE);
 			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
 		}
-		if (o == mnCongDoan) {
+		if(o==mnCongDoan) {
 			setMenuColorDefault();
 			mnCongDoan.setOpaque(true);
 			mnCongDoan.setBackground(Color.decode("#424242"));
@@ -409,6 +407,26 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mnNhanVien.setBackground(Color.decode("#424242"));
 			mnNhanVien.setForeground(Color.WHITE);
 			mnNhanVien.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
+		}
+		if(o==mniPCCD) {
+			setMenuColorDefault();
+			mnCongNhan.setBackground(Color.decode("#424242"));
+			mnCongNhan.setForeground(Color.WHITE);
+			mnCongNhan.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new PhanCongCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện phân công nhân viên vào
+			main.validate(); // cập nhật lại
+		}
+		if(o==mniQLCD) {
+			setMenuColorDefault();
+			mnSanPham.setBackground(Color.decode("#424242"));
+			mnSanPham.setForeground(Color.WHITE);
+			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new QuanLyCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện sản phẩm vào
+			main.validate(); // cập nhật lại
 		}
 	}
 
@@ -557,6 +575,16 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			main.pnlContent.removeAll(); // Remove all nội dung
 			main.pnlContent.add(new ChamCongNhanVienUI(main), BorderLayout.CENTER);// thêm giao diện chấm công nhân viên
 																					// vào
+			main.validate(); // cập nhật lại
+		}
+		if(o==mniPCCD) {
+			setMenuColorDefault();
+			mnCongNhan.setBackground(Color.decode("#424242"));
+			mnCongNhan.setForeground(Color.WHITE);
+			mnCongNhan.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new PhanCongCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện phân công nhân viên vào
 			main.validate(); // cập nhật lại
 		}
 		if (o == mniThongKe) {

@@ -11,14 +11,36 @@ public class SanPham {
 	public String getMaSP() {
 		return maSP;
 	}
-	public void setMaSP(String maSP) {
-		this.maSP = maSP;
+	public void setMaSP(String maSP) throws Exception{
+		if(maSP==null || maSP.trim().length()<=0) {
+			throw new Exception("Mã sản phẩm  không được rỗng!");
+		}
+		if(!maSP.matches("\\S+")){
+		    throw new Exception("Mã sản phẩm không được chứa khoảng trắng!");
+		}
+		else if(!maSP.matches("^SP\\d{7}$")){
+		    throw new Exception("Mã sản phẩm có dạng SP1234567");
+		}
+		else {
+			this.maSP = maSP;
+		}
 	}
 	public HopDong getMaHopDong() {
 		return maHopDong;
 	}
-	public void setMaHopDong(HopDong maHopDong) {
-		this.maHopDong = maHopDong;
+	public void setMaHopDong(HopDong maHopDong) throws Exception{
+		if(maHopDong==null || maSP.trim().length()<=0) {
+			throw new Exception("Mã sản phẩm  không được rỗng!");
+		}
+		if(!maHopDong.matches("\\S+")){
+		    throw new Exception("Mã sản phẩm không được chứa khoảng trắng!");
+		}
+		else if(!maSP.matches("^SP\\d{7}$")){
+		    throw new Exception("Mã sản phẩm có dạng SP1234567");
+		}
+		else {
+			this.maSP = maSP;
+		}
 	}
 	public String getTenSP() {
 		return tenSP;
@@ -35,9 +57,13 @@ public class SanPham {
 	public int getSoLuong() {
 		return soLuong;
 	}
-	public void setSoLuong(int soLuong) {
+	public void setSoLuong(int soLuong) throws Exception{
+		if (soLuong < 0) {
+			throw new Exception("Số lượng phải lớn hơn 0!");
+		}
 		this.soLuong = soLuong;
 	}
+
 	public String getYeuCau() {
 		return yeuCau;
 	}
