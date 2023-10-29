@@ -42,7 +42,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 	private JTextField txtEmail;
 	private JTextField txtSoCCCD;
 	private JTextField txtNgayVaoLam;
-	private RoundedButton btnLogOut;
+	private RoundedButton btnLogOut, btnEditInfo, btnSave, btnCannelEdit;
 
 	public TrangCaNhan(MainUI main) {
 		this.main = main;
@@ -60,6 +60,8 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		pnlTitile.add(lblTitle);
 
 		JPanel pnlBodyTrangCaNhan = new JPanel();
+		pnlBodyTrangCaNhan.setBackground(new Color(255, 255, 255));
+		pnlBodyTrangCaNhan.setBorder(new EmptyBorder(0, 20, 0, 20));
 		add(pnlBodyTrangCaNhan);
 		pnlBodyTrangCaNhan.setLayout(new GridLayout(1, 0, 0, 0));
 
@@ -166,7 +168,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		Panel panel_1 = new Panel();
 		pnlBoxInfor.add(panel_1, BorderLayout.SOUTH);
 
-		RoundedButton btnEditInfo = new RoundedButton("Cập nhật thông tin cá nhân", null, 15, 0, 2f);
+		btnEditInfo = new RoundedButton("Cập nhật thông tin cá nhân", null, 15, 0, 2f);
 		btnEditInfo.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnEditInfo.setForeground(Color.decode("#FFFFFF"));
 		btnEditInfo.setBackground(Color.decode("#424242"));
@@ -174,34 +176,15 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		btnEditInfo.setVisible(true);
 		panel_1.add(btnEditInfo);
 
-		JButton btnSave = new JButton("Lưu");
+		btnSave = new RoundedButton("Lưu", null, 15, 0, 2f);
 		btnSave.setVisible(false);
 		panel_1.add(btnSave);
 
-		JButton btnCannelEdit = new JButton("Hủy");
+		btnCannelEdit = new RoundedButton("Hủy", null, 15, 0, 2f);
 		btnCannelEdit.setVisible(false);
 		panel_1.add(btnCannelEdit);
+		
 		EditTrangCaNhan(false);
-
-		btnEditInfo.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				btnEditInfo.setVisible(false);
-				btnSave.setVisible(true);
-				btnCannelEdit.setVisible(true);
-				EditTrangCaNhan(true);
-			}
-		});
-
-		btnCannelEdit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				btnEditInfo.setVisible(true);
-				btnSave.setVisible(false);
-				btnCannelEdit.setVisible(false);
-				EditTrangCaNhan(false);
-			}
-		});
 
 		Panel pnlHandle = new Panel();
 		pnlHandle.setBackground(new Color(255, 255, 255));
@@ -223,8 +206,40 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		pnlHandle.add(btnLogOut);
 
 		btnLogOut.addActionListener(this);
+		btnEditInfo.addActionListener(this);
+		btnCannelEdit.addActionListener(this);
 	}
 
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		main.music.playSE(2);
+		if (o == btnLogOut) {
+			int result = JOptionPane.showConfirmDialog(main, "Bạn có muốn đăng xuất khỏi hệ thống?",
+					"ĐĂNG XUẤT HỆ THỐNG", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (result == JOptionPane.YES_OPTION) {
+				main.setVisible(false);
+				Login_UI loginUi = new Login_UI(main);
+				loginUi.setVisible(true);
+			} else if (result == JOptionPane.NO_OPTION) {
+
+			}
+		}
+		if (o == btnEditInfo) {
+			btnEditInfo.setVisible(false);
+			btnSave.setVisible(true);
+			btnCannelEdit.setVisible(true);
+			EditTrangCaNhan(true);
+		}
+		if (o == btnCannelEdit) {
+			btnEditInfo.setVisible(true);
+			btnSave.setVisible(false);
+			btnCannelEdit.setVisible(false);
+			EditTrangCaNhan(false);
+		}
+
+	}
 	public void EditTrangCaNhan(boolean editer) {
 		if (editer == true) {
 			txtName.setEditable(true);
@@ -245,24 +260,6 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 			txtSoCCCD.setEditable(false);
 			txtNgayVaoLam.setEditable(false);
 		}
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if (o == btnLogOut) {
-			int result = JOptionPane.showConfirmDialog(main, "Bạn có muốn đăng xuất khỏi hệ thống?",
-					"ĐĂNG XUẤT HỆ THỐNG", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (result == JOptionPane.YES_OPTION) {
-				main.setVisible(false);
-//				System.exit(0);
-				Login_UI loginUi = new Login_UI(main);
-				loginUi.setVisible(true);
-			} else if (result == JOptionPane.NO_OPTION) {
-
-			}
-		}
-
 	}
 
 }

@@ -59,7 +59,8 @@ public class Login_UI extends JFrame {
 	}
 
 	private void ClosePage() {
-		this.dispose();
+//		this.dispose();
+		System.exit(0);
 	}
 
 	public Login_UI(MainUI main) {
