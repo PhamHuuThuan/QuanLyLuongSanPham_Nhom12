@@ -409,7 +409,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		btnXoaRong.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnXoaRong);
 		
-		// tạo jpanel chứa table sản phẩm
+		// tạo jpanel chứa table sản phẩm tìm được
 		JPanel pnlBangSP = new JPanel();
 		titleBorderTTSP = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("border_title_SP"));
@@ -432,7 +432,9 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String cols[] = {main.read_file_languages.getString("tbhMaHDSP"),
+		String cols[] = {
+				main.read_file_languages.getString("stt"),
+				main.read_file_languages.getString("tbhMaHDSP"),
 				main.read_file_languages.getString("lblMaSP"),
 				main.read_file_languages.getString("lblTenSP"), 
 				main.read_file_languages.getString("lblDVT"), 
@@ -450,15 +452,16 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		tblSP.setTableHeader(tbhSP);
 		
 		tblSP.setRowHeight(20);
-		tblSP.getColumnModel().getColumn(0).setPreferredWidth(100);
-		tblSP.getColumnModel().getColumn(1).setPreferredWidth(200);
-		tblSP.getColumnModel().getColumn(2).setPreferredWidth(175);
+		tblSP.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblSP.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblSP.getColumnModel().getColumn(2).setPreferredWidth(200);
 		tblSP.getColumnModel().getColumn(3).setPreferredWidth(175);
-		tblSP.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblSP.getColumnModel().getColumn(4).setPreferredWidth(175);
 		tblSP.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblSP.getColumnModel().getColumn(6).setPreferredWidth(200);
+		tblSP.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblSP.getColumnModel().getColumn(7).setPreferredWidth(200);
 		
-		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
+		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm tìm được
 		JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangSP.add(scrSP, BorderLayout.CENTER);
 		

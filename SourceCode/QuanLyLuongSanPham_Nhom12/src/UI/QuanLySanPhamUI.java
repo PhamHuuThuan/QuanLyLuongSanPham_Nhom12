@@ -327,7 +327,9 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		JPanel pnlBangSP = new JPanel();
 		pnlBangSP.setLayout(new BoxLayout(pnlBangSP, BoxLayout.X_AXIS));
 		pnlSanPham.add(pnlBangSP, BorderLayout.CENTER);
-		String cols[] = {main.read_file_languages.getString("tbhMaHDSP"),
+		String cols[] = {
+				main.read_file_languages.getString("stt"),
+				main.read_file_languages.getString("tbhMaHDSP"),
 				main.read_file_languages.getString("lblMaSP"),
 				main.read_file_languages.getString("lblTenSP"), 
 				main.read_file_languages.getString("lblDVT"), 
@@ -345,13 +347,14 @@ public class QuanLySanPhamUI extends JPanel implements ActionListener, MouseList
 		tblSP.setTableHeader(tbhSP);
 		
 		tblSP.setRowHeight(20);
-		tblSP.getColumnModel().getColumn(0).setPreferredWidth(100);
-		tblSP.getColumnModel().getColumn(1).setPreferredWidth(200);
-		tblSP.getColumnModel().getColumn(2).setPreferredWidth(175);
-		tblSP.getColumnModel().getColumn(3).setPreferredWidth(175);
-		tblSP.getColumnModel().getColumn(4).setPreferredWidth(150);
-		tblSP.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblSP.getColumnModel().getColumn(6).setPreferredWidth(200);
+		tblSP.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblSP.getColumnModel().getColumn(1).setPreferredWidth(75);
+		tblSP.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblSP.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tblSP.getColumnModel().getColumn(4).setPreferredWidth(125);
+		tblSP.getColumnModel().getColumn(5).setPreferredWidth(75);
+		tblSP.getColumnModel().getColumn(6).setPreferredWidth(125);
+		tblSP.getColumnModel().getColumn(7).setPreferredWidth(150);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
 		JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

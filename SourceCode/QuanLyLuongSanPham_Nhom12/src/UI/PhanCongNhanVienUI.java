@@ -68,7 +68,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlNhanVien.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 		pnlNhanVien.setBackground(bgColor);
 		
-		//tao jpanel chua Title va Thong tin san pham
+		//tao jpanel chua Title va Thong tin nhan vien
 		JPanel pnlNorth = new JPanel();
 		pnlNorth.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlNorth.setBackground(bgColor);
@@ -104,7 +104,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		b.add(pnlBangNV);
 		b.add(Box.createHorizontalStrut(50));
 		
-		String cols[] = {"Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ"};
+		String cols[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ"};
 		dtblModelNV = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModelNV);
 
@@ -116,18 +116,19 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblNV.setTableHeader(tbhNV);
 		
 		tblNV.setRowHeight(20);
-		tblNV.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(0).setPreferredWidth(20);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
 		tblNV.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblNV.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(4).setPreferredWidth(200);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
 		
-		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
+		//Tạo jscrollpane để tạo scroll cho bảng nhân viên chưa phân công
 		JScrollPane scrNV = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangNV.add(scrNV, BorderLayout.CENTER);
 		
 		
-		//Tao jpanel Thong tin nhan vien
+		//Tao jpanel Thong tin phân công nhân viên
 		JPanel pnThongTinNV = new JPanel();
 		pnThongTinNV.setLayout(new BorderLayout());
 		pnThongTinNV.setBackground(bgColor);
@@ -215,7 +216,6 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		cmbPhongBan.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		cmbPhongBan.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbPhongBan.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbPhongBan.setBackground(bgColor);
 		cmbPhongBan.setForeground(textColor);
@@ -325,7 +325,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlBangNVPC.setBackground(bgColor);
 		pnlNhanVien.add(pnlBangNVPC, BorderLayout.CENTER);
 		
-		String colsPCNV[] = {"Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ", "Phòng ban", "Chức vụ", "Ngày công tác", "Ghi chú"};
+		String colsPCNV[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ", "Phòng ban", "Chức vụ", "Ngày công tác", "Ghi chú"};
 		dtblModelNVPC = new DefaultTableModel(colsPCNV, 0);
 		tblNVPC = new JTable(dtblModelNVPC);
 
@@ -337,13 +337,14 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblNVPC.setTableHeader(tbhNVPC);
 		
 		tblNVPC.setRowHeight(20);
-		tblNVPC.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblNVPC.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(2).setPreferredWidth(75);
-		tblNVPC.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblNVPC.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblNVPC.getColumnModel().getColumn(1).setPreferredWidth(75);
+		tblNVPC.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblNVPC.getColumnModel().getColumn(3).setPreferredWidth(75);
+		tblNVPC.getColumnModel().getColumn(4).setPreferredWidth(100);
 		tblNVPC.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblNVPC.getColumnModel().getColumn(6).setPreferredWidth(100);
+		tblNVPC.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblNVPC.getColumnModel().getColumn(7).setPreferredWidth(100);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblNVPC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
