@@ -49,9 +49,9 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private RoundedButton btnChamCongALL, btnChamCong, btnChamLai, btnXoa, btnFocus;
+	private RoundedButton btnChamCongALL, btnChamCong, btnChamLai, btnXuat,  btnXoa, btnFocus;
 	private DefaultTableModel dtblModelNVPC, dtblModelNV;
-	private JTable tblNVPC, tblNV;
+	private JTable tblDSCC, tblNV;
 	private JTableHeader tbhNVPC, tbhNV;
 	private JTextField  txtGhiChu;
 	private JComboBox cmbPhongBan, cmbCaLam, cmbTrangThai;
@@ -185,27 +185,27 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		
 		
 		//Tao jpanel Thong tin cham cong
-		JPanel pnThongTinNV = new JPanel();
-		pnThongTinNV.setLayout(new BorderLayout());
-		pnThongTinNV.setBackground(bgColor);
+		JPanel pnThongTinCC = new JPanel();
+		pnThongTinCC.setLayout(new BorderLayout());
+		pnThongTinCC.setBackground(bgColor);
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin chấm công");
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnThongTinNV.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(10, 30, 10, 30)));
-		pnThongTinNV.setPreferredSize(new Dimension(600, 300));
-		b.add(pnThongTinNV);
+		pnThongTinCC.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(10, 30, 10, 30)));
+		pnThongTinCC.setPreferredSize(new Dimension(600, 300));
+		b.add(pnThongTinCC);
 		
 		JPanel pnlAnhDaiDien = new JPanel();
 		pnlAnhDaiDien.setLayout(new BoxLayout(pnlAnhDaiDien, BoxLayout.Y_AXIS));
 		pnlAnhDaiDien.setBackground(bgColor);
-		pnThongTinNV.add(pnlAnhDaiDien, BorderLayout.WEST);
+		pnThongTinCC.add(pnlAnhDaiDien, BorderLayout.WEST);
 		pnlAnhDaiDien.add(Box.createVerticalStrut(100));
 		
 		
 		JPanel pnlTTRight = new JPanel();
 		pnlTTRight.setLayout(new BoxLayout(pnlTTRight, BoxLayout.Y_AXIS));
 		pnlTTRight.setBackground(bgColor);
-		pnThongTinNV.add(pnlTTRight, BorderLayout.CENTER);
+		pnThongTinCC.add(pnlTTRight, BorderLayout.CENTER);
 		
 		JPanel pnlB1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB1.setBackground(bgColor);
@@ -376,41 +376,54 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlChucNang.add(btnXoa);
 		
 		// tạo jpanel chứa table phân công nhân viên
-		JPanel pnlBangNVPC = new JPanel();
+		JPanel pnlBangChamCong = new JPanel();
 		TitledBorder titleBorderTTNVPC = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh sách chấm công");
 		titleBorderTTNVPC.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnlBangNVPC.setBorder(BorderFactory.createCompoundBorder(titleBorderTTNVPC, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
-		pnlBangNVPC.setLayout(new BoxLayout(pnlBangNVPC, BoxLayout.X_AXIS));
-		pnlBangNVPC.setBackground(bgColor);
-		pnlNhanVien.add(pnlBangNVPC, BorderLayout.CENTER);
+		pnlBangChamCong.setBorder(BorderFactory.createCompoundBorder(titleBorderTTNVPC, BorderFactory.createEmptyBorder(0, 20, 10, 20)));
+		pnlBangChamCong.setLayout(new BorderLayout());
+		pnlBangChamCong.setBackground(bgColor);
+		pnlNhanVien.add(pnlBangChamCong, BorderLayout.CENTER);
+		
+		JPanel pnlXuat = new JPanel();
+		pnlXuat.setBackground(bgColor);
+		pnlXuat.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		pnlBangChamCong.add(pnlXuat, BorderLayout.NORTH);
+		
+		btnXuat = new RoundedButton("Xuất DS", null, 5, 0, 1.0f);
+		btnXuat.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
+		btnXuat.setForeground(Color.WHITE);
+		btnXuat.setBackground(Color.decode("#28a745"));
+		btnXuat.setIcon(new ImageScaler("/image/printer_icon.png", 20, 20).getScaledImageIcon());
+		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		pnlXuat.add(btnXuat);
 		
 		String colsPCNV[] = {"Mã NV", "Họ tên", "Phòng ban", "Ngày", "Ca làm", "Trạng thái", "Phép", "Giờ đến", "Tăng ca", "Ghi chú"};
 		dtblModelNVPC = new DefaultTableModel(colsPCNV, 0);
-		tblNVPC = new JTable(dtblModelNVPC);
+		tblDSCC = new JTable(dtblModelNVPC);
 
-		tbhNVPC = new JTableHeader(tblNVPC.getColumnModel());
+		tbhNVPC = new JTableHeader(tblDSCC.getColumnModel());
 		tbhNVPC.setReorderingAllowed(false);
 		tbhNVPC.setBackground(componentColor);
 		tbhNVPC.setForeground(Color.WHITE);
 		tbhNVPC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		tblNVPC.setTableHeader(tbhNVPC);
+		tblDSCC.setTableHeader(tbhNVPC);
 		
-		tblNVPC.setRowHeight(20);
-		tblNVPC.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tblNVPC.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(4).setPreferredWidth(75);
-		tblNVPC.getColumnModel().getColumn(5).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(6).setPreferredWidth(50);
-		tblNVPC.getColumnModel().getColumn(7).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(8).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(8).setPreferredWidth(100);
+		tblDSCC.setRowHeight(20);
+		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(4).setPreferredWidth(75);
+		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(50);
+		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
-		JScrollPane scrSP = new JScrollPane(tblNVPC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		pnlBangNVPC.add(scrSP);
+		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		pnlBangChamCong.add(scrSP, BorderLayout.CENTER);
 		
 		btnChamCong.addActionListener(this);
 		btnChamLai.addActionListener(this);
