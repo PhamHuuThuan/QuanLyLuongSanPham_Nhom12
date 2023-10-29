@@ -408,16 +408,16 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mnNhanVien.setForeground(Color.WHITE);
 			mnNhanVien.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
 		}
-		if(o==mniPCCD) {
-			setMenuColorDefault();
-			mnCongNhan.setBackground(Color.decode("#424242"));
-			mnCongNhan.setForeground(Color.WHITE);
-			mnCongNhan.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
-			
-			main.pnlContent.removeAll(); // Remove all nội dung
-			main.pnlContent.add(new PhanCongCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện phân công nhân viên vào
-			main.validate(); // cập nhật lại
-		}
+//		if(o==mniPCCD) {
+//			setMenuColorDefault();
+//			mnCongNhan.setBackground(Color.decode("#424242"));
+//			mnCongNhan.setForeground(Color.WHITE);
+//			mnCongNhan.setIcon(new ImageScaler("/image/construction-and-tools_icon(1).png", 24, 24).getScaledImageIcon());
+//			
+//			main.pnlContent.removeAll(); // Remove all nội dung
+//			main.pnlContent.add(new PhanCongCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện phân công nhân viên vào
+//			main.validate(); // cập nhật lại
+//		}
 		if(o==mniQLCD) {
 			setMenuColorDefault();
 			mnSanPham.setBackground(Color.decode("#424242"));
@@ -557,6 +557,16 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			main.pnlContent.add(new ChamCongCongNhan_UI(main), BorderLayout.CENTER);// thêm giao diện cham cong cong nhan vào
 			main.validate(); // cập nhật lại
 		}
+		if (o == mniTinhLuongCN) {
+			setMenuColorDefault();
+			mnCongNhan.setBackground(Color.decode("#424242"));
+			mnCongNhan.setForeground(Color.WHITE);
+			mnCongNhan.setIcon(new ImageScaler("/image/construction-and-tools_icon(1).png", 24, 24).getScaledImageIcon());
+
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new TinhLuongCongNhan_UI(main), BorderLayout.CENTER);// thêm giao diện tinh luong cong nhan vào
+			main.validate(); // cập nhật lại
+		}
 		
 		if (o == mniQuanLyNV) {
 			setMenuColorDefault();
@@ -604,7 +614,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			setMenuColorDefault();
 			mnCongNhan.setBackground(Color.decode("#424242"));
 			mnCongNhan.setForeground(Color.WHITE);
-			mnCongNhan.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
+			mnCongNhan.setIcon(new ImageScaler("/image/construction-and-tools_icon(1).png", 24, 24).getScaledImageIcon());
 			
 			main.pnlContent.removeAll(); // Remove all nội dung
 			main.pnlContent.add(new PhanCongCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện phân công nhân viên vào

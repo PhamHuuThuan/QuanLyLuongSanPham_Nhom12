@@ -2,12 +2,15 @@ package UI;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import java.awt.GridLayout;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,6 +18,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
@@ -31,19 +36,20 @@ import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
+import javax.swing.JComboBox;
 
 public class ChamCongCongNhan_UI extends JPanel {
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JTextField txtCongDoan;
-	private JTextField textField_1;
-	private JTextField txtGioDen;
-	private JTextField txtSoLuongLam;
-	private JTextField txtGhiChu;
-	private JTextField txtPhongBan;
-	private JTextField txtNgayCham;
+	
+	
+	private JTextField txtTTSanPham,txtMaCN,txtTenCongNhan,txtTenSanPham;
+	private JTextField txtSoLuongLam,txtGhiChu,txtTenCongDoan;
+	private JComboBox<String> cmbChonMaCongDoan,cmbTrangThai,cmbMaSanPham;
+	private JXDatePicker dtbNgayChamCong;
 	
 	private DefaultTableModel dtblModelCN,dtblModelCNCC;
 	private JTable tblDSCC,tblCN;
@@ -82,41 +88,91 @@ public class ChamCongCongNhan_UI extends JPanel {
 		
 		JPanel pnlCcAll = new JPanel();
 		pnlCCSelectAll.add(pnlCcAll, BorderLayout.NORTH);
+		pnlCcAll.setLayout(new BoxLayout(pnlCcAll, BoxLayout.Y_AXIS));
+		
+		Box horizontalBox = Box.createHorizontalBox();
+		pnlCcAll.add(horizontalBox);
+		
+		JLabel lblNgayChamCong = new JLabel("Ngày Chấm");
+		horizontalBox.add(lblNgayChamCong);
+		
+		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
+		horizontalBox.add(horizontalStrut_7);
+		
+		dtbNgayChamCong = new JXDatePicker((Date) null);
+		dtbNgayChamCong.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
+		dtbNgayChamCong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dtbNgayChamCong.setLocale(new Locale("vi", "VN"));
+		horizontalBox.add(dtbNgayChamCong);
+		
+		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
+		horizontalBox.add(horizontalStrut_8);
+		
+		JLabel lblMaSanPham = new JLabel("Mã Sản Phẩm");
+		horizontalBox.add(lblMaSanPham);
+		
+		Component horizontalStrut_13 = Box.createHorizontalStrut(20);
+		horizontalBox.add(horizontalStrut_13);
+		
+		cmbMaSanPham = new JComboBox<>();
+		cmbMaSanPham.addItem("SP00001");
+		cmbMaSanPham.addItem("SP00002");
+		horizontalBox.add(cmbMaSanPham);
+		
+		Component horizontalStrut_14 = Box.createHorizontalStrut(20);
+		horizontalBox.add(horizontalStrut_14);
+		
+		JLabel lblTenSanPham = new JLabel("Tên SP");
+		horizontalBox.add(lblTenSanPham);
+		
+		Component horizontalStrut_18 = Box.createHorizontalStrut(20);
+		horizontalBox.add(horizontalStrut_18);
+		
+		txtTenSanPham = new JTextField("Ghế nhựa GP1");
+		txtTenSanPham.setEditable(false);
+		horizontalBox.add(txtTenSanPham);
+		txtTenSanPham.setColumns(10);
+		
+		Component verticalStrut_3 = Box.createVerticalStrut(20);
+		pnlCcAll.add(verticalStrut_3);
 		
 		Box box_ChamCong = Box.createHorizontalBox();
+		box_ChamCong.setBorder(new EmptyBorder(0, 0, 10, 0));
 		pnlCcAll.add(box_ChamCong);
 		
-		JLabel lblSlPhongBan = new JLabel("Phòng ban");
-		box_ChamCong.add(lblSlPhongBan);
+		JLabel lblChonMaCongDoan = new JLabel("Mã công Đoạn");
+		box_ChamCong.add(lblChonMaCongDoan);
 		
 		Component horizontalStrut_9 = Box.createHorizontalStrut(20);
 		box_ChamCong.add(horizontalStrut_9);
 		
-		txtPhongBan = new JTextField();
-		box_ChamCong.add(txtPhongBan);
-		txtPhongBan.setColumns(10);
+		cmbChonMaCongDoan = new JComboBox<>();
+		cmbChonMaCongDoan.addItem("CD00001");
+		cmbChonMaCongDoan.addItem("CD00002");
+		box_ChamCong.add(cmbChonMaCongDoan);
 		
 		Component horizontalStrut_10 = Box.createHorizontalStrut(20);
 		box_ChamCong.add(horizontalStrut_10);
 		
-		JLabel lblNgayCham = new JLabel("Ngày chấm");
-		box_ChamCong.add(lblNgayCham);
+		JLabel lblTenCongDoan = new JLabel("Tên công đoạn");
+		box_ChamCong.add(lblTenCongDoan);
 		
 		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
 		box_ChamCong.add(horizontalStrut_11);
 		
-		txtNgayCham = new JTextField();
-		box_ChamCong.add(txtNgayCham);
-		txtNgayCham.setColumns(10);
+		txtTenCongDoan = new JTextField("Gia Công");
+		txtTenCongDoan.setEditable(false);
+		box_ChamCong.add(txtTenCongDoan);
+		txtTenCongDoan.setColumns(10);
 		
 		Component horizontalStrut_12 = Box.createHorizontalStrut(20);
 		box_ChamCong.add(horizontalStrut_12);
 
 		
-		JButton btnChamTatCa = new JButton("Chấm tất cả");
+		JButton btnChamTatCa = new JButton("Lấy danh sách");
 		box_ChamCong.add(btnChamTatCa);
 		
-		String cols[] = {"Mã CN", "Họ tên", "Ngày sinh", "Công đoạn"};
+		String cols[] = {"STT","Mã CN", "Họ tên", "Ngày sinh"};
 		dtblModelCN = new DefaultTableModel(cols, 0);
 		
 		tblCN = new JTable(dtblModelCN);
@@ -129,10 +185,10 @@ public class ChamCongCongNhan_UI extends JPanel {
 		tblCN.setTableHeader(tbhCN);
 		
 		tblCN.setRowHeight(15);
-		tblCN.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblCN.getColumnModel().getColumn(1).setPreferredWidth(150);
-		tblCN.getColumnModel().getColumn(2).setPreferredWidth(120);
-		tblCN.getColumnModel().getColumn(3).setPreferredWidth(120);
+		tblCN.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblCN.getColumnModel().getColumn(1).setPreferredWidth(120);
+		tblCN.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblCN.getColumnModel().getColumn(3).setPreferredWidth(100);
 		
 		JScrollPane scrNV = new JScrollPane(tblCN, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrNV.setMaximumSize(new Dimension(Integer.MAX_VALUE, 500));
@@ -144,19 +200,53 @@ public class ChamCongCongNhan_UI extends JPanel {
 		pnlChamCong.add(pnlCCDetail, BorderLayout.EAST);
 		pnlCCDetail.setLayout(new BoxLayout(pnlCCDetail, BoxLayout.Y_AXIS));
 		
+		Box box_r0 = Box.createHorizontalBox();
+		pnlCCDetail.add(box_r0);
+		
+		JLabel lblMaCN = new JLabel("Mã CN");
+		box_r0.add(lblMaCN);
+		
+		Component horizontalStrut_15 = Box.createHorizontalStrut(20);
+		box_r0.add(horizontalStrut_15);
+		
+		txtMaCN = new JTextField();
+		txtMaCN.setText("CN00001");
+		txtMaCN.setEditable(false);
+		box_r0.add(txtMaCN);
+		txtMaCN.setColumns(10);
+		
+		Component horizontalStrut_16 = Box.createHorizontalStrut(20);
+		box_r0.add(horizontalStrut_16);
+		
+		JLabel lblTenCN = new JLabel("Tên CN");
+		box_r0.add(lblTenCN);
+		
+		Component horizontalStrut_17 = Box.createHorizontalStrut(20);
+		box_r0.add(horizontalStrut_17);
+		
+		txtTenCongNhan = new JTextField();
+		txtTenCongNhan.setText("Nguyễn Văn Phong");
+		txtTenCongNhan.setEditable(false);
+		box_r0.add(txtTenCongNhan);
+		txtTenCongNhan.setColumns(10);
+		
+		Component verticalStrut_2 = Box.createVerticalStrut(20);
+		pnlCCDetail.add(verticalStrut_2);
+		
 		Box box_r1 = Box.createHorizontalBox();
 		pnlCCDetail.add(box_r1);
 		
-		JLabel lblCongDoan = new JLabel("Công đoạn");
-		box_r1.add(lblCongDoan);
+		JLabel lblTTSanPham = new JLabel("Sản phẩm");
+		box_r1.add(lblTTSanPham);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		box_r1.add(horizontalStrut);
 		
-		txtCongDoan = new JTextField();
-		txtCongDoan.setEditable(false);
-		box_r1.add(txtCongDoan);
-		txtCongDoan.setColumns(10);
+		txtTTSanPham = new JTextField();
+		txtTTSanPham.setText("SP00001");
+		txtTTSanPham.setEditable(false);
+		box_r1.add(txtTTSanPham);
+		txtTTSanPham.setColumns(10);
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		box_r1.add(horizontalStrut_1);
@@ -167,11 +257,14 @@ public class ChamCongCongNhan_UI extends JPanel {
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		box_r1.add(horizontalStrut_2);
 		
-		textField_1 = new JTextField();
-		box_r1.add(textField_1);
-		textField_1.setColumns(10);
+		cmbTrangThai = new JComboBox<>();
+		cmbTrangThai.addItem("Làm đầy đủ");
+		cmbTrangThai.addItem("Trễ làm");
+		cmbTrangThai.addItem("Nghỉ");
+		cmbTrangThai.addItem("Nghỉ phép");
+		box_r1.add(cmbTrangThai);
 		
-		Component verticalStrut = Box.createVerticalStrut(40);
+		Component verticalStrut = Box.createVerticalStrut(20);
 		pnlCCDetail.add(verticalStrut);
 		
 		Box horizontalBox_1 = Box.createHorizontalBox();
@@ -183,9 +276,10 @@ public class ChamCongCongNhan_UI extends JPanel {
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalBox_1.add(horizontalStrut_3);
 		
-		txtGioDen = new JTextField();
-		horizontalBox_1.add(txtGioDen);
-		txtGioDen.setColumns(10);
+		JSpinner spnGioDen = new JSpinner(new SpinnerDateModel());
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(spnGioDen, "hh' : ' mm");
+        spnGioDen.setEditor(timeEditor);
+		horizontalBox_1.add(spnGioDen);
 		
 		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
 		horizontalBox_1.add(horizontalStrut_4);
@@ -200,13 +294,13 @@ public class ChamCongCongNhan_UI extends JPanel {
 		horizontalBox_1.add(txtSoLuongLam);
 		txtSoLuongLam.setColumns(10);
 		
-		Component verticalStrut_1 = Box.createVerticalStrut(40);
+		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		pnlCCDetail.add(verticalStrut_1);
 		
 		Box horizontalBox_2 = Box.createHorizontalBox();
 		pnlCCDetail.add(horizontalBox_2);
 		
-		JLabel lblGhiChu = new JLabel("Nghỉ phép");
+		JLabel lblGhiChu = new JLabel("Ghi chú");
 		horizontalBox_2.add(lblGhiChu);
 		
 		Component horizontalStrut_6 = Box.createHorizontalStrut(20);
@@ -217,7 +311,7 @@ public class ChamCongCongNhan_UI extends JPanel {
 		txtGhiChu.setColumns(10);
 		
 		JPanel pnlControl = new JPanel();
-		pnlControl.setBorder(new EmptyBorder(20, 0, 10, 0));
+		pnlControl.setBorder(new EmptyBorder(10, 0, 10, 0));
 		pnlCCDetail.add(pnlControl);
 		
 		btnChamCong = new RoundedButton("Phân công", null, 20, 0, 1.0f);
@@ -272,7 +366,7 @@ public class ChamCongCongNhan_UI extends JPanel {
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String colsPCNV[] = {"Mã NV", "Họ tên", "Phòng ban", "Ngày", "Ca làm", "Trạng thái", "Phép", "Giờ đến", "Tăng ca", "Ghi chú"};
+		String colsPCNV[] = {"STT","Mã CN", "Họ tên", "Công đoạn","Sản Phẩm", "Ngày Chấm","Trạng thái","Giờ đến", "SL làm","Ghi chú"};
 		dtblModelCNCC = new DefaultTableModel(colsPCNV, 0);
 		tblDSCC = new JTable(dtblModelCNCC);
 
@@ -284,16 +378,16 @@ public class ChamCongCongNhan_UI extends JPanel {
 		tblDSCC.setTableHeader(tbhCNCC);
 		
 		tblDSCC.setRowHeight(20);
-		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblDSCC.getColumnModel().getColumn(2).setPreferredWidth(80);
 		tblDSCC.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(4).setPreferredWidth(75);
-		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(50);
-		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(80);
+		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(80);
+		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(50);
+		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(70);
+		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(90);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

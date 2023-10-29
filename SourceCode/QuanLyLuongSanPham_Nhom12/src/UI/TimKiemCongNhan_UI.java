@@ -11,6 +11,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 
@@ -27,27 +29,26 @@ import java.awt.Font;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.JRadioButton;
 
 public class TimKiemCongNhan_UI extends JPanel {
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JTextField textField;
 	private JTextField txtMaCN;
 	private JTextField txtHoTenCN;
 	private JTextField txtSoDT;
 	private JTextField txtDiaChi;
-	private JTextField textField_6;
 	private JTextField txtNgaySinh;
-	private JTextField txtGioiTinh;
 	private JTextField textField_9;
 	private JTextField textField_10;
 	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
 	private JTextField textField_14;
 	private JTextField textField_15;
 	private JTextField textField_16;
@@ -57,6 +58,10 @@ public class TimKiemCongNhan_UI extends JPanel {
 	private RoundedButton btnTim, btnXoaRong,btnXuat;
 	private DefaultTableModel dtbModelCN;
 	private JTableHeader tbhCN;
+	private JTextField txtMaCNChiTiet;
+	private JTextField textField_2;
+	private JTextField txtSoCCCD;
+	private JTextField textField_4;
 
 	public TimKiemCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -154,22 +159,36 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Component horizontalStrut_9 = Box.createHorizontalStrut(20);
 		box_3.add(horizontalStrut_9);
 		
-		txtNgaySinh = new JTextField();
-		box_3.add(txtNgaySinh);
-		txtNgaySinh.setColumns(10);
+		JXDatePicker dpNgaySinh = new JXDatePicker((Date) null);
+		dpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
+		dpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dpNgaySinh.setLocale(new Locale("vi", "VN"));
+		box_3.add(dpNgaySinh);
+		
 		
 		Component horizontalStrut_10 = Box.createHorizontalStrut(40);
 		box_3.add(horizontalStrut_10);
 		
-		JLabel lblGioiTinh = new JLabel("New label");
+		JLabel lblGioiTinh = new JLabel("Giới tính");
 		box_3.add(lblGioiTinh);
 		
 		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
 		box_3.add(horizontalStrut_11);
 		
-		txtGioiTinh = new JTextField();
-		box_3.add(txtGioiTinh);
-		txtGioiTinh.setColumns(10);
+		JRadioButton rdbNam = new JRadioButton("nam");
+		rdbNam.setSelected(true);
+		rdbNam.setForeground(Color.BLACK);
+		rdbNam.setFont(null);
+		rdbNam.setBackground(Color.WHITE);
+		box_3.add(rdbNam);
+		
+		Component horizontalStrut_7_1 = Box.createHorizontalStrut(20);
+		box_3.add(horizontalStrut_7_1);
+		
+		JRadioButton rdbNu = new JRadioButton("nữ");
+		rdbNu.setForeground(Color.BLACK);
+		rdbNu.setBackground(Color.WHITE);
+		box_3.add(rdbNu);
 		
 		Component verticalStrut_7 = Box.createVerticalStrut(40);
 		pnlThongTinCanTim.add(verticalStrut_7);
@@ -223,15 +242,23 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box box_info_1 = Box.createHorizontalBox();
 		pnlInforDetail_1.add(box_info_1);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		box_info_1.add(lblNewLabel_1);
+		JLabel lblMaCN_1 = new JLabel("Mã CN");
+		lblMaCN_1.setForeground(Color.BLACK);
+		lblMaCN_1.setFont(null);
+		box_info_1.add(lblMaCN_1);
 		
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		box_info_1.add(horizontalStrut);
+		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
+		box_info_1.add(horizontalStrut_20);
 		
-		textField = new JTextField();
-		box_info_1.add(textField);
-		textField.setColumns(10);
+		txtMaCNChiTiet = new JTextField("CN0003");
+		txtMaCNChiTiet.setEditable(false);
+		txtMaCNChiTiet.setForeground(Color.BLACK);
+		txtMaCNChiTiet.setFont(null);
+		txtMaCNChiTiet.setColumns(10);
+		txtMaCNChiTiet.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtMaCNChiTiet.setBackground(Color.WHITE);
+		box_info_1.add(txtMaCNChiTiet);
 		
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		pnlInforDetail_1.add(verticalStrut_1);
@@ -239,15 +266,23 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box box_info_2 = Box.createHorizontalBox();
 		pnlInforDetail_1.add(box_info_2);
 		
-		JLabel lblNewLabel_7 = new JLabel("New label");
-		box_info_2.add(lblNewLabel_7);
+		JLabel lblSoCCCD = new JLabel("Số CCCD");
+		lblSoCCCD.setForeground(Color.BLACK);
+		lblSoCCCD.setFont(null);
+		box_info_2.add(lblSoCCCD);
 		
-		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
-		box_info_2.add(horizontalStrut_8);
+		Component horizontalStrut_14_1_2 = Box.createHorizontalStrut(20);
+		box_info_2.add(horizontalStrut_14_1_2);
 		
-		textField_6 = new JTextField();
-		box_info_2.add(textField_6);
-		textField_6.setColumns(10);
+		txtSoCCCD = new JTextField();
+		txtSoCCCD.setText("1234567891234");
+		txtSoCCCD.setEditable(false);
+		txtSoCCCD.setForeground(Color.BLACK);
+		txtSoCCCD.setFont(null);
+		txtSoCCCD.setColumns(10);
+		txtSoCCCD.setBackground(Color.WHITE);
+		txtSoCCCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		box_info_2.add(txtSoCCCD);
 		
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
 		pnlInforDetail_1.add(verticalStrut_3);
@@ -323,15 +358,23 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box box_info_1_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(box_info_1_1);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("New label");
-		box_info_1_1.add(lblNewLabel_1_1);
+		JLabel lblHoTen = new JLabel("Họ Tên");
+		lblHoTen.setForeground(Color.BLACK);
+		lblHoTen.setFont(null);
+		box_info_1_1.add(lblHoTen);
 		
-		Component horizontalStrut_15 = Box.createHorizontalStrut(20);
-		box_info_1_1.add(horizontalStrut_15);
+		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
+		box_info_1_1.add(horizontalStrut_2_1);
 		
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		box_info_1_1.add(textField_12);
+		textField_2 = new JTextField("Nguyễn Văn Phong");
+		textField_2.setEditable(false);
+		textField_2.setForeground(Color.BLACK);
+		textField_2.setFont(null);
+		textField_2.setColumns(10);
+		textField_2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		textField_2.setBackground(Color.WHITE);
+		box_info_1_1.add(textField_2);
 		
 		Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_1_1);
@@ -339,15 +382,23 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box box_info_2_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(box_info_2_1);
 		
-		JLabel lblNewLabel_7_1 = new JLabel("New label");
-		box_info_2_1.add(lblNewLabel_7_1);
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setForeground(Color.BLACK);
+		lblEmail.setFont(null);
+		box_info_2_1.add(lblEmail);
 		
-		Component horizontalStrut_8_1 = Box.createHorizontalStrut(20);
-		box_info_2_1.add(horizontalStrut_8_1);
+		Component horizontalStrut_12_1_1 = Box.createHorizontalStrut(20);
+		box_info_2_1.add(horizontalStrut_12_1_1);
 		
-		textField_13 = new JTextField();
-		textField_13.setColumns(10);
-		box_info_2_1.add(textField_13);
+		textField_4 = new JTextField();
+		textField_4.setEditable(false);
+		textField_4.setForeground(Color.BLACK);
+		textField_4.setFont(null);
+		textField_4.setColumns(10);
+		textField_4.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		textField_4.setBackground(Color.WHITE);
+		box_info_2_1.add(textField_4);
 		
 		Component verticalStrut_3_1 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_3_1);

@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.border.MatteBorder;
+import javax.swing.SwingConstants;
 
 public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseListener {
 	private MainUI main;
@@ -38,18 +39,18 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private Font fontText;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn;
+	private DefaultTableModel dtblModel;
+	private JTableHeader tbhCN;
 	private JTextField txtMaCN;
 	private JTextField txtHoTen;
 	private JTextField txtMatKhau;
 	private JTextField txtNgaySinh;
-	private JTextField txtSoDienThoai;
+	private JTextField txtSoDT;
 	private JTextField txtEmail;
 	private JTextField txtSoCCCD;
 	private JTextField txtDiaChi;
 	private JTextField txtGhiChu;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn;
-	private DefaultTableModel dtblModel;
-	private JTableHeader tbhCN;
 
 	public QuanLyCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -82,248 +83,241 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlBody.setBorder(
 				BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnlBody.setLayout(new BoxLayout(pnlBody, BoxLayout.Y_AXIS));
+		pnlBody.setLayout(new BoxLayout(pnlBody, BoxLayout.X_AXIS));
 		pnlContent.add(pnlBody, BorderLayout.CENTER);
-
+		
+		JPanel pnlAvatar = new JPanel();
+		pnlAvatar.setBackground(new Color(255, 255, 255));
+		pnlAvatar.setBorder(null);
+		pnlBody.add(pnlAvatar);
+		pnlAvatar.setLayout(new BorderLayout(0, 10));
+		
+		JLabel lblAvatar = new JLabel("");
+		lblAvatar.setIcon(new ImageScaler("/image/image_cn_df.jpg", 150, 150).getScaledImageIcon());
+		lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
+		pnlAvatar.add(lblAvatar, BorderLayout.CENTER);
+		
+		JButton btnEditAvatar = new JButton("Ảnh đại diện");
+		pnlAvatar.add(btnEditAvatar, BorderLayout.SOUTH);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(40);
+		pnlBody.add(horizontalStrut);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(255, 255, 255));
+		pnlBody.add(panel_1);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
+		
 		Box box_1 = Box.createHorizontalBox();
 		box_1.setAlignmentY(0.5f);
-		pnlBody.add(box_1);
-
+		panel_1.add(box_1);
+		
 		JLabel lblMaCN = new JLabel("Mã CN");
-		lblMaCN.setForeground(textColor);
-		lblMaCN.setFont(fontText);
+		lblMaCN.setForeground(Color.BLACK);
+		lblMaCN.setFont(null);
 		box_1.add(lblMaCN);
-
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut);
-
+		
+		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_20);
+		
 		txtMaCN = new JTextField("CN0003");
-		txtMaCN.setForeground(textColor);
-		txtMaCN.setFont(fontText);
-		txtMaCN.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtMaCN.setBackground(bgColor);
-		box_1.add(txtMaCN);
+		txtMaCN.setForeground(Color.BLACK);
+		txtMaCN.setFont(null);
 		txtMaCN.setColumns(10);
-
-		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut_1);
-
+		txtMaCN.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtMaCN.setBackground(Color.WHITE);
+		box_1.add(txtMaCN);
+		
+		Component horizontalStrut_1_1 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_1_1);
+		
 		JLabel lblHoTen = new JLabel("Họ Tên");
-		lblHoTen.setForeground(textColor);
-		lblHoTen.setFont(fontText);
+		lblHoTen.setForeground(Color.BLACK);
+		lblHoTen.setFont(null);
 		box_1.add(lblHoTen);
-
-		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut_2);
-
+		
+		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_2_1);
+		
 		txtHoTen = new JTextField("Nguyễn Văn Phong");
-		txtHoTen.setForeground(textColor);
-		txtHoTen.setFont(fontText);
-		txtHoTen.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtHoTen.setBackground(bgColor);
-		box_1.add(txtHoTen);
+		txtHoTen.setForeground(Color.BLACK);
+		txtHoTen.setFont(null);
 		txtHoTen.setColumns(10);
-
-		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut_3);
-
+		txtHoTen.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtHoTen.setBackground(Color.WHITE);
+		box_1.add(txtHoTen);
+		
+		Component horizontalStrut_3_1 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_3_1);
+		
 		JLabel lblMatKhau = new JLabel("Mật khẩu");
-		lblMatKhau.setForeground(textColor);
-		lblMatKhau.setFont(fontText);
+		lblMatKhau.setForeground(Color.BLACK);
+		lblMatKhau.setFont(null);
 		box_1.add(lblMatKhau);
-
-		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut_4);
-
+		
+		Component horizontalStrut_4_1 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_4_1);
+		
 		txtMatKhau = new JTextField();
-		txtMatKhau.setForeground(textColor);
-		txtMatKhau.setFont(fontText);
-		txtMatKhau.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtMatKhau.setBackground(bgColor);
-		box_1.add(txtMatKhau);
+		txtMatKhau.setForeground(Color.BLACK);
+		txtMatKhau.setFont(null);
 		txtMatKhau.setColumns(10);
-
-		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut_5);
-
+		txtMatKhau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtMatKhau.setBackground(Color.WHITE);
+		box_1.add(txtMatKhau);
+		
+		Component horizontalStrut_5_1 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_5_1);
+		
 		JLabel lblGioiTinh = new JLabel("Giới tính");
-		lblGioiTinh.setForeground(textColor);
-		lblGioiTinh.setFont(fontText);
+		lblGioiTinh.setForeground(Color.BLACK);
+		lblGioiTinh.setFont(null);
 		box_1.add(lblGioiTinh);
-
-		Component horizontalStrut_6 = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut_6);
-
+		
+		Component horizontalStrut_6_1 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_6_1);
+		
 		JRadioButton rdbNam = new JRadioButton("nam");
 		rdbNam.setSelected(true);
-		rdbNam.setBackground(bgColor);
-		rdbNam.setForeground(textColor);
-		rdbNam.setFont(fontText);
+		rdbNam.setForeground(Color.BLACK);
+		rdbNam.setFont(null);
+		rdbNam.setBackground(Color.WHITE);
 		box_1.add(rdbNam);
-
-		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
-		box_1.add(horizontalStrut_7);
-
+		
+		Component horizontalStrut_7_1 = Box.createHorizontalStrut(20);
+		box_1.add(horizontalStrut_7_1);
+		
 		JRadioButton rdbNu = new JRadioButton("nữ");
-		rdbNu.setBackground(bgColor);
-		rdbNu.setForeground(textColor);
+		rdbNu.setForeground(Color.BLACK);
+		rdbNu.setBackground(Color.WHITE);
 		box_1.add(rdbNu);
-
-		Component verticalStrut = Box.createVerticalStrut(20);
-		pnlBody.add(verticalStrut);
-
+		
+		Component verticalStrut_2 = Box.createVerticalStrut(20);
+		panel_1.add(verticalStrut_2);
+		
 		Box box_2 = Box.createHorizontalBox();
-		pnlBody.add(box_2);
-
+		panel_1.add(box_2);
+		
 		JLabel lblNgaySinh = new JLabel("Ngày sinh");
-		lblNgaySinh.setForeground(textColor);
-		lblNgaySinh.setFont(fontText);
+		lblNgaySinh.setForeground(Color.BLACK);
+		lblNgaySinh.setFont(null);
 		box_2.add(lblNgaySinh);
-
-		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_8);
-
+		
+		Component horizontalStrut_8_1 = Box.createHorizontalStrut(20);
+		box_2.add(horizontalStrut_8_1);
+		
 		txtNgaySinh = new JTextField();
-		txtNgaySinh.setForeground(textColor);
-		txtNgaySinh.setFont(fontText);
-		txtNgaySinh.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtNgaySinh.setBackground(bgColor);
-		box_2.add(txtNgaySinh);
+		txtNgaySinh.setForeground(Color.BLACK);
+		txtNgaySinh.setFont(null);
 		txtNgaySinh.setColumns(10);
-
-		Component horizontalStrut_9 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_9);
-
+		txtNgaySinh.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtNgaySinh.setBackground(Color.WHITE);
+		box_2.add(txtNgaySinh);
+		
+		Component horizontalStrut_9_1 = Box.createHorizontalStrut(20);
+		box_2.add(horizontalStrut_9_1);
+		
 		JLabel lblSoDienThoai = new JLabel("Số ĐT");
-		lblSoDienThoai.setForeground(textColor);
-		lblSoDienThoai.setFont(fontText);
+		lblSoDienThoai.setForeground(Color.BLACK);
+		lblSoDienThoai.setFont(null);
 		box_2.add(lblSoDienThoai);
-
-		Component horizontalStrut_10 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_10);
-
-		txtSoDienThoai = new JTextField();
-		txtSoDienThoai.setForeground(textColor);
-		txtSoDienThoai.setFont(fontText);
-		txtSoDienThoai.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtMaCN.setBackground(bgColor);
-		box_2.add(txtSoDienThoai);
-		txtSoDienThoai.setColumns(10);
-
-		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_11);
-
+		
+		Component horizontalStrut_10_1 = Box.createHorizontalStrut(20);
+		box_2.add(horizontalStrut_10_1);
+		
+		txtSoDT = new JTextField();
+		txtSoDT.setForeground(Color.BLACK);
+		txtSoDT.setFont(null);
+		txtSoDT.setColumns(10);
+		txtSoDT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		box_2.add(txtSoDT);
+		
+		Component horizontalStrut_11_1 = Box.createHorizontalStrut(20);
+		box_2.add(horizontalStrut_11_1);
+		
 		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setForeground(textColor);
-		lblEmail.setFont(fontText);
+		lblEmail.setForeground(Color.BLACK);
+		lblEmail.setFont(null);
 		box_2.add(lblEmail);
-
-		Component horizontalStrut_12 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_12);
-
+		
+		Component horizontalStrut_12_1 = Box.createHorizontalStrut(20);
+		box_2.add(horizontalStrut_12_1);
+		
 		txtEmail = new JTextField();
-		txtEmail.setForeground(textColor);
-		txtEmail.setFont(fontText);
-		txtEmail.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtEmail.setBackground(bgColor);
-		box_2.add(txtEmail);
+		txtEmail.setForeground(Color.BLACK);
+		txtEmail.setFont(null);
 		txtEmail.setColumns(10);
-
-		Component horizontalStrut_13 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_13);
-
+		txtEmail.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtEmail.setBackground(Color.WHITE);
+		box_2.add(txtEmail);
+		
+		Component horizontalStrut_13_1 = Box.createHorizontalStrut(20);
+		box_2.add(horizontalStrut_13_1);
+		
 		JLabel lblSoCCCD = new JLabel("Số CCCD");
-		lblSoCCCD.setForeground(textColor);
-		lblSoCCCD.setFont(fontText);
+		lblSoCCCD.setForeground(Color.BLACK);
+		lblSoCCCD.setFont(null);
 		box_2.add(lblSoCCCD);
-
-		Component horizontalStrut_14 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_14);
-
+		
+		Component horizontalStrut_14_1 = Box.createHorizontalStrut(20);
+		box_2.add(horizontalStrut_14_1);
+		
 		txtSoCCCD = new JTextField();
-		txtSoCCCD.setForeground(textColor);
-		txtSoCCCD.setFont(fontText);
-		txtSoCCCD.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtMaCN.setBackground(bgColor);
-		box_2.add(txtSoCCCD);
+		txtSoCCCD.setForeground(Color.BLACK);
+		txtSoCCCD.setFont(null);
 		txtSoCCCD.setColumns(10);
-
-		Component verticalStrut_1 = Box.createVerticalStrut(20);
-		pnlBody.add(verticalStrut_1);
-
+		txtSoCCCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		box_2.add(txtSoCCCD);
+		
+		Component verticalStrut_1_1 = Box.createVerticalStrut(20);
+		panel_1.add(verticalStrut_1_1);
+		
 		Box box_3 = Box.createHorizontalBox();
-		pnlBody.add(box_3);
-
+		panel_1.add(box_3);
+		
 		JLabel lblDiaChi = new JLabel("Địa chỉ");
-		lblDiaChi.setForeground(textColor);
-		lblDiaChi.setFont(fontText);
+		lblDiaChi.setForeground(Color.BLACK);
+		lblDiaChi.setFont(null);
 		box_3.add(lblDiaChi);
-
-		Component horizontalStrut_15 = Box.createHorizontalStrut(30);
-		box_3.add(horizontalStrut_15);
-
+		
+		Component horizontalStrut_15_1 = Box.createHorizontalStrut(30);
+		box_3.add(horizontalStrut_15_1);
+		
 		txtDiaChi = new JTextField();
-		txtDiaChi.setForeground(textColor);
-		txtDiaChi.setFont(fontText);
-		txtDiaChi.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtDiaChi.setBackground(bgColor);
-		box_3.add(txtDiaChi);
+		txtDiaChi.setForeground(Color.BLACK);
+		txtDiaChi.setFont(null);
 		txtDiaChi.setColumns(10);
-
-		Component horizontalStrut_16 = Box.createHorizontalStrut(20);
-		box_3.add(horizontalStrut_16);
-
-		JLabel lblHinhDaiDien = new JLabel("Hình đại diện");
-		lblHinhDaiDien.setForeground(textColor);
-		lblHinhDaiDien.setFont(fontText);
-		box_3.add(lblHinhDaiDien);
-
-		Component horizontalStrut_17 = Box.createHorizontalStrut(40);
-		box_3.add(horizontalStrut_17);
-
-		RoundedButton btnChonAnh = new RoundedButton("Image", null, 5, 0, 1f);
-		btnChonAnh.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
-		btnChonAnh.setForeground(Color.WHITE);
-		btnChonAnh.setBackground(componentColor);
-		btnChonAnh.setIcon(new ImageScaler("/image/add-image.png", 16, 16).getScaledImageIcon());
-		box_3.add(btnChonAnh);
-
-		Component horizontalStrut_19 = Box.createHorizontalStrut(20);
-		box_3.add(horizontalStrut_19);
-
+		txtDiaChi.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtDiaChi.setBackground(Color.WHITE);
+		box_3.add(txtDiaChi);
+		
+		Component horizontalStrut_16_1 = Box.createHorizontalStrut(20);
+		box_3.add(horizontalStrut_16_1);
+		
 		JLabel lblGhiChu = new JLabel("Ghi chú");
-		lblGhiChu.setForeground(textColor);
-		lblGhiChu.setFont(fontText);
+		lblGhiChu.setForeground(Color.BLACK);
+		lblGhiChu.setFont(null);
 		box_3.add(lblGhiChu);
-
-		Component horizontalStrut_18 = Box.createHorizontalStrut(20);
-		box_3.add(horizontalStrut_18);
-
+		
+		Component horizontalStrut_18_1 = Box.createHorizontalStrut(20);
+		box_3.add(horizontalStrut_18_1);
+		
 		txtGhiChu = new JTextField();
-		txtGhiChu.setForeground(textColor);
-		txtGhiChu.setFont(fontText);
-		txtGhiChu.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtGhiChu.setBackground(bgColor);
-		box_3.add(txtGhiChu);
+		txtGhiChu.setForeground(Color.BLACK);
+		txtGhiChu.setFont(null);
 		txtGhiChu.setColumns(10);
+		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+								BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtGhiChu.setBackground(Color.WHITE);
+		box_3.add(txtGhiChu);
 
 		JPanel pnlControl = new JPanel();
 		pnlContent.add(pnlControl, BorderLayout.SOUTH);
