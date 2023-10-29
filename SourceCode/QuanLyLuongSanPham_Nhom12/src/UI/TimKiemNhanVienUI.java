@@ -549,7 +549,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String cols[] = {"Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ", "Phòng ban", "Chức vụ", "Ngày công tác"};
+		String cols[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "SĐT", "Địa chỉ", "Phòng ban", "Chức vụ", "Ngày công tác"};
 		dtbModelNV = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtbModelNV);
 
@@ -561,13 +561,15 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		tblNV.setTableHeader(tbhNV);
 		
 		tblNV.setRowHeight(20);
-		tblNV.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(2).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(125);
+		tblNV.getColumnModel().getColumn(3).setPreferredWidth(75);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(100);
 		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(6).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(7).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(8).setPreferredWidth(100);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
