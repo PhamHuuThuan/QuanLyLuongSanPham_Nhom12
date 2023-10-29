@@ -577,7 +577,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 																					// vào
 			main.validate(); // cập nhật lại
 		}
-<<<<<<< HEAD
 		if(o==mniPCCD) {
 			setMenuColorDefault();
 			mnCongNhan.setBackground(Color.decode("#424242"));
@@ -588,8 +587,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			main.pnlContent.add(new PhanCongCongDoanUI(main), BorderLayout.CENTER);// thêm giao diện phân công nhân viên vào
 			main.validate(); // cập nhật lại
 		}
-		if (o == mniThongKe) {
-=======
 
 		if(o==mniTinhLuong) {
 			setMenuColorDefault();
@@ -602,7 +599,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			main.validate(); // cập nhật lại
 		}
 		if(o==mniThongKe) {
->>>>>>> 4557113b22b29aeacff6ea09ab8b5e683232a9a3
 			setMenuColorDefault();
 			mniThongKe.setBackground(Color.decode("#424242"));
 			mniThongKe.setForeground(Color.WHITE);
