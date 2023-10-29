@@ -559,7 +559,18 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 																					// vào
 			main.validate(); // cập nhật lại
 		}
-		if (o == mniThongKe) {
+
+		if(o==mniTinhLuong) {
+			setMenuColorDefault();
+			mnNhanVien.setBackground(Color.decode("#424242"));
+			mnNhanVien.setForeground(Color.WHITE);
+			mnNhanVien.setIcon(new ImageScaler("/image/team_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new TinhLuongNhanVienUI(main), BorderLayout.CENTER);// thêm giao diện tính lương nhân viên vào
+			main.validate(); // cập nhật lại
+		}
+		if(o==mniThongKe) {
 			setMenuColorDefault();
 			mniThongKe.setBackground(Color.decode("#424242"));
 			mniThongKe.setForeground(Color.WHITE);
