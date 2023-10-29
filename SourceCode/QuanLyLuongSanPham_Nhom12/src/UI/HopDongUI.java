@@ -133,7 +133,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		pnlThongTinSP.add(Box.createVerticalStrut(20));
 		
-		//Tao box chua thong tin hang 2: ngayBD, ngayKT, giatri, tiencoc
+		//Tao box chua thong tin san pham
 		
 		Box b2 = Box.createHorizontalBox();
 		b2.setBackground(bgColor);
@@ -225,6 +225,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlThongTinSP.add(b8);
 		pnlThongTinSP.add(Box.createVerticalStrut(10));
 		
+		//cac button chuc nang cho san pham
+		
 		btnThemSP = new RoundedButton(main.read_file_languages.getString("btnThem"), null, 15, 0, 1.0f);
 		btnThemSP.setFont(fontText);
 		btnThemSP.setForeground(Color.WHITE);
@@ -256,6 +258,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlBangSP.setLayout(new BoxLayout(pnlBangSP, BoxLayout.X_AXIS));
 		pnlThongTinSP.add(pnlBangSP, BorderLayout.CENTER);
 		String cols[] = {
+				main.read_file_languages.getString("stt"),
 				main.read_file_languages.getString("lblMaSP"),
 				main.read_file_languages.getString("lblTenSP"), 
 				main.read_file_languages.getString("lblSoLuong"), 
@@ -272,6 +275,10 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		tblSP.setRowHeight(20);
 		tblSP.setPreferredScrollableViewportSize(tblSP.getPreferredSize());
+		tblSP.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblSP.getColumnModel().getColumn(1).setPreferredWidth(70);
+		tblSP.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblSP.getColumnModel().getColumn(3).setPreferredWidth(100);
 		tblSP.setFillsViewportHeight(true);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
@@ -609,7 +616,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		JPanel pnlBangHD = new JPanel();
 		pnlBangHD.setLayout(new BoxLayout(pnlBangHD, BoxLayout.X_AXIS));
 		add(pnlBangHD, BorderLayout.CENTER);
-		String colsHD[] = {main.read_file_languages.getString("lblMaHD"),
+		String colsHD[] = {main.read_file_languages.getString("stt"),
+				main.read_file_languages.getString("lblMaHD"),
 				main.read_file_languages.getString("lblTenHD"), 
 				main.read_file_languages.getString("lblKH"), 
 				main.read_file_languages.getString("lblDaiDien"), 
@@ -629,15 +637,16 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		tblHD.setTableHeader(tbhHD);
 		
 		tblHD.setRowHeight(20);
-		tblHD.getColumnModel().getColumn(0).setPreferredWidth(100);
-		tblHD.getColumnModel().getColumn(1).setPreferredWidth(200);
-		tblHD.getColumnModel().getColumn(2).setPreferredWidth(175);
+		tblHD.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblHD.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblHD.getColumnModel().getColumn(2).setPreferredWidth(200);
 		tblHD.getColumnModel().getColumn(3).setPreferredWidth(175);
-		tblHD.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblHD.getColumnModel().getColumn(4).setPreferredWidth(175);
 		tblHD.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblHD.getColumnModel().getColumn(6).setPreferredWidth(200);
-		tblHD.getColumnModel().getColumn(7).setPreferredWidth(100);
-		tblHD.getColumnModel().getColumn(7).setPreferredWidth(150);
+		tblHD.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblHD.getColumnModel().getColumn(7).setPreferredWidth(200);
+		tblHD.getColumnModel().getColumn(8).setPreferredWidth(100);
+		tblHD.getColumnModel().getColumn(9).setPreferredWidth(150);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
 		JScrollPane scrHD = new JScrollPane(tblHD,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -729,6 +738,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			
 		}
 	}
+	//thay đổi hiển thị button
 	private void displayButtonSaveAndCancel(boolean display) {
 		if(display == true) {
 			btnLuu.setEnabled(true);
@@ -761,6 +771,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnIn.setAlpha(1f);
 		}
 	}
+	//cho phép hoặc ngăn user chỉnh sửa thông tin
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtMaHD.setEditable(true);
