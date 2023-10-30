@@ -79,7 +79,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	public HopDongUI(MainUI main) {
 		this.main = main;
 		xf = new XuatForm();
-		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 13F);
+		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 14F);
 		
 		//set gia tri cho jpanel HopDong
 		setLayout(new BorderLayout(0, 0));
@@ -104,52 +104,53 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlNorth.add(pnlThongTinSP, BorderLayout.EAST);
 		
 		// Tao box chua cac phan tu hang 1: maHD, ma SP, tenSP
-		Box b1 = Box.createHorizontalBox();
-		pnlThongTinSP.add(b1);
+		JPanel pnlB1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB1.setBackground(bgColor);
+		pnlThongTinSP.add(pnlB1);
 		
 		JLabel lblMaSP = new JLabel(main.read_file_languages.getString("lblMaSP") + ":");
 		lblMaSP.setForeground(textColor);
 		lblMaSP.setFont(fontText);
-		b1.add(lblMaSP);
-		b1.add(Box.createHorizontalStrut(5));
+		pnlB1.add(lblMaSP);
+		pnlB1.add(Box.createHorizontalStrut(5));
 		
 		txtMaSP = new JTextField();
 		txtMaSP.setForeground(textColor);
 		txtMaSP.setFont(fontText);
+		txtMaSP.setColumns(7);
 		txtMaSP.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 10, 2, 10)));
 		txtMaSP.setBackground(bgColor);
-		b1.add(txtMaSP);
-		b1.add(Box.createHorizontalStrut(10));
+		pnlB1.add(txtMaSP);
+		pnlB1.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblTenSP = new JLabel(main.read_file_languages.getString("lblTenSP") + ":");
 		lblTenSP.setForeground(textColor);
 		lblTenSP.setFont(fontText);
-		b1.add(lblTenSP);
-		b1.add(Box.createHorizontalStrut(5));
+		pnlB1.add(lblTenSP);
+		pnlB1.add(Box.createHorizontalStrut(5));
 		
 		txtTenSP = new JTextField();
 		txtTenSP.setForeground(textColor);
 		txtTenSP.setFont(fontText);
+		txtTenSP.setColumns(10);
 		txtTenSP.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 10, 2, 10)));
 		txtTenSP.setBackground(bgColor);
-		b1.add(txtTenSP);
+		pnlB1.add(txtTenSP);
 		
 		pnlThongTinSP.add(Box.createVerticalStrut(20));
 		
 		//Tao box chua thong tin san pham
 		
-		Box b2 = Box.createHorizontalBox();
-		b2.setBackground(bgColor);
-		pnlThongTinSP.add(b2);
+		JPanel pnlB2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB2.setBackground(bgColor);
+		pnlThongTinSP.add(pnlB2);
 		
 		JLabel lblDVT = new JLabel(main.read_file_languages.getString("lblDVT") + ":");
 		lblDVT.setForeground(textColor);
 		lblDVT.setFont(fontText);
-		b2.add(lblDVT);
-		
-		b2.add(Box.createHorizontalStrut(5));
+		pnlB2.add(lblDVT);
 		
 		JComboBox cmbDVT = new JComboBox();
 		cmbDVT.setModel(new DefaultComboBoxModel(new String[] {"Cái", "Bộ", "Đôi(Cặp)", "Hộp", "Gói", "M2", "Kg", "Lít"}));
@@ -157,43 +158,40 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		cmbDVT.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
-				BorderFactory.createEmptyBorder(0, 5, 0, 5));
+				BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		cmbDVT.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbDVT.setBackground(bgColor);
 		cmbDVT.setForeground(textColor);
 		cmbDVT.setFont(fontText);
-		b2.add(cmbDVT);
+		pnlB2.add(cmbDVT);
 
-		b2.add(Box.createHorizontalStrut(10));
+		pnlB2.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblDonGia = new JLabel(main.read_file_languages.getString("lblDonGia") + ":");
 		lblDonGia.setForeground(textColor);
 		lblDonGia.setFont(fontText);
-		b2.add(lblDonGia);
-		
-		b2.add(Box.createHorizontalStrut(5));
+		pnlB2.add(lblDonGia);
 		
 		txtDonGia = new JTextField();
 		txtDonGia.setForeground(textColor);
 		txtDonGia.setFont(fontText);
+		txtDonGia.setColumns(6);
 		txtDonGia.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtDonGia.setBackground(bgColor);
-		b2.add(txtDonGia);
+		pnlB2.add(txtDonGia);
 		
 		JLabel lblVND2 = new JLabel("VNĐ");
 		lblVND2.setForeground(textColor);
 		lblVND2.setFont(fontText);
-		b2.add(lblVND2);
+		pnlB2.add(lblVND2);
 		
-		b2.add(Box.createHorizontalStrut(10));
+		pnlB2.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblSoLuong = new JLabel(main.read_file_languages.getString("lblSoLuong") + ":");
 		lblSoLuong.setForeground(textColor);
 		lblSoLuong.setFont(fontText);
-		b2.add(lblSoLuong);
-		
-		b2.add(Box.createHorizontalStrut(5));
+		pnlB2.add(lblSoLuong);
 		
 		SpinnerNumberModel model = new SpinnerNumberModel(100, 1, 100000, 100);
 		JSpinner spnSoLuong = new JSpinner(model);
@@ -202,8 +200,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		spnSoLuong.setBorder(cboBorder);
 		spnSoLuong.setBackground(bgColor);
 		spnSoLuong.setForeground(textColor);
-		spnSoLuong.setFont(fontText);
-		b2.add(spnSoLuong);
+		spnSoLuong.setFont(fontText.deriveFont(12F));
+		pnlB2.add(spnSoLuong);
 		
 		pnlThongTinSP.add(Box.createVerticalStrut(20));
 		
@@ -320,82 +318,81 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlHopDong.add(pnThongTinHD, BorderLayout.CENTER);
 		
 		// Tao box chua cac phan tu hang 1: maHD, tenHD, tenKH, nguoiDaiDien
-		Box b4 = Box.createHorizontalBox();
-		pnThongTinHD.add(b4);
+		JPanel pnlB4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB4.setBackground(bgColor);
+		pnThongTinHD.add(pnlB4);
 		
 		JLabel lblMaHD = new JLabel(main.read_file_languages.getString("lblMaHD") + ":");
 		lblMaHD.setFont(fontText);
 		lblMaHD.setForeground(textColor);
-		b4.add(lblMaHD);
-		b4.add(Box.createHorizontalStrut(5));
+		pnlB4.add(lblMaHD);
 		
 		txtMaHD = new JTextField();
 		txtMaHD.setFont(fontText);
 		txtMaHD.setForeground(textColor);
 		txtMaHD.setBackground(bgColor);
+		txtMaHD.setColumns(10);
 		txtMaHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
-		b4.add(txtMaHD);
-		b4.add(Box.createHorizontalStrut(10));
+		pnlB4.add(txtMaHD);
+		pnlB4.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblTenHD = new JLabel(main.read_file_languages.getString("lblTenHD") + ":");
 		lblTenHD.setForeground(textColor);
 		lblTenHD.setFont(fontText);
-		b4.add(lblTenHD);
-		b4.add(Box.createHorizontalStrut(10));
+		pnlB4.add(lblTenHD);
 		
 		txtTenHD = new JTextField();
 		txtTenHD.setForeground(textColor);
 		txtTenHD.setFont(fontText);
+		txtTenHD.setColumns(12);
 		txtTenHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTenHD.setBackground(bgColor);
-		b4.add(txtTenHD);
-		b4.add(Box.createHorizontalStrut(30));
+		pnlB4.add(txtTenHD);
+		pnlB4.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblTenKH = new JLabel(main.read_file_languages.getString("lblKH") + ":");
 		lblTenKH.setForeground(textColor);
 		lblTenKH.setFont(fontText);
-		b4.add(lblTenKH);
-		b4.add(Box.createHorizontalStrut(10));
+		pnlB4.add(lblTenKH);
 		
 		txtTenKH = new JTextField();
 		txtTenKH.setForeground(textColor);
 		txtTenKH.setFont(fontText);
+		txtTenKH.setColumns(12);
 		txtTenKH.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTenKH.setBackground(bgColor);
-		b4.add(txtTenKH);
+		pnlB4.add(txtTenKH);
 		
-		pnThongTinHD.add(Box.createVerticalStrut(20));
+		pnThongTinHD.add(Box.createVerticalStrut(10));
 		
 		//Tao box chua thong tin hang 2: ngayBD, ngayKT, giatri, tiencoc
-		Box b5 = Box.createHorizontalBox();
-		pnThongTinHD.add(b5);
+		JPanel pnlB5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB5.setBackground(bgColor);
+		pnThongTinHD.add(pnlB5);
 		
 		JLabel lblDaiDien = new JLabel(main.read_file_languages.getString("lblDaiDien") + ":");
 		lblDaiDien.setForeground(textColor);
 		lblDaiDien.setFont(fontText);
-		b5.add(lblDaiDien);
-		b5.add(Box.createHorizontalStrut(10));
+		pnlB5.add(lblDaiDien);
 		
 		txtDaiDien = new JTextField();
 		txtDaiDien.setForeground(textColor);
 		txtDaiDien.setFont(fontText);
+		txtDaiDien.setColumns(10);
 		txtDaiDien.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtDaiDien.setBackground(bgColor);
-		b5.add(txtDaiDien);
-		
-		b5.add(Box.createHorizontalStrut(30));
+		pnlB5.add(txtDaiDien);
+		pnlB5.add(Box.createHorizontalStrut(20));
 		
 		// ngay bat dau
 		JLabel lblNgayBD = new JLabel(main.read_file_languages.getString("lblNgayBD") + ":");
 		lblNgayBD.setForeground(textColor);
 		lblNgayBD.setFont(fontText);
-		b5.add(lblNgayBD);
-		
-		b5.add(Box.createHorizontalStrut(10));
+		pnlB5.add(lblNgayBD);
 		
 		dtpBatDau = new JXDatePicker(new Date());
 		dtpBatDau.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
@@ -410,18 +407,15 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpBatDau.getEditor().setBackground(bgColor);
 		dtpBatDau.getEditor().setForeground(textColor);
-		b5.add(dtpBatDau);
+		pnlB5.add(dtpBatDau);
 		
-		b5.add(Box.createHorizontalStrut(30));
+		pnlB5.add(Box.createHorizontalStrut(20));
 		
 		// ngay ket thuc
 		JLabel lblNgayKetThuc = new JLabel(main.read_file_languages.getString("lblNgayKT") + ":");
 		lblNgayKetThuc.setForeground(textColor);
 		lblNgayKetThuc.setFont(fontText);
-		b5.add(lblNgayKetThuc);
-		
-		b5.add(Box.createHorizontalStrut(10));
-		
+		pnlB5.add(lblNgayKetThuc);
 		
 		dtpKetThuc = new JXDatePicker(new Date());
 		dtpKetThuc.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
@@ -436,92 +430,91 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnDateKT.setBackground(bgColor);
 		btnDateKT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		b5.add(dtpKetThuc);
+		pnlB5.add(dtpKetThuc);
 		
 		pnThongTinHD.add(Box.createVerticalStrut(20));
 		
 		//Tạo box chứa thông tin hàng 3: thỏa thuận, trạng thái, ghi chú
-		Box b6 = Box.createHorizontalBox();
-		pnThongTinHD.add(b6);
+		JPanel pnlB6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB6.setBackground(bgColor);
+		pnThongTinHD.add(pnlB6);
 		
 		JLabel lblGiaTri = new JLabel(main.read_file_languages.getString("lblGiaTri") + ":");
 		lblGiaTri.setForeground(textColor);
 		lblGiaTri.setFont(fontText);
-		b6.add(lblGiaTri);
-		b6.add(Box.createHorizontalStrut(10));
+		pnlB6.add(lblGiaTri);
 		
 		txtGiaTri = new JTextField();
 		txtGiaTri.setForeground(textColor);
 		txtGiaTri.setFont(fontText);
+		txtGiaTri.setColumns(10);
 		txtGiaTri.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtGiaTri.setBackground(bgColor);
-		b6.add(txtGiaTri);
+		pnlB6.add(txtGiaTri);
 		
 		JLabel lblVND1 = new JLabel("VNĐ");
 		lblVND1.setForeground(textColor);
 		lblVND1.setFont(fontText);
-		b6.add(lblVND1);
+		pnlB6.add(lblVND1);
 		
 		lblGiaTriText = new JLabel("");
 		lblGiaTriText.setForeground(textColor);
 		lblGiaTriText.setFont(fontText);
-		b6.add(lblGiaTriText);
+		pnlB6.add(lblGiaTriText);
 
-		b6.add(Box.createHorizontalStrut(30));
+		pnlB6.add(Box.createHorizontalStrut(20));
 		
 		JLabel lblTienCoc = new JLabel(main.read_file_languages.getString("lblTienCoc") + ":");
 		lblTienCoc.setForeground(textColor);
 		lblTienCoc.setFont(fontText);
-		b6.add(lblTienCoc);
-		
-		b6.add(Box.createHorizontalStrut(10));
+		pnlB6.add(lblTienCoc);
 		
 		txtTienCoc = new JTextField();
 		txtTienCoc.setForeground(textColor);
 		txtTienCoc.setFont(fontText);
+		txtTienCoc.setColumns(12);
 		txtTienCoc.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTienCoc.setBackground(bgColor);
-		b6.add(txtTienCoc);
+		pnlB6.add(txtTienCoc);
 		
 		JLabel lblVND3 = new JLabel("VNĐ");
 		lblVND3.setForeground(textColor);
 		lblVND3.setFont(fontText);
-		b6.add(lblVND3);
+		pnlB6.add(lblVND3);
 		
 		lblTienCocText = new JLabel("");
 		lblTienCocText.setForeground(textColor);
 		lblTienCocText.setFont(fontText);
-		b6.add(lblTienCocText);
-		b6.add(Box.createHorizontalStrut(30));
+		pnlB6.add(lblTienCocText);
+		pnlB6.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblThoaThuan = new JLabel(main.read_file_languages.getString("lblThoaThuan") + ":");
 		lblThoaThuan.setForeground(Color.BLACK);
 		lblThoaThuan.setFont(fontText);
-		b6.add(lblThoaThuan);
-		
-		Component horizontalStrut = Box.createHorizontalStrut(10);
-		b6.add(horizontalStrut);
+		pnlB6.add(lblThoaThuan);
 		
 		txtThoaThuan = new JTextField();
 		txtThoaThuan.setForeground(Color.BLACK);
 		txtThoaThuan.setFont(fontText);
+		txtThoaThuan.setColumns(12);
 		txtThoaThuan.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtThoaThuan.setBackground(Color.WHITE);
-		b6.add(txtThoaThuan);
+		pnlB6.add(txtThoaThuan);
 		
-		Box b7 = Box.createHorizontalBox();
+		JPanel pnlB7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB7.setBackground(bgColor);
 		pnThongTinHD.add(Box.createVerticalStrut(20));
-		pnThongTinHD.add(b7);
+		pnThongTinHD.add(pnlB7);
 		
 		JLabel lblTrangThai = new JLabel(main.read_file_languages.getString("lblTrangThai") + ":");
 		lblTrangThai.setForeground(Color.BLACK);
 		lblTrangThai.setFont(fontText);
-		b7.add(lblTrangThai);
+		pnlB7.add(lblTrangThai);
 		
-		b7.add(Box.createHorizontalStrut(10));
+		pnlB7.add(Box.createHorizontalStrut(10));
 		
 		cmbTrangThai = new JComboBox();
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
@@ -532,28 +525,29 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		cmbTrangThai.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbTrangThai.addItem(main.read_file_languages.getString("lblTrangThai1"));
 		cmbTrangThai.addItem("Hoàn thành");
-		b7.add(cmbTrangThai);
+		pnlB7.add(cmbTrangThai);
 		cmbTrangThai.setBackground(bgColor);
 		cmbTrangThai.setForeground(textColor);
 		cmbTrangThai.setFont(fontText);
 		
 		Component horizontalStrut_3 = Box.createHorizontalStrut(30);
-		b7.add(horizontalStrut_3);
+		pnlB7.add(horizontalStrut_3);
 		
 		JLabel lblGhiChu = new JLabel(main.read_file_languages.getString("lblGhiChu") + ":");
 		lblGhiChu.setForeground(textColor);
 		lblGhiChu.setFont(fontText);
-		b7.add(lblGhiChu);
+		pnlB7.add(lblGhiChu);
 		
-		b7.add(Box.createHorizontalStrut(10));
+		pnlB7.add(Box.createHorizontalStrut(10));
 		
 		txtGhiChu = new JTextField();
 		txtGhiChu.setForeground(textColor);
 		txtGhiChu.setFont(fontText);
+		txtGhiChu.setColumns(34);
 		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtGhiChu.setBackground(bgColor);
-		b7.add(txtGhiChu);
+		pnlB7.add(txtGhiChu);
 		
 		pnThongTinHD.add(Box.createVerticalStrut(20));
 		
