@@ -249,7 +249,7 @@ public class Login_UI extends JFrame {
 
 	private void openViewHome() {
 		this.dispose();
-		NhanVien nv = new NhanVien("NV00001", "123456a@", "123", false, new java.util.Date(Date.UTC(103, 4, 14, 0, 0, 0)), "+84123456789", "", "", "", "");
+		NhanVien nv = new NhanVien("NV00001", "123456a@", "Phạm Hữu Thuận", false, new java.util.Date(Date.UTC(103, 4, 14, 0, 0, 0)), "+84123456789", "", "", "", "");
 		MainUI goPageMenu = new MainUI(nv);
 //		ViewHome goPageMenu =  new ViewHome();
 		goPageMenu.setVisible(true);
