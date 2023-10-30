@@ -17,7 +17,7 @@ public class BangLuongCongNhan {
 	
 	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, ArrayList<BangChamCongCongNhan> danhSachChamCong,
 			int soLuongCongDoanLam, int soNgayLam, int soNgayNghi, int soNgayPhep, double thucLanh,
-			YearMonth thangNam) {
+			YearMonth thangNam) throws Exception {
 		super();
 		setMaBangLuong(maBangLuong);
 		setCongNhan(congNhan);
@@ -35,8 +35,17 @@ public class BangLuongCongNhan {
 	public String getMaBangLuong() {
 		return maBangLuong;
 	}
-	public void setMaBangLuong(String maBangLuong) {
-		this.maBangLuong = maBangLuong;
+	public void setMaBangLuong(String maBangLuong)throws Exception {
+		if (maBangLuong == null || maBangLuong.trim().length() <= 0) {
+			throw new Exception("Mã bảng lương không được rỗng!");
+		}
+		if (!maBangLuong.matches("\\S+")) {
+			throw new Exception("Mã lướng không được chứa khoảng trắng!");
+		} else if (!maBangLuong.matches("^LC\\d{5}$")) {
+			throw new Exception("Mã lương có dạng CD12345");
+		} else {
+			this.maBangLuong = maBangLuong;
+		}
 	}
 	public CongNhan getCongNhan() {
 		return congNhan;

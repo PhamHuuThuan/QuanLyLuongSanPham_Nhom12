@@ -62,8 +62,12 @@ public class BangChamCongCongNhan {
 	public int getSoLuongLam() {
 		return soLuongLam;
 	}
-	public void setSoLuongLam(int soLuongLam) {
-		this.soLuongLam = soLuongLam;
+	public void setSoLuongLam(int soLuongLam) throws Exception{
+		if(soLuongLam <0) {
+			throw new Exception("Số lượng làm phải lớn hơn 0");
+		}else {
+			this.soLuongLam = soLuongLam;
+		}
 	}
 	public String getGhiChu() {
 		return ghiChu;

@@ -38,7 +38,6 @@ public class BangPhanCongCongDoan {
 	public BangPhanCongCongDoan() {
 		super();
 		
-		
 	}
 
 	public String getMaPhanCong() {

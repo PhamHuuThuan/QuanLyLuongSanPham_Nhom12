@@ -7,18 +7,18 @@ public class CongNhan {
 	private String maCN;
 	private String matKhau;
 	private String hoTen;
-	private java.util.Date ngaySinh;
+	private Date ngaySinh;
 	private boolean gioiTinh; // true:nam, false: nu
 	private String sDT;
 	private String email;
 	private String diaChi;
 	private String soCCCD;
-	private java.util.Date ngayVaoLam;
+	private Date ngayVaoLam;
 	private String anhDaiDien;
-
+	private String ghiChu;
 
 	public CongNhan(String maCN, String matKhau, String hoTen, Date ngaySinh, boolean gioiTinh, String sDT,
-			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien) {
+			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien,String ghiChu) {
 		super();
 		try {
 			setMaCN(maCN);
@@ -26,22 +26,19 @@ public class CongNhan {
 			setHoTen(hoTen);
 			setNgaySinh(ngaySinh);
 			setGioiTinh(gioiTinh);
-			setsDT(sDT);
+			setSDT(sDT);
 			setEmail(email);
 			setDiaChi(diaChi);
 			setSoCCCD(soCCCD);
 			setNgayVaoLam(ngayVaoLam);
 			setAnhDaiDien(anhDaiDien);
+			setGhiChu(ghiChu);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 
 	}
-
-	public CongNhan() {
-		super();
-
-	}
+	
 
 	public String getMaCN() {
 		return maCN;
@@ -94,11 +91,11 @@ public class CongNhan {
 		}
 	}
 
-	public java.util.Date getNgaySinh() {
+	public Date getNgaySinh() {
 		return ngaySinh;
 	}
 
-	public void setNgaySinh(java.util.Date ngaySinh) throws Exception {
+	public void setNgaySinh(Date ngaySinh) throws Exception {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.YEAR, -18);
 		java.util.Date eighteenYearsAgo = cal.getTime();
@@ -109,7 +106,7 @@ public class CongNhan {
 		}
 	}
 
-	public boolean isGioiTinh() {
+	public boolean getGioiTinh() {
 		return gioiTinh;
 	}
 
@@ -117,11 +114,11 @@ public class CongNhan {
 		this.gioiTinh = gioiTinh;
 	}
 
-	public String getsDT() {
+	public String getSDT() {
 		return sDT;
 	}
 
-	public void setsDT(String sDT) throws Exception {
+	public void setSDT(String sDT) throws Exception {
 		if (sDT == null || sDT.trim().length() <= 0) {
 			throw new Exception("Số điện thoại không được rỗng!");
 		}
@@ -178,11 +175,11 @@ public class CongNhan {
 		}
 	}
 
-	public java.util.Date getNgayVaoLam() {
+	public Date getNgayVaoLam() {
 		return ngayVaoLam;
 	}
 
-	public void setNgayVaoLam(java.util.Date ngayVaoLam) {
+	public void setNgayVaoLam(Date ngayVaoLam) {
 		this.ngayVaoLam = ngayVaoLam;
 	}
 
@@ -193,11 +190,21 @@ public class CongNhan {
 	public void setAnhDaiDien(String anhDaiDien) {
 		this.anhDaiDien = anhDaiDien;
 	}
+	
+	public String getGhiChu() {
+		return ghiChu;
+	}
+
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
+	}
 
 	@Override
 	public String toString() {
 		return "CongNhan [maCN=" + maCN + ", matKhau=" + matKhau + ", hoTen=" + hoTen + ", ngaySinh=" + ngaySinh
 				+ ", gioiTinh=" + gioiTinh + ", sDT=" + sDT + ", email=" + email + ", diaChi=" + diaChi + ", soCCCD="
-				+ soCCCD + ", ngayVaoLam=" + ngayVaoLam + ", anhDaiDien=" + anhDaiDien + "]";
+				+ soCCCD + ", ngayVaoLam=" + ngayVaoLam + ", anhDaiDien=" + anhDaiDien + ", ghiChu=" + ghiChu + "]";
 	}
+
+	
 }
