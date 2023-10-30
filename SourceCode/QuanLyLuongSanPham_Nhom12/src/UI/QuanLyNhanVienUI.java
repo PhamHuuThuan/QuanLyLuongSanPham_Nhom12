@@ -3,26 +3,35 @@ package UI;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.Box;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -31,9 +40,11 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.NhanVien_Dao;
+import Entity.HopDong;
+import Entity.NhanVien;
+import Util.SinhMaTuDong;
 
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 
@@ -42,8 +53,10 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JTextField txtMaNV, txtMatKhau, txtTenNV, txtSDT, txtEmail, txtGhiChu;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn, btnFocus;
+	private JTextField txtMaNV, txtMatKhau, txtTenNV, txtSDT, txtEmail;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn, btnFocus, btnChonAnh;
+	private JRadioButton radNam, radNu;
+	private ButtonGroup grpGioiTinh;
 	private DefaultTableModel dtblModel;
 	private JTable tblNV;
 	private JTableHeader tbhNV;
@@ -53,6 +66,10 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	private JTextField txtDiaChi; 
 	private Font fontText;
 	private JLabel lblAvatar;
+	private JLabel lblMessage;
+	private NhanVien_Dao nv_Dao = new NhanVien_Dao();
+	private ArrayList<NhanVien> dsNV = new ArrayList<>();
+	private boolean isThem = false;
 	/**
 	 * Create the panel.
 	 */
@@ -103,12 +120,16 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlAnhDD.add(lblAvatar, BorderLayout.CENTER);
 		
-		RoundedButton btnChonAnh = new RoundedButton("Image", null, 5, 0, 1f);
+		btnChonAnh = new RoundedButton("Image", null, 5, 0, 1f);
 		btnChonAnh.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnChonAnh.setForeground(Color.WHITE);
 		btnChonAnh.setBackground(componentColor);
 		btnChonAnh.setIcon(new ImageScaler("/image/add-image.png", 16, 16).getScaledImageIcon());
 		btnChonAnh.setBorder(BorderFactory.createEmptyBorder(5, 45, 5, 45));
+		Dimension size = btnChonAnh.getPreferredSize();
+		btnChonAnh.setMinimumSize(size);
+		btnChonAnh.setMaximumSize(size);
+		btnChonAnh.setPreferredSize(size);
 		pnlAnhDD.add(btnChonAnh);
 		
 		JPanel pnThongTinNV = new JPanel();
@@ -176,7 +197,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlB1.add(lblGT);
 		pnlB1.add(Box.createHorizontalStrut(10));
 		
-		JRadioButton radNam = new JRadioButton("Nam");
+		radNam = new JRadioButton("Nam");
 		radNam.setSelected(true);
 		radNam.setBackground(bgColor);
 		radNam.setForeground(textColor);
@@ -184,11 +205,15 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlB1.add(radNam);
 		pnlB1.add(Box.createHorizontalStrut(10));
 		
-		JRadioButton radNu = new JRadioButton("Nữ");
+		radNu = new JRadioButton("Nữ");
 		radNu.setBackground(bgColor);
 		radNu.setForeground(textColor);
 		radNu.setFont(fontText);
 		pnlB1.add(radNu);
+		
+		grpGioiTinh = new ButtonGroup();
+		grpGioiTinh.add(radNam);
+		grpGioiTinh.add(radNu);
 		
 		pnThongTinNV.add(Box.createVerticalStrut(20));
 		
@@ -204,7 +229,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		pnlB2.add(Box.createHorizontalStrut(5));
 		
-		dtpNgaySinh = new JXDatePicker(new Date());
+		dtpNgaySinh = new JXDatePicker(new Date(100, 0, 1));
 		dtpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dtpNgaySinh.setFont(fontText);
 		dtpNgaySinh.setBackground(bgColor);
@@ -289,7 +314,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtDiaChi = new JTextField();
 		txtDiaChi.setForeground(Color.BLACK);
 		txtDiaChi.setFont(fontText);
-		txtDiaChi.setColumns(20);
+		txtDiaChi.setColumns(30);
 		txtDiaChi.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 
 
@@ -298,22 +323,13 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlB3.add(txtDiaChi);
 		pnlB3.add(Box.createHorizontalStrut(20));
 		
-		JLabel lblGhiChu = new JLabel("Ghi chú:");
-		lblGhiChu.setForeground(textColor);
-		lblGhiChu.setFont(fontText);
-		pnlB3.add(lblGhiChu);
-		
-		pnlB3.add(Box.createHorizontalStrut(5));
-		
-		txtGhiChu = new JTextField();
-		txtGhiChu.setForeground(textColor);
-		txtGhiChu.setFont(fontText);
-		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtGhiChu.setBackground(bgColor);
-		txtGhiChu.setColumns(40);
-		pnlB3.add(txtGhiChu);
-		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlMessage.setBackground(bgColor);
+		pnlB3.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel());
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(fontText.deriveFont(Font.ITALIC));
+	
 		pnThongTinNV.add(Box.createVerticalStrut(10));
 		
 		//Khởi tạo jpanel chức năng chứa các button chức năng: thêm, sửa, xóa, lưu, hủy
@@ -381,7 +397,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		JPanel pnlBangNV = new JPanel();
 		pnlBangNV.setLayout(new BoxLayout(pnlBangNV, BoxLayout.X_AXIS));
 		add(pnlBangNV, BorderLayout.CENTER);
-		String cols[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "Ngày sinh", "SDT", "Email", "CCCD", "Địa chỉ", "Ghi chú"};
+		String cols[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "Ngày sinh", "SDT", "Email", "CCCD", "Địa chỉ"};
 		dtblModel = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModel);
 		
@@ -400,9 +416,8 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		tblNV.getColumnModel().getColumn(4).setPreferredWidth(175);
 		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
 		tblNV.getColumnModel().getColumn(6).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(7).setPreferredWidth(200);
-		tblNV.getColumnModel().getColumn(8).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(9).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(7).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(8).setPreferredWidth(200);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng nhân viên
 		JScrollPane scrHD = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -414,6 +429,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		btnIn.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
+		btnChonAnh.addActionListener(this);
 		
 		btnThem.addMouseListener(this);
 		btnSua.addMouseListener(this);
@@ -421,6 +437,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		btnIn.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
+		tblNV.addMouseListener(this);
 		
 		//Không thể thao tác với button lưu và hủy
 		displayButtonSaveAndCancel(false);
@@ -429,19 +446,31 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		setEditableForTextField(false);
 		
 		//Set giá trị mặc định để hiển thị
-		txtMaNV.setText("NV12345");
-		txtTenNV.setText("Nguyễn Văn Phong");
+		txtTenNV.setText("Phạm Hữu Thuận");
 		txtMatKhau.setText("12345abc@");
+		txtSDT.setText("0326635356");
+		txtCCCD.setText("012345678912");
+		txtEmail.setText("huuthuan1405@gmail.com");
+		txtDiaChi.setText("Quang Trung, phường 10, Gò Vấp");
+		
+		//get du lieu len
+		xoaRong();
 		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		if(e.getSource() == tblNV) {
+			int index = tblNV.getSelectedRow();
+			if(index != -1) {
+				hienThiThongTinNV(index);
+			}
+		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Object o = e.getSource();
 		if (o instanceof RoundedButton) {
+			setBorderForFocusButton(o);
 	    }
 	}
 	@Override
@@ -460,31 +489,44 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		main.music.playSE(2);
 		if(o == btnThem) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
+			isThem = true;
 			xoaRong();
 			
 		}
 		if(o == btnSua) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
-			
+			isThem = false;
 		}
 		if(o == btnXoa) {
-			
+			xoaHopDong();
 		}
 		if(o == btnIn) {
 		}
 		if(o == btnLuu) {
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
+			if(isThem==true)
+				themNhanVien();
+			else
+				suaNhanVien();
 			
 		}
 		if(o == btnHuy) {
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
-			
+			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thoát? Toàn bộ thông tin thay đổi sẽ mất", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				xoaRong();
+			}
+		}
+		if(o==btnChonAnh) {
+            String filePath = getStringPathAvatar();
+            lblAvatar.setIcon(new ImageScaler(filePath, 150, 150).getScaledImageAvatar());
+            btnChonAnh.setText(filePath);
 		}
 	}
 	private void displayButtonSaveAndCancel(boolean display) {
@@ -493,6 +535,8 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			btnLuu.setAlpha(1f);
 			btnHuy.setEnabled(true);
 			btnHuy.setAlpha(1f);
+			btnChonAnh.setEnabled(true);
+			btnChonAnh.setAlpha(1f);
 			
 			btnThem.setEnabled(false);
 			btnThem.setAlpha(0.6f);
@@ -508,6 +552,8 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			btnLuu.setAlpha(0.6f);
 			btnHuy.setEnabled(false);
 			btnHuy.setAlpha(0.6f);
+			btnChonAnh.setEnabled(false);
+			btnChonAnh.setAlpha(0.6f);
 			
 			btnThem.setEnabled(true);
 			btnThem.setAlpha(1f);
@@ -526,25 +572,214 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			txtTenNV.setEditable(true);
 			dtpNgaySinh.setEditable(true);
 			txtSDT.setEditable(true);
+			txtCCCD.setEditable(true);
 			txtEmail.setEditable(true);
-			txtGhiChu.setEditable(true);
+			txtDiaChi.setEditable(true);
+			radNu.setEnabled(true);
 		}else {
 			txtMaNV.setEditable(false);
 			txtMatKhau.setEditable(false);
 			txtTenNV.setEditable(false);
 			dtpNgaySinh.setEditable(false);
 			txtSDT.setEditable(false);
+			txtCCCD.setEditable(false);
 			txtEmail.setEditable(false);
-			txtGhiChu.setEditable(false);
+			txtDiaChi.setEditable(false);
+			radNu.setEnabled(false);
 		}
 	}
 	private void xoaRong() {
-		txtMaNV.setText("");
+		dsNV = nv_Dao.getAllNhanVien();
+		themTatCaNhanVienVaoBang(dsNV);
+		txtMaNV.setText(new SinhMaTuDong().sinhMaNV());
 		txtMatKhau.setText("");
 		txtTenNV.setText("");
 		dtpNgaySinh.setDate(new Date());
 		txtSDT.setText("");
 		txtEmail.setText("");
-		txtGhiChu.setText("");
+		txtCCCD.setText("");
+		txtDiaChi.setText("");
+		lblAvatar.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
+		btnChonAnh.setText("");
+		radNam.setSelected(true);
+		dtpNgaySinh.setDate(new Date(100, 0, 1));
+	}
+	//hiển thị border cho button được user nhấn
+	private void setBorderForFocusButton(Object o) {
+		if(btnFocus!=null && btnFocus!=o) {
+			btnFocus.setFocusButton(null, 0);
+		}
+		if(btnFocus==null) {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+		else if(btnFocus == btnThem || btnFocus == btnSua) {
+			if(o == btnHuy || o == btnLuu) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}else if(btnFocus == btnLuu || btnFocus == btnHuy) {
+			if(o == btnThem || o == btnSua || o == btnXoa || o == btnIn) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}else {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+	}
+	//Hàm get dữ liệu trên txt ra đối tượng nhân viên
+	private NhanVien convertDataToNhanVien() {
+		String maNV = txtMaNV.getText();
+		String tenNV = txtTenNV.getText();
+		String matKhau = txtMatKhau.getText();
+		boolean gioiTinh = radNam.isSelected()?true:false;
+		Date ngaySinh = dtpNgaySinh.getDate();
+		String sdt = txtSDT.getText();
+		String email = txtEmail.getText();
+		String diaChi = txtDiaChi.getText();
+		String cccd = txtCCCD.getText();
+		String hinhAnh = btnChonAnh.getText();
+		
+		return new NhanVien(maNV, matKhau, tenNV, gioiTinh, ngaySinh, sdt, email, cccd, diaChi, hinhAnh);
+	}
+	//Hiển thị nhân viên được chọn từ table lên bảng thông tin
+	private void hienThiThongTinNV(int index) {
+		txtMaNV.setText(dsNV.get(index).getMaNV());
+		txtMatKhau.setText(dsNV.get(index).getMatKhau());
+		txtTenNV.setText(dsNV.get(index).getHoTen());
+		txtSDT.setText(dsNV.get(index).getSdt());
+		txtEmail.setText(dsNV.get(index).getEmail());
+		txtCCCD.setText(dsNV.get(index).getcCCD());
+		txtDiaChi.setText(dsNV.get(index).getDiaChi());
+		lblAvatar.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
+		
+		String dateString = (String) dtblModel.getValueAt(index, 4); // Lấy chuỗi ngày từ bảng
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+		    java.util.Date date = formatter.parse(dateString); // Chuyển đổi chuỗi thành java.util.Date
+		    dtpNgaySinh.setDate(date); // Đặt giá trị cho JXDatePicker
+		} catch (ParseException e) {
+		    e.printStackTrace();
+		}
+		btnChonAnh.setText(dsNV.get(index).getHinhAnh());
+	}
+	//open file anh
+	private String getStringPathAvatar() {
+        JFileChooser fileChooser = new JFileChooser();
+        // Đặt thư mục hiện tại
+        fileChooser.setCurrentDirectory(new File("/path/to/directory"));
+        
+        // Lấy danh sách các định dạng ảnh được hỗ trợ
+        String[] suffices = ImageIO.getReaderFileSuffixes();
+        
+        // Thêm bộ lọc cho mỗi định dạng ảnh
+        for (int i = 0; i < suffices.length; i++) {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(suffices[i] + " files", suffices[i]);
+            fileChooser.addChoosableFileFilter(filter);
+        }
+
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            return selectedFile.getAbsolutePath();
+        }
+        return null;
+    }
+	private boolean validDataNV() {
+		return true;
+	}
+	//Thêm nhân viên từ giao diện vào csdl
+	private void themNhanVien() {
+		if(validDataNV()==true) {
+			NhanVien nvNew = convertDataToNhanVien();
+			if(nvNew != null) {
+				if(nv_Dao.themNhanVien(nvNew)) {
+					main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV());
+					lblMessage.setText("Thêm nhân viên thành công!");
+					xoaRong();
+				}else {
+					setTextError("Thêm thất bại! Trùng mã!");
+				}
+			}else {
+				setTextError("Thêm thất bại! Có lỗi xảy ra!");
+			}
+		}
+	}
+	// sửa một nhân viên được chọn
+	private void suaNhanVien() {
+		if(tblNV.getSelectedRow()!=-1) {
+			if(validDataNV()==true) {
+				NhanVien nvNew = convertDataToNhanVien();
+				if(nvNew != null) {
+					if(nv_Dao.suaThongTinNhanVien(nvNew)) {
+						main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV());
+						lblMessage.setText("Sửa thành công!");
+						displayButtonSaveAndCancel(false);
+						setEditableForTextField(false);
+						xoaRong();
+					}else {
+						setTextError("Sửa thất bại! Không tìm thấy nhân viên!");
+					}
+				}else {
+					setTextError("Sửa thất bại! Lỗi không xác định!");
+				}
+			}
+		}else {
+			setTextError("Bạn cần chọn nhân viên muốn sửa!");
+		}
+	}
+	//Xóa nhân viên được chọn
+	private void xoaHopDong() {
+		if(tblNV.getSelectedRow()!=-1) {
+			String maNV = txtMaNV.getText();
+			if(maNV != null) {
+				if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+					if(nv_Dao.xoaNhanVien(maNV)) {
+						main.l.xoaThongTinNhanVien(maNV);
+						lblMessage.setText("Xóa thành công!");
+						xoaRong();
+					}else {
+						setTextError("Xóa thất bại! Không tìm thấy nhân viên!");
+					}
+				}
+			}else {
+				setTextError("Xóa thất bại! Có lỗi xảy ra!");
+			}
+		}else {
+			setTextError("Bạn cần chọn nhân viên muốn xóa!");
+		}
+	}
+	// thông báo lỗi
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
+	}
+	//get danh sách nhân viên từ csdl lên table
+	private void getDataToTable() {
+		dsNV = nv_Dao.getAllNhanVien();
+		themTatCaNhanVienVaoBang(dsNV);
+	}
+	//thêm một nhân viên vào table 
+	private void themNhanVienVaoBang(NhanVien nv) {
+	    Object[] row = new Object[10];
+	    row[0] = dtblModel.getRowCount() + 1;  // STT
+	    row[1] = nv.getMaNV();  // Mã NV
+	    row[2] = nv.getHoTen();  // Họ tên
+	    row[3] = nv.isGioiTinh() ? "Nam" : "Nữ";  // Giới tính
+	    row[4] = new SimpleDateFormat("dd-MM-yyyy").format(nv.getNgaySinh());  // Ngày sinh
+	    row[5] = nv.getSdt();  // SDT
+	    row[6] = nv.getEmail();  // Email
+	    row[7] = nv.getcCCD();  // CCCD
+	    row[8] = nv.getDiaChi();  // Địa chỉ
+	    
+	    dtblModel.addRow(row);
+	}
+	//thêm một ds nhân viên vào bảng
+	private void themTatCaNhanVienVaoBang(ArrayList<NhanVien> list) {
+		dtblModel.setRowCount(0);
+	    for (NhanVien nv : list) {
+	        themNhanVienVaoBang(nv);
+	    }
 	}
 }
