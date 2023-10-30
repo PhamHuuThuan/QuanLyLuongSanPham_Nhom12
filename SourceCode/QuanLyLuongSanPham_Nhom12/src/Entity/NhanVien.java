@@ -47,7 +47,16 @@ public class NhanVien {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+	//KHởi tạo nhân viên chỉ có mã NV
+	public NhanVien(String maNV) {
+		super();
+		try {
+			setMaNV(maNV);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+	}
 	public String getMaNV() {
 		return maNV;
 	}

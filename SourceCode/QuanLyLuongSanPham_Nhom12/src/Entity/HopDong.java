@@ -4,32 +4,32 @@ import java.util.Date;
 
 public class HopDong {
 	private String maHD;
-	private String maTenHD;
+	private String tenHD;
 	private String tenKhachHang;
-	private String nguoiDaiDien;
+	private NhanVien nguoiDaiDien;
 	private Date ngayBatDau;
 	private Date ngayKetThuc;
 	private double giaTriHD;
 	private double tienCoc;
-	private double donGia;
 	private String thoaThuan;
 	private boolean trangThai;
+	private String ghiChu;
 	
 	
-	public HopDong(String maHD, String maTenHD, String tenKhachHang, String nguoiDaiDien, Date ngayBatDau,
-			Date ngayKetThuc, double giaTriHD, double tienCoc, double donGia, String thoaThuan, boolean trangThai) {
+	public HopDong(String maHD, String tenHD, String tenKhachHang, NhanVien nguoiDaiDien, Date ngayBatDau,
+			Date ngayKetThuc, double giaTriHD, double tienCoc, String thoaThuan, boolean trangThai, String ghiChu) {
 		super();
 		this.maHD = maHD;
-		this.maTenHD = maTenHD;
+		this.tenHD = tenHD;
 		this.tenKhachHang = tenKhachHang;
 		this.nguoiDaiDien = nguoiDaiDien;
 		this.ngayBatDau = ngayBatDau;
 		this.ngayKetThuc = ngayKetThuc;
 		this.giaTriHD = giaTriHD;
 		this.tienCoc = tienCoc;
-		this.donGia = donGia;
 		this.thoaThuan = thoaThuan;
 		this.trangThai = trangThai;
+		this.ghiChu = ghiChu;
 	}
 
 
@@ -54,13 +54,13 @@ public class HopDong {
 	}
 
 
-	public String getMaTenHD() {
-		return maTenHD;
+	public String getTenHD() {
+		return tenHD;
 	}
 
 
-	public void setMaTenHD(String maTenHD) {
-		this.maTenHD = maTenHD;
+	public void setTenHD(String maHD) {
+		this.tenHD = maHD;
 	}
 
 
@@ -74,12 +74,12 @@ public class HopDong {
 	}
 
 
-	public String getNguoiDaiDien() {
+	public NhanVien getNguoiDaiDien() {
 		return nguoiDaiDien;
 	}
 
 
-	public void setNguoiDaiDien(String nguoiDaiDien) {
+	public void setNguoiDaiDien(NhanVien nguoiDaiDien) {
 		this.nguoiDaiDien = nguoiDaiDien;
 	}
 
@@ -136,20 +136,6 @@ public class HopDong {
 		this.tienCoc = tienCoc;
 	}
 
-
-	public double getDonGia() {
-		return donGia;
-	}
-
-
-	public void setDonGia(double donGia) throws Exception{
-		if (donGia < 0) {
-			throw new Exception("Số lượng phải lớn hơn 0!");
-		}
-		this.donGia = donGia;
-	}
-
-
 	public String getThoaThuan() {
 		return thoaThuan;
 	}
@@ -168,16 +154,16 @@ public class HopDong {
 	public void setTrangThai(boolean trangThai) {
 		this.trangThai = trangThai;
 	}
+	
 
-
-	@Override
-	public String toString() {
-		return "HopDong [maHD=" + maHD + ", maTenHD=" + maTenHD + ", tenKhachHang=" + tenKhachHang + ", nguoiDaiDien="
-				+ nguoiDaiDien + ", ngayBatDau=" + ngayBatDau + ", ngayKetThuc=" + ngayKetThuc + ", giaTriHD="
-				+ giaTriHD + ", tienCoc=" + tienCoc + ", donGia=" + donGia + ", thoaThuan=" + thoaThuan + ", trangThai="
-				+ trangThai + "]";
+	public String getGhiChu() {
+		return ghiChu;
 	}
 
+
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
+	}
 
 	public HopDong() {
 		super();

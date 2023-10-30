@@ -10,8 +10,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import org.jdesktop.swingx.*;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -22,11 +20,13 @@ import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -34,14 +34,15 @@ import javax.swing.Box;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
-import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
-import Util.SoundPlay;
+import Dao.HopDong_Dao;
+import Entity.HopDong;
+import Entity.NhanVien;
 import Util.XuatForm;
 import Util.XuatHopDongForm;
 import net.sf.jasperreports.engine.JRException;
@@ -68,6 +69,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private JLabel lblGiaTriText, lblTienCocText;
 	private XuatForm xf;
 	private Font fontText;
+	private HopDong_Dao hd_Dao = new HopDong_Dao();
+	private boolean isThem = false;
 	/**
 	 * Create the panel.
 	 */
@@ -665,6 +668,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnIn.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
+		tblHD.addMouseListener(this);
 		
 		//Không thể thao tác với button lưu và hủy
 		displayButtonSaveAndCancel(false);
@@ -672,20 +676,17 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		//Không thể chỉnh sửa txt
 		setEditableForTextField(false);
 		
-		//Set giá trị mặc định để hiển thị
-//		txtMaHD.setText("HD12345");
-//		txtTenKH.setText("Nguyễn Văn Phong");
-//		txtTenHD.setText("Hợp đồng hợp tác ABC");
-//		txtDaiDien.setText("Phạm Hữu Thuận");
-//		txtGiaTri.setText(formatMoneyText("10000000000"));
-//		lblGiaTriText.setText("    (" + formatMoneyToText(Double.parseDouble(txtGiaTri.getText().replaceAll(",", ""))) + " VNĐ)     ");
-//		txtTienCoc.setText(formatMoneyText("1000000000"));
-//		lblTienCocText.setText("     (" + formatMoneyToText(Double.parseDouble(txtTienCoc.getText().replaceAll(",", ""))) + " VNĐ)");
-//		txtThoaThuan.setText("Thỏa thuận giữa 2 bên bao gồm: điều 1, điều 2, điều 3,...");
+		//get danh sách hợp đồng từ cơ sở dữ liệu
+		getDataToTable();
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		if(e.getSource() == tblHD) {
+			int index = tblHD.getSelectedRow();
+			if(index != -1) {
+				hienThiThongTinHD(index);
+			}
+		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -715,6 +716,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
 			xoaRong();	
+			isThem = true;
 		}
 		if(o == btnSuaHD) {
 			displayButtonSaveAndCancel(true);
@@ -728,9 +730,13 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			xuatHopDong();
 		}
 		if(o == btnLuu) {
+			if(isThem == true) {
+				themHopDong();
+			}else {
+				suaHopDong();
+			}
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
-			
 		}
 		if(o == btnHuy) {
 			displayButtonSaveAndCancel(false);
@@ -869,7 +875,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
         }
         return text;
     }
-	public void xuatHopDong() {
+	private void xuatHopDong() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String giaTriHD = txtGiaTri.getText() + lblGiaTriText.getText();
 		String tienCocHD = txtTienCoc.getText() + lblTienCocText.getText();
@@ -890,5 +896,94 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	//Hàm get dữ liệu trên txt ra đối tượng hợp đồng
+	private HopDong convertDataToHopDong() {
+		String maHD = txtMaHD.getText();
+		String tenHD = txtTenHD.getText();
+		String tenKH = txtTenKH.getText();
+		NhanVien nguoiDD = main.nv;
+		Date ngayBD = dtpBatDau.getDate();
+		Date ngayKT = dtpKetThuc.getDate();
+		Double giaTri = Double.parseDouble(txtGiaTri.getText());
+		Double tienCoc = Double.parseDouble(txtTienCoc.getText());
+		String thoaThuan = txtThoaThuan.getText();
+		String ghiChu = txtGhiChu.getText();
+		
+		return new HopDong(maHD, tenHD, tenKH, nguoiDD, ngayBD, ngayKT, giaTri, tienCoc, thoaThuan, false, ghiChu);
+	}
+	//Thêm hợp đồng từ giao diện vào csdl
+	private void themHopDong() {
+		HopDong hdNew = convertDataToHopDong();
+		if(hdNew != null) {
+			if(hd_Dao.themHopDong(hdNew)) {
+				themHopDongVaoBang(hdNew);
+				JOptionPane.showMessageDialog(this, "Thêm thành công!");
+			}else {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại! Trùng mã!");
+			}
+		}else {
+			JOptionPane.showMessageDialog(this, "Thêm thất bại! Có lỗi xảy ra!");
+		}
+	}
+	// sửa một hợp đồng được chọn
+	private void suaHopDong() {
+		HopDong hdNew = convertDataToHopDong();
+		if(hdNew != null) {
+			if(hd_Dao.suaHopDong(hdNew)) {
+				JOptionPane.showMessageDialog(this, "Sửa thành công!");
+			}else {
+				JOptionPane.showMessageDialog(this, "Sửa thất bại! Trùng mã!");
+			}
+		}else {
+			JOptionPane.showMessageDialog(this, "Sửa thất bại! Có lỗi xảy ra!");
+		}
+	}
+	//get dữ liệu từ csdl lên table
+	private void getDataToTable() {
+		ArrayList<HopDong> dsHD = hd_Dao.getAllHopDong();
+		themTatCaHopDongVaoBang(dsHD);
+	}
+	//thêm một hợp đồng vào table 
+	private void themHopDongVaoBang(HopDong hd) {
+	    String[] row = new String[10];
+	    row[0] = String.valueOf(dtblModelHD.getRowCount() + 1);
+	    row[1] = hd.getMaHD();
+	    row[2] = hd.getTenHD();
+	    row[3] = hd.getTenKhachHang();
+	    row[4] = hd.getNguoiDaiDien().getMaNV();
+	    row[5] = new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayBatDau());
+	    row[6] = new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayKetThuc());
+	    row[7] = new DecimalFormat("#,###").format(hd.getGiaTriHD());
+	    row[8] = hd.isTrangThai() ? "Hoàn thành" : "Đang thực hiện";
+	    row[9] = hd.getGhiChu();
+	    dtblModelHD.addRow(row);
+	}
+	//thêm một ds hợp đồng vào bảng
+	private void themTatCaHopDongVaoBang(ArrayList<HopDong> list) {
+	    for (HopDong hd : list) {
+	        themHopDongVaoBang(hd);
+	    }
+	}
+	//Xóa hợp đồng được chọn
+	private void xoaHopDong() {
+		String maHD = txtMaHD.getText();
+		if(maHD != null) {
+			if(hd_Dao.xoaHopDong(maHD)) {
+				JOptionPane.showMessageDialog(this, "Xóa thành công!");
+			}else {
+				JOptionPane.showMessageDialog(this, "Xóa thất bại! Không tìm thấy hợp đồng!");
+			}
+		}else {
+			JOptionPane.showMessageDialog(this, "Xóa thất bại! Có lỗi xảy ra!");
+		}
+	}
+	//Hiển thị hợp đồng được chọn từ table lên bảng thông tin
+	private void hienThiThongTinHD(int index) {
+		txtMaHD.setText(dtblModelHD.getValueAt(index, 1).toString());
+		txtTenHD.setText(dtblModelHD.getValueAt(index, 2).toString());
+		txtTenKH.setText(dtblModelHD.getValueAt(index, 3).toString());
+		txtDaiDien.setText(dtblModelHD.getValueAt(index, 4).toString());
+		txtGiaTri.setText(dtblModelHD.getValueAt(index, 7).toString());
 	}
 }

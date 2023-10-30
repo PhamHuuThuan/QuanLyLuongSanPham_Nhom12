@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="lib/jasper_report_lib/jasperreports-5.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasper_report_lib/jasperreports-fonts-5.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/sqljdbc42.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
