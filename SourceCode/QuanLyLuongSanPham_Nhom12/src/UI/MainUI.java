@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -14,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import ConnectDB.ConnectDB;
+import Entity.NhanVien;
 import Util.ImportFont;
 import Util.LuuTru;
 import Util.SoundPlay;
@@ -29,28 +32,20 @@ public class MainUI extends JFrame {
 	public LuuTru l = new LuuTru();
 	public ResourceBundle read_file_languages = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
 	public ResourceBundle read_file_themes = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
-	
+	public NhanVien nv;
 	private JLabel clockLabel;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainUI frame = new MainUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public MainUI() {
+	public MainUI(NhanVien nv) {
+		this.nv = nv;
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		khoiTaoGiaTriDefault();
 		getFonts();
 		setTitle("TPT_FUNITURE");
@@ -65,7 +60,6 @@ public class MainUI extends JFrame {
 		setBounds(0, 0, 1500, 800);
 		add(new MenuUI(this), BorderLayout.NORTH);
 		add(pnlContent, BorderLayout.CENTER);
-		
 		
 	}
 	// import font chữ Roboto để sử dụng
