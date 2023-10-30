@@ -12,6 +12,7 @@ import Entity.HopDong;
 import Entity.NhanVien;
 
 public class HopDong_Dao {
+	//sửa hợp đồng trong csdl
 	public boolean suaHopDong(HopDong hd) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
@@ -20,7 +21,7 @@ public class HopDong_Dao {
 			Connection con = ConnectDB.getConnection();
 			st = con.prepareStatement("UPDATE HopDong SET tenHD=?, tenKH=?, maNguoiDaiDien=?, "
 					+ "ngayBatDau=?, ngayKetThuc=?, giaTriHopDong=?, tienCoc=?,"
-					+ "thoaThuan=?, trangThai=?, ghiChu=?, where MaHD=?");
+					+ "thoaThuan=?, trangThai=?, ghiChu=? where MaHD=?");
 			st.setString(1, hd.getTenHD());
 			st.setString(2, hd.getTenKhachHang());
 			st.setString(3, hd.getNguoiDaiDien().getMaNV());
@@ -46,6 +47,7 @@ public class HopDong_Dao {
 		}
 		return n>0;
 	}
+	//thêm hợp đồng trong csdl
 	public boolean themHopDong(HopDong hd) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
@@ -78,6 +80,7 @@ public class HopDong_Dao {
 		}
 		return n>0;
 	}
+	//get all hợp đồng trong csdl
 	public ArrayList<HopDong> getAllHopDong() {
 	    ArrayList<HopDong> list = new ArrayList<>();
 	    ConnectDB.getInstance();
@@ -103,6 +106,7 @@ public class HopDong_Dao {
 	    }
 	    return list;
 	}
+	//xóa hợp đồng trong csdl
 	public boolean xoaHopDong(String maHD) {
 	    ConnectDB.getInstance();
 	    PreparedStatement st = null;
@@ -123,4 +127,57 @@ public class HopDong_Dao {
 	    }
 	    return n > 0;
 	}
+	//get mã max trong csdl
+	public String getMaHDMax() {
+	    String maHDMax = null;
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        st = con.prepareStatement("SELECT MAX(maHD) AS MaHDMax FROM HopDong");
+	        ResultSet rs = st.executeQuery();
+	        if (rs.next()) {
+	            maHDMax = rs.getString("MaHDMax");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) {
+	                st.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return maHDMax;
+	}
+	public HopDong getHopDongTheoMa(String maHD) {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    HopDong hd = null;
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        st = con.prepareStatement("SELECT * FROM HopDong WHERE MaHD = ?");
+	        st.setString(1, maHD);
+	        ResultSet rs = st.executeQuery();
+	        if (rs.next()) {
+	            hd = new HopDong(rs.getString(1), rs.getString(2), rs.getString(3), new NhanVien(rs.getString(4)),
+	                    new java.util.Date(rs.getDate(5).getTime()), new java.util.Date(rs.getDate(6).getTime()),
+	                    rs.getDouble(7), rs.getDouble(8), rs.getString(9), rs.getBoolean(10), rs.getString(11));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) {
+	                st.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return hd;
+	}
+
 }
