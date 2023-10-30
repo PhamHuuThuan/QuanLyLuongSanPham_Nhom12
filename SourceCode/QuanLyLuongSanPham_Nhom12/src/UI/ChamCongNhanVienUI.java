@@ -162,7 +162,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		btnChamCongALL.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlPBvaTime.add(btnChamCongALL);
 		
-		String cols[] = {"Mã NV", "Họ tên", "Phòng ban", "Chức vụ"};
+		String cols[] = {"STT", "Mã NV", "Họ tên", "Phòng ban", "Chức vụ"};
 		dtblModelNV = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModelNV);
 
@@ -174,10 +174,11 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblNV.setTableHeader(tbhNV);
 		
 		tblNV.setRowHeight(20);
-		tblNV.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
 		tblNV.getColumnModel().getColumn(2).setPreferredWidth(150);
 		tblNV.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrNV = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -398,7 +399,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String colsPCNV[] = {"Mã NV", "Họ tên", "Phòng ban", "Ngày", "Ca làm", "Trạng thái", "Phép", "Giờ đến", "Tăng ca", "Ghi chú"};
+		String colsPCNV[] = {"STT", "Mã NV", "Họ tên", "Phòng ban", "Ngày", "Ca làm", "Trạng thái", "Phép", "Giờ đến", "Tăng ca", "Ghi chú"};
 		dtblModelNVPC = new DefaultTableModel(colsPCNV, 0);
 		tblDSCC = new JTable(dtblModelNVPC);
 
@@ -410,16 +411,17 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblDSCC.setTableHeader(tbhNVPC);
 		
 		tblDSCC.setRowHeight(20);
-		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(50);
 		tblDSCC.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(4).setPreferredWidth(75);
-		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(50);
-		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(75);
+		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(50);
 		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(9).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(10).setPreferredWidth(100);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

@@ -15,9 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 
@@ -27,20 +25,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
-import net.sf.jasperreports.engine.JRException;
 
 import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 
@@ -50,7 +41,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JTextField txtMaNV, txtMatKhau, txtTenKH, txtGiaTri, txtEmail, txtGhiChu;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn,btnFocus;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn, btnFocus;
 	private DefaultTableModel dtblModel;
 	private JTable tblNV;
 	private JTableHeader tbhNV;
@@ -381,7 +372,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		JPanel pnlBangNV = new JPanel();
 		pnlBangNV.setLayout(new BoxLayout(pnlBangNV, BoxLayout.X_AXIS));
 		add(pnlBangNV, BorderLayout.CENTER);
-		String cols[] = {"Mã NV", "Họ tên", "Giới tính", "Ngày sinh", "SDT", "Email", "CCCD", "Địa chỉ", "Ghi chú"};
+		String cols[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "Ngày sinh", "SDT", "Email", "CCCD", "Địa chỉ", "Ghi chú"};
 		dtblModel = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModel);
 		
@@ -393,15 +384,16 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		tblNV.setTableHeader(tbhNV);
 		
 		tblNV.setRowHeight(20);
-		tblNV.getColumnModel().getColumn(0).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(200);
-		tblNV.getColumnModel().getColumn(2).setPreferredWidth(175);
+		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(200);
 		tblNV.getColumnModel().getColumn(3).setPreferredWidth(175);
-		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(175);
 		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(6).setPreferredWidth(200);
-		tblNV.getColumnModel().getColumn(7).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(7).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(7).setPreferredWidth(200);
+		tblNV.getColumnModel().getColumn(8).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(9).setPreferredWidth(150);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng nhân viên
 		JScrollPane scrHD = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

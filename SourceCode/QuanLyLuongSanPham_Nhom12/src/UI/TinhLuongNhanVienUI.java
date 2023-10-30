@@ -9,8 +9,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import org.jdesktop.swingx.JXDatePicker;
-
 import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
@@ -23,10 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -34,15 +30,10 @@ import javax.swing.BoxLayout;
 import javax.swing.Box;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-
 import java.awt.Dimension;
-import javax.swing.SwingConstants;
-import java.awt.Component;
 
 public class TinhLuongNhanVienUI extends JPanel implements ActionListener, MouseListener{
 	private MainUI main;
@@ -179,7 +170,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		btnTinhLuongALL.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlPBvaTime.add(btnTinhLuongALL);
 		
-		String cols[] = {"Mã NV", "Họ tên", "Phòng ban", "Chức vụ"};
+		String cols[] = {"STT", "Mã NV", "Họ tên", "Phòng ban", "Chức vụ"};
 		dtblModelNV = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModelNV);
 
@@ -191,10 +182,11 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		tblNV.setTableHeader(tbhNV);
 		
 		tblNV.setRowHeight(20);
-		tblNV.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
 		tblNV.getColumnModel().getColumn(2).setPreferredWidth(150);
 		tblNV.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrNV = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -386,7 +378,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String colsPCNV[] = {"Mã NV", "Họ tên", "Chức vụ", "Làm", "Nghỉ", "Phép", "Lương tháng", "Tăng ca", "Phụ cấp", "Thực lãnh"};
+		String colsPCNV[] = {"STT", "Mã NV", "Họ tên", "Chức vụ", "Làm", "Nghỉ", "Phép", "Lương tháng", "Tăng ca", "Phụ cấp", "Thực lãnh"};
 		dtblModelNVPC = new DefaultTableModel(colsPCNV, 0);
 		tblNVPC = new JTable(dtblModelNVPC);
 
@@ -398,16 +390,17 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		tblNVPC.setTableHeader(tbhNVPC);
 		
 		tblNVPC.setRowHeight(20);
-		tblNVPC.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tblNVPC.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(2).setPreferredWidth(75);
-		tblNVPC.getColumnModel().getColumn(3).setPreferredWidth(50);
+		tblNVPC.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblNVPC.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblNVPC.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblNVPC.getColumnModel().getColumn(3).setPreferredWidth(75);
 		tblNVPC.getColumnModel().getColumn(4).setPreferredWidth(50);
 		tblNVPC.getColumnModel().getColumn(5).setPreferredWidth(50);
-		tblNVPC.getColumnModel().getColumn(6).setPreferredWidth(100);
+		tblNVPC.getColumnModel().getColumn(6).setPreferredWidth(50);
 		tblNVPC.getColumnModel().getColumn(7).setPreferredWidth(100);
 		tblNVPC.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblNVPC.getColumnModel().getColumn(9).setPreferredWidth(100);
+		tblNVPC.getColumnModel().getColumn(10).setPreferredWidth(100);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblNVPC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

@@ -15,6 +15,7 @@ import java.awt.Insets;
 import javax.swing.border.MatteBorder;
 
 import CustomUI.RoundedButton;
+import Entity.NhanVien;
 
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
@@ -23,6 +24,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -247,7 +249,8 @@ public class Login_UI extends JFrame {
 
 	private void openViewHome() {
 		this.dispose();
-		MainUI goPageMenu = new MainUI();
+		NhanVien nv = new NhanVien("NV00001", "123456a@", "123", false, new java.util.Date(Date.UTC(103, 4, 14, 0, 0, 0)), "+84123456789", "", "", "", "");
+		MainUI goPageMenu = new MainUI(nv);
 //		ViewHome goPageMenu =  new ViewHome();
 		goPageMenu.setVisible(true);
 	}
