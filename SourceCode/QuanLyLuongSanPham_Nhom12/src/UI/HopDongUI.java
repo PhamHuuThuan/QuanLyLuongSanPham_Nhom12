@@ -792,9 +792,11 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		if(o == btnHuy) {
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
-			if(isThem == true)
-				xoaHopDong();
-			xoaRong();
+			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thoát? Toàn bộ thông tin thay đổi sẽ mất", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				if(isThem == true)
+					xoaHopDongTamThoi();
+				xoaRong();
+			}
 		}
 		if(o == btnThemSP) {
 			themSanpham();
@@ -985,25 +987,29 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
         return text;
     }
 	private void xuatHopDong() {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		String giaTriHD = txtGiaTri.getText() + lblGiaTriText.getText();
-		String tienCocHD = txtTienCoc.getText() + lblTienCocText.getText();
-		XuatHopDongForm hd = new XuatHopDongForm("Gò Vấp, ngày "+ LocalDate.now().getDayOfMonth() + " tháng " + LocalDate.now().getMonthValue() + " năm " + LocalDate.now().getYear(), 
-				txtMaHD.getText(), 
-				txtTenHD.getText(), 
-				txtTenKH.getText(), 
-				txtDaiDien.getText(), 
-				txtThoaThuan.getText(),
-				formatter.format(dtpBatDau.getDate()), 
-				formatter.format(dtpKetThuc.getDate()), 
-				giaTriHD, 
-				tienCocHD);
-		try {
-			xf.xuatHD(hd);
-			main.music.playSE(1);
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(tblHD.getSelectedRow()!=-1) {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			String giaTriHD = txtGiaTri.getText() + lblGiaTriText.getText();
+			String tienCocHD = txtTienCoc.getText() + lblTienCocText.getText();
+			XuatHopDongForm hd = new XuatHopDongForm("Gò Vấp, ngày "+ LocalDate.now().getDayOfMonth() + " tháng " + LocalDate.now().getMonthValue() + " năm " + LocalDate.now().getYear(), 
+					txtMaHD.getText(), 
+					txtTenHD.getText(), 
+					txtTenKH.getText(), 
+					txtDaiDien.getText(), 
+					txtThoaThuan.getText(),
+					formatter.format(dtpBatDau.getDate()), 
+					formatter.format(dtpKetThuc.getDate()), 
+					giaTriHD, 
+					tienCocHD);
+			try {
+				xf.xuatHD(hd);
+				main.music.playSE(1);
+			} catch (JRException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			setTextError("Bạn phải chọn hợp đồng để xuất!");
 		}
 	}
 	//Hàm get dữ liệu trên txt ra đối tượng hợp đồng
@@ -1091,7 +1097,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private void xoaHopDong() {
 		String maHD = txtMaHD.getText();
 		if(maHD != null) {
-			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa hợp đồng đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				if(hd_Dao.xoaHopDong(maHD)) {
 					lblMessage.setText("Xóa thành công!");
 					dsHD = hd_Dao.getAllHopDong();
@@ -1254,20 +1260,24 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	// sửa một sản phẩm được chọn
 	private void suaSanPham() {
-		if(validDataSP()==true) {
-			SanPham spNew = convertDataToSanPham();
-			if(spNew != null) {
-				if(sp_Dao.suaSanPham(spNew)) {
-					dsSP.set(tblSP.getSelectedRow(), spNew);
-					themTatCaSanPhamVaoBang(dsSP);
-					lblMessage.setText("Sửa thành công sản phẩm!");
-					xoaRongSP();
+		if(tblSP.getSelectedRow()!=-1) {
+			if(validDataSP()==true) {
+				SanPham spNew = convertDataToSanPham();
+				if(spNew != null) {
+					if(sp_Dao.suaSanPham(spNew)) {
+						dsSP.set(tblSP.getSelectedRow(), spNew);
+						themTatCaSanPhamVaoBang(dsSP);
+						lblMessage.setText("Sửa thành công sản phẩm!");
+						xoaRongSP();
+					}else {
+						setTextError("Sửa sản phẩm thất bại! Không tìm thấy trong csdl!");
+					}
 				}else {
-					setTextError("Sửa sản phẩm thất bại! Không tìm thấy trong csdl!");
+					setTextError("Sửa sản phẩm thất bại! Có lỗi xảy ra!");
 				}
-			}else {
-				setTextError("Sửa sản phẩm thất bại! Có lỗi xảy ra!");
 			}
+		}else {
+			setTextError("Bạn cần chọn một sản phẩm cần sửa!");
 		}
 	}
 	//get dữ liệu từ csdl lên table
@@ -1320,6 +1330,16 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			}else {
 				setTextError("Có lỗi xảy ra!");
 			}
+		}
+	}
+	//xóa hợp đồng thạm thời
+	private void xoaHopDongTamThoi() {
+		String maHD = txtMaHD.getText();
+		if(maHD != null) {
+				if(hd_Dao.xoaHopDong(maHD)) {
+				}
+		}else {
+			setTextError("Có lỗi xảy ra!");
 		}
 	}
 	private void setTextError(String message) {
