@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private Font fontText;
 	private HopDong_Dao hd_Dao = new HopDong_Dao();
 	private boolean isThem = false;
+	private ArrayList<HopDong> dsHD = new ArrayList<>();
 	/**
 	 * Create the panel.
 	 */
@@ -529,6 +531,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		cmbTrangThai.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbTrangThai.addItem(main.read_file_languages.getString("lblTrangThai1"));
+		cmbTrangThai.addItem("Hoàn thành");
 		b7.add(cmbTrangThai);
 		cmbTrangThai.setBackground(bgColor);
 		cmbTrangThai.setForeground(textColor);
@@ -941,7 +944,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//get dữ liệu từ csdl lên table
 	private void getDataToTable() {
-		ArrayList<HopDong> dsHD = hd_Dao.getAllHopDong();
+		dsHD = hd_Dao.getAllHopDong();
 		themTatCaHopDongVaoBang(dsHD);
 	}
 	//thêm một hợp đồng vào table 
@@ -980,10 +983,31 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//Hiển thị hợp đồng được chọn từ table lên bảng thông tin
 	private void hienThiThongTinHD(int index) {
-		txtMaHD.setText(dtblModelHD.getValueAt(index, 1).toString());
-		txtTenHD.setText(dtblModelHD.getValueAt(index, 2).toString());
-		txtTenKH.setText(dtblModelHD.getValueAt(index, 3).toString());
-		txtDaiDien.setText(dtblModelHD.getValueAt(index, 4).toString());
+		txtMaHD.setText(dsHD.get(index).getMaHD());
+		txtTenHD.setText(dsHD.get(index).getTenHD());
+		txtTenKH.setText(dsHD.get(index).getTenKhachHang());
+		txtDaiDien.setText(dsHD.get(index).getNguoiDaiDien().getHoTen());
+		
+		String dateString = (String) dtblModelHD.getValueAt(index, 5); // Lấy chuỗi ngày từ bảng
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+		    java.util.Date date = formatter.parse(dateString); // Chuyển đổi chuỗi thành java.util.Date
+		    dtpBatDau.setDate(date); // Đặt giá trị cho JXDatePicker
+		} catch (ParseException e) {
+		    e.printStackTrace();
+		}
+
+		dateString = (String) dtblModelHD.getValueAt(index, 6); // Lấy chuỗi ngày từ bảng
+		try {
+		    java.util.Date date = formatter.parse(dateString); // Chuyển đổi chuỗi thành java.util.Date
+		    dtpKetThuc.setDate(date); // Đặt giá trị cho JXDatePicker
+		} catch (ParseException e) {
+		    e.printStackTrace();
+		}
+		
 		txtGiaTri.setText(dtblModelHD.getValueAt(index, 7).toString());
+		txtTienCoc.setText(new DecimalFormat("#,###").format(dsHD.get(index).getTienCoc()));
+		cmbTrangThai.setSelectedIndex(dsHD.get(index).isTrangThai()?1:0);
+		txtGhiChu.setText(dsHD.get(index).getGhiChu());
 	}
 }
