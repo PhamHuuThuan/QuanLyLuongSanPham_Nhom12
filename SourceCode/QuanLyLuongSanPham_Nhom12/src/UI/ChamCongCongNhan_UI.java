@@ -55,6 +55,7 @@ public class ChamCongCongNhan_UI extends JPanel {
 	private JTable tblDSCC,tblCN;
 	private JTableHeader tbhCN,tbhCNCC;
 	private RoundedButton btnXuat,btnChamCong,btnChamLai,btnXoa ;
+	private JTextField txtTTMaCongDoan;
 	
 	public ChamCongCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -248,6 +249,21 @@ public class ChamCongCongNhan_UI extends JPanel {
 		box_r1.add(txtTTSanPham);
 		txtTTSanPham.setColumns(10);
 		
+		Component horizontalStrut_19 = Box.createHorizontalStrut(20);
+		box_r1.add(horizontalStrut_19);
+		
+		JLabel lblTTMaCongDoan = new JLabel("Mã CĐ");
+		box_r1.add(lblTTMaCongDoan);
+		
+		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
+		box_r1.add(horizontalStrut_20);
+		
+		txtTTMaCongDoan = new JTextField();
+		txtTTMaCongDoan.setText("CD00001");
+		txtTTMaCongDoan.setEditable(false);
+		box_r1.add(txtTTMaCongDoan);
+		txtTTMaCongDoan.setColumns(10);
+		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		box_r1.add(horizontalStrut_1);
 		
@@ -259,9 +275,8 @@ public class ChamCongCongNhan_UI extends JPanel {
 		
 		cmbTrangThai = new JComboBox<>();
 		cmbTrangThai.addItem("Làm đầy đủ");
-		cmbTrangThai.addItem("Trễ làm");
-		cmbTrangThai.addItem("Nghỉ");
 		cmbTrangThai.addItem("Nghỉ phép");
+		cmbTrangThai.addItem("Nghỉ");
 		box_r1.add(cmbTrangThai);
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
@@ -387,7 +402,7 @@ public class ChamCongCongNhan_UI extends JPanel {
 		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(80);
 		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(50);
 		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(70);
-		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(90);
+		tblDSCC.getColumnModel().getColumn(9).setPreferredWidth(90);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

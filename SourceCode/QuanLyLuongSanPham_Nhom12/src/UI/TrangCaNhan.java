@@ -22,6 +22,7 @@ import java.awt.Panel;
 import javax.swing.border.TitledBorder;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -169,6 +170,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		pnlBoxInfor.add(panel_1, BorderLayout.SOUTH);
 
 		btnEditInfo = new RoundedButton("Cập nhật thông tin cá nhân", null, 15, 0, 2f);
+		btnEditInfo.setOpaque(false);
 		btnEditInfo.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnEditInfo.setForeground(Color.decode("#FFFFFF"));
 		btnEditInfo.setBackground(Color.decode("#424242"));
@@ -189,9 +191,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		Panel pnlHandle = new Panel();
 		pnlHandle.setBackground(new Color(255, 255, 255));
 		pnlControl.add(pnlHandle, BorderLayout.SOUTH);
-		FlowLayout fl_pnlHandle = new FlowLayout(FlowLayout.CENTER, 90, 10);
-		fl_pnlHandle.setAlignOnBaseline(true);
-		pnlHandle.setLayout(fl_pnlHandle);
+		pnlHandle.setLayout(new FlowLayout(FlowLayout.CENTER, 70, 5));
 
 		JLabel lblVersion = new JLabel("Version 2.1.0");
 		lblVersion.setFont(main.roboto_regular.deriveFont(Font.ITALIC, 17F));
@@ -202,6 +202,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		btnLogOut.setForeground(Color.WHITE);
 		btnLogOut.setBackground(new Color(186, 81, 69));
 		btnLogOut.setIcon(new ImageScaler("/image/icon_logout.png", 30, 30).getScaledImageIcon());
+		btnLogOut.setVisible(true);
 
 		pnlHandle.add(btnLogOut);
 
