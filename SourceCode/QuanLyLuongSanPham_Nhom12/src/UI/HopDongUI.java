@@ -13,6 +13,7 @@ import javax.swing.table.JTableHeader;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -42,8 +44,11 @@ import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.HopDong_Dao;
+import Dao.SanPham_Dao;
 import Entity.HopDong;
 import Entity.NhanVien;
+import Entity.SanPham;
+import Util.SinhMaTuDong;
 import Util.XuatForm;
 import Util.XuatHopDongForm;
 import net.sf.jasperreports.engine.JRException;
@@ -60,26 +65,31 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JTextField txtMaHD, txtTenHD, txtTenKH, txtDaiDien, txtGiaTri, txtTienCoc, txtThoaThuan, txtGhi, txtMaSP, txtTenSP, txtDonGia, txtGhiChu;
-	private RoundedButton btnThemHD, btnSuaHD, btnXoaHD, btnThemSP, btnSuaSP, btnXoaSP, btnLuu, btnHuy, btnIn, btnFocus;
+	private RoundedButton btnThemHD, btnSuaHD, btnXoaHD, btnThemSP, btnSuaSP, btnXoaSP, btnLuu, btnHuy, btnIn, btnFocus, btnXoaRong;
 	private DefaultTableModel dtblModelHD, dtblModelSP;
 	private JTable tblHD, tblSP;
 	private JTableHeader tbhHD, tbhSP;
 	private JPanel pnlChucNang;
-	private JComboBox cmbTrangThai;
+	private JComboBox cmbTrangThai, cmbDVT;
+	private JTextArea txaYeuCau;
 	private JXDatePicker dtpBatDau, dtpKetThuc;
-	private JLabel lblGiaTriText, lblTienCocText;
+	private JLabel lblGiaTriText, lblTienCocText, lblMessage;
+	private JSpinner spnSoLuong;
+	private SpinnerNumberModel modelSPN;
 	private XuatForm xf;
 	private Font fontText;
 	private HopDong_Dao hd_Dao = new HopDong_Dao();
+	private SanPham_Dao sp_Dao = new SanPham_Dao();
 	private boolean isThem = false;
 	private ArrayList<HopDong> dsHD = new ArrayList<>();
+	private ArrayList<SanPham> dsSP = new ArrayList<>();
 	/**
 	 * Create the panel.
 	 */
 	public HopDongUI(MainUI main) {
 		this.main = main;
 		xf = new XuatForm();
-		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 13F);
+		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 14F);
 		
 		//set gia tri cho jpanel HopDong
 		setLayout(new BorderLayout(0, 0));
@@ -104,106 +114,104 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlNorth.add(pnlThongTinSP, BorderLayout.EAST);
 		
 		// Tao box chua cac phan tu hang 1: maHD, ma SP, tenSP
-		Box b1 = Box.createHorizontalBox();
-		pnlThongTinSP.add(b1);
+		JPanel pnlB1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB1.setBackground(bgColor);
+		pnlThongTinSP.add(pnlB1);
 		
 		JLabel lblMaSP = new JLabel(main.read_file_languages.getString("lblMaSP") + ":");
 		lblMaSP.setForeground(textColor);
 		lblMaSP.setFont(fontText);
-		b1.add(lblMaSP);
-		b1.add(Box.createHorizontalStrut(5));
+		pnlB1.add(lblMaSP);
+		pnlB1.add(Box.createHorizontalStrut(5));
 		
 		txtMaSP = new JTextField();
 		txtMaSP.setForeground(textColor);
 		txtMaSP.setFont(fontText);
+		txtMaSP.setColumns(7);
 		txtMaSP.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 10, 2, 10)));
 		txtMaSP.setBackground(bgColor);
-		b1.add(txtMaSP);
-		b1.add(Box.createHorizontalStrut(10));
+		pnlB1.add(txtMaSP);
+		pnlB1.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblTenSP = new JLabel(main.read_file_languages.getString("lblTenSP") + ":");
 		lblTenSP.setForeground(textColor);
 		lblTenSP.setFont(fontText);
-		b1.add(lblTenSP);
-		b1.add(Box.createHorizontalStrut(5));
+		pnlB1.add(lblTenSP);
+		pnlB1.add(Box.createHorizontalStrut(5));
 		
 		txtTenSP = new JTextField();
 		txtTenSP.setForeground(textColor);
 		txtTenSP.setFont(fontText);
+		txtTenSP.setColumns(10);
 		txtTenSP.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 10, 2, 10)));
 		txtTenSP.setBackground(bgColor);
-		b1.add(txtTenSP);
+		pnlB1.add(txtTenSP);
 		
 		pnlThongTinSP.add(Box.createVerticalStrut(20));
 		
 		//Tao box chua thong tin san pham
 		
-		Box b2 = Box.createHorizontalBox();
-		b2.setBackground(bgColor);
-		pnlThongTinSP.add(b2);
+		JPanel pnlB2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB2.setBackground(bgColor);
+		pnlThongTinSP.add(pnlB2);
 		
 		JLabel lblDVT = new JLabel(main.read_file_languages.getString("lblDVT") + ":");
 		lblDVT.setForeground(textColor);
 		lblDVT.setFont(fontText);
-		b2.add(lblDVT);
+		pnlB2.add(lblDVT);
 		
-		b2.add(Box.createHorizontalStrut(5));
-		
-		JComboBox cmbDVT = new JComboBox();
+		cmbDVT = new JComboBox();
 		cmbDVT.setModel(new DefaultComboBoxModel(new String[] {"Cái", "Bộ", "Đôi(Cặp)", "Hộp", "Gói", "M2", "Kg", "Lít"}));
 		Border cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		cmbDVT.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
-				BorderFactory.createEmptyBorder(0, 5, 0, 5));
+				BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		cmbDVT.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbDVT.setBackground(bgColor);
 		cmbDVT.setForeground(textColor);
 		cmbDVT.setFont(fontText);
-		b2.add(cmbDVT);
+		pnlB2.add(cmbDVT);
 
-		b2.add(Box.createHorizontalStrut(10));
+		pnlB2.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblDonGia = new JLabel(main.read_file_languages.getString("lblDonGia") + ":");
 		lblDonGia.setForeground(textColor);
 		lblDonGia.setFont(fontText);
-		b2.add(lblDonGia);
-		
-		b2.add(Box.createHorizontalStrut(5));
+		pnlB2.add(lblDonGia);
 		
 		txtDonGia = new JTextField();
 		txtDonGia.setForeground(textColor);
 		txtDonGia.setFont(fontText);
+		txtDonGia.setColumns(6);
 		txtDonGia.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtDonGia.setBackground(bgColor);
-		b2.add(txtDonGia);
+		pnlB2.add(txtDonGia);
 		
 		JLabel lblVND2 = new JLabel("VNĐ");
 		lblVND2.setForeground(textColor);
 		lblVND2.setFont(fontText);
-		b2.add(lblVND2);
+		pnlB2.add(lblVND2);
 		
-		b2.add(Box.createHorizontalStrut(10));
+		pnlB2.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblSoLuong = new JLabel(main.read_file_languages.getString("lblSoLuong") + ":");
 		lblSoLuong.setForeground(textColor);
 		lblSoLuong.setFont(fontText);
-		b2.add(lblSoLuong);
+		pnlB2.add(lblSoLuong);
 		
-		b2.add(Box.createHorizontalStrut(5));
-		
-		SpinnerNumberModel model = new SpinnerNumberModel(100, 1, 100000, 100);
-		JSpinner spnSoLuong = new JSpinner(model);
+		modelSPN = new SpinnerNumberModel(100, 1, 100000, 100);
+		spnSoLuong = new JSpinner(modelSPN);
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		spnSoLuong.setBorder(cboBorder);
 		spnSoLuong.setBackground(bgColor);
 		spnSoLuong.setForeground(textColor);
-		spnSoLuong.setFont(fontText);
-		b2.add(spnSoLuong);
+		spnSoLuong.setFont(fontText.deriveFont(12F));
+		pnlB2.add(spnSoLuong);
 		
 		pnlThongTinSP.add(Box.createVerticalStrut(20));
 		
@@ -216,7 +224,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		b3.add(lblYeuCau);
 		b3.add(Box.createHorizontalStrut(35));
 		
-		JTextArea txaYeuCau = new JTextArea();
+		txaYeuCau = new JTextArea();
 		txaYeuCau.setRows(3);
 		txaYeuCau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -257,6 +265,15 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnXoaSP.setIcon(new ImageScaler("/image/deleteHD_Icon.png", 20, 20).getScaledImageIcon());
 		btnXoaSP.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		b8.add(btnXoaSP);
+		b8.add(Box.createHorizontalStrut(25));
+		
+		btnXoaRong = new RoundedButton("", null, 15, 0, 1.0f);
+		btnXoaRong.setFont(fontText);
+		btnXoaRong.setForeground(Color.WHITE);
+		btnXoaRong.setBackground(Color.decode("#17a2b8"));
+		btnXoaRong.setIcon(new ImageScaler("/image/refresh-arrow_white_icon.png", 20, 20).getScaledImageIcon());
+		btnXoaRong.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		b8.add(btnXoaRong);
 		
 		// tạo jpanel chứa table sản phẩm
 		JPanel pnlBangSP = new JPanel();
@@ -268,7 +285,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				main.read_file_languages.getString("lblTenSP"), 
 				main.read_file_languages.getString("lblSoLuong"), 
 				main.read_file_languages.getString("lblDonGia")};
-		dtblModelSP = new DefaultTableModel(cols, 4);
+		dtblModelSP = new DefaultTableModel(cols, 0);
 		tblSP = new JTable(dtblModelSP);
 		
 		tbhSP = new JTableHeader(tblSP.getColumnModel());
@@ -320,82 +337,81 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		pnlHopDong.add(pnThongTinHD, BorderLayout.CENTER);
 		
 		// Tao box chua cac phan tu hang 1: maHD, tenHD, tenKH, nguoiDaiDien
-		Box b4 = Box.createHorizontalBox();
-		pnThongTinHD.add(b4);
+		JPanel pnlB4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB4.setBackground(bgColor);
+		pnThongTinHD.add(pnlB4);
 		
 		JLabel lblMaHD = new JLabel(main.read_file_languages.getString("lblMaHD") + ":");
 		lblMaHD.setFont(fontText);
 		lblMaHD.setForeground(textColor);
-		b4.add(lblMaHD);
-		b4.add(Box.createHorizontalStrut(5));
+		pnlB4.add(lblMaHD);
 		
 		txtMaHD = new JTextField();
 		txtMaHD.setFont(fontText);
 		txtMaHD.setForeground(textColor);
 		txtMaHD.setBackground(bgColor);
+		txtMaHD.setColumns(10);
 		txtMaHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
-		b4.add(txtMaHD);
-		b4.add(Box.createHorizontalStrut(10));
+		pnlB4.add(txtMaHD);
+		pnlB4.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblTenHD = new JLabel(main.read_file_languages.getString("lblTenHD") + ":");
 		lblTenHD.setForeground(textColor);
 		lblTenHD.setFont(fontText);
-		b4.add(lblTenHD);
-		b4.add(Box.createHorizontalStrut(10));
+		pnlB4.add(lblTenHD);
 		
 		txtTenHD = new JTextField();
 		txtTenHD.setForeground(textColor);
 		txtTenHD.setFont(fontText);
+		txtTenHD.setColumns(12);
 		txtTenHD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTenHD.setBackground(bgColor);
-		b4.add(txtTenHD);
-		b4.add(Box.createHorizontalStrut(30));
+		pnlB4.add(txtTenHD);
+		pnlB4.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblTenKH = new JLabel(main.read_file_languages.getString("lblKH") + ":");
 		lblTenKH.setForeground(textColor);
 		lblTenKH.setFont(fontText);
-		b4.add(lblTenKH);
-		b4.add(Box.createHorizontalStrut(10));
+		pnlB4.add(lblTenKH);
 		
 		txtTenKH = new JTextField();
 		txtTenKH.setForeground(textColor);
 		txtTenKH.setFont(fontText);
+		txtTenKH.setColumns(12);
 		txtTenKH.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTenKH.setBackground(bgColor);
-		b4.add(txtTenKH);
+		pnlB4.add(txtTenKH);
 		
-		pnThongTinHD.add(Box.createVerticalStrut(20));
+		pnThongTinHD.add(Box.createVerticalStrut(10));
 		
 		//Tao box chua thong tin hang 2: ngayBD, ngayKT, giatri, tiencoc
-		Box b5 = Box.createHorizontalBox();
-		pnThongTinHD.add(b5);
+		JPanel pnlB5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB5.setBackground(bgColor);
+		pnThongTinHD.add(pnlB5);
 		
 		JLabel lblDaiDien = new JLabel(main.read_file_languages.getString("lblDaiDien") + ":");
 		lblDaiDien.setForeground(textColor);
 		lblDaiDien.setFont(fontText);
-		b5.add(lblDaiDien);
-		b5.add(Box.createHorizontalStrut(10));
+		pnlB5.add(lblDaiDien);
 		
 		txtDaiDien = new JTextField();
 		txtDaiDien.setForeground(textColor);
 		txtDaiDien.setFont(fontText);
+		txtDaiDien.setColumns(10);
 		txtDaiDien.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtDaiDien.setBackground(bgColor);
-		b5.add(txtDaiDien);
-		
-		b5.add(Box.createHorizontalStrut(30));
+		pnlB5.add(txtDaiDien);
+		pnlB5.add(Box.createHorizontalStrut(20));
 		
 		// ngay bat dau
 		JLabel lblNgayBD = new JLabel(main.read_file_languages.getString("lblNgayBD") + ":");
 		lblNgayBD.setForeground(textColor);
 		lblNgayBD.setFont(fontText);
-		b5.add(lblNgayBD);
-		
-		b5.add(Box.createHorizontalStrut(10));
+		pnlB5.add(lblNgayBD);
 		
 		dtpBatDau = new JXDatePicker(new Date());
 		dtpBatDau.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
@@ -410,18 +426,15 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpBatDau.getEditor().setBackground(bgColor);
 		dtpBatDau.getEditor().setForeground(textColor);
-		b5.add(dtpBatDau);
+		pnlB5.add(dtpBatDau);
 		
-		b5.add(Box.createHorizontalStrut(30));
+		pnlB5.add(Box.createHorizontalStrut(20));
 		
 		// ngay ket thuc
 		JLabel lblNgayKetThuc = new JLabel(main.read_file_languages.getString("lblNgayKT") + ":");
 		lblNgayKetThuc.setForeground(textColor);
 		lblNgayKetThuc.setFont(fontText);
-		b5.add(lblNgayKetThuc);
-		
-		b5.add(Box.createHorizontalStrut(10));
-		
+		pnlB5.add(lblNgayKetThuc);
 		
 		dtpKetThuc = new JXDatePicker(new Date());
 		dtpKetThuc.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
@@ -436,92 +449,91 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnDateKT.setBackground(bgColor);
 		btnDateKT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		b5.add(dtpKetThuc);
+		pnlB5.add(dtpKetThuc);
 		
 		pnThongTinHD.add(Box.createVerticalStrut(20));
 		
 		//Tạo box chứa thông tin hàng 3: thỏa thuận, trạng thái, ghi chú
-		Box b6 = Box.createHorizontalBox();
-		pnThongTinHD.add(b6);
+		JPanel pnlB6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB6.setBackground(bgColor);
+		pnThongTinHD.add(pnlB6);
 		
 		JLabel lblGiaTri = new JLabel(main.read_file_languages.getString("lblGiaTri") + ":");
 		lblGiaTri.setForeground(textColor);
 		lblGiaTri.setFont(fontText);
-		b6.add(lblGiaTri);
-		b6.add(Box.createHorizontalStrut(10));
+		pnlB6.add(lblGiaTri);
 		
 		txtGiaTri = new JTextField();
 		txtGiaTri.setForeground(textColor);
 		txtGiaTri.setFont(fontText);
+		txtGiaTri.setColumns(10);
 		txtGiaTri.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtGiaTri.setBackground(bgColor);
-		b6.add(txtGiaTri);
+		pnlB6.add(txtGiaTri);
 		
 		JLabel lblVND1 = new JLabel("VNĐ");
 		lblVND1.setForeground(textColor);
 		lblVND1.setFont(fontText);
-		b6.add(lblVND1);
+		pnlB6.add(lblVND1);
 		
 		lblGiaTriText = new JLabel("");
 		lblGiaTriText.setForeground(textColor);
 		lblGiaTriText.setFont(fontText);
-		b6.add(lblGiaTriText);
+		pnlB6.add(lblGiaTriText);
 
-		b6.add(Box.createHorizontalStrut(30));
+		pnlB6.add(Box.createHorizontalStrut(20));
 		
 		JLabel lblTienCoc = new JLabel(main.read_file_languages.getString("lblTienCoc") + ":");
 		lblTienCoc.setForeground(textColor);
 		lblTienCoc.setFont(fontText);
-		b6.add(lblTienCoc);
-		
-		b6.add(Box.createHorizontalStrut(10));
+		pnlB6.add(lblTienCoc);
 		
 		txtTienCoc = new JTextField();
 		txtTienCoc.setForeground(textColor);
 		txtTienCoc.setFont(fontText);
+		txtTienCoc.setColumns(12);
 		txtTienCoc.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTienCoc.setBackground(bgColor);
-		b6.add(txtTienCoc);
+		pnlB6.add(txtTienCoc);
 		
 		JLabel lblVND3 = new JLabel("VNĐ");
 		lblVND3.setForeground(textColor);
 		lblVND3.setFont(fontText);
-		b6.add(lblVND3);
+		pnlB6.add(lblVND3);
 		
 		lblTienCocText = new JLabel("");
 		lblTienCocText.setForeground(textColor);
 		lblTienCocText.setFont(fontText);
-		b6.add(lblTienCocText);
-		b6.add(Box.createHorizontalStrut(30));
+		pnlB6.add(lblTienCocText);
+		pnlB6.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblThoaThuan = new JLabel(main.read_file_languages.getString("lblThoaThuan") + ":");
 		lblThoaThuan.setForeground(Color.BLACK);
 		lblThoaThuan.setFont(fontText);
-		b6.add(lblThoaThuan);
-		
-		Component horizontalStrut = Box.createHorizontalStrut(10);
-		b6.add(horizontalStrut);
+		pnlB6.add(lblThoaThuan);
 		
 		txtThoaThuan = new JTextField();
 		txtThoaThuan.setForeground(Color.BLACK);
 		txtThoaThuan.setFont(fontText);
+		txtThoaThuan.setColumns(12);
 		txtThoaThuan.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtThoaThuan.setBackground(Color.WHITE);
-		b6.add(txtThoaThuan);
+		pnlB6.add(txtThoaThuan);
 		
-		Box b7 = Box.createHorizontalBox();
+		JPanel pnlB7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlB7.setBackground(bgColor);
 		pnThongTinHD.add(Box.createVerticalStrut(20));
-		pnThongTinHD.add(b7);
+		pnThongTinHD.add(pnlB7);
 		
 		JLabel lblTrangThai = new JLabel(main.read_file_languages.getString("lblTrangThai") + ":");
 		lblTrangThai.setForeground(Color.BLACK);
 		lblTrangThai.setFont(fontText);
-		b7.add(lblTrangThai);
+		pnlB7.add(lblTrangThai);
 		
-		b7.add(Box.createHorizontalStrut(10));
+		pnlB7.add(Box.createHorizontalStrut(10));
 		
 		cmbTrangThai = new JComboBox();
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
@@ -532,30 +544,40 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		cmbTrangThai.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
 		cmbTrangThai.addItem(main.read_file_languages.getString("lblTrangThai1"));
 		cmbTrangThai.addItem("Hoàn thành");
-		b7.add(cmbTrangThai);
+		pnlB7.add(cmbTrangThai);
 		cmbTrangThai.setBackground(bgColor);
 		cmbTrangThai.setForeground(textColor);
 		cmbTrangThai.setFont(fontText);
 		
 		Component horizontalStrut_3 = Box.createHorizontalStrut(30);
-		b7.add(horizontalStrut_3);
+		pnlB7.add(horizontalStrut_3);
 		
 		JLabel lblGhiChu = new JLabel(main.read_file_languages.getString("lblGhiChu") + ":");
 		lblGhiChu.setForeground(textColor);
 		lblGhiChu.setFont(fontText);
-		b7.add(lblGhiChu);
+		pnlB7.add(lblGhiChu);
 		
-		b7.add(Box.createHorizontalStrut(10));
+		pnlB7.add(Box.createHorizontalStrut(10));
 		
 		txtGhiChu = new JTextField();
 		txtGhiChu.setForeground(textColor);
 		txtGhiChu.setFont(fontText);
+		txtGhiChu.setColumns(34);
 		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 				BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtGhiChu.setBackground(bgColor);
-		b7.add(txtGhiChu);
+		pnlB7.add(txtGhiChu);
 		
-		pnThongTinHD.add(Box.createVerticalStrut(20));
+		pnThongTinHD.add(Box.createVerticalStrut(10));
+		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlMessage.setBackground(bgColor);
+		pnThongTinHD.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel());
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(fontText.deriveFont(Font.ITALIC));
+		
+		pnThongTinHD.add(Box.createVerticalStrut(10));
 		
 		//Khởi tạo jpanel chức năng chứa các button chức năng: thêm, sửa, xóa, xuất, lưu, hủy
 		pnlChucNang = new JPanel();
@@ -658,12 +680,17 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		JScrollPane scrHD = new JScrollPane(tblHD,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangHD.add(scrHD);
 		
+		//add sự kiện cho các component
 		btnThemHD.addActionListener(this);
 		btnSuaHD.addActionListener(this);
 		btnXoaHD.addActionListener(this);
 		btnIn.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
+		btnThemSP.addActionListener(this);
+		btnSuaSP.addActionListener(this);
+		btnXoaSP.addActionListener(this);
+		btnXoaRong.addActionListener(this);
 		
 		btnThemHD.addMouseListener(this);
 		btnSuaHD.addMouseListener(this);
@@ -672,6 +699,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
 		tblHD.addMouseListener(this);
+		tblSP.addMouseListener(this);
 		
 		//Không thể thao tác với button lưu và hủy
 		displayButtonSaveAndCancel(false);
@@ -688,6 +716,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			int index = tblHD.getSelectedRow();
 			if(index != -1) {
 				hienThiThongTinHD(index);
+				dsSP = sp_Dao.getSanPhamTheoHopDong(txtMaHD.getText());
+				themTatCaSanPhamVaoBang(dsSP);
+			}
+		}
+		if(e.getSource() == tblSP) {
+			int index = tblSP.getSelectedRow();
+			if(index != -1) {
+				hienThiThongTinSP(index);
 			}
 		}
 	}
@@ -713,21 +749,35 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		lblMessage.setText("");
 		Object o = e.getSource();
 		main.music.playSE(2);
 		if(o == btnThemHD) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
 			xoaRong();	
+			txtMaHD.setText(new SinhMaTuDong().sinhMaHD());
+			txtDaiDien.setText(main.nv.getHoTen());
+			xoaRongSP();
 			isThem = true;
 		}
 		if(o == btnSuaHD) {
-			displayButtonSaveAndCancel(true);
-			setEditableForTextField(true);
-			
+			if(tblHD.getSelectedRow()!=-1) {
+				displayButtonSaveAndCancel(true);
+				setEditableForTextField(true);
+				xoaRongSP();
+				isThem = false;
+			}else {
+				setTextError("Bạn chưa chọn hợp đồng cần chỉnh sửa!!!");
+			}
 		}
 		if(o == btnXoaHD) {
-			
+			if(tblHD.getSelectedRow()!=-1) {
+				xoaHopDong();
+				xoaRong();
+			}else {
+				setTextError("Bạn chưa chọn hợp đồng cần xóa!!!");
+			}
 		}
 		if(o == btnIn) {
 			xuatHopDong();
@@ -738,13 +788,25 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			}else {
 				suaHopDong();
 			}
-			displayButtonSaveAndCancel(false);
-			setEditableForTextField(false);
 		}
 		if(o == btnHuy) {
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
-			
+			if(isThem == true)
+				xoaHopDong();
+			xoaRong();
+		}
+		if(o == btnThemSP) {
+			themSanpham();
+		}
+		if(o == btnSuaSP) {
+			suaSanPham();
+		}
+		if(o == btnXoaSP) {
+			xoaSanPham();
+		}
+		if(o == btnXoaRong) {
+			xoaRongSP();
 		}
 	}
 	//thay đổi hiển thị button
@@ -754,6 +816,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnLuu.setAlpha(1f);
 			btnHuy.setEnabled(true);
 			btnHuy.setAlpha(1f);
+			btnThemSP.setEnabled(true);
+			btnThemSP.setAlpha(1f);
+			btnSuaSP.setEnabled(true);
+			btnSuaSP.setAlpha(1f);
+			btnXoaSP.setEnabled(true);
+			btnXoaSP.setAlpha(1f);
+			btnXoaRong.setEnabled(true);
+			btnXoaRong.setAlpha(1f);
 			
 			btnThemHD.setEnabled(false);
 			btnThemHD.setAlpha(0.6f);
@@ -769,6 +839,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnLuu.setAlpha(0.6f);
 			btnHuy.setEnabled(false);
 			btnHuy.setAlpha(0.6f);
+			btnThemSP.setEnabled(false);
+			btnThemSP.setAlpha(0.6f);
+			btnSuaSP.setEnabled(false);
+			btnSuaSP.setAlpha(0.6f);
+			btnXoaSP.setEnabled(false);
+			btnXoaSP.setAlpha(0.6f);
+			btnXoaRong.setEnabled(false);
+			btnXoaRong.setAlpha(0.6f);
 			
 			btnThemHD.setEnabled(true);
 			btnThemHD.setAlpha(1f);
@@ -783,7 +861,6 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	//cho phép hoặc ngăn user chỉnh sửa thông tin
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
-			txtMaHD.setEditable(true);
 			txtTenHD.setEditable(true);
 			txtTenKH.setEditable(true);
 			txtDaiDien.setEditable(true);
@@ -793,6 +870,11 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			txtTienCoc.setEditable(true);
 			txtThoaThuan.setEditable(true);
 			txtGhiChu.setEditable(true);
+			
+			txtTenSP.setEditable(true);
+			txtDonGia.setEditable(true);
+			txaYeuCau.setEditable(true);
+
 		}else {
 			txtMaHD.setEditable(false);
 			txtTenHD.setEditable(false);
@@ -803,12 +885,20 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			txtGiaTri.setEditable(false);
 			txtTienCoc.setEditable(false);
 			txtThoaThuan.setEditable(false);
-			cmbTrangThai.setEditable(false);
 			txtGhiChu.setEditable(false);
+			
+			txtMaSP.setEditable(false);
+			txtTenSP.setEditable(false);
+			txtDonGia.setEditable(false);
+			txaYeuCau.setEditable(false);
 		}
 	}
 	//Xóa toàn bộ dữ liệt trên bảng thông tin
 	private void xoaRong() {
+		dsHD = hd_Dao.getAllHopDong();
+		dtblModelHD.setRowCount(0);
+		themTatCaHopDongVaoBang(dsHD);
+		dsSP.removeAll(dsSP);
 		txtMaHD.setText("");
 		txtTenHD.setText("");
 		txtTenKH.setText("");
@@ -822,6 +912,22 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		txtGhiChu.setText("");
 		lblGiaTriText.setText("");
 		lblTienCocText.setText("");
+		
+		txtMaSP.setText("");
+		txtTenSP.setText("");
+		txtDonGia.setText("");
+		txaYeuCau.setText("");
+		cmbDVT.setSelectedIndex(0);
+	}
+	//xóa rỗng thông tin sản phẩm
+	private void xoaRongSP() {
+		themTatCaSanPhamVaoBang(dsSP);
+		
+		txtMaSP.setText(new SinhMaTuDong().sinhMaSP());
+		txtTenSP.setText("");
+		txtDonGia.setText("");
+		txaYeuCau.setText("");
+		cmbDVT.setSelectedIndex(0);
 	}
 	//hiển thị border cho button được user nhấn
 	private void setBorderForFocusButton(Object o) {
@@ -908,38 +1014,50 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		NhanVien nguoiDD = main.nv;
 		Date ngayBD = dtpBatDau.getDate();
 		Date ngayKT = dtpKetThuc.getDate();
-		Double giaTri = Double.parseDouble(txtGiaTri.getText());
-		Double tienCoc = Double.parseDouble(txtTienCoc.getText());
+		Double giaTri = Double.parseDouble(txtGiaTri.getText().replace(",", ""));
+		Double tienCoc = Double.parseDouble(txtTienCoc.getText().replace(",", ""));
 		String thoaThuan = txtThoaThuan.getText();
 		String ghiChu = txtGhiChu.getText();
-		
-		return new HopDong(maHD, tenHD, tenKH, nguoiDD, ngayBD, ngayKT, giaTri, tienCoc, thoaThuan, false, ghiChu);
+		boolean trangThai = (cmbTrangThai.getSelectedItem().equals("Hoàn thành"))?true:false;
+		return new HopDong(maHD, tenHD, tenKH, nguoiDD, ngayBD, ngayKT, giaTri, tienCoc, thoaThuan, trangThai, ghiChu);
 	}
 	//Thêm hợp đồng từ giao diện vào csdl
 	private void themHopDong() {
-		HopDong hdNew = convertDataToHopDong();
-		if(hdNew != null) {
-			if(hd_Dao.themHopDong(hdNew)) {
-				themHopDongVaoBang(hdNew);
-				JOptionPane.showMessageDialog(this, "Thêm thành công!");
+		if(validDataHD()==true) {
+			HopDong hdNew = convertDataToHopDong();
+			if(hdNew != null) {
+				if(sp_Dao.getSanPhamTheoHopDong(hdNew.getMaHD()).size()>=1) {
+					if(hd_Dao.getHopDongTheoMa(hdNew.getMaHD())!=null) {
+						themHopDongVaoBang(hdNew);
+						dsHD.add(hdNew);
+						lblMessage.setText("Thêm thành công!");
+						displayButtonSaveAndCancel(false);
+						setEditableForTextField(false);
+					}else {
+						setTextError("Thêm thất bại! Trùng mã!");
+					}
+				}else {
+					setTextError("Phải có ít nhất 1 sản phẩm trong hợp đồng!");
+				}
 			}else {
-				JOptionPane.showMessageDialog(this, "Thêm thất bại! Trùng mã!");
+				setTextError("Thêm thất bại! Có lỗi xảy ra!");
 			}
-		}else {
-			JOptionPane.showMessageDialog(this, "Thêm thất bại! Có lỗi xảy ra!");
 		}
 	}
 	// sửa một hợp đồng được chọn
 	private void suaHopDong() {
-		HopDong hdNew = convertDataToHopDong();
-		if(hdNew != null) {
-			if(hd_Dao.suaHopDong(hdNew)) {
-				JOptionPane.showMessageDialog(this, "Sửa thành công!");
-			}else {
-				JOptionPane.showMessageDialog(this, "Sửa thất bại! Trùng mã!");
+		if(validDataHD()==true) {
+			HopDong hdNew = convertDataToHopDong();
+			if(hdNew != null) {
+				if(hd_Dao.suaHopDong(hdNew)) {
+					lblMessage.setText("Sửa thành công!");
+					displayButtonSaveAndCancel(false);
+					setEditableForTextField(false);
+					xoaRong();
+				}else {
+					setTextError("Sửa thất bại! Không tìm thấy hợp đồng!");
+				}
 			}
-		}else {
-			JOptionPane.showMessageDialog(this, "Sửa thất bại! Có lỗi xảy ra!");
 		}
 	}
 	//get dữ liệu từ csdl lên table
@@ -964,6 +1082,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//thêm một ds hợp đồng vào bảng
 	private void themTatCaHopDongVaoBang(ArrayList<HopDong> list) {
+		dtblModelHD.setRowCount(0);
 	    for (HopDong hd : list) {
 	        themHopDongVaoBang(hd);
 	    }
@@ -972,13 +1091,17 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private void xoaHopDong() {
 		String maHD = txtMaHD.getText();
 		if(maHD != null) {
-			if(hd_Dao.xoaHopDong(maHD)) {
-				JOptionPane.showMessageDialog(this, "Xóa thành công!");
-			}else {
-				JOptionPane.showMessageDialog(this, "Xóa thất bại! Không tìm thấy hợp đồng!");
+			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				if(hd_Dao.xoaHopDong(maHD)) {
+					lblMessage.setText("Xóa thành công!");
+					dsHD = hd_Dao.getAllHopDong();
+					xoaRong();
+				}else {
+					setTextError("Xóa thất bại! Không tìm thấy hợp đồng!");
+				}
 			}
 		}else {
-			JOptionPane.showMessageDialog(this, "Xóa thất bại! Có lỗi xảy ra!");
+			setTextError("Xóa thất bại! Có lỗi xảy ra!");
 		}
 	}
 	//Hiển thị hợp đồng được chọn từ table lên bảng thông tin
@@ -1007,7 +1130,200 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		txtGiaTri.setText(dtblModelHD.getValueAt(index, 7).toString());
 		txtTienCoc.setText(new DecimalFormat("#,###").format(dsHD.get(index).getTienCoc()));
+		txtThoaThuan.setText(dsHD.get(index).getThoaThuan());
 		cmbTrangThai.setSelectedIndex(dsHD.get(index).isTrangThai()?1:0);
 		txtGhiChu.setText(dsHD.get(index).getGhiChu());
+	}
+	//kiểm tra dữ liệu người dùng nhập vào có đúng không
+	private boolean validDataHD() {
+		String tenHD = txtTenHD.getText();
+		String tenKH = txtTenKH.getText();
+		NhanVien nguoiDD = main.nv;
+		Date ngayBD = dtpBatDau.getDate();
+		Date ngayKT = dtpKetThuc.getDate();
+		String giaTri = txtGiaTri.getText().replace(",", "");
+		String tienCoc = txtTienCoc.getText().replace(",", "");
+		
+		if(tenHD==null || tenHD.trim().length()<=0) {
+			setTextError("Tên hợp đồng không được rỗng");
+			return false;
+		}
+		if(tenKH==null || tenKH.trim().length()<=0) {
+			setTextError("Tên khách hàng không được rỗng");
+			return false;
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		Date todayMidnight = cal.getTime();
+		if(ngayBD.compareTo(todayMidnight) < 0) {
+			setTextError("Ngày bắt đầu phải từ ngày hiện tại về sau");
+			return false;
+		}
+		if(ngayKT.compareTo(ngayBD) < 0) {
+			setTextError("Ngày kết thúc phải từ sau ngày bắt đầu");
+			return false;
+		}
+		if(giaTri.matches("\\d+")==false || Double.parseDouble(giaTri)<0) {
+			setTextError("Giá trị có định dạng #,### hoặc chỉ gồm số và >= 0");
+			return false;
+		}
+		if(tienCoc.matches("\\d+")==false && Double.parseDouble(tienCoc)<0 || Double.parseDouble(tienCoc)>Double.parseDouble(giaTri)) {
+			setTextError("Tiền cọc có định dạng #,### và Giá trị HĐ >= Tiền cọc >= 0");
+			return false;
+		}
+		return true;
+	}
+	//thêm một sản phẩm vào table 
+	private void themSanPhamVaoBang(SanPham sp) {
+	    String[] row = new String[10];
+	    row[0] = String.valueOf(dtblModelSP.getRowCount() + 1);
+	    row[1] = sp.getMaSP();
+	    row[2] = sp.getTenSP();
+	    row[3] = String.valueOf(sp.getSoLuong());
+	    row[4] = new DecimalFormat("#,###").format(sp.getDonGia());
+	    dtblModelSP.addRow(row);
+	}
+	//thêm một ds hợp đồng vào bảng
+	private void themTatCaSanPhamVaoBang(ArrayList<SanPham> list) {
+		dtblModelSP.setRowCount(0);
+	    for (SanPham sp : list) {
+	        themSanPhamVaoBang(sp);
+	    }
+	}
+	//kiểm tra dữ liệu người dùng nhập vào có đúng không
+	private boolean validDataSP() {
+		String tenSP = txtTenSP.getText();
+		int soLuong = Integer.parseInt(spnSoLuong.getValue().toString());
+		String donGia = txtDonGia.getText().replace(",", "");
+		
+		if(tenSP==null || tenSP.trim().length()<=0) {
+			setTextError("Tên sản phẩm không được rỗng");
+			return false;
+		}
+		if(soLuong < 0) {
+			setTextError("Số lượng sản phẩm phải lớn hơn 0");
+			return false;
+		}if(donGia.matches("\\d+")==false && Double.parseDouble(donGia)<0) {
+			setTextError("Đơn giá sản phẩm có định dạng #,### hoặc chỉ gồm số và >= 0");
+			return false;
+		}
+		double tongTienSP = sp_Dao.tinhTongTien(txtMaHD.getText()) + soLuong*Double.parseDouble(donGia);
+		double giaTriHD =  Double.parseDouble(txtGiaTri.getText().replace(",", ""));
+		if(tongTienSP > giaTriHD) {
+			setTextError("Tổng tiền của tất cả sản phẩm không được vượt quá giá trị hợp đồng: "+tongTienSP + " > " + giaTriHD);
+			return false;
+		}
+		return true;
+	}
+	//chuyển dữ liệu thành đối tượng sản phẩm
+	private SanPham convertDataToSanPham() {
+		String maSP = txtMaSP.getText();
+		String tenSP = txtTenSP.getText();
+		String donVT = cmbDVT.getSelectedItem().toString();
+		int soLuong = Integer.parseInt(spnSoLuong.getValue().toString());
+		String donGia = txtDonGia.getText().replace(",", "");
+		String yeuCau = txaYeuCau.getText();
+		
+		return new SanPham(maSP, new HopDong(txtMaHD.getText()), tenSP, donVT, soLuong, yeuCau, Double.parseDouble(donGia));
+	}
+	//Thêm sản phẩm từ giao diện vào csdl
+	private void themSanpham() {
+		if(hd_Dao.getHopDongTheoMa(txtMaHD.getText())!=null) {
+			if(validDataSP()==true) {
+				SanPham spNew = convertDataToSanPham();
+				if(spNew != null) {
+					if(sp_Dao.themSanPham(spNew)) {
+						dsSP.add(spNew);
+						themTatCaSanPhamVaoBang(dsSP);
+						lblMessage.setText("Thêm thành công sản phẩm!");
+						xoaRongSP();
+					}else {
+						setTextError("Thêm sản phẩm thất bại! Trùng mã!");
+					}
+				}else {
+					setTextError("Thêm sản phẩm thất bại! Có lỗi xảy ra!");
+				}
+			}
+		}else {
+			themHDTamThoi();
+		}
+	}
+	// sửa một sản phẩm được chọn
+	private void suaSanPham() {
+		if(validDataSP()==true) {
+			SanPham spNew = convertDataToSanPham();
+			if(spNew != null) {
+				if(sp_Dao.suaSanPham(spNew)) {
+					dsSP.set(tblSP.getSelectedRow(), spNew);
+					themTatCaSanPhamVaoBang(dsSP);
+					lblMessage.setText("Sửa thành công sản phẩm!");
+					xoaRongSP();
+				}else {
+					setTextError("Sửa sản phẩm thất bại! Không tìm thấy trong csdl!");
+				}
+			}else {
+				setTextError("Sửa sản phẩm thất bại! Có lỗi xảy ra!");
+			}
+		}
+	}
+	//get dữ liệu từ csdl lên table
+	private void getDataToTableSP() {
+		dsSP = sp_Dao.getSanPhamTheoHopDong(txtMaHD.getText());
+		themTatCaSanPhamVaoBang(dsSP);
+	}
+
+	//Xóa sản phẩm được chọn
+	private void xoaSanPham() {
+		int index = tblSP.getSelectedRow();
+		if(index != -1 && sp_Dao.getSanPhamTheoHopDong(txtMaHD.getText()).size()>1) {
+			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				if(sp_Dao.xoaSanPham(tblSP.getValueAt(index, 1).toString())==true) {
+					dsSP = sp_Dao.getSanPhamTheoHopDong(txtMaHD.getText());
+					themTatCaSanPhamVaoBang(dsSP);
+					lblMessage.setText("Xóa thành công sản phẩm!");
+					xoaRongSP();
+				}else {
+					setTextError("Xóa thất bại! Không tìm thấy sản phẩm trong csdl!");
+				}
+			}
+		}else {
+			setTextError("Bạn cần chọn sản phẩm muốn xóa và không thể xóa toàn bộ sản phẩm");
+		}
+	}
+	//Hiển thị sản phẩm được chọn từ table lên bảng thông tin
+	private void hienThiThongTinSP(int index) {
+		txtMaSP.setText(dsSP.get(index).getMaSP());
+		txtTenSP.setText(dsSP.get(index).getTenSP());
+		txtDonGia.setText(new DecimalFormat("#,###").format(dsSP.get(index).getDonGia()));
+		modelSPN.setValue(dsSP.get(index).getSoLuong());
+		for(int i = 0; i < cmbDVT.getItemCount(); i++) {
+			if(cmbDVT.getItemAt(index).equals(dsSP.get(index).getDonViTinh())) {
+				cmbDVT.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
+	//Thêm tạm thời hợp đồng vào csdl
+	private void themHDTamThoi() {
+		if(validDataHD()==true) {
+			HopDong hdNew = convertDataToHopDong();
+			if(hdNew != null) {
+				if(hd_Dao.themHopDong(hdNew)) {
+					return;
+				}else {
+					setTextError("Trùng mã!");
+				}
+			}else {
+				setTextError("Có lỗi xảy ra!");
+			}
+		}
+	}
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
 	}
 }

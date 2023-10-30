@@ -29,18 +29,7 @@ public class SanPham {
 		return maHopDong;
 	}
 	public void setMaHopDong(HopDong maHopDong) throws Exception{
-		if(maHopDong==null || maSP.trim().length()<=0) {
-			throw new Exception("Mã sản phẩm  không được rỗng!");
-		}
-		if(!maHopDong.matches("\\S+")){
-		    throw new Exception("Mã sản phẩm không được chứa khoảng trắng!");
-		}
-		else if(!maSP.matches("^SP\\d{7}$")){
-		    throw new Exception("Mã sản phẩm có dạng SP1234567");
-		}
-		else {
-			this.maSP = maSP;
-		}
+		this.maHopDong = maHopDong;
 	}
 	public String getTenSP() {
 		return tenSP;

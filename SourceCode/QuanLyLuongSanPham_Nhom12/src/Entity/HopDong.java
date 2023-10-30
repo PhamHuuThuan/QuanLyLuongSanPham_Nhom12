@@ -32,6 +32,11 @@ public class HopDong {
 		this.ghiChu = ghiChu;
 	}
 
+	public HopDong(String maHD) {
+		super();
+		this.maHD = maHD;
+	}
+
 
 	public String getMaHD() {
 		return maHD;
@@ -45,8 +50,8 @@ public class HopDong {
 		if(!maHD.matches("\\S+")){
 		    throw new Exception("Mã hợp đồng  không được chứa khoảng trắng!");
 		}
-		else if(!maHD.matches("^SP\\d{5}$")){
-		    throw new Exception("Mã hợp đồng  có dạng SP12345");
+		else if(!maHD.matches("^HD\\d{5}$")){
+		    throw new Exception("Mã hợp đồng  có dạng HD12345");
 		}
 		else {
 			this.maHD = maHD;
