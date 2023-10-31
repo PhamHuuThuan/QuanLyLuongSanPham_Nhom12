@@ -18,27 +18,26 @@ public class CongNhan {
 	private String ghiChu;
 
 	public CongNhan(String maCN, String matKhau, String hoTen, Date ngaySinh, boolean gioiTinh, String sDT,
-			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien,String ghiChu) {
+			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien, String ghiChu) {
 		super();
-		try {
-			setMaCN(maCN);
-			setMatKhau(matKhau);
-			setHoTen(hoTen);
-			setNgaySinh(ngaySinh);
-			setGioiTinh(gioiTinh);
-			setSDT(sDT);
-			setEmail(email);
-			setDiaChi(diaChi);
-			setSoCCCD(soCCCD);
-			setNgayVaoLam(ngayVaoLam);
-			setAnhDaiDien(anhDaiDien);
-			setGhiChu(ghiChu);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		this.maCN = maCN;
+		this.matKhau = matKhau;
+		this.hoTen = hoTen;
+		this.ngaySinh = ngaySinh;
+		this.gioiTinh = gioiTinh;
+		this.sDT = sDT;
+		this.email = email;
+		this.diaChi = diaChi;
+		this.soCCCD = soCCCD;
+		this.ngayVaoLam = ngayVaoLam;
+		this.anhDaiDien = anhDaiDien;
+		this.ghiChu = ghiChu;
 
 	}
-	
+
+	public CongNhan() {
+		super();
+	}
 
 	public String getMaCN() {
 		return maCN;
@@ -95,15 +94,16 @@ public class CongNhan {
 		return ngaySinh;
 	}
 
-	public void setNgaySinh(Date ngaySinh) throws Exception {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.YEAR, -18);
-		java.util.Date eighteenYearsAgo = cal.getTime();
-		if (!ngaySinh.before(eighteenYearsAgo)) {
-			throw new Exception("Ngày sinh trước ngày hiện tại và phải đủ 18 tuổi!");
-		} else {
-			this.ngaySinh = ngaySinh;
-		}
+	public void setNgaySinh(Date ngaySinh) throws Exception{
+//		Calendar cal = Calendar.getInstance();
+//		cal.add(Calendar.YEAR, -18);
+//		java.util.Date eighteenYearsAgo = cal.getTime();
+//		if (!ngaySinh.before(eighteenYearsAgo)) {
+//			throw new Exception("Ngày sinh trước ngày hiện tại và phải đủ 18 tuổi!");
+//		} else {
+//			this.ngaySinh = ngaySinh;
+//		}
+		this.ngaySinh = ngaySinh;
 	}
 
 	public boolean getGioiTinh() {

@@ -16,8 +16,8 @@ public class CongNhan_Dao {
 		int n = 0;
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String query = "INSERT INTO CongNhan VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-			st = st.getConnection().prepareStatement(query);
+			String query = "INSERT INTO CongNhan VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+			st = conn.prepareStatement(query);
 			st.setString(1, cn.getMaCN());
 			st.setString(2, cn.getMatKhau());
 			st.setString(3, cn.getHoTen());
@@ -29,6 +29,7 @@ public class CongNhan_Dao {
 			st.setString(9, cn.getSoCCCD());
 			st.setDate(10, new java.sql.Date(cn.getNgayVaoLam().getTime()));
 			st.setString(11, cn.getAnhDaiDien());
+			st.setString(12, cn.getGhiChu());
 			n = st.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -58,20 +59,28 @@ public class CongNhan_Dao {
 	    				rs.getString(1),
 	    				rs.getString(2),
 	    				rs.getString(3),
-	    				rs.getBoolean(5),
 	    				new java.util.Date(rs.getDate(4).getTime()),
+	    				rs.getBoolean(5),
 	    				rs.getString(6),
+	    				rs.getString(7),
 	    				rs.getString(8),
 	    				rs.getString(9),
-	    				new java.util.Date(rs.getDate(7).getTime()),
-	    				rs.getString(9)
+	    				new java.util.Date(rs.getDate(10).getTime()),
+	    				rs.getString(11),
+	    				rs.getString(12)
 	    				);
+	    		listCN.add(cn);
 	    	}
-	    	
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			try {
+	            st.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 		}
-	    
 	    
 	    return listCN;
 	}

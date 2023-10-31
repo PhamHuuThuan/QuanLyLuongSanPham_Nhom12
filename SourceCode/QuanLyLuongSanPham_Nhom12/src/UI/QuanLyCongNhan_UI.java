@@ -29,20 +29,15 @@ import CustomUI.RoundedButton;
 import Dao.CongNhan_Dao;
 import Entity.CongNhan;
 
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 import javax.swing.border.EmptyBorder;
 import java.awt.Component;
 import javax.swing.JTextField;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.border.MatteBorder;
 import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 
 public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseListener {
@@ -249,14 +244,13 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		Component horizontalStrut_8_1 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_8_1);
 
-		dpNgaySinh = new JXDatePicker((Date) null);
+		dpNgaySinh = new JXDatePicker(new Date());
 		dpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgaySinh.setLocale(new Locale("vi", "VN"));
 
-
 		box_2.add(dpNgaySinh);
-//		System.out.println(ngaySinh);
+		
 
 		Component horizontalStrut_9_1 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_9_1);
@@ -356,15 +350,12 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		box_3.add(horizontalStrut_2);
 
-		dpNgayVaoLam = new JXDatePicker((Date) null);
+		dpNgayVaoLam = new JXDatePicker(new Date());
 
 		dpNgayVaoLam.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgayVaoLam.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgayVaoLam.setLocale(new Locale("vi", "VN"));
 
-//		ngaySinhCombox = dpNgayVaoLam.getDate();
-
-//		sqlNgayVaoLam = new java.sql.Date(ngaySinhCombox.getTime());
 
 		box_3.add(dpNgayVaoLam);
 
@@ -454,7 +445,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		add(pnlTable, BorderLayout.CENTER);
 
 		String cols[] = { "STT", "Mã CN","Mật khẩu", "Họ Tên", "Giới tính", "Ngày sinh", "SDT", "Email", "Địa chỉ", "CCCD",
-				"Ngày vào làm", "Ghi chú" };
+				"Ngày vào làm","avt", "Ghi chú" };
 		dtblModel = new DefaultTableModel(cols, 0);
 		JTable tblCN = new JTable(dtblModel);
 
@@ -478,6 +469,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		tblCN.getColumnModel().getColumn(9).setPreferredWidth(60);
 		tblCN.getColumnModel().getColumn(10).setPreferredWidth(90);
 		tblCN.getColumnModel().getColumn(11).setPreferredWidth(90);
+		tblCN.getColumnModel().getColumn(12).setPreferredWidth(90);
 		pnlTable.setLayout(new BorderLayout(0, 0));
 
 		// Tạo jscrollpane để tạo scroll cho bảng công nhân
@@ -505,6 +497,8 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		displayButtonSaveAndCancel(false);
 
 		setEditableForTextField(false);
+		
+		getDataToTable();
 	}
 
 	@Override
@@ -555,6 +549,15 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			setEditableForTextField(true);
 			xoaRong();
 			isThemCongNhan = true;
+//			txtMaCN.setText("CN00001");
+//			txtHoTen.setText("phong");
+//			txtMatKhau.setText("111111");
+//			dpNgaySinh.setDate(new Date());
+//			txtDiaChi.setText("123");
+//			txtSoDT.setText("0999991232");
+//			txtSoCCCD.setText("123123123321");
+//			txtEmail.setText("123@gmail.com");
+//			txtGhiChu.setText("123");
 
 		}
 		if (o == btnSua) {
@@ -656,16 +659,17 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		String maCN = txtMaCN.getText();
 		String matKhau = txtMatKhau.getText();
 		String hoten = txtHoTen.getText();
-		Date ngaySinh = dpNgayVaoLam.getDate();
+		Date ngaySinh = dpNgaySinh.getDate();
 		Boolean gioiTinh = gioiTinhCheck;
 		String sdt = txtSoDT.getText();
 		String email = txtEmail.getText();
 		String diaChi = txtDiaChi.getText();
 		String scccd = txtSoCCCD.getText();
-		Date ngayVaoLam = dpNgaySinh.getDate();
+		Date ngayVaoLam = dpNgayVaoLam.getDate();
 		String anhDaiDien = pathNameAvatar;
 		String ghiChu = txtGhiChu.getText();
-		return new CongNhan(maCN, matKhau,hoten,  ngaySinh, gioiTinh, sdt, email, diaChi, scccd, ngayVaoLam, anhDaiDien,
+		
+		return new CongNhan(maCN, matKhau, hoten, ngaySinh, gioiTinh, sdt, email, diaChi, scccd, ngayVaoLam, anhDaiDien,
 				ghiChu);
 	}
 
@@ -682,12 +686,14 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			JOptionPane.showMessageDialog(this, "Thêm thất bại! Lỗi");
 		}
 	}
-	private void getDataTotable() {
-//		dsCN = cn_dao.getALLCongNhan();
+	private void getDataToTable() {
+		dsCN = cn_dao.getAllCongNhan();
+		themAllCongNhanVaoBang(dsCN);
 	}
 	
 	private void themCongNhanVaoBang(CongNhan cn) {
-		String[] row = new String[11];
+		String[] row = new String[13];
+		System.out.println(cn.getNgaySinh());
 		row[0] = String.valueOf(dtblModel.getRowCount()+1);
 		row[1] = cn.getMaCN();
 		row[2] = cn.getMatKhau();
@@ -699,9 +705,16 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		row[8] = cn.getDiaChi();
 		row[9] = cn.getSoCCCD();
 		row[10] = new SimpleDateFormat("dd-MM-YYYY").format(cn.getNgayVaoLam());
-		row[11] = cn.getGhiChu();
+		row[11] = cn.getAnhDaiDien();
+		row[12] = cn.getGhiChu();
 		dtblModel.addRow(row);
 				
+	}
+	private void themAllCongNhanVaoBang(ArrayList<CongNhan> list) {
+		dtblModel.setRowCount(0);
+		for(CongNhan cn: list) {
+			themCongNhanVaoBang(cn);
+		}
 	}
 	
 
