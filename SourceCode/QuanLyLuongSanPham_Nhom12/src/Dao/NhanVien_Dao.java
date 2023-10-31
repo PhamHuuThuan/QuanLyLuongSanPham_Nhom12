@@ -54,7 +54,6 @@ public class NhanVien_Dao {
 		    int n = 0;
 		    try {
 		        Connection con = ConnectDB.getConnection();
-		        System.out.println(nv.toString());
 		        st = con.prepareStatement("INSERT INTO NhanVien VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		        st.setString(1, nv.getMaNV());
 		        st.setString(2, nv.getMatKhau());
