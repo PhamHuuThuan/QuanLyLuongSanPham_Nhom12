@@ -146,7 +146,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
 		box_1.add(horizontalStrut_20);
 
-		txtMaCN = new JTextField("CN0003");
+		txtMaCN = new JTextField("");
 		txtMaCN.setForeground(Color.BLACK);
 		txtMaCN.setFont(null);
 		txtMaCN.setColumns(10);
@@ -168,7 +168,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
 		box_1.add(horizontalStrut_2_1);
 
-		txtHoTen = new JTextField("Nguyễn Văn Phong");
+		txtHoTen = new JTextField("");
 		txtHoTen.setForeground(Color.BLACK);
 		txtHoTen.setFont(null);
 		txtHoTen.setColumns(10);
@@ -441,17 +441,16 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		tbhCN.setFont(fontText);
 		tblCN.setTableHeader(tbhCN);
 
-		tblCN.setRowHeight(30);
-		tblCN.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblCN.setRowHeight(25);
+		tblCN.getColumnModel().getColumn(0).setPreferredWidth(10);
 		tblCN.getColumnModel().getColumn(1).setPreferredWidth(70);
-//		tblCN.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tblCN.getColumnModel().getColumn(2).setPreferredWidth(40);
-		tblCN.getColumnModel().getColumn(3).setPreferredWidth(70);
-		tblCN.getColumnModel().getColumn(4).setPreferredWidth(80);
-		tblCN.getColumnModel().getColumn(5).setPreferredWidth(80);
-		tblCN.getColumnModel().getColumn(6).setPreferredWidth(90);
+		tblCN.getColumnModel().getColumn(2).setPreferredWidth(90);
+		tblCN.getColumnModel().getColumn(3).setPreferredWidth(30);
+		tblCN.getColumnModel().getColumn(4).setPreferredWidth(60);
+		tblCN.getColumnModel().getColumn(5).setPreferredWidth(50);
+		tblCN.getColumnModel().getColumn(6).setPreferredWidth(50);
 		tblCN.getColumnModel().getColumn(7).setPreferredWidth(70);
-		tblCN.getColumnModel().getColumn(8).setPreferredWidth(60);
+		tblCN.getColumnModel().getColumn(8).setPreferredWidth(50);
 		tblCN.getColumnModel().getColumn(9).setPreferredWidth(90);
 		tblCN.getColumnModel().getColumn(10).setPreferredWidth(90);
 //		tblCN.getColumnModel().getColumn(11).setPreferredWidth(90);
@@ -551,22 +550,32 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		}
 		if (o == btnSua) {
-			displayButtonSaveAndCancel(true);
-			setEditableForTextField(true);
+
+				isThemCongNhan = false;
+			if (tblCN.getSelectedRow() != -1) {
+				displayButtonSaveAndCancel(true);
+				setEditableForTextField(true);
+			}else {
+				alertNotification("Cần chọn Công nhân để sửa");
+			}
 
 		}
 		if (o == btnXoa) {
-
+			if(tblCN.getSelectedRow()!= -1) {
+				xoaCongNhan();
+			}else {
+				alertNotification("Chưa chọn Công nhân cần xóa");
+			}
+			
 		}
 		if (o == btnIn) {
 		}
 		if (o == btnLuu) {
 			if (isThemCongNhan == true) {
 				themCongNhan();
+			}else {
+				suaCongNhan();
 			}
-//			displayButtonSaveAndCancel(false);
-//			setEditableForTextField(false);
-
 		}
 		if (o == btnHuy) {
 			displayButtonSaveAndCancel(false);
@@ -612,16 +621,16 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			txtMaCN.setEditable(true);
 			txtHoTen.setEditable(true);
 			txtMatKhau.setEditable(true);
-			
+
 			dpNgaySinh.setEditable(true);
 			dpNgaySinh.setEnabled(true);
-			
+
 			txtDiaChi.setEditable(true);
 			txtEmail.setEditable(true);
-			
+
 			dpNgayVaoLam.setEditable(true);
 			dpNgayVaoLam.setEnabled(true);
-			
+
 			txtGhiChu.setEditable(true);
 			cmbGioiTinh.setEnabled(edit);
 
@@ -631,16 +640,16 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			txtMaCN.setEditable(false);
 			txtHoTen.setEditable(false);
 			txtMatKhau.setEditable(false);
-			
+
 			dpNgaySinh.setEditable(false);
 			dpNgaySinh.setEnabled(false);
-			
+
 			txtDiaChi.setEditable(false);
 			txtEmail.setEditable(false);
-			
+
 			dpNgayVaoLam.setEnabled(false);
 			dpNgayVaoLam.setEnabled(false);
-			
+
 			txtGhiChu.setEditable(false);
 
 			cmbGioiTinh.setEnabled(false);
@@ -656,6 +665,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		dpNgaySinh.setDate(new Date());
 		txtDiaChi.setText("");
 		txtSoDT.setText("");
+		txtSoCCCD.setText("");
 		txtEmail.setText("");
 		txtGhiChu.setText("");
 		lblAvatar.setIcon(new ImageScaler("/image/" + "image_cn_df.jpg", 150, 150).getScaledImageIcon());
@@ -695,14 +705,14 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		return new CongNhan(maCN, matKhau, hoten, ngaySinh, gioiTinh, sdt, email, diaChi, scccd, ngayVaoLam, anhDaiDien,
 				ghiChu);
 	}
-
+	// THEM CONG NHAN
 	private void themCongNhan() {
 		if (validCongNhan() == true) {
 			CongNhan cnNew = convertDataToCongNhan();
 			if (cnNew != null) {
 				if (cn_dao.themCongNhan(cnNew)) {
 					themCongNhanVaoBang(cnNew);
-					alertNotification("Thêm công nhân thành công");
+					alertSuccess("Thêm công nhân thành công");
 				} else {
 					alertNotification("Thêm công nhân thất bại, do mã CN đã tồn tại");
 				}
@@ -718,7 +728,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	}
 
 	private void themCongNhanVaoBang(CongNhan cn) {
-		String[] row = new String[13];
+		String[] row = new String[14];
 		row[0] = String.valueOf(dtblModel.getRowCount() + 1);
 		row[1] = cn.getMaCN();
 		row[2] = cn.getHoTen();
@@ -742,15 +752,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	}
 
 	private void hienThiThongTinCongNhan(int index) {
-
-		btnEditAvatar.setText(dsCN.get(index).getAnhDaiDien());
-		if (dsCN.get(index).getAnhDaiDien() == null) {
-			lblAvatar.setIcon(new ImageScaler("image_cn_df", 150, 150).getScaledImageIcon());
-		} else {
-			lblAvatar.setIcon(
-					new ImageScaler("/image/" + dsCN.get(index).getAnhDaiDien(), 150, 150).getScaledImageIcon());
-		}
-
 		txtMaCN.setText(dsCN.get(index).getMaCN());
 		txtHoTen.setText(dsCN.get(index).getHoTen());
 		txtSoDT.setText(dsCN.get(index).getSDT());
@@ -759,9 +760,15 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		txtDiaChi.setText(dsCN.get(index).getDiaChi());
 		txtGhiChu.setText(dsCN.get(index).getGhiChu());
 		cmbGioiTinh.setSelectedIndex(dsCN.get(index).getGioiTinh() ? 0 : 1);
-
 		txtMatKhau.setText(dsCN.get(index).getMatKhau());
-
+		
+//		btnEditAvatar.setText(dsCN.get(index).getAnhDaiDien());
+		if (dsCN.get(index).getAnhDaiDien() == null) {
+			lblAvatar.setIcon(new ImageScaler("image_cn_df.jpg", 150, 150).getScaledImageIcon());
+		} else {
+			lblAvatar.setIcon(new ImageScaler("/image/" + dsCN.get(index).getAnhDaiDien(), 150, 150).getScaledImageIcon());
+		}
+		
 		String dateString = (String) dtblModel.getValueAt(index, 4);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		try {
@@ -771,7 +778,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-
 		dateString = (String) dtblModel.getValueAt(index, 9);
 		try {
 			java.util.Date date = formatter.parse(dateString);
@@ -793,16 +799,15 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		String scccd = txtSoCCCD.getText();
 		Date ngayVaoLam = dpNgayVaoLam.getDate();
 
-		
-		if(pathNameAvatar.equals("image_cn_df.jpg")) {
-			alertNotification("Ảnh đại diện là bắt buộc ");
-			return false;
-		}
-		
-		if(maCN==null || maCN.trim().length() <= 0) {
+//		if (pathNameAvatar.equals("image_cn_df.jpg")) {
+//			alertNotification("Ảnh đại diện là bắt buộc ");
+//			return false;
+//		}
+
+		if (maCN == null || maCN.trim().length() <= 0) {
 			alertNotification("Trường Mã Công Nhân là bắt buộc ");
 			return false;
-		}else if (!Pattern.matches("CN\\d{5}", maCN)) {
+		} else if (!Pattern.matches("CN\\d{5}", maCN)) {
 			alertNotification("Mã Công Nhân không đúng định dạng (CNXXXXX, X:0-1)");
 			return false;
 		}
@@ -819,62 +824,90 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			alertNotification("Mật khẩu phải lớn hơn hoặc bằng 6 kí tự");
 			return false;
 		}
-		
+
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.YEAR, -18);
 		java.util.Date eighteenYearsAgo = cal.getTime();
 		if (!ngaySinh.before(eighteenYearsAgo)) {
-			alertNotification("Ngày trước ngày hiện tại và trên 18 tuổi");
+			alertNotification("Ngày trước sinh phải là ngày hiện tại và trên 18 tuổi");
 			return false;
 		}
-		
-		if(!Pattern.matches( "^(\\+84|0)[1-9]\\d{8}$", sdt)) {
+
+		if (!Pattern.matches("^(\\+84|0)[1-9]\\d{8}$", sdt)) {
 			alertNotification("Số điện thoại không đúng định dạng");
 			return false;
 		}
-		
-		if(!Pattern.matches("^\\d{12}$", scccd)) {
+
+		if (!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", email)) {
+			alertNotification("Email không đúng định dạng");
+			return false;
+		}
+
+		if (!Pattern.matches("^\\d{12}$", scccd)) {
 			alertNotification("Số căn cước không đúng định dạng (12 số)");
 			return false;
 		}
-		
-		if(!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", email)) {
-			alertNotification("Email không đúng định dạng");
-		}
-			
-		
+
 		Date ngayHienTai = new Date();
-		if(!ngayVaoLam.after(ngayHienTai)) {
-			alertNotification("Ngày vào làm phải sau ngày hiện tại");
+		if (ngayVaoLam.before(ngayHienTai)||ngayVaoLam.equals(ngayHienTai)) {
+			alertNotification("Ngày vào làm phải bằng hoặc sau ngày hiện tại");
 			return false;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
 
 		return true;
 	}
-
-	public int alertQuestion(String textAtion, String message) {
-		String[] options = { textAtion, "Cancel" };
-		main.music.playSE(3);
-		int result = JOptionPane.showOptionDialog(main, message, "NOTIFICATON WARNING", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-		if (result == 0) {
-
-		} else {
-
+	// SUA CONG NHAN
+	private void suaCongNhan() {
+		if (validCongNhan() == true) {
+			CongNhan cnNew = convertDataToCongNhan();
+			if (cnNew != null) {
+				if (cn_dao.suaCongNhan(cnNew)) {
+					alertSuccess("Sửa thành công");
+					dtblModel.fireTableDataChanged();
+				} else {
+					alertNotification("Sửa thất bại! Công nhân không tồn tại");
+				}
+			}
 		}
-		return result;
 	}
+	// XOA CONG NHAN
+	public void xoaCongNhan() {
+		String maHD = txtMaCN.getText();
+		if(maHD !=null) {
+			String message = String.format("Quyết định xóa công nhân có mã %s",maHD);
+			main.music.playSE(3);
+			int result = JOptionPane.showConfirmDialog(this, message, "NOTIFICATION",JOptionPane.YES_NO_OPTION );
+			if(result==JOptionPane.YES_OPTION) {
+				if(cn_dao.xoaCongNhan(maHD)) {
+					alertSuccess("Xóa thành công");
+					xoaRong();
+					dtblModel.fireTableDataChanged();
+				}else {
+					alertNotification("Xóa không thành công! Không tìm thấy công nhân cần xóa");
+				}
+			}
+		}else {
+			alertNotification("Đã có lỗi xảy ra");
+		}
+	}
+	
+	
+	
+	
+	
+
+	// ALERT
 
 	public int alertNotification(String textError) {
 		main.music.playSE(3);
+		String[] options = { "Cancel" };
+		int result = JOptionPane.showOptionDialog(main, textError, "NOTIFICATION", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		return result;
+	}
+
+	public int alertSuccess(String textError) {
+		main.music.playSE(1);
 		String[] options = { "Cancel" };
 		int result = JOptionPane.showOptionDialog(main, textError, "NOTIFICATION", JOptionPane.DEFAULT_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);

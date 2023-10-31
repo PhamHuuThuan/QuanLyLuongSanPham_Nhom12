@@ -217,6 +217,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		Object o = e.getSource();
 		main.music.playSE(2);
 		if (o == btnLogOut) {
+			main.music.playSE(3);
 			int result = JOptionPane.showConfirmDialog(main, "Bạn có muốn đăng xuất khỏi hệ thống?",
 					"ĐĂNG XUẤT HỆ THỐNG", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (result == JOptionPane.YES_OPTION) {

@@ -614,7 +614,6 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if(o == btnTim) {
-			
 		}
 		if(o == btnXoaRong) {
 

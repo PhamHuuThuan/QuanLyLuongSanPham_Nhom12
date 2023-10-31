@@ -35,8 +35,9 @@ public class CongNhan {
 
 	}
 
-	public CongNhan() {
+	public CongNhan(String maCN) {
 		super();
+		this.maCN = maCN;
 	}
 
 	public String getMaCN() {
