@@ -7,40 +7,36 @@ public class CongNhan {
 	private String maCN;
 	private String matKhau;
 	private String hoTen;
-	private java.util.Date ngaySinh;
+	private Date ngaySinh;
 	private boolean gioiTinh; // true:nam, false: nu
 	private String sDT;
 	private String email;
 	private String diaChi;
 	private String soCCCD;
-	private java.util.Date ngayVaoLam;
+	private Date ngayVaoLam;
 	private String anhDaiDien;
-
+	private String ghiChu;
 
 	public CongNhan(String maCN, String matKhau, String hoTen, Date ngaySinh, boolean gioiTinh, String sDT,
-			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien) {
+			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien, String ghiChu) {
 		super();
-		try {
-			setMaCN(maCN);
-			setMatKhau(matKhau);
-			setHoTen(hoTen);
-			setNgaySinh(ngaySinh);
-			setGioiTinh(gioiTinh);
-			setsDT(sDT);
-			setEmail(email);
-			setDiaChi(diaChi);
-			setSoCCCD(soCCCD);
-			setNgayVaoLam(ngayVaoLam);
-			setAnhDaiDien(anhDaiDien);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		this.maCN = maCN;
+		this.matKhau = matKhau;
+		this.hoTen = hoTen;
+		this.ngaySinh = ngaySinh;
+		this.gioiTinh = gioiTinh;
+		this.sDT = sDT;
+		this.email = email;
+		this.diaChi = diaChi;
+		this.soCCCD = soCCCD;
+		this.ngayVaoLam = ngayVaoLam;
+		this.anhDaiDien = anhDaiDien;
+		this.ghiChu = ghiChu;
 
 	}
 
 	public CongNhan() {
 		super();
-
 	}
 
 	public String getMaCN() {
@@ -71,13 +67,11 @@ public class CongNhan {
 		}
 		if (!matKhau.matches("\\S+")) {
 			throw new Exception("Mật khẩu không được chứa khoảng trắng!");
-		} else if (!matKhau.matches(".*[0-9].*")) {
-			throw new Exception("Mật khẩu phải chứa ít nhất một số!");
-		} else if (!matKhau.matches(".*[a-zA-Z].*")) {
-			throw new Exception("Mật khẩu phải chứa ít nhất một chữ cái!");
-		} else if (!matKhau.matches(".*[@#$%^&+=].*")) {
-			throw new Exception("Mật khẩu phải chứa ít nhất một kí tự đặc biệt!");
-		} else {
+		}
+		if (matKhau.trim().length()<6) {
+			throw new Exception("Mật khẩu phải lớn hơn 6 kí tự!");
+		} 
+		else {
 			this.matKhau = matKhau;
 		}
 	}
@@ -94,22 +88,23 @@ public class CongNhan {
 		}
 	}
 
-	public java.util.Date getNgaySinh() {
+	public Date getNgaySinh() {
 		return ngaySinh;
 	}
 
-	public void setNgaySinh(java.util.Date ngaySinh) throws Exception {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.YEAR, -18);
-		java.util.Date eighteenYearsAgo = cal.getTime();
-		if (!ngaySinh.before(eighteenYearsAgo)) {
-			throw new Exception("Ngày sinh trước ngày hiện tại và phải đủ 18 tuổi!");
-		} else {
-			this.ngaySinh = ngaySinh;
-		}
+	public void setNgaySinh(Date ngaySinh) throws Exception{
+//		Calendar cal = Calendar.getInstance();
+//		cal.add(Calendar.YEAR, -18);
+//		java.util.Date eighteenYearsAgo = cal.getTime();
+//		if (!ngaySinh.before(eighteenYearsAgo)) {
+//			throw new Exception("Ngày sinh trước ngày hiện tại và phải đủ 18 tuổi!");
+//		} else {
+//			this.ngaySinh = ngaySinh;
+//		}
+		this.ngaySinh = ngaySinh;
 	}
 
-	public boolean isGioiTinh() {
+	public boolean getGioiTinh() {
 		return gioiTinh;
 	}
 
@@ -117,11 +112,11 @@ public class CongNhan {
 		this.gioiTinh = gioiTinh;
 	}
 
-	public String getsDT() {
+	public String getSDT() {
 		return sDT;
 	}
 
-	public void setsDT(String sDT) throws Exception {
+	public void setSDT(String sDT) throws Exception {
 		if (sDT == null || sDT.trim().length() <= 0) {
 			throw new Exception("Số điện thoại không được rỗng!");
 		}
@@ -178,11 +173,11 @@ public class CongNhan {
 		}
 	}
 
-	public java.util.Date getNgayVaoLam() {
+	public Date getNgayVaoLam() {
 		return ngayVaoLam;
 	}
 
-	public void setNgayVaoLam(java.util.Date ngayVaoLam) {
+	public void setNgayVaoLam(Date ngayVaoLam) {
 		this.ngayVaoLam = ngayVaoLam;
 	}
 
@@ -193,11 +188,21 @@ public class CongNhan {
 	public void setAnhDaiDien(String anhDaiDien) {
 		this.anhDaiDien = anhDaiDien;
 	}
+	
+	public String getGhiChu() {
+		return ghiChu;
+	}
+
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
+	}
 
 	@Override
 	public String toString() {
 		return "CongNhan [maCN=" + maCN + ", matKhau=" + matKhau + ", hoTen=" + hoTen + ", ngaySinh=" + ngaySinh
 				+ ", gioiTinh=" + gioiTinh + ", sDT=" + sDT + ", email=" + email + ", diaChi=" + diaChi + ", soCCCD="
-				+ soCCCD + ", ngayVaoLam=" + ngayVaoLam + ", anhDaiDien=" + anhDaiDien + "]";
+				+ soCCCD + ", ngayVaoLam=" + ngayVaoLam + ", anhDaiDien=" + anhDaiDien + ", ghiChu=" + ghiChu + "]";
 	}
+
+	
 }
