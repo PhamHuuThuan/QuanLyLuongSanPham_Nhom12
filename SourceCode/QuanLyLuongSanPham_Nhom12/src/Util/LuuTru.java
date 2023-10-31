@@ -3,11 +3,14 @@ package Util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class LuuTru {
@@ -23,52 +26,63 @@ public class LuuTru {
 		}
 		return pathFileData;
 	}
-	public void copyFileAvatar(String sourceFilePath, String maNV) {
-	    try {
-	        // Tạo đường dẫn đến thư mục mới trong project
-	        String destDirectory = getClass().getResource("avatar/").getPath() + maNV;
-	        Path destDir = Paths.get(destDirectory);
+	public String copyFileAvatar(String sourceFilePath, String maNV) {
+        try {
+            // Tạo đường dẫn đến thư mục mới trong project
+            Path path = Paths.get("res/avatar/" + maNV);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+                System.out.println("Thư mục đã được tạo: " + path);
+            } else {
+                System.out.println("Thư mục đã tồn tại: " + path);
+            }
 
-	        // Tạo thư mục nếu nó chưa tồn tại
-	        if (!Files.exists(destDir)) {
-	            Files.createDirectories(destDir);
-	        }
+            // Tạo đường dẫn đến file nguồn và thư mục đích
+            Path sourcePath = Paths.get(sourceFilePath);
+            Path destPath = Paths.get(path.toString(), sourcePath.getFileName().toString());
 
-	        // Tạo đường dẫn đến file đích
-	        Path sourcePath = Paths.get(sourceFilePath);
-	        Path destPath = Paths.get(destDirectory, sourcePath.getFileName().toString());
+            // Kiểm tra xem file có tồn tại tại đường dẫn đích hay không
+            if (!Files.exists(destPath)) {
+                // Sao chép file
+                Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("File đã được sao chép thành công!");
+                return destPath.toString();
+            } else {
+                System.out.println("File đã tồn tại tại đường dẫn đích!");
+            }
 
-	        // Sao chép file
-	        Files.copy(sourcePath, destPath);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+            // Trả về đường dẫn mới
+            System.out.println("Đường dẫn mới: " + destPath);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
-	public void xoaThongTinNhanVien(String maNV) {
+	public void xoaFileAvatar(String maNV) {
 	    try {
 	        // Tạo đường dẫn đến thư mục của nhân viên trong project
-	        String directoryPath = getClass().getResource("avatar/").getPath() + maNV;
-	        Path dirPath = Paths.get(directoryPath);
-
-	        // Xóa thư mục nếu nó tồn tại
-	        if (Files.exists(dirPath)) {
-	            Files.walkFileTree(dirPath, new SimpleFileVisitor<Path>() {
-	                @Override
-	                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-	                    Files.delete(file);
-	                    return FileVisitResult.CONTINUE;
-	                }
-
-	                @Override
-	                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-	                    Files.delete(dir);
-	                    return FileVisitResult.CONTINUE;
-	                }
-	            });
+	        Path path = Paths.get("res/avatar/" + maNV);
+	        
+	        // Kiểm tra xem thư mục có tồn tại không
+	        if (Files.exists(path)) {
+	            // Duyệt qua tất cả các file trong thư mục
+	            DirectoryStream<Path> directoryStream = Files.newDirectoryStream(path);
+	            for (Path file : directoryStream) {
+	                // Xóa file
+	                Files.delete(file);
+	                System.out.println("Đã xóa file: " + file);
+	            }
+	            directoryStream.close();
+	            
+	            // Xóa thư mục sau khi đã xóa hết các file bên trong
+	            Files.delete(path);
+	            System.out.println("Đã xóa thư mục: " + path);
+	        } else {
+	            System.out.println("Thư mục không tồn tại: " + path);
 	        }
-	    } catch (Exception e) {
+	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
 	}
-
 }

@@ -21,6 +21,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -488,6 +489,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		lblMessage.setText("");
 		Object o = e.getSource();
 		main.music.playSE(2);
 		if(o == btnThem) {
@@ -517,10 +519,10 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			
 		}
 		if(o == btnHuy) {
-			displayButtonSaveAndCancel(false);
-			setEditableForTextField(false);
 			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thoát? Toàn bộ thông tin thay đổi sẽ mất", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				xoaRong();
+				displayButtonSaveAndCancel(false);
+				setEditableForTextField(false);
 			}
 		}
 		if(o==btnChonAnh) {
@@ -592,7 +594,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		dsNV = nv_Dao.getAllNhanVien();
 		themTatCaNhanVienVaoBang(dsNV);
 		txtMaNV.setText(new SinhMaTuDong().sinhMaNV());
-		txtMatKhau.setText("");
+		txtMatKhau.setText("abc123@");
 		txtTenNV.setText("");
 		dtpNgaySinh.setDate(new Date());
 		txtSDT.setText("");
@@ -603,6 +605,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		btnChonAnh.setText("");
 		radNam.setSelected(true);
 		dtpNgaySinh.setDate(new Date(100, 0, 1));
+		lblMessage.setText("");
 	}
 	//hiển thị border cho button được user nhấn
 	private void setBorderForFocusButton(Object o) {
@@ -687,6 +690,45 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
         return null;
     }
 	private boolean validDataNV() {
+		String maNV = txtMaNV.getText();
+		String tenNV = txtTenNV.getText();
+		String matKhau = txtMatKhau.getText();
+		Date ngaySinh = dtpNgaySinh.getDate();
+		String sdt = txtSDT.getText();
+		String email = txtEmail.getText();
+		String cccd = txtCCCD.getText();
+		
+		if(!maNV.matches("\\S+") || !maNV.matches("^NV\\d{5}$")) {
+			setTextError("Mã nhân viên phải có dạng: NV12345!");
+			return false;
+		}
+		if(!matKhau.matches("\\S+") || !matKhau.matches(".*[0-9].*") || !matKhau.matches(".*[a-zA-Z].*") || !matKhau.matches(".*[@#$%^&+=].*")) {
+			setTextError("Mật khẩu ít nhất 6 kí tự, bao gồm: chữ cái, số, kí tự đặc biệt!");
+			return false;
+		}
+		if(tenNV==null && tenNV.trim().length()<=0) {
+			setTextError("Tên nhân viên không được để trống!");
+			return false;
+		}
+		Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -18); // trừ 18 năm kể từ hiện tại
+        Date eighteenYearsAgo = cal.getTime();
+		if(ngaySinh.compareTo(eighteenYearsAgo) > 0) {
+			setTextError("Nhân viên phải đủ 18 tuổi trở lên!");
+			return false;
+		}
+		if(!sdt.matches("^(\\+84|84|0)\\d{9}$")) {
+			setTextError("Số điện thoại không được rỗng và bắt đầu 0, 84!");
+			return false;
+		}
+		if(!email.matches("^([a-zA-Z0-9]){5,}@([a-zA-Z0-9])+\\.com$")) {
+			setTextError("Email phải có dạng abcde@domain.com!");
+			return false;
+		}
+		if(!cccd.matches("^\\d{12}$")) {
+			setTextError("Căn cước công dân chỉ gồm 12 chữ số!");
+			return false;
+		}
 		return true;
 	}
 	//Thêm nhân viên từ giao diện vào csdl
@@ -695,7 +737,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			NhanVien nvNew = convertDataToNhanVien();
 			if(nvNew != null) {
 				if(nv_Dao.themNhanVien(nvNew)) {
-					main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV());
+					nvNew.setHinhAnh(main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV()));
 					lblMessage.setText("Thêm nhân viên thành công!");
 					xoaRong();
 				}else {
@@ -736,7 +778,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			if(maNV != null) {
 				if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 					if(nv_Dao.xoaNhanVien(maNV)) {
-						main.l.xoaThongTinNhanVien(maNV);
+						main.l.xoaFileAvatar(maNV);
 						lblMessage.setText("Xóa thành công!");
 						xoaRong();
 					}else {
