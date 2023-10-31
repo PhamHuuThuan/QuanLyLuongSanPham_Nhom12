@@ -67,13 +67,11 @@ public class CongNhan {
 		}
 		if (!matKhau.matches("\\S+")) {
 			throw new Exception("Mật khẩu không được chứa khoảng trắng!");
-		} else if (!matKhau.matches(".*[0-9].*")) {
-			throw new Exception("Mật khẩu phải chứa ít nhất một số!");
-		} else if (!matKhau.matches(".*[a-zA-Z].*")) {
-			throw new Exception("Mật khẩu phải chứa ít nhất một chữ cái!");
-		} else if (!matKhau.matches(".*[@#$%^&+=].*")) {
-			throw new Exception("Mật khẩu phải chứa ít nhất một kí tự đặc biệt!");
-		} else {
+		}
+		if (matKhau.trim().length()<6) {
+			throw new Exception("Mật khẩu phải lớn hơn 6 kí tự!");
+		} 
+		else {
 			this.matKhau = matKhau;
 		}
 	}

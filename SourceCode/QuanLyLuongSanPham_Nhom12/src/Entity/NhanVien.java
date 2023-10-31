@@ -1,7 +1,6 @@
 package Entity;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Calendar;
 
 public class NhanVien {
@@ -9,7 +8,7 @@ public class NhanVien {
 	private String matKhau;
 	private String hoTen;
 	private boolean gioiTinh;	// true: nam, false: nu
-	private java.util.Date ngaySinh;
+	private Date ngaySinh;
 	private String sdt;
 	private String email;
 	private String cCCD;
@@ -23,8 +22,14 @@ public class NhanVien {
 				+ diaChi + ", hinhAnh=" + hinhAnh + "]";
 	}
 	//Khởi tạo đối tượng nhân viên đầy đủ tham số
-	public NhanVien(String maNV, String matKhau, String hoTen, boolean gioiTinh, java.util.Date ngaySinh, String sdt,
-			String email, String cCCD, String diaChi, String hinhAnh){
+
+	// Khởi tạo đối tượng nhân viên mặc định (không có tham số)
+	public NhanVien() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public NhanVien(String maNV, String matKhau, String hoTen, boolean gioiTinh, Date ngaySinh, String sdt,
+			String email, String cCCD, String diaChi, String hinhAnh) {
 		super();
 		try {
 			setMaNV(maNV);
@@ -40,12 +45,6 @@ public class NhanVien {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-			
-	}
-	// Khởi tạo đối tượng nhân viên mặc định (không có tham số)
-	public NhanVien() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	//KHởi tạo nhân viên chỉ có mã NV
 	public NhanVien(String maNV) {
@@ -117,11 +116,11 @@ public class NhanVien {
 	public java.util.Date getNgaySinh() {
 		return ngaySinh;
 	}
-	public void setNgaySinh(java.util.Date ngaySinh) throws Exception {
+	public void setNgaySinh(Date ngaySinh) throws Exception {
 		Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, -18); // trừ 18 năm kể từ hiện tại
-        java.util.Date eighteenYearsAgo = cal.getTime();
-		if(!ngaySinh.before(eighteenYearsAgo)) {
+        Date eighteenYearsAgo = cal.getTime();
+		if(ngaySinh.compareTo(eighteenYearsAgo) > 0) {
 			throw new Exception("Ngày sinh trước ngày hiện tại và phải đủ 18 tuổi!");
 		}
 		else {

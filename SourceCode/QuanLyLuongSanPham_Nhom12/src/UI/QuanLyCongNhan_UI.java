@@ -7,8 +7,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -38,6 +40,7 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.JComboBox;
 
 public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseListener {
@@ -67,13 +70,16 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	private CongNhan_Dao cn_dao = new CongNhan_Dao();
 
 	private String pathNameAvatar = "image_cn_df.jpg";
+
 	private JXDatePicker dpNgayVaoLam, dpNgaySinh;
-	
+	private JTable tblCN;
+
 	private ArrayList<CongNhan> dsCN = new ArrayList<>();
 
 	public QuanLyCongNhan_UI(MainUI main) {
 		this.main = main;
 		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 16F);
+		pathNameAvatar = "image_cn_df.jpg";
 
 		setLayout(new BorderLayout(0, 0));
 		setBackground(bgColor);
@@ -111,7 +117,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlBody.add(pnlAvatar);
 		pnlAvatar.setLayout(new BorderLayout(0, 10));
 
-		// sss
+		// button anh dai dien
 
 		btnEditAvatar = new JButton("Ảnh đại diện");
 		pnlAvatar.add(btnEditAvatar, BorderLayout.SOUTH);
@@ -119,25 +125,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		lblAvatar.setIcon(new ImageScaler("/image/" + pathNameAvatar, 150, 150).getScaledImageIcon());
 		lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlAvatar.add(lblAvatar, BorderLayout.CENTER);
-
-		btnEditAvatar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileFilter(new FileNameExtensionFilter("Hình ảnh", "jpg", "jpeg", "png", "gif"));
-
-				int returnValue = fileChooser.showOpenDialog(null);
-
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					java.io.File selectedFile = fileChooser.getSelectedFile();
-					String filePathAvatar = selectedFile.getName();
-
-					pathNameAvatar = filePathAvatar;
-					lblAvatar.setIcon(new ImageScaler("/image/" + pathNameAvatar, 150, 150).getScaledImageIcon());
-					repaint();
-					revalidate();
-				}
-			}
-		});
 
 		Component horizontalStrut = Box.createHorizontalStrut(40);
 		pnlBody.add(horizontalStrut);
@@ -250,7 +237,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		dpNgaySinh.setLocale(new Locale("vi", "VN"));
 
 		box_2.add(dpNgaySinh);
-		
 
 		Component horizontalStrut_9_1 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_9_1);
@@ -356,7 +342,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		dpNgayVaoLam.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgayVaoLam.setLocale(new Locale("vi", "VN"));
 
-
 		box_3.add(dpNgayVaoLam);
 
 		Component horizontalStrut_16_1 = Box.createHorizontalStrut(20);
@@ -444,10 +429,10 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlTable.setBackground(new Color(255, 255, 255));
 		add(pnlTable, BorderLayout.CENTER);
 
-		String cols[] = { "STT", "Mã CN","Mật khẩu", "Họ Tên", "Giới tính", "Ngày sinh", "SDT", "Email", "Địa chỉ", "CCCD",
-				"Ngày vào làm","avt", "Ghi chú" };
+		String cols[] = { "STT", "Mã CN", "Họ Tên", "Giới tính", "Ngày sinh", "SDT", "Email", "Địa chỉ", "CCCD",
+				"Ngày vào làm", "Ghi chú" };
 		dtblModel = new DefaultTableModel(cols, 0);
-		JTable tblCN = new JTable(dtblModel);
+		tblCN = new JTable(dtblModel);
 
 		tbhCN = new JTableHeader(tblCN.getColumnModel());
 		tbhCN.setReorderingAllowed(false);
@@ -456,20 +441,20 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		tbhCN.setFont(fontText);
 		tblCN.setTableHeader(tbhCN);
 
-		tblCN.setRowHeight(20);
+		tblCN.setRowHeight(30);
 		tblCN.getColumnModel().getColumn(0).setPreferredWidth(40);
 		tblCN.getColumnModel().getColumn(1).setPreferredWidth(70);
-		tblCN.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tblCN.getColumnModel().getColumn(3).setPreferredWidth(40);
-		tblCN.getColumnModel().getColumn(4).setPreferredWidth(70);
+//		tblCN.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblCN.getColumnModel().getColumn(2).setPreferredWidth(40);
+		tblCN.getColumnModel().getColumn(3).setPreferredWidth(70);
+		tblCN.getColumnModel().getColumn(4).setPreferredWidth(80);
 		tblCN.getColumnModel().getColumn(5).setPreferredWidth(80);
-		tblCN.getColumnModel().getColumn(6).setPreferredWidth(80);
-		tblCN.getColumnModel().getColumn(7).setPreferredWidth(90);
-		tblCN.getColumnModel().getColumn(8).setPreferredWidth(70);
-		tblCN.getColumnModel().getColumn(9).setPreferredWidth(60);
+		tblCN.getColumnModel().getColumn(6).setPreferredWidth(90);
+		tblCN.getColumnModel().getColumn(7).setPreferredWidth(70);
+		tblCN.getColumnModel().getColumn(8).setPreferredWidth(60);
+		tblCN.getColumnModel().getColumn(9).setPreferredWidth(90);
 		tblCN.getColumnModel().getColumn(10).setPreferredWidth(90);
-		tblCN.getColumnModel().getColumn(11).setPreferredWidth(90);
-		tblCN.getColumnModel().getColumn(12).setPreferredWidth(90);
+//		tblCN.getColumnModel().getColumn(11).setPreferredWidth(90);
 		pnlTable.setLayout(new BorderLayout(0, 0));
 
 		// Tạo jscrollpane để tạo scroll cho bảng công nhân
@@ -493,17 +478,25 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		btnIn.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
+		tblCN.addMouseListener(this);
 
 		displayButtonSaveAndCancel(false);
 
 		setEditableForTextField(false);
-		
+
 		getDataToTable();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o == tblCN) {
+			int index = tblCN.getSelectedRow();
+			if (index != -1) {
+				hienThiThongTinCongNhan(index);
+			}
+		}
 
 	}
 
@@ -534,6 +527,12 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		main.music.playSE(2);
+		if (o == btnEditAvatar) {
+			String namePathAvatar = getPathNameAvatar();
+			lblAvatar.setIcon(new ImageScaler("/image/" + namePathAvatar, 150, 150).getScaledImageIcon());
+			btnEditAvatar.setText(namePathAvatar);
+		}
 
 		if (o == cmbGioiTinh) {
 			String selectGT = (String) cmbGioiTinh.getSelectedItem();
@@ -549,15 +548,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			setEditableForTextField(true);
 			xoaRong();
 			isThemCongNhan = true;
-//			txtMaCN.setText("CN00001");
-//			txtHoTen.setText("phong");
-//			txtMatKhau.setText("111111");
-//			dpNgaySinh.setDate(new Date());
-//			txtDiaChi.setText("123");
-//			txtSoDT.setText("0999991232");
-//			txtSoCCCD.setText("123123123321");
-//			txtEmail.setText("123@gmail.com");
-//			txtGhiChu.setText("123");
 
 		}
 		if (o == btnSua) {
@@ -574,14 +564,13 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			if (isThemCongNhan == true) {
 				themCongNhan();
 			}
-			displayButtonSaveAndCancel(false);
-			setEditableForTextField(false);
+//			displayButtonSaveAndCancel(false);
+//			setEditableForTextField(false);
 
 		}
 		if (o == btnHuy) {
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
-
 		}
 	}
 
@@ -623,11 +612,18 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			txtMaCN.setEditable(true);
 			txtHoTen.setEditable(true);
 			txtMatKhau.setEditable(true);
+			
 			dpNgaySinh.setEditable(true);
+			dpNgaySinh.setEnabled(true);
+			
 			txtDiaChi.setEditable(true);
 			txtEmail.setEditable(true);
-			dpNgayVaoLam.getEditor().setEnabled(true);
+			
+			dpNgayVaoLam.setEditable(true);
+			dpNgayVaoLam.setEnabled(true);
+			
 			txtGhiChu.setEditable(true);
+			cmbGioiTinh.setEnabled(edit);
 
 			btnEditAvatar.setEnabled(true);
 
@@ -635,11 +631,19 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			txtMaCN.setEditable(false);
 			txtHoTen.setEditable(false);
 			txtMatKhau.setEditable(false);
+			
 			dpNgaySinh.setEditable(false);
+			dpNgaySinh.setEnabled(false);
+			
 			txtDiaChi.setEditable(false);
 			txtEmail.setEditable(false);
-			dpNgayVaoLam.getEditor().setEnabled(false);
+			
+			dpNgayVaoLam.setEnabled(false);
+			dpNgayVaoLam.setEnabled(false);
+			
 			txtGhiChu.setEditable(false);
+
+			cmbGioiTinh.setEnabled(false);
 
 			btnEditAvatar.setEnabled(false);
 		}
@@ -651,8 +655,27 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		txtMatKhau.setText("");
 		dpNgaySinh.setDate(new Date());
 		txtDiaChi.setText("");
+		txtSoDT.setText("");
 		txtEmail.setText("");
 		txtGhiChu.setText("");
+		lblAvatar.setIcon(new ImageScaler("/image/" + "image_cn_df.jpg", 150, 150).getScaledImageIcon());
+		btnEditAvatar.setText("Ảnh đại diện");
+	}
+
+	private String getPathNameAvatar() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Hình ảnh", "jpg", "jpeg", "png", "gif"));
+
+		int returnValue = fileChooser.showOpenDialog(null);
+
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			java.io.File selectedFile = fileChooser.getSelectedFile();
+			String filePathAvatar = selectedFile.getName();
+			pathNameAvatar = filePathAvatar;
+			repaint();
+			revalidate();
+		}
+		return pathNameAvatar;
 	}
 
 	private CongNhan convertDataToCongNhan() {
@@ -666,56 +689,196 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		String diaChi = txtDiaChi.getText();
 		String scccd = txtSoCCCD.getText();
 		Date ngayVaoLam = dpNgayVaoLam.getDate();
-		String anhDaiDien = pathNameAvatar;
+		String anhDaiDien = btnEditAvatar.getText();
 		String ghiChu = txtGhiChu.getText();
-		
+
 		return new CongNhan(maCN, matKhau, hoten, ngaySinh, gioiTinh, sdt, email, diaChi, scccd, ngayVaoLam, anhDaiDien,
 				ghiChu);
 	}
 
 	private void themCongNhan() {
-		CongNhan cnNew = convertDataToCongNhan();
-		if (cnNew != null) {
-			if (cn_dao.themCongNhan(cnNew)) {
-				themCongNhanVaoBang(cnNew);
-				JOptionPane.showMessageDialog(this, "Thêm công nhân thành công");
-			}else {
-				JOptionPane.showMessageDialog(this, "Thêm công nhân thất bại, do mã CN đã tồn tại");
+		if (validCongNhan() == true) {
+			CongNhan cnNew = convertDataToCongNhan();
+			if (cnNew != null) {
+				if (cn_dao.themCongNhan(cnNew)) {
+					themCongNhanVaoBang(cnNew);
+					alertNotification("Thêm công nhân thành công");
+				} else {
+					alertNotification("Thêm công nhân thất bại, do mã CN đã tồn tại");
+				}
+			} else {
+				alertNotification("Thêm thất bại! Lỗi");
 			}
-		}else {
-			JOptionPane.showMessageDialog(this, "Thêm thất bại! Lỗi");
 		}
 	}
+
 	private void getDataToTable() {
 		dsCN = cn_dao.getAllCongNhan();
 		themAllCongNhanVaoBang(dsCN);
 	}
-	
+
 	private void themCongNhanVaoBang(CongNhan cn) {
 		String[] row = new String[13];
-		System.out.println(cn.getNgaySinh());
-		row[0] = String.valueOf(dtblModel.getRowCount()+1);
+		row[0] = String.valueOf(dtblModel.getRowCount() + 1);
 		row[1] = cn.getMaCN();
-		row[2] = cn.getMatKhau();
-		row[3] = cn.getHoTen();
-		row[4] = cn.getGioiTinh()? "Nam": "Nữ";
-		row[5] = new SimpleDateFormat("dd-MM-YYYY").format(cn.getNgaySinh());
-		row[6] = cn.getSDT();
-		row[7] = cn.getEmail();
-		row[8] = cn.getDiaChi();
-		row[9] = cn.getSoCCCD();
-		row[10] = new SimpleDateFormat("dd-MM-YYYY").format(cn.getNgayVaoLam());
-		row[11] = cn.getAnhDaiDien();
-		row[12] = cn.getGhiChu();
+		row[2] = cn.getHoTen();
+		row[3] = cn.getGioiTinh() ? "Nam" : "Nữ";
+		row[4] = new SimpleDateFormat("dd-MM-YYYY").format(cn.getNgaySinh());
+		row[5] = cn.getSDT();
+		row[6] = cn.getEmail();
+		row[7] = cn.getDiaChi();
+		row[8] = cn.getSoCCCD();
+		row[9] = new SimpleDateFormat("dd-MM-YYYY").format(cn.getNgayVaoLam());
+		row[10] = cn.getGhiChu();
 		dtblModel.addRow(row);
-				
+
 	}
+
 	private void themAllCongNhanVaoBang(ArrayList<CongNhan> list) {
 		dtblModel.setRowCount(0);
-		for(CongNhan cn: list) {
+		for (CongNhan cn : list) {
 			themCongNhanVaoBang(cn);
 		}
 	}
-	
+
+	private void hienThiThongTinCongNhan(int index) {
+
+		btnEditAvatar.setText(dsCN.get(index).getAnhDaiDien());
+		if (dsCN.get(index).getAnhDaiDien() == null) {
+			lblAvatar.setIcon(new ImageScaler("image_cn_df", 150, 150).getScaledImageIcon());
+		} else {
+			lblAvatar.setIcon(
+					new ImageScaler("/image/" + dsCN.get(index).getAnhDaiDien(), 150, 150).getScaledImageIcon());
+		}
+
+		txtMaCN.setText(dsCN.get(index).getMaCN());
+		txtHoTen.setText(dsCN.get(index).getHoTen());
+		txtSoDT.setText(dsCN.get(index).getSDT());
+		txtEmail.setText(dsCN.get(index).getEmail());
+		txtSoCCCD.setText(dsCN.get(index).getSoCCCD());
+		txtDiaChi.setText(dsCN.get(index).getDiaChi());
+		txtGhiChu.setText(dsCN.get(index).getGhiChu());
+		cmbGioiTinh.setSelectedIndex(dsCN.get(index).getGioiTinh() ? 0 : 1);
+
+		txtMatKhau.setText(dsCN.get(index).getMatKhau());
+
+		String dateString = (String) dtblModel.getValueAt(index, 4);
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			java.util.Date date = formatter.parse(dateString);
+			dpNgaySinh.setDate(date);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+		dateString = (String) dtblModel.getValueAt(index, 9);
+		try {
+			java.util.Date date = formatter.parse(dateString);
+			dpNgayVaoLam.setDate(date);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+	}
+
+	private boolean validCongNhan() {
+		String maCN = txtMaCN.getText();
+		String tenCN = txtHoTen.getText();
+		String mk = txtMatKhau.getText();
+		Date ngaySinh = dpNgaySinh.getDate();
+		String sdt = txtSoDT.getText();
+		String email = txtEmail.getText();
+		String scccd = txtSoCCCD.getText();
+		Date ngayVaoLam = dpNgayVaoLam.getDate();
+
+		
+		if(pathNameAvatar.equals("image_cn_df.jpg")) {
+			alertNotification("Ảnh đại diện là bắt buộc ");
+			return false;
+		}
+		
+		if(maCN==null || maCN.trim().length() <= 0) {
+			alertNotification("Trường Mã Công Nhân là bắt buộc ");
+			return false;
+		}else if (!Pattern.matches("CN\\d{5}", maCN)) {
+			alertNotification("Mã Công Nhân không đúng định dạng (CNXXXXX, X:0-1)");
+			return false;
+		}
+
+		if (tenCN == null || tenCN.trim().length() <= 0) {
+			alertNotification("Trường nhập Tên Công Nhân là bắt buộc");
+			return false;
+		}
+
+		if (mk == null) {
+			alertNotification("Mật khẩu không rỗng");
+			return false;
+		} else if (mk.length() < 6) {
+			alertNotification("Mật khẩu phải lớn hơn hoặc bằng 6 kí tự");
+			return false;
+		}
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, -18);
+		java.util.Date eighteenYearsAgo = cal.getTime();
+		if (!ngaySinh.before(eighteenYearsAgo)) {
+			alertNotification("Ngày trước ngày hiện tại và trên 18 tuổi");
+			return false;
+		}
+		
+		if(!Pattern.matches( "^(\\+84|0)[1-9]\\d{8}$", sdt)) {
+			alertNotification("Số điện thoại không đúng định dạng");
+			return false;
+		}
+		
+		if(!Pattern.matches("^\\d{12}$", scccd)) {
+			alertNotification("Số căn cước không đúng định dạng (12 số)");
+			return false;
+		}
+		
+		if(!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", email)) {
+			alertNotification("Email không đúng định dạng");
+		}
+			
+		
+		Date ngayHienTai = new Date();
+		if(!ngayVaoLam.after(ngayHienTai)) {
+			alertNotification("Ngày vào làm phải sau ngày hiện tại");
+			return false;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+
+		return true;
+	}
+
+	public int alertQuestion(String textAtion, String message) {
+		String[] options = { textAtion, "Cancel" };
+		main.music.playSE(3);
+		int result = JOptionPane.showOptionDialog(main, message, "NOTIFICATON WARNING", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		if (result == 0) {
+
+		} else {
+
+		}
+		return result;
+	}
+
+	public int alertNotification(String textError) {
+		main.music.playSE(3);
+		String[] options = { "Cancel" };
+		int result = JOptionPane.showOptionDialog(main, textError, "NOTIFICATION", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		return result;
+	}
 
 }

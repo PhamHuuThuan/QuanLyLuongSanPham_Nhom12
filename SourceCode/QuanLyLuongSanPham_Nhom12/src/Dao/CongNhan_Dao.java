@@ -10,6 +10,9 @@ import ConnectDB.ConnectDB;
 import Entity.CongNhan;
 
 public class CongNhan_Dao {
+	
+	
+	// them cong nhan
 	public boolean themCongNhan(CongNhan cn) {
 		ConnectDB.getInstance();	
 		PreparedStatement st=null;
@@ -84,6 +87,28 @@ public class CongNhan_Dao {
 	    
 	    return listCN;
 	}
+	
+	//sua cong nhan
+	public boolean suaCongNhan(CongNhan cn) {
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		int n=0;
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "UPDATE CongNhan SET"
+					+ "maCD=? matKhau";
+			st = conn.prepareStatement(querry);
+			
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		return n>0;
+	}
+	
 	
 	
 	
