@@ -14,6 +14,13 @@ import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.NhanVien_Dao;
+import Dao.PhanCongNhanVien_Dao;
+import Dao.PhongBan_Dao;
+import Entity.BangPhanCongNhanVien;
+import Entity.NhanVien;
+import Entity.PhongBan;
+import Util.SinhMaTuDong;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,11 +30,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 import javax.swing.JTextField;
@@ -46,11 +55,21 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private RoundedButton btnPhanCong, btnCapNhatPC, btnXoaPC, btnLuu, btnHuy, btnFocus;
+	private RoundedButton btnPhanCong, btnCapNhatPC, btnXoaPC, btnFocus;
 	private DefaultTableModel dtblModelNVPC, dtblModelNV;
 	private JTable tblNVPC, tblNV;
 	private JTableHeader tbhNVPC, tbhNV;
-	private JTextField  txtMaNV, txtTenNV, txtSDT, txtGhiChu,txtChucVu;
+	private JTextField  txtMaNV, txtTenNV, txtSDT, txtGhiChu;
+	private JXDatePicker dtbNgayVL;
+	private JComboBox<PhongBan> cmbPhongBan;
+	private JComboBox<String> cmbChucVu;
+	private NhanVien_Dao nv_Dao = new NhanVien_Dao();
+	private PhongBan_Dao pb_Dao = new PhongBan_Dao();
+	private PhanCongNhanVien_Dao pcnv_Dao = new PhanCongNhanVien_Dao();
+	private ArrayList<NhanVien> dsNV = new ArrayList<>();
+	private ArrayList<BangPhanCongNhanVien> dsPCNV = new ArrayList<>();
+	private JLabel lblMessage;
+	private JLabel lblAvatar;
 	/**
 	 * Create the panel.
 	 */
@@ -144,22 +163,23 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlAnhDaiDien.setBackground(bgColor);
 		pnThongTinNV.add(pnlAnhDaiDien, BorderLayout.WEST);
 		
-		JLabel lblAnh = new JLabel("");
-		lblAnh.setPreferredSize(new Dimension(75, 125));
-		lblAnh.setIcon(new ImageScaler("/image/team_icon.png", 75, 125).getScaledImageIcon());
-		lblAnh.setBorder(BorderFactory.createLineBorder(componentColor));
-		pnlAnhDaiDien.add(lblAnh, BorderLayout.CENTER);
+		lblAvatar = new JLabel("");
+		lblAvatar.setPreferredSize(new Dimension(75, 75));
+		lblAvatar.setIcon(new ImageScaler("/image/employee.png", 75, 75).getScaledImageIcon());
+		lblAvatar.setBorder(BorderFactory.createLineBorder(componentColor));
+		pnlAnhDaiDien.add(lblAvatar, BorderLayout.CENTER);
 		
 		txtMaNV = new JTextField();
 		txtMaNV.setHorizontalAlignment(SwingConstants.CENTER);
 		txtMaNV.setColumns(5);
 		pnlAnhDaiDien.add(txtMaNV, BorderLayout.SOUTH);
-		pnlAnhDaiDien.add(Box.createVerticalStrut(100));
+		pnlAnhDaiDien.add(Box.createVerticalStrut(125));
 		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtMaNV.setForeground(textColor);
 		txtMaNV.setBackground(bgColor);
 		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtMaNV.setEditable(false);
 		
 		
 		JPanel pnlTTRight = new JPanel();
@@ -177,14 +197,15 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlB1.add(lblTenNV);
 		
 		txtTenNV = new JTextField();
-		txtTenNV.setColumns(8);
+		txtTenNV.setColumns(14);
 		txtTenNV.setForeground(textColor);
 		txtTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtTenNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+				BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 		txtTenNV.setBackground(bgColor);
+		txtTenNV.setEditable(false);
 		pnlB1.add(txtTenNV);
-		pnlB1.add(Box.createHorizontalStrut(20));
+		pnlB1.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblSDT = new JLabel("SĐT:");
 		pnlB1.add(lblSDT);
@@ -197,8 +218,9 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		txtSDT.setForeground(textColor);
 		txtSDT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtSDT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		txtSDT.setBackground(bgColor);
+		txtSDT.setEditable(false);
 		
 		JPanel pnlB2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB2.setBackground(bgColor);
@@ -209,8 +231,19 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		pnlB2.add(lblPhongBan);
 		
-		JComboBox cmbPhongBan = new JComboBox();
-		cmbPhongBan.setModel(new DefaultComboBoxModel(new String[] {"Nhân sự", "Kế toán"}));
+		cmbPhongBan = new JComboBox();
+		// Tạo một đối tượng DefaultComboBoxModel
+		DefaultComboBoxModel model = new DefaultComboBoxModel();
+		model.addElement(new PhongBan("PB00", "Chưa PC", 0, ""));
+
+		// Lấy danh sách tất cả các phòng ban
+		ArrayList<PhongBan> listPB = pb_Dao.getAllPhongBan();
+
+		// Thêm phòng ban vào model
+		model.addAll(listPB);
+		    
+		// Đặt model cho JComboBox
+		cmbPhongBan.setModel(model);
 		Border 	cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		cmbPhongBan.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
@@ -222,21 +255,26 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		cmbPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		cmbPhongBan.setPreferredSize(txtTenNV.getPreferredScrollableViewportSize());
 		pnlB2.add(cmbPhongBan);
-		pnlB2.add(Box.createHorizontalStrut(20));
+		pnlB2.add(Box.createHorizontalStrut(10));
 		
 		JLabel lblChucVu = new JLabel("Chức vụ:");
 		pnlB2.add(lblChucVu);
 		lblChucVu.setForeground(textColor);
 		lblChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
-		txtChucVu = new JTextField();
-		txtChucVu.setColumns(8);
-		pnlB2.add(txtChucVu);
-		txtChucVu.setForeground(textColor);
-		txtChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtChucVu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-								BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-		txtChucVu.setBackground(Color.WHITE);
+		String chucVu[] = {" ","Quản lý", "Nhân viên", "Thực tập sinh"};
+		cmbChucVu = new JComboBox<String>(chucVu);
+		pnlB2.add(cmbChucVu);
+		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+				BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		cmbChucVu.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
+		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
+				BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		cmbChucVu.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
+		cmbChucVu.setBackground(bgColor);
+		cmbPhongBan.setForeground(textColor);
+		cmbChucVu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		cmbChucVu.setPreferredSize(txtSDT.getPreferredSize());
 		
 		JPanel pnlB3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB3.setBackground(bgColor);
@@ -247,7 +285,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblNgayVL.setForeground(textColor);
 		lblNgayVL.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
-		JXDatePicker dtbNgayVL = new JXDatePicker((Date) null);
+		dtbNgayVL = new JXDatePicker((Date) null);
 		pnlB3.add(dtbNgayVL);
 		dtbNgayVL.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dtbNgayVL.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -260,7 +298,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		btnDateNVL.setBackground(bgColor);
 		btnDateNVL.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		Component horizontalStrut = Box.createHorizontalStrut(20);
+		Component horizontalStrut = Box.createHorizontalStrut(10);
 		pnlB3.add(horizontalStrut);
 		
 		JLabel lblGhiChu = new JLabel("Ghi chú:");
@@ -273,7 +311,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		txtGhiChu.setForeground(textColor);
 		txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		txtGhiChu.setBackground(bgColor);
 		pnlB3.add(txtGhiChu);
 		
@@ -283,6 +321,12 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblSDT.setPreferredSize(lblChucVu.getPreferredSize());
 		lblGhiChu.setPreferredSize(lblChucVu.getPreferredSize());
 		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlMessage.setBackground(bgColor);
+		pnlTTRight.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel());
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(main.roboto_regular.deriveFont(Font.ITALIC, 16F));
 		
 		//Khởi tạo jpanel chức năng chứa các button chức năng
 		JPanel pnlChucNang = new JPanel(new FlowLayout());
@@ -354,17 +398,29 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		
 		btnPhanCong.addActionListener(this);
 		btnCapNhatPC.addActionListener(this);
+		btnXoaPC.addActionListener(this);
 		
 		btnPhanCong.addMouseListener(this);
 		btnCapNhatPC.addMouseListener(this);
+		btnXoaPC.addMouseListener(this);
+		
+		tblNV.addMouseListener(this);
+		tblNVPC.addMouseListener(this);
 		
 		
-		//Set giá trị mặc định để hiển thị
+		//get dữ liệu từ csdl
+		dsNV = nv_Dao.timNhanVienChuaPhanCong();
+		themTatCaNhanVienVaoBangChuaPC(dsNV);
+		dsPCNV = pcnv_Dao.getAllPhanCong();
+		themTatCaPCNhanVienVaoBangPC(dsPCNV);
 		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		Object o = e.getSource();
+		if (o instanceof JTable) {
+			hienThiThongTinNV(o);
+	    }
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -387,13 +443,216 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		lblMessage.setText("");
 		Object o = e.getSource();
 		if(o == btnPhanCong) {
-			
+			phanCongNhanVien();
 		}
 		if(o == btnCapNhatPC) {
+			capNhatPhanCongNhanVien();
+		}
+		if(o == btnXoaPC) {
+			xoaPhanCong();
+		}
+	}
+	//thêm một nhân viên vào table 
+	private void themNhanVienVaoBangChuaPC(NhanVien nv) {
+	    Object[] row = new Object[10];
+	    row[0] = dtblModelNV.getRowCount() + 1;  // STT
+	    row[1] = nv.getMaNV();  // Mã NV
+	    row[2] = nv.getHoTen();  // Họ tên
+	    row[3] = nv.isGioiTinh() ? "Nam" : "Nữ";  // Giới tính
+	    row[4] = nv.getSdt();  // SDT
+	    row[5] = nv.getDiaChi();  // Địa chỉ
+	    
+	    dtblModelNV.addRow(row);
+	}
+	//thêm một ds nhân viên vào bảng
+	private void themTatCaNhanVienVaoBangChuaPC(ArrayList<NhanVien> list) {
+		dtblModelNV.setRowCount(0);
+	    for (NhanVien nv : list) {
+	        themNhanVienVaoBangChuaPC(nv);
+	    }
+	}
+	//thêm một nhân viên phân công vào table 
+	private void themPCNhanVienVaoBangPC(BangPhanCongNhanVien pcnv) {
+	    Object[] row = new Object[10];
+	    row[0] = dtblModelNVPC.getRowCount() + 1;  // STT
+	    row[1] = pcnv.getNhanVien().getMaNV();  // Mã NV
+	    row[2] = pcnv.getNhanVien().getHoTen();  // Họ tên
+	    row[3] = pcnv.getNhanVien().isGioiTinh() ? "Nam" : "Nữ";  // Giới tính
+	    row[4] = pcnv.getNhanVien().getSdt();  // SDT
+	    row[5] = pcnv.getNhanVien().getDiaChi();  // Địa chỉ
+	    row[6] = pcnv.getPhongBan().getTenPhongBan();  // phòng ban
+	    row[7] = pcnv.getChucVu();  //chức vụ
+	    row[8] = new SimpleDateFormat("dd-MM-yyyy").format(pcnv.getNgayCongTac());  // ngày công tác
+	    row[9] = pcnv.getGhiChu();  //ghi chú
+	    
+	    dtblModelNVPC.addRow(row);
+	}
+	//thêm một ds phân công nhân viên vào bảng
+	private void themTatCaPCNhanVienVaoBangPC(ArrayList<BangPhanCongNhanVien> list) {
+		dtblModelNVPC.setRowCount(0);
+	    for (BangPhanCongNhanVien pcnv : list) {
+	        themPCNhanVienVaoBangPC(pcnv);
+	    }
+	}
+	//hiển thị thông tin chọn từ bảng lên giao diện
+	private void hienThiThongTinNV(Object o) {
+		if(o==tblNV) {
+			tblNVPC.clearSelection();
+			int index = tblNV.getSelectedRow();
+			txtMaNV.setText(tblNV.getValueAt(index, 1).toString());
+			txtTenNV.setText(tblNV.getValueAt(index, 2).toString());
+			txtSDT.setText(tblNV.getValueAt(index, 4).toString());
 
+			if(dsNV.get(index).getHinhAnh()==null || dsNV.get(index).getHinhAnh().trim().length()<=0)
+				lblAvatar.setIcon(new ImageScaler("/image/employee.png", 75, 75).getScaledImageIcon());
+			else
+				lblAvatar.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 75, 75).getScaledImageAvatar());
+			cmbChucVu.setSelectedIndex(0);
+			txtGhiChu.setText("");
+			dtbNgayVL.setDate(pcnv_Dao.timPCNhanVien(tblNV.getValueAt(index, 1).toString()).getNgayCongTac()); 
+			if(dtbNgayVL.getDate()!=null)
+				dtbNgayVL.setEditable(false);
+			else
+				dtbNgayVL.setEditable(true);
+			cmbPhongBan.setSelectedIndex(0);
+		
+		}
+		else if(o==tblNVPC) {
+			tblNV.clearSelection();
+			int index = tblNVPC.getSelectedRow();
+			txtMaNV.setText(tblNVPC.getValueAt(index, 1).toString());
+			txtTenNV.setText(tblNVPC.getValueAt(index, 2).toString());
+			txtSDT.setText(tblNVPC.getValueAt(index, 4).toString());
 			
+			for(int i = 0; i < cmbPhongBan.getItemCount(); i++) {
+				if(cmbPhongBan.getItemAt(i).getMaPhongBan().equals(dsPCNV.get(index).getPhongBan().getMaPhongBan())) {
+					cmbPhongBan.setSelectedIndex(i);
+					break;
+				}
+			}
+			for(int i = 0; i < cmbChucVu.getItemCount(); i++) {
+				if(cmbChucVu.getItemAt(i).equals(dsPCNV.get(index).getChucVu())) {
+					cmbChucVu.setSelectedIndex(i);
+					break;
+				}
+			}
+			txtGhiChu.setText(dsPCNV.get(index).getGhiChu());
+			dtbNgayVL.setDate(dsPCNV.get(index).getNgayCongTac()); 
+			dtbNgayVL.setEditable(false);
+			System.out.println();
+			if(dsPCNV.get(index).getNhanVien().getHinhAnh()==null || dsPCNV.get(index).getNhanVien().getHinhAnh().trim().length()<=0)
+				lblAvatar.setIcon(new ImageScaler("/image/employee.png", 75, 75).getScaledImageIcon());
+			else
+				lblAvatar.setIcon(new ImageScaler(dsPCNV.get(index).getNhanVien().getHinhAnh(), 75, 75).getScaledImageAvatar());
+		}
+	}
+	//chuyển dữ liệu nhập vào thành object phân công
+	private BangPhanCongNhanVien convertDataToPhanCong() {
+		PhongBan pb;
+		Date ngayVL;
+		String chucVu;
+		if(cmbPhongBan.getSelectedIndex()!=0)
+			pb = (PhongBan) cmbPhongBan.getSelectedItem();
+		else {
+			setTextError("Bạn chưa chọn phòng ban!");
+			return null;
+		}
+		if(cmbChucVu.getSelectedIndex()!=0)
+			chucVu = (String) cmbChucVu.getSelectedItem();
+		else {
+			setTextError("Bạn chưa chọn chức vụ!");
+			return null;
+		}
+		if(dtbNgayVL.getDate()!=null)
+			ngayVL = dtbNgayVL.getDate();
+		else {
+			setTextError("Bạn chưa chọn ngày vào làm!");
+			return null;
+		}
+		String ghiChu = txtGhiChu.getText();
+		if(tblNV.getSelectedRow()!=-1) {
+			BangPhanCongNhanVien pcnv = pcnv_Dao.kiemTraPhanCong(dsNV.get(tblNV.getSelectedRow()).getMaNV());
+			if(pcnv==null) {
+				return new BangPhanCongNhanVien(new SinhMaTuDong().sinhMaPCNV(), dsNV.get(tblNV.getSelectedRow()), pb, chucVu, ngayVL, ghiChu);
+			}else {
+				pcnv.setPhongBan(pb);
+				pcnv.setChucVu(chucVu);
+				pcnv.setGhiChu(ghiChu);
+				return pcnv;
+			}
+		}
+		else
+			return new BangPhanCongNhanVien(dsPCNV.get(tblNVPC.getSelectedRow()).getMaPhanCong(),dsPCNV.get(tblNVPC.getSelectedRow()).getNhanVien(), pb, chucVu, ngayVL, ghiChu);
+	}
+	// thông báo lỗi
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
+	}
+	//phân công nhân viên
+	private void phanCongNhanVien() {
+		if(tblNV.getSelectedRow()!=-1) {
+			BangPhanCongNhanVien pcnv = convertDataToPhanCong();
+			if(!pcnv.getMaPhanCong().equals(new SinhMaTuDong().sinhMaPCNV())) { //đã từng được phân công
+				if(pcnv_Dao.capNhatPhanCong(pcnv)) {
+					System.out.println("Cập nhật!");
+					dsNV = nv_Dao.timNhanVienChuaPhanCong();
+					themTatCaNhanVienVaoBangChuaPC(dsNV);
+					dsPCNV = pcnv_Dao.getAllPhanCong(); // thêm vào bảng mới
+					themTatCaPCNhanVienVaoBangPC(dsPCNV);
+					lblMessage.setText("Thêm thành công!");
+				}else {
+					setTextError("Phân công thất bại đã xảy ra lỗi!");
+				}
+			}else { // phân công mới
+				if(pcnv_Dao.luuPhanCong(pcnv)) {
+					dsNV.remove(tblNV.getSelectedRow());
+					tblNV.remove(tblNV.getSelectedRow()); //xóa thông tin ở bảng chưa phân công
+					dsPCNV.add(pcnv); // thêm vào bảng mới
+					themTatCaPCNhanVienVaoBangPC(dsPCNV);
+					lblMessage.setText("Thêm thành công!");
+				}else {
+					setTextError("Phân công thất bại đã xảy ra lỗi!");
+				}
+			}
+		}else {
+			setTextError("Bạn phải chọn nhân viên cần phân công!");
+		}
+	}
+	//cập nhật phân công nhân viên
+	private void capNhatPhanCongNhanVien() {
+		if(tblNVPC.getSelectedRow()!=-1) {
+			BangPhanCongNhanVien pcnv = convertDataToPhanCong();
+			if(pcnv_Dao.capNhatPhanCong(pcnv)) {
+				dsPCNV = pcnv_Dao.getAllPhanCong();
+				themTatCaPCNhanVienVaoBangPC(dsPCNV);
+				lblMessage.setText("Cập nhật thành công!");
+			}else {
+				setTextError("Cập nhật phân công thất bại đã xảy ra lỗi!");
+			}
+		}else {
+			setTextError("Bạn phải chọn nhân viên cần sửa phân công!");
+		}
+	}
+	//xóa phân công
+	private void xoaPhanCong() {
+		if(tblNVPC.getSelectedRow()!=-1) {
+			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa phân công này?", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				if(pcnv_Dao.xoaThongTinPhanCong(dsPCNV.get(tblNVPC.getSelectedRow()).getMaPhanCong())) {
+					dsPCNV = pcnv_Dao.getAllPhanCong();
+					themTatCaPCNhanVienVaoBangPC(dsPCNV);
+					dsNV = nv_Dao.timNhanVienChuaPhanCong();
+					themTatCaNhanVienVaoBangChuaPC(dsNV);
+					lblMessage.setText("Xóa thành công!");
+				}else {
+					setTextError("Xóa phân công thất bại đã xảy ra lỗi!");
+				}
+			}
+		}else {
+			setTextError("Bạn phải chọn nhân viên cần xóa phân công!");
 		}
 	}
 }
