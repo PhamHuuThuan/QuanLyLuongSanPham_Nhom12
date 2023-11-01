@@ -150,7 +150,8 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtMaNVS.setColumns(8);
 		txtMaNVS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtMaNVS.setForeground(textColor);
-		txtMaNVS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+		txtMaNVS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
 						BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtMaNVS.setBackground(Color.WHITE);
 		pnlB1.add(txtMaNVS);
@@ -166,7 +167,8 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtTenNVS.setColumns(8);
 		txtTenNVS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtTenNVS.setForeground(textColor);
-		txtTenNVS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+		txtTenNVS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
 						BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtTenNVS.setBackground(Color.WHITE);
 		pnlB1.add(txtTenNVS);
@@ -232,7 +234,9 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtSDTS.setColumns(8);
 		txtSDTS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtSDTS.setForeground(textColor);
-		txtSDTS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+		txtSDTS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
+
 								BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtSDTS.setBackground(Color.WHITE);
 		pnlB3.add(txtSDTS);
@@ -289,7 +293,9 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtCCCDS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtCCCDS.setForeground(textColor);
 		txtCCCDS.setColumns(8);
-		txtCCCDS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+		txtCCCDS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
+
 								BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtCCCDS.setBackground(bgColor);
 		pnlB4.add(txtCCCDS);
@@ -304,7 +310,9 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtDiaChiS.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtDiaChiS.setForeground(textColor);
 		txtDiaChiS.setColumns(8);
-		txtDiaChiS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+		txtDiaChiS.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
+
 								BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 		txtDiaChiS.setBackground(Color.WHITE);
 		pnlB4.add(txtDiaChiS);
@@ -485,7 +493,8 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtDiaChi.setForeground(textColor);
 		txtDiaChi.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtDiaChi.setColumns(15);
-		txtDiaChi.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+		txtDiaChi.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+
 						BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 		txtDiaChi.setBackground(bgColor);
 		pnlB7.add(txtDiaChi);

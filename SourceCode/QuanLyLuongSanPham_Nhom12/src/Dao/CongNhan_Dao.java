@@ -12,7 +12,7 @@ import Entity.CongNhan;
 public class CongNhan_Dao {
 	
 	
-	// them cong nhan
+	// THEM CONG NHAN
 	public boolean themCongNhan(CongNhan cn) {
 		ConnectDB.getInstance();	
 		PreparedStatement st=null;
@@ -88,29 +88,72 @@ public class CongNhan_Dao {
 	    return listCN;
 	}
 	
-	//sua cong nhan
+	//SUA CONG NHAN
 	public boolean suaCongNhan(CongNhan cn) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		int n=0;
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "UPDATE CongNhan SET"
-					+ "maCD=? matKhau";
+			String querry = "UPDATE CongNhan SET "
+					+ " matKhau=?, hoTen=?,"
+					+ " ngaySinh=?, gioiTinh=?,"
+					+ " sDT=?, email=?, diaChi=?, soCCCD=?,"
+					+ " ngayVaoLam=?, anhDaiDien=?, ghiChu=? WHERE maCN=?";
 			st = conn.prepareStatement(querry);
+			st.setString(1, cn.getMatKhau());
+			st.setString(2, cn.getHoTen());
+			st.setDate(3, new java.sql.Date(cn.getNgaySinh().getTime()));
+			st.setBoolean(4, cn.getGioiTinh());
+			st.setString(5, cn.getSDT());
+			st.setString(6,cn.getEmail());
+			st.setString(7,cn.getDiaChi());
+			st.setString(8,cn.getSoCCCD());
+			st.setDate(9, new java.sql.Date(cn.getNgayVaoLam().getTime()));
+			st.setString(10, cn.getAnhDaiDien());
+			st.setString(11, cn.getGhiChu());
+			st.setString(12, cn.getMaCN());
 			
-			
+			n = st.executeUpdate();
 			
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			try {
+				st.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}	
 		}
-		
-		
 		return n>0;
 	}
 	
-	
-	
+	//XOA CONG NHAN
+		public boolean xoaCongNhan(String maCN) {
+			ConnectDB.getInstance();
+			PreparedStatement st = null;
+			int n = 0;
+			try {
+				Connection conn = ConnectDB.getConnection();
+				String querry = "DELETE FROM CongNhan WHERE maCN=?";
+				st = conn.prepareStatement(querry);
+				st.setString(1, maCN);
+				n= st.executeUpdate();
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}finally {
+				try {
+					st.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}	
+			}
+			
+			return n>0;
+		}
 	
 }
 
