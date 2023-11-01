@@ -45,23 +45,21 @@ public class TimKiemCongNhan_UI extends JPanel {
 	private JTextField txtHoTenCN;
 	private JTextField txtSoDT;
 	private JTextField txtDiaChi;
-	private JTextField txtNgaySinh;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_16;
-	private JTextField textField_1;
-	private JTextField textField_17;
+	private JTextField txtSoDT_dt;
+	private JTextField txtGioiTinh_dt;
+	private JTextField txtDiaChi_dt;
+	private JTextField txtNgaySinh_dt;
+	private JTextField txtNgayVaoLam_dt;
+	private JTextField txtMatKhau_dt;
+	private JTextField txtGhiChu_dt;
 	
 	private RoundedButton btnTim, btnXoaRong,btnXuat;
 	private DefaultTableModel dtbModelCN;
 	private JTableHeader tbhCN;
-	private JTextField txtMaCNChiTiet;
-	private JTextField textField_2;
-	private JTextField txtSoCCCD;
-	private JTextField textField_4;
+	private JTextField txtMaCN_dt;
+	private JTextField txtHoTen_dt;
+	private JTextField txtSoCCCD_dt;
+	private JTextField txtEmail_dt;
 
 	public TimKiemCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -229,9 +227,9 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlAvatar.setBorder(new EmptyBorder(30, 0, 0, 0));
 		pnlThongTinCongNhan.add(pnlAvatar);
 		
-		JLabel lblAvatar = new JLabel("");
-		lblAvatar.setIcon(new ImageScaler("/image/image_cn_df.jpg", 150, 150).getScaledImageIcon());
-		pnlAvatar.add(lblAvatar);
+		JLabel lblAvatar_dt = new JLabel("");
+		lblAvatar_dt.setIcon(new ImageScaler("/image/image_cn_df.jpg", 150, 150).getScaledImageIcon());
+		pnlAvatar.add(lblAvatar_dt);
 		
 		JPanel pnlInforDetail_1 = new JPanel();
 		pnlInforDetail_1.setBackground(new Color(255, 255, 255));
@@ -242,23 +240,23 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box box_info_1 = Box.createHorizontalBox();
 		pnlInforDetail_1.add(box_info_1);
 		
-		JLabel lblMaCN_1 = new JLabel("Mã CN");
-		lblMaCN_1.setForeground(Color.BLACK);
-		lblMaCN_1.setFont(null);
-		box_info_1.add(lblMaCN_1);
+		JLabel lblMaCN_dt = new JLabel("Mã CN");
+		lblMaCN_dt.setForeground(Color.BLACK);
+		lblMaCN_dt.setFont(null);
+		box_info_1.add(lblMaCN_dt);
 		
 		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
 		box_info_1.add(horizontalStrut_20);
 		
-		txtMaCNChiTiet = new JTextField("CN0003");
-		txtMaCNChiTiet.setEditable(false);
-		txtMaCNChiTiet.setForeground(Color.BLACK);
-		txtMaCNChiTiet.setFont(null);
-		txtMaCNChiTiet.setColumns(10);
-		txtMaCNChiTiet.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtMaCNChiTiet.setBackground(Color.WHITE);
-		box_info_1.add(txtMaCNChiTiet);
+		txtMaCN_dt = new JTextField("");
+		txtMaCN_dt.setEditable(false);
+		txtMaCN_dt.setForeground(Color.BLACK);
+		txtMaCN_dt.setFont(null);
+		txtMaCN_dt.setColumns(10);
+		txtMaCN_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtMaCN_dt.setBackground(Color.WHITE);
+		box_info_1.add(txtMaCN_dt);
 		
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		pnlInforDetail_1.add(verticalStrut_1);
@@ -274,15 +272,15 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Component horizontalStrut_14_1_2 = Box.createHorizontalStrut(20);
 		box_info_2.add(horizontalStrut_14_1_2);
 		
-		txtSoCCCD = new JTextField();
-		txtSoCCCD.setText("1234567891234");
-		txtSoCCCD.setEditable(false);
-		txtSoCCCD.setForeground(Color.BLACK);
-		txtSoCCCD.setFont(null);
-		txtSoCCCD.setColumns(10);
-		txtSoCCCD.setBackground(Color.WHITE);
-		txtSoCCCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		box_info_2.add(txtSoCCCD);
+		txtSoCCCD_dt = new JTextField();
+		txtSoCCCD_dt.setText("");
+		txtSoCCCD_dt.setEditable(false);
+		txtSoCCCD_dt.setForeground(Color.BLACK);
+		txtSoCCCD_dt.setFont(null);
+		txtSoCCCD_dt.setColumns(10);
+		txtSoCCCD_dt.setBackground(Color.WHITE);
+		txtSoCCCD_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		box_info_2.add(txtSoCCCD_dt);
 		
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
 		pnlInforDetail_1.add(verticalStrut_3);
@@ -290,15 +288,22 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox = Box.createHorizontalBox();
 		pnlInforDetail_1.add(horizontalBox);
 		
-		JLabel lblNewLabel_9 = new JLabel("New label");
-		horizontalBox.add(lblNewLabel_9);
+		JLabel lblSoDT_dt = new JLabel("Số DT");
+		horizontalBox.add(lblSoDT_dt);
 		
 		Component horizontalStrut_12 = Box.createHorizontalStrut(20);
 		horizontalBox.add(horizontalStrut_12);
 		
-		textField_9 = new JTextField();
-		horizontalBox.add(textField_9);
-		textField_9.setColumns(10);
+		txtSoDT_dt = new JTextField();
+		txtSoDT_dt.setEditable(false);
+		txtSoDT_dt.setForeground(Color.BLACK);
+		txtSoDT_dt.setFont(null);
+		txtSoDT_dt.setColumns(10);
+		txtSoDT_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtSoDT_dt.setBackground(Color.WHITE);
+		horizontalBox.add(txtSoDT_dt);
+		txtSoDT_dt.setColumns(10);
 		
 		Component verticalStrut_4 = Box.createVerticalStrut(20);
 		pnlInforDetail_1.add(verticalStrut_4);
@@ -306,15 +311,22 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_2 = Box.createHorizontalBox();
 		pnlInforDetail_1.add(horizontalBox_2);
 		
-		JLabel lblNewLabel_10 = new JLabel("New label");
-		horizontalBox_2.add(lblNewLabel_10);
+		JLabel lblGioiTinh_dt = new JLabel("Giới tính");
+		horizontalBox_2.add(lblGioiTinh_dt);
 		
 		Component horizontalStrut_13 = Box.createHorizontalStrut(20);
 		horizontalBox_2.add(horizontalStrut_13);
 		
-		textField_10 = new JTextField();
-		horizontalBox_2.add(textField_10);
-		textField_10.setColumns(10);
+		txtGioiTinh_dt = new JTextField();
+		txtGioiTinh_dt.setEditable(false);
+		txtGioiTinh_dt.setForeground(Color.BLACK);
+		txtGioiTinh_dt.setFont(null);
+		txtGioiTinh_dt.setColumns(10);
+		txtGioiTinh_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtGioiTinh_dt.setBackground(Color.WHITE);
+		horizontalBox_2.add(txtGioiTinh_dt);
+		txtGioiTinh_dt.setColumns(10);
 		
 		Component verticalStrut_5 = Box.createVerticalStrut(20);
 		pnlInforDetail_1.add(verticalStrut_5);
@@ -322,15 +334,22 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_3 = Box.createHorizontalBox();
 		pnlInforDetail_1.add(horizontalBox_3);
 		
-		JLabel lblNewLabel_11 = new JLabel("New label");
-		horizontalBox_3.add(lblNewLabel_11);
+		JLabel lblDiaChi_dt = new JLabel("Địa Chỉ");
+		horizontalBox_3.add(lblDiaChi_dt);
 		
 		Component horizontalStrut_14 = Box.createHorizontalStrut(20);
 		horizontalBox_3.add(horizontalStrut_14);
 		
-		textField_11 = new JTextField();
-		horizontalBox_3.add(textField_11);
-		textField_11.setColumns(10);
+		txtDiaChi_dt = new JTextField();
+		txtDiaChi_dt.setEditable(false);
+		txtDiaChi_dt.setForeground(Color.BLACK);
+		txtDiaChi_dt.setFont(null);
+		txtDiaChi_dt.setColumns(10);
+		txtDiaChi_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtDiaChi_dt.setBackground(Color.WHITE);
+		horizontalBox_3.add(txtDiaChi_dt);
+		txtDiaChi_dt.setColumns(10);
 		
 		Component verticalStrut_5_2 = Box.createVerticalStrut(20);
 		pnlInforDetail_1.add(verticalStrut_5_2);
@@ -338,15 +357,22 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_3_2 = Box.createHorizontalBox();
 		pnlInforDetail_1.add(horizontalBox_3_2);
 		
-		JLabel lblNewLabel_11_2 = new JLabel("New label");
-		horizontalBox_3_2.add(lblNewLabel_11_2);
+		JLabel lblGhiChu_dt = new JLabel("Ghi chú");
+		horizontalBox_3_2.add(lblGhiChu_dt);
 		
 		Component horizontalStrut_14_2 = Box.createHorizontalStrut(20);
 		horizontalBox_3_2.add(horizontalStrut_14_2);
 		
-		textField_17 = new JTextField();
-		textField_17.setColumns(10);
-		horizontalBox_3_2.add(textField_17);
+		txtGhiChu_dt = new JTextField();
+		txtGhiChu_dt.setEditable(false);
+		txtGhiChu_dt.setForeground(Color.BLACK);
+		txtGhiChu_dt.setFont(null);
+		txtGhiChu_dt.setColumns(10);
+		txtGhiChu_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtGhiChu_dt.setBackground(Color.WHITE);
+		txtGhiChu_dt.setColumns(10);
+		horizontalBox_3_2.add(txtGhiChu_dt);
 		
 		
 		JPanel pnlInfoDetail_2 = new JPanel();
@@ -366,15 +392,15 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
 		box_info_1_1.add(horizontalStrut_2_1);
 		
-		textField_2 = new JTextField("Nguyễn Văn Phong");
-		textField_2.setEditable(false);
-		textField_2.setForeground(Color.BLACK);
-		textField_2.setFont(null);
-		textField_2.setColumns(10);
-		textField_2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+		txtHoTen_dt = new JTextField("");
+		txtHoTen_dt.setEditable(false);
+		txtHoTen_dt.setForeground(Color.BLACK);
+		txtHoTen_dt.setFont(null);
+		txtHoTen_dt.setColumns(10);
+		txtHoTen_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		textField_2.setBackground(Color.WHITE);
-		box_info_1_1.add(textField_2);
+		txtHoTen_dt.setBackground(Color.WHITE);
+		box_info_1_1.add(txtHoTen_dt);
 		
 		Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_1_1);
@@ -390,15 +416,15 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Component horizontalStrut_12_1_1 = Box.createHorizontalStrut(20);
 		box_info_2_1.add(horizontalStrut_12_1_1);
 		
-		textField_4 = new JTextField();
-		textField_4.setEditable(false);
-		textField_4.setForeground(Color.BLACK);
-		textField_4.setFont(null);
-		textField_4.setColumns(10);
-		textField_4.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+		txtEmail_dt = new JTextField();
+		txtEmail_dt.setEditable(false);
+		txtEmail_dt.setForeground(Color.BLACK);
+		txtEmail_dt.setFont(null);
+		txtEmail_dt.setColumns(10);
+		txtEmail_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		textField_4.setBackground(Color.WHITE);
-		box_info_2_1.add(textField_4);
+		txtEmail_dt.setBackground(Color.WHITE);
+		box_info_2_1.add(txtEmail_dt);
 		
 		Component verticalStrut_3_1 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_3_1);
@@ -406,15 +432,22 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_4 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(horizontalBox_4);
 		
-		JLabel lblNewLabel_9_1 = new JLabel("New label");
-		horizontalBox_4.add(lblNewLabel_9_1);
+		JLabel lblNgaySinh_dt = new JLabel("Ng Sinh");
+		horizontalBox_4.add(lblNgaySinh_dt);
 		
 		Component horizontalStrut_12_1 = Box.createHorizontalStrut(20);
 		horizontalBox_4.add(horizontalStrut_12_1);
 		
-		textField_14 = new JTextField();
-		textField_14.setColumns(10);
-		horizontalBox_4.add(textField_14);
+		txtNgaySinh_dt = new JTextField();
+		txtNgaySinh_dt.setEditable(false);
+		txtNgaySinh_dt.setForeground(Color.BLACK);
+		txtNgaySinh_dt.setFont(null);
+		txtNgaySinh_dt.setColumns(10);
+		txtNgaySinh_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtNgaySinh_dt.setBackground(Color.WHITE);
+		txtNgaySinh_dt.setColumns(10);
+		horizontalBox_4.add(txtNgaySinh_dt);
 		
 		Component verticalStrut_4_1 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_4_1);
@@ -422,15 +455,22 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_2_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(horizontalBox_2_1);
 		
-		JLabel lblNewLabel_10_1 = new JLabel("New label");
-		horizontalBox_2_1.add(lblNewLabel_10_1);
+		JLabel lblNgayVaoLam_dt = new JLabel("Ngày vào làm");
+		horizontalBox_2_1.add(lblNgayVaoLam_dt);
 		
 		Component horizontalStrut_13_1 = Box.createHorizontalStrut(20);
 		horizontalBox_2_1.add(horizontalStrut_13_1);
 		
-		textField_15 = new JTextField();
-		textField_15.setColumns(10);
-		horizontalBox_2_1.add(textField_15);
+		txtNgayVaoLam_dt = new JTextField();
+		txtNgayVaoLam_dt.setEditable(false);
+		txtNgayVaoLam_dt.setForeground(Color.BLACK);
+		txtNgayVaoLam_dt.setFont(null);
+		txtNgayVaoLam_dt.setColumns(10);
+		txtNgayVaoLam_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtNgayVaoLam_dt.setBackground(Color.WHITE);
+		txtNgayVaoLam_dt.setColumns(10);
+		horizontalBox_2_1.add(txtNgayVaoLam_dt);
 		
 		Component verticalStrut_5_1 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_5_1);
@@ -438,15 +478,22 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_3_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(horizontalBox_3_1);
 		
-		JLabel lblNewLabel_11_1 = new JLabel("New label");
-		horizontalBox_3_1.add(lblNewLabel_11_1);
+		JLabel lblMatKhau = new JLabel("Mật khẩu");
+		horizontalBox_3_1.add(lblMatKhau);
 		
 		Component horizontalStrut_14_1 = Box.createHorizontalStrut(20);
 		horizontalBox_3_1.add(horizontalStrut_14_1);
 		
-		textField_16 = new JTextField();
-		textField_16.setColumns(10);
-		horizontalBox_3_1.add(textField_16);
+		txtMatKhau_dt = new JTextField();
+		txtMatKhau_dt.setEditable(false);
+		txtMatKhau_dt.setForeground(Color.BLACK);
+		txtMatKhau_dt.setFont(null);
+		txtMatKhau_dt.setColumns(10);
+		txtMatKhau_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
+				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtMatKhau_dt.setBackground(Color.WHITE);
+		txtMatKhau_dt.setColumns(10);
+		horizontalBox_3_1.add(txtMatKhau_dt);
 		
 		Component verticalStrut_6 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_6);
@@ -454,15 +501,8 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_3_1_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(horizontalBox_3_1_1);
 		
-		JLabel lblNewLabel_11_1_1 = new JLabel("New label");
+		JLabel lblNewLabel_11_1_1 = new JLabel(".");
 		horizontalBox_3_1_1.add(lblNewLabel_11_1_1);
-		
-		Component horizontalStrut_14_1_1 = Box.createHorizontalStrut(20);
-		horizontalBox_3_1_1.add(horizontalStrut_14_1_1);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		horizontalBox_3_1_1.add(textField_1);
 		
 		
 		JPanel pnlTable = new JPanel();

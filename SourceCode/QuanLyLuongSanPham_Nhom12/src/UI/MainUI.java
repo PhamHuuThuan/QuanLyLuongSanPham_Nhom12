@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,7 +44,10 @@ public class MainUI extends JFrame {
 	 * Create the frame.
 	 */
 	public MainUI(NhanVien nv) {
+		ImageIcon appIcon = new ImageIcon("assets/logo_v1.png");
+		setIconImage(appIcon.getImage());
 		this.nv = nv;
+		
 		try {
 			ConnectDB.getInstance().connect();
 		} catch (SQLException e) {
@@ -60,6 +64,11 @@ public class MainUI extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
+		
+		
+		
+		
+		
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setBounds(0, 0, 1500, 800);
 		add(new MenuUI(this), BorderLayout.NORTH);
