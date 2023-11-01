@@ -13,7 +13,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import org.jdesktop.swingx.plaf.basic.CalendarHeaderHandler;
+import org.jdesktop.swingx.plaf.basic.SpinningCalendarHeaderHandler;
 
 import ConnectDB.ConnectDB;
 import Entity.NhanVien;
@@ -74,6 +78,7 @@ public class MainUI extends JFrame {
 		borderFocusColor = new Color(0, 0, 255, 64);  // set màu mặc định cho border khi được focus
 		pnlContent = new JPanel(new BorderLayout()); // Phần jpanel chứa các giao diện chức năng
 		music = new SoundPlay(); // Khởi tạo âm thanh ứng dụng
+		UIManager.put(CalendarHeaderHandler.uiControllerID, SpinningCalendarHeaderHandler.class.getName());
 	}
 	
 }

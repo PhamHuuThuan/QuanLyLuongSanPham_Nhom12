@@ -178,10 +178,10 @@ public class NhanVien_Dao {
 		        		+ "  AND nv.soCCCD LIKE ?"
 		        		+ "  AND nv.diaChi LIKE ?";
 		        if (ngaySinh != null) {
-		            query += " AND nv.ngaySinh = " + ngaySinh;
+		            query += " AND nv.ngaySinh = '" + ngaySinh+"'";
 		        }
 		        if(!maPhongBan.equals("PB00")) {
-		        	query += " AND pcnv.maPhongBan = " + maPhongBan;
+		        	query += " AND pcnv.maPhongBan = '" + maPhongBan +"'";
 		        }
 		        st = con.prepareStatement(query);
 		        st.setString(1, "%" + maNV + "%");

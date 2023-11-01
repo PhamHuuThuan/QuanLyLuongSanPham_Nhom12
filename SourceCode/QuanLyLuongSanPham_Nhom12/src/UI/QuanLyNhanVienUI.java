@@ -244,6 +244,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpNgaySinh.getEditor().setBackground(bgColor);
 		dtpNgaySinh.getEditor().setForeground(textColor);
+		dtpNgaySinh.getMonthView().setZoomable(true);
 		pnlB2.add(dtpNgaySinh);
 		
 		pnlB2.add(Box.createHorizontalStrut(20));
