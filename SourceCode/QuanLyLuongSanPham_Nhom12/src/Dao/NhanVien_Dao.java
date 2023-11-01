@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import com.lowagie.text.List;
@@ -161,5 +162,53 @@ public class NhanVien_Dao {
 
 		    return maNhanVienLonNhat;
 		}
-
+		//tìm kiếm danh sách nhân viên phù hợp
+		public ArrayList<NhanVien> timNhanVien(String maNV, String hoTen, int nam, int nu, String sdt, String cCCD, String diaChi, java.util.Date ngaySinh, String maPhongBan) {
+		    ArrayList<NhanVien> list = new ArrayList<>();
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    ResultSet rs = null;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        String query = "  SELECT * FROM NhanVien nv LEFT JOIN BangPhanCongNhanVien pcnv ON nv.maNV = pcnv.maNhanVien "
+		        		+ "  WHERE nv.maNV LIKE ?"
+		        		+ "  AND nv.hoTen LIKE ? "
+		        		+ "  AND nv.gioiTinh in (?,?) "
+		        		+ "  AND nv.sDT LIKE ?"
+		        		+ "  AND nv.soCCCD LIKE ?"
+		        		+ "  AND nv.diaChi LIKE ?";
+		        if (ngaySinh != null) {
+		            query += " AND nv.ngaySinh = " + ngaySinh;
+		        }
+		        if(!maPhongBan.equals("PB00")) {
+		        	query += " AND pcnv.maPhongBan = " + maPhongBan;
+		        }
+		        st = con.prepareStatement(query);
+		        st.setString(1, "%" + maNV + "%");
+		        st.setString(2, "%" + hoTen + "%");
+		        st.setInt(3, nam);
+		        st.setInt(4, nu);
+		        st.setString(5, "%" + sdt + "%");
+		        st.setString(6, "%" + cCCD + "%");
+		        st.setString(7, "%" + diaChi + "%");
+		        rs = st.executeQuery();
+		        while (rs.next()) {
+		        	 NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
+			            		rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
+			            		rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
+		            // Cập nhật các thuộc tính cho đối tượng NhanVien từ kết quả truy vấn
+		            list.add(nv);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (rs != null) rs.close();
+		            if (st != null) st.close();
+		        } catch (SQLException e2) {
+		            e2.printStackTrace();
+		        }
+		    }
+		    return list;
+		}
 }

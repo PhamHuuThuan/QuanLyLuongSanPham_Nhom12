@@ -23,6 +23,11 @@ public class PhongBan {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public PhongBan(String maPhongBan) {
+		super();
+		this.maPhongBan = maPhongBan;
+	}
 	public String getMaPhongBan() {
 		return maPhongBan;
 	}
@@ -69,8 +74,7 @@ public class PhongBan {
 	}
 	@Override
 	public String toString() {
-		return "PhongBan [maPhongBan=" + maPhongBan + ", tenPhongBan=" + tenPhongBan + ", soNhanVien=" + soNhanVien
-				+ ", moTa=" + moTa + "]";
+		return tenPhongBan;
 	}
 	
 }
