@@ -57,9 +57,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.MatteBorder;
 
 public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseListener{
 	private MainUI main;
@@ -96,25 +93,25 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		
 		//set gia tri cho jpanel SanPham
 		setLayout(new BorderLayout(0, 0));
-		setBorder(new EmptyBorder(0, 10, 10, 10));
+		setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		setBackground(bgColor);
 		
 		JPanel pnlNhanVien = new JPanel();
 		add(pnlNhanVien, BorderLayout.CENTER);
 		pnlNhanVien.setLayout(new BorderLayout(0, 0));
-		pnlNhanVien.setBorder(new EmptyBorder(0, 0, 0, 0));
+		pnlNhanVien.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 		pnlNhanVien.setBackground(bgColor);
 		
 		//tao jpanel chua Title va Thong tin nhân viên
 		JPanel pnlNorth = new JPanel();
-		pnlNorth.setBorder(new EmptyBorder(10, 5, 0, 5));
+		pnlNorth.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
 		pnlNorth.setBackground(bgColor);
 		pnlNhanVien.add(pnlNorth, BorderLayout.NORTH);
 		pnlNorth.setLayout(new BorderLayout(0, 0));
 		
 		//Tao jpanel Title
 		JPanel pnlTitle = new JPanel();
-		pnlTitle.setBorder(new EmptyBorder(0, 0, 0, 0));
+		pnlTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		pnlTitle.setBackground(bgColor);
 		pnlNorth.add(pnlTitle, BorderLayout.NORTH);
 		
@@ -135,10 +132,10 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		TitledBorder titleBorderTTSP = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Tìm kiếm");
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnlTimKiem.setBorder(new CompoundBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(66, 66, 66)), "T\u00ECm ki\u1EBFm", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(0, 20, 0, 20)));
+		pnlTimKiem.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(10, 20, 0, 20)));
 		pnlTimKiem.setPreferredSize(new Dimension(500, 320));
 		pnlNorth.add(pnlTimKiem, BorderLayout.WEST);
-		b.add(Box.createHorizontalStrut(10));
+		b.add(Box.createHorizontalStrut(30));
 		
 		JPanel pnlB1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB1.setBackground(bgColor);
@@ -342,7 +339,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin nhân viên");
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnThongTinNV.setBorder(new CompoundBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(66, 66, 66)), "Th\u00F4ng tin nh\u00E2n vi\u00EAn", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(0, 10, 0, 10)));
+		pnThongTinNV.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 10, 10, 10)));
 		b.add(pnThongTinNV);
 		
 		JPanel pnlAnhDaiDien = new JPanel();
@@ -581,7 +578,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		pnlTimKiem.add(pnlChucNang);
 		pnlChucNang.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		pnlChucNang.setBackground(bgColor);
-		pnlChucNang.setBorder(new EmptyBorder(0, 0, 0, 0));
+		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		
 		btnTim = new RoundedButton("Thêm", null, 20, 0, 1.0f);
 		btnTim.setText("Tìm kiếm");
@@ -607,7 +604,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		titleBorderTTSP = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh sách nhân viên");
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnlBangNV.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(0, 20, 10, 20)));
+		pnlBangNV.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(0, 20, 5, 20)));
 		pnlBangNV.setLayout(new BorderLayout(0, 0));
 		pnlBangNV.setBackground(bgColor);
 		pnlNhanVien.add(pnlBangNV, BorderLayout.CENTER);
@@ -651,7 +648,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		JScrollPane scrSP = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangNV.add(scrSP);
 		
-		pnlNorth.add(Box.createVerticalStrut(5), BorderLayout.SOUTH);
+		pnlNorth.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
 		
 		setEditableForTextField(false);
 		
@@ -729,6 +726,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 			txtEmail.setEditable(false);
 			txtDiaChi.setEditable(false);
 			rbtnNu.setEnabled(false);
+			rbtnNam.setEnabled(false);
 			txtChucVu.setEditable(false);
 			txtGhiChu.setEditable(false);
 		}
@@ -785,6 +783,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtCCCD.setText(dsNV.get(index).getcCCD());
 		txtDiaChi.setText(dsNV.get(index).getDiaChi());
 		lblAnh.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
+		rbtnNu.setSelected(dsNV.get(index).isGioiTinh()?false:true);
 		rbtnNam.setSelected(dsNV.get(index).isGioiTinh());
 		dtpNgaySinh.setDate(dsNV.get(index).getNgaySinh()); // Đặt giá trị cho JXDatePicker
 	

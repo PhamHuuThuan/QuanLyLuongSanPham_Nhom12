@@ -464,7 +464,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() == tblNV) {
+		if(e.getSource() == tblNV && btnFocus!=btnThem && btnFocus!=btnSua) {
 			int index = tblNV.getSelectedRow();
 			if(index != -1) {
 				hienThiThongTinNV(index);
@@ -509,13 +509,11 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			isThem = false;
 		}
 		if(o == btnXoa) {
-			xoaHopDong();
+			xoaNhanVien();
 		}
 		if(o == btnIn) {
 		}
 		if(o == btnLuu) {
-			displayButtonSaveAndCancel(false);
-			setEditableForTextField(false);
 			if(isThem==true)
 				themNhanVien();
 			else
@@ -530,9 +528,12 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			}
 		}
 		if(o==btnChonAnh) {
-            String filePath = getStringPathAvatar();
-            lblAvatar.setIcon(new ImageScaler(filePath, 150, 150).getScaledImageAvatar());
-            btnChonAnh.setText(filePath);
+            String newFilePath = getStringPathAvatar();
+            if(newFilePath!=null) {
+            	String filePath = newFilePath;
+                lblAvatar.setIcon(new ImageScaler(filePath, 150, 150).getScaledImageAvatar());
+                btnChonAnh.setText(filePath);
+            }
 		}
 	}
 	private void displayButtonSaveAndCancel(boolean display) {
@@ -582,6 +583,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			txtEmail.setEditable(true);
 			txtDiaChi.setEditable(true);
 			radNu.setEnabled(true);
+			radNam.setEnabled(true);
 		}else {
 			txtMaNV.setEditable(false);
 			txtMatKhau.setEditable(false);
@@ -592,6 +594,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			txtEmail.setEditable(false);
 			txtDiaChi.setEditable(false);
 			radNu.setEnabled(false);
+			radNam.setEnabled(false);
 		}
 	}
 	private void xoaRong() {
@@ -660,6 +663,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtCCCD.setText(dsNV.get(index).getcCCD());
 		txtDiaChi.setText(dsNV.get(index).getDiaChi());
 		lblAvatar.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
+		radNu.setSelected(dsNV.get(index).isGioiTinh()?false:true);
 		radNam.setSelected(dsNV.get(index).isGioiTinh());
 		
 		String dateString = (String) dtblModel.getValueAt(index, 4); // Lấy chuỗi ngày từ bảng
@@ -745,6 +749,8 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 				if(nv_Dao.themNhanVien(nvNew)) {
 					xoaRong();
 					lblMessage.setText("Thêm nhân viên thành công!");
+					displayButtonSaveAndCancel(false);
+					setEditableForTextField(false);
 				}else {
 					setTextError("Thêm thất bại! Trùng mã!");
 				}
@@ -777,7 +783,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		}
 	}
 	//Xóa nhân viên được chọn
-	private void xoaHopDong() {
+	private void xoaNhanVien() {
 		if(tblNV.getSelectedRow()!=-1) {
 			String maNV = txtMaNV.getText();
 			if(maNV != null) {
