@@ -32,11 +32,7 @@ public class LuuTru {
             Path path = Paths.get("res/avatar/" + maNV);
             if (!Files.exists(path)) {
                 Files.createDirectories(path);
-                System.out.println("Thư mục đã được tạo: " + path);
-            } else {
-                System.out.println("Thư mục đã tồn tại: " + path);
             }
-
             // Tạo đường dẫn đến file nguồn và thư mục đích
             Path sourcePath = Paths.get(sourceFilePath);
             Path destPath = Paths.get(path.toString(), sourcePath.getFileName().toString());
@@ -45,14 +41,10 @@ public class LuuTru {
             if (!Files.exists(destPath)) {
                 // Sao chép file
                 Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
-                System.out.println("File đã được sao chép thành công!");
                 return destPath.toString();
             } else {
                 System.out.println("File đã tồn tại tại đường dẫn đích!");
             }
-
-            // Trả về đường dẫn mới
-            System.out.println("Đường dẫn mới: " + destPath);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,13 +63,11 @@ public class LuuTru {
 	            for (Path file : directoryStream) {
 	                // Xóa file
 	                Files.delete(file);
-	                System.out.println("Đã xóa file: " + file);
 	            }
 	            directoryStream.close();
 	            
 	            // Xóa thư mục sau khi đã xóa hết các file bên trong
 	            Files.delete(path);
-	            System.out.println("Đã xóa thư mục: " + path);
 	        } else {
 	            System.out.println("Thư mục không tồn tại: " + path);
 	        }
