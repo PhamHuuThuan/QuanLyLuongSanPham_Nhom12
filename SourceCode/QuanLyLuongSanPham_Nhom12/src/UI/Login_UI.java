@@ -67,6 +67,9 @@ public class Login_UI extends JFrame {
 
 	public Login_UI(MainUI main) {
 		this.main = main;
+		ImageIcon appIcon = new ImageIcon("assets/logo_v1.png");
+		setIconImage(appIcon.getImage());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1111, 456);
 		contentPane = new JPanel();
