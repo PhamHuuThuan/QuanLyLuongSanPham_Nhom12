@@ -49,6 +49,7 @@ import Util.SinhMaTuDong;
 
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
 
 public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseListener{
 	private MainUI main;
@@ -85,7 +86,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		//tao jpanel chua Title va Thong tin NV
 		JPanel pnNorth = new JPanel();
-		pnNorth.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+		pnNorth.setBorder(new EmptyBorder(10, 0, 10, 0));
 		pnNorth.setBackground(bgColor);
 		add(pnNorth, BorderLayout.NORTH);
 		pnNorth.setLayout(new BorderLayout(0, 0));
@@ -108,14 +109,14 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin nhân viên");
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnlThongTin.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
+		pnlThongTin.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 0, 20, 0)));
 		pnNorth.add(pnlThongTin, BorderLayout.CENTER);
 		
 		JPanel pnlAnhDD = new JPanel();
 		pnlAnhDD.setLayout(new BoxLayout(pnlAnhDD, BoxLayout.Y_AXIS));
 		pnlAnhDD.setBackground(bgColor);
 		pnlThongTin.add(pnlAnhDD);
-		pnlThongTin.add(Box.createHorizontalStrut(30));
+		pnlThongTin.add(Box.createHorizontalStrut(5));
 		
 		lblAvatar = new JLabel("");
 		lblAvatar.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
