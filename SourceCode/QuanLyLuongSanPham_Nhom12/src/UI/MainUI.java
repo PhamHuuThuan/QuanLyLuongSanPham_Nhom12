@@ -40,7 +40,7 @@ public class MainUI extends JFrame {
 	 * Create the frame.
 	 */
 	public MainUI(NhanVien nv) {
-		ImageIcon appIcon = new ImageIcon("assets/logo_v1.png");
+		ImageIcon appIcon = new ImageIcon("assets/icon_logo.png");
 		setIconImage(appIcon.getImage());
 		this.nv = nv;
 		

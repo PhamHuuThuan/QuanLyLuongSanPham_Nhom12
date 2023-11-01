@@ -35,6 +35,8 @@ import java.util.Locale;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 
 public class TimKiemCongNhan_UI extends JPanel {
 	private MainUI main;
@@ -60,6 +62,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 	private JTextField txtHoTen_dt;
 	private JTextField txtSoCCCD_dt;
 	private JTextField txtEmail_dt;
+	private JTextField txtSoCCCD_search;
 
 	public TimKiemCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -122,74 +125,90 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box box_2 = Box.createHorizontalBox();
 		pnlThongTinCanTim.add(box_2);
 		
-		JLabel lblSoDT = new JLabel("Số DT");
-		box_2.add(lblSoDT);
-		
-		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_5);
-		
-		txtSoDT = new JTextField();
-		box_2.add(txtSoDT);
-		txtSoDT.setColumns(10);
-		
-		Component horizontalStrut_6 = Box.createHorizontalStrut(40);
-		box_2.add(horizontalStrut_6);
-		
-		JLabel lblDiaChi = new JLabel("Địa chỉ");
-		box_2.add(lblDiaChi);
-		
-		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
-		box_2.add(horizontalStrut_7);
-		
-		txtDiaChi = new JTextField();
-		box_2.add(txtDiaChi);
-		txtDiaChi.setColumns(10);
-		
-		Component verticalStrut_2 = Box.createVerticalStrut(30);
-		pnlThongTinCanTim.add(verticalStrut_2);
-		
-		Box box_3 = Box.createHorizontalBox();
-		pnlThongTinCanTim.add(box_3);
-		
 		JLabel lblNgaySinh = new JLabel("Ngày sinh");
-		box_3.add(lblNgaySinh);
+		box_2.add(lblNgaySinh);
 		
 		Component horizontalStrut_9 = Box.createHorizontalStrut(20);
-		box_3.add(horizontalStrut_9);
+		box_2.add(horizontalStrut_9);
 		
 		JXDatePicker dpNgaySinh = new JXDatePicker((Date) null);
 		dpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgaySinh.setLocale(new Locale("vi", "VN"));
-		box_3.add(dpNgaySinh);
+		box_2.add(dpNgaySinh);
 		
 		
 		Component horizontalStrut_10 = Box.createHorizontalStrut(40);
-		box_3.add(horizontalStrut_10);
+		box_2.add(horizontalStrut_10);
 		
 		JLabel lblGioiTinh = new JLabel("Giới tính");
-		box_3.add(lblGioiTinh);
+		box_2.add(lblGioiTinh);
 		
 		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
-		box_3.add(horizontalStrut_11);
+		box_2.add(horizontalStrut_11);
 		
-		JRadioButton rdbNam = new JRadioButton("nam");
-		rdbNam.setSelected(true);
-		rdbNam.setForeground(Color.BLACK);
-		rdbNam.setFont(null);
-		rdbNam.setBackground(Color.WHITE);
-		box_3.add(rdbNam);
+		JCheckBox chkNam = new JCheckBox("Nam");
+		chkNam.setBackground(new Color(255, 255, 255));
+		box_2.add(chkNam);
 		
 		Component horizontalStrut_7_1 = Box.createHorizontalStrut(20);
-		box_3.add(horizontalStrut_7_1);
+		box_2.add(horizontalStrut_7_1);
 		
-		JRadioButton rdbNu = new JRadioButton("nữ");
-		rdbNu.setForeground(Color.BLACK);
-		rdbNu.setBackground(Color.WHITE);
-		box_3.add(rdbNu);
+		JCheckBox chkNu = new JCheckBox("Nữ");
+		chkNu.setBackground(new Color(255, 255, 255));
+		box_2.add(chkNu);
 		
-		Component verticalStrut_7 = Box.createVerticalStrut(40);
+		Component verticalStrut_7 = Box.createVerticalStrut(30);
 		pnlThongTinCanTim.add(verticalStrut_7);
+		
+		
+		Box box_3 = Box.createHorizontalBox();
+		pnlThongTinCanTim.add(box_3);
+		
+		JLabel lblSoDT = new JLabel("Số DT");
+		box_3.add(lblSoDT);
+		
+		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
+		box_3.add(horizontalStrut_5);
+		
+		txtSoDT = new JTextField();
+		box_3.add(txtSoDT);
+		txtSoDT.setColumns(10);
+		
+		Component horizontalStrut_6 = Box.createHorizontalStrut(40);
+		box_3.add(horizontalStrut_6);
+		
+		JLabel lblDiaChi = new JLabel("Địa chỉ");
+		box_3.add(lblDiaChi);
+		
+		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
+		box_3.add(horizontalStrut_7);
+		
+		txtDiaChi = new JTextField();
+		box_3.add(txtDiaChi);
+		txtDiaChi.setColumns(10);
+		
+		Component verticalStrut_2 = Box.createVerticalStrut(30);
+		pnlThongTinCanTim.add(verticalStrut_2);
+		
+		Box box_4 = Box.createHorizontalBox();
+		pnlThongTinCanTim.add(box_4);
+		
+		JLabel lblSoCCCD_search = new JLabel("Số CCCD");
+		box_4.add(lblSoCCCD_search);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		box_4.add(horizontalStrut);
+		
+		txtSoCCCD_search = new JTextField();
+		box_4.add(txtSoCCCD_search);
+		txtSoCCCD_search.setColumns(10);
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
+		box_4.add(horizontalStrut_1);
+		
+		Component verticalStrut_8 = Box.createVerticalStrut(20);
+		pnlThongTinCanTim.add(verticalStrut_8);
 		
 		JPanel pnlControl = new JPanel();
 		pnlControl.setBackground(new Color(255, 255, 255));
@@ -220,7 +239,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlThongTinCongNhan.setBackground(new Color(255, 255, 255));
 		pnlThongTinCongNhan.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin C\u00F4ng Nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(10, 0, 10, 10)));
 		pnlBody.add(pnlThongTinCongNhan, BorderLayout.CENTER);
-		pnlThongTinCongNhan.setLayout(new GridLayout(0, 3, 0, 0));
+		pnlThongTinCongNhan.setLayout(new BoxLayout(pnlThongTinCongNhan, BoxLayout.X_AXIS));
 		
 		JPanel pnlAvatar = new JPanel();
 		pnlAvatar.setBackground(new Color(255, 255, 255));
@@ -228,7 +247,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlThongTinCongNhan.add(pnlAvatar);
 		
 		JLabel lblAvatar_dt = new JLabel("");
-		lblAvatar_dt.setIcon(new ImageScaler("/image/image_cn_df.jpg", 150, 150).getScaledImageIcon());
+		lblAvatar_dt.setIcon(new ImageScaler("/image/image_cn_df.jpg", 140, 140).getScaledImageIcon());
 		pnlAvatar.add(lblAvatar_dt);
 		
 		JPanel pnlInforDetail_1 = new JPanel();
@@ -241,8 +260,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInforDetail_1.add(box_info_1);
 		
 		JLabel lblMaCN_dt = new JLabel("Mã CN");
-		lblMaCN_dt.setForeground(Color.BLACK);
-		lblMaCN_dt.setFont(null);
+		lblMaCN_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		box_info_1.add(lblMaCN_dt);
 		
 		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
@@ -265,8 +283,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInforDetail_1.add(box_info_2);
 		
 		JLabel lblSoCCCD = new JLabel("Số CCCD");
-		lblSoCCCD.setForeground(Color.BLACK);
-		lblSoCCCD.setFont(null);
+		lblSoCCCD.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		box_info_2.add(lblSoCCCD);
 		
 		Component horizontalStrut_14_1_2 = Box.createHorizontalStrut(20);
@@ -289,6 +306,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInforDetail_1.add(horizontalBox);
 		
 		JLabel lblSoDT_dt = new JLabel("Số DT");
+		lblSoDT_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		horizontalBox.add(lblSoDT_dt);
 		
 		Component horizontalStrut_12 = Box.createHorizontalStrut(20);
@@ -312,6 +330,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInforDetail_1.add(horizontalBox_2);
 		
 		JLabel lblGioiTinh_dt = new JLabel("Giới tính");
+		lblGioiTinh_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		horizontalBox_2.add(lblGioiTinh_dt);
 		
 		Component horizontalStrut_13 = Box.createHorizontalStrut(20);
@@ -335,6 +354,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInforDetail_1.add(horizontalBox_3);
 		
 		JLabel lblDiaChi_dt = new JLabel("Địa Chỉ");
+		lblDiaChi_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		horizontalBox_3.add(lblDiaChi_dt);
 		
 		Component horizontalStrut_14 = Box.createHorizontalStrut(20);
@@ -358,6 +378,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInforDetail_1.add(horizontalBox_3_2);
 		
 		JLabel lblGhiChu_dt = new JLabel("Ghi chú");
+		lblGhiChu_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		horizontalBox_3_2.add(lblGhiChu_dt);
 		
 		Component horizontalStrut_14_2 = Box.createHorizontalStrut(20);
@@ -377,17 +398,16 @@ public class TimKiemCongNhan_UI extends JPanel {
 		
 		JPanel pnlInfoDetail_2 = new JPanel();
 		pnlInfoDetail_2.setBackground(new Color(255, 255, 255));
-		pnlInfoDetail_2.setBorder(new EmptyBorder(0, 10, 20, 10));
+		pnlInfoDetail_2.setBorder(new EmptyBorder(0, 5, 20, 0));
 		pnlThongTinCongNhan.add(pnlInfoDetail_2);
 		pnlInfoDetail_2.setLayout(new BoxLayout(pnlInfoDetail_2, BoxLayout.Y_AXIS));
 		
 		Box box_info_1_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(box_info_1_1);
 		
-		JLabel lblHoTen = new JLabel("Họ Tên");
-		lblHoTen.setForeground(Color.BLACK);
-		lblHoTen.setFont(null);
-		box_info_1_1.add(lblHoTen);
+		JLabel lblHoTen_dt = new JLabel("Họ Tên");
+		lblHoTen_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		box_info_1_1.add(lblHoTen_dt);
 		
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
 		box_info_1_1.add(horizontalStrut_2_1);
@@ -397,8 +417,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		txtHoTen_dt.setForeground(Color.BLACK);
 		txtHoTen_dt.setFont(null);
 		txtHoTen_dt.setColumns(10);
-		txtHoTen_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtHoTen_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtHoTen_dt.setBackground(Color.WHITE);
 		box_info_1_1.add(txtHoTen_dt);
 		
@@ -408,10 +427,9 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box box_info_2_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(box_info_2_1);
 		
-		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setForeground(Color.BLACK);
-		lblEmail.setFont(null);
-		box_info_2_1.add(lblEmail);
+		JLabel lblEmail_dt = new JLabel("Email");
+		lblEmail_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		box_info_2_1.add(lblEmail_dt);
 		
 		Component horizontalStrut_12_1_1 = Box.createHorizontalStrut(20);
 		box_info_2_1.add(horizontalStrut_12_1_1);
@@ -421,8 +439,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		txtEmail_dt.setForeground(Color.BLACK);
 		txtEmail_dt.setFont(null);
 		txtEmail_dt.setColumns(10);
-		txtEmail_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
-										BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtEmail_dt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		txtEmail_dt.setBackground(Color.WHITE);
 		box_info_2_1.add(txtEmail_dt);
 		
@@ -433,6 +450,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInfoDetail_2.add(horizontalBox_4);
 		
 		JLabel lblNgaySinh_dt = new JLabel("Ng Sinh");
+		lblNgaySinh_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		horizontalBox_4.add(lblNgaySinh_dt);
 		
 		Component horizontalStrut_12_1 = Box.createHorizontalStrut(20);
@@ -456,6 +474,7 @@ public class TimKiemCongNhan_UI extends JPanel {
 		pnlInfoDetail_2.add(horizontalBox_2_1);
 		
 		JLabel lblNgayVaoLam_dt = new JLabel("Ngày vào làm");
+		lblNgayVaoLam_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		horizontalBox_2_1.add(lblNgayVaoLam_dt);
 		
 		Component horizontalStrut_13_1 = Box.createHorizontalStrut(20);
@@ -478,8 +497,9 @@ public class TimKiemCongNhan_UI extends JPanel {
 		Box horizontalBox_3_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(horizontalBox_3_1);
 		
-		JLabel lblMatKhau = new JLabel("Mật khẩu");
-		horizontalBox_3_1.add(lblMatKhau);
+		JLabel lblMatKhau_dt = new JLabel("Mật khẩu");
+		lblMatKhau_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		horizontalBox_3_1.add(lblMatKhau_dt);
 		
 		Component horizontalStrut_14_1 = Box.createHorizontalStrut(20);
 		horizontalBox_3_1.add(horizontalStrut_14_1);
@@ -503,6 +523,9 @@ public class TimKiemCongNhan_UI extends JPanel {
 		
 		JLabel lblNewLabel_11_1_1 = new JLabel(".");
 		horizontalBox_3_1_1.add(lblNewLabel_11_1_1);
+		
+		Component horizontalStrut_8 = Box.createHorizontalStrut(10);
+		pnlThongTinCongNhan.add(horizontalStrut_8);
 		
 		
 		JPanel pnlTable = new JPanel();

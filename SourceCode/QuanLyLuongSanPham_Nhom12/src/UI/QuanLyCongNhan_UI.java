@@ -30,6 +30,7 @@ import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.CongNhan_Dao;
 import Entity.CongNhan;
+import Util.SinhMaTuDong;
 
 import java.awt.Color;
 import javax.swing.border.EmptyBorder;
@@ -231,10 +232,11 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		Component horizontalStrut_8_1 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_8_1);
 
-		dpNgaySinh = new JXDatePicker(new Date());
+		dpNgaySinh = new JXDatePicker(new Date(100,0,1));
 		dpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgaySinh.setLocale(new Locale("vi", "VN"));
+		dpNgaySinh.getMonthView().setZoomable(true);
 
 		box_2.add(dpNgaySinh);
 
@@ -341,6 +343,9 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		dpNgayVaoLam.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgayVaoLam.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgayVaoLam.setLocale(new Locale("vi", "VN"));
+		
+		dpNgayVaoLam.setEnabled(false);
+		dpNgayVaoLam.setEnabled(false);
 
 		box_3.add(dpNgayVaoLam);
 
@@ -483,7 +488,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		setEditableForTextField(false);
 
-		getDataToTable();
+		 xoaRong();
 	}
 
 	@Override
@@ -582,7 +587,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			setEditableForTextField(false);
 		}
 	}
-
+	//HÀM DISPLAY BUTTON SAVE VÀ CANCEL
 	private void displayButtonSaveAndCancel(boolean display) {
 		if (display == true) {
 			btnLuu.setEnabled(true);
@@ -615,7 +620,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			btnIn.setAlpha(1f);
 		}
 	}
-
+	// HÀM SET EDIT CÁC JTEXT
 	private void setEditableForTextField(boolean edit) {
 		if (edit == true) {
 			txtMaCN.setEditable(true);
@@ -627,9 +632,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 			txtDiaChi.setEditable(true);
 			txtEmail.setEditable(true);
-
-			dpNgayVaoLam.setEditable(true);
-			dpNgayVaoLam.setEnabled(true);
 
 			txtGhiChu.setEditable(true);
 			cmbGioiTinh.setEnabled(edit);
@@ -647,8 +649,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			txtDiaChi.setEditable(false);
 			txtEmail.setEditable(false);
 
-			dpNgayVaoLam.setEnabled(false);
-			dpNgayVaoLam.setEnabled(false);
 
 			txtGhiChu.setEditable(false);
 
@@ -658,12 +658,15 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		}
 	}
 
+	
+	// HÀM XÓA RỖNG CÁC TRƯỜNG
 	private void xoaRong() {
+		dsCN = cn_dao.getAllCongNhan();
 		themAllCongNhanVaoBang(dsCN);
-		txtMaCN.setText("");
+		txtMaCN.setText(new SinhMaTuDong().sinhMaCN());
 		txtHoTen.setText("");
 		txtMatKhau.setText("");
-		dpNgaySinh.setDate(new Date());
+		dpNgaySinh.setDate(new Date(100,0,1));
 		txtDiaChi.setText("");
 		txtSoDT.setText("");
 		txtSoCCCD.setText("");
@@ -702,7 +705,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		String diaChi = txtDiaChi.getText();
 		String scccd = txtSoCCCD.getText();
 		Date ngayVaoLam = dpNgayVaoLam.getDate();
-		String anhDaiDien = btnEditAvatar.getText();
+		String anhDaiDien = pathNameAvatar;
 		String ghiChu = txtGhiChu.getText();
 
 		return new CongNhan(maCN, matKhau, hoten, ngaySinh, gioiTinh, sdt, email, diaChi, scccd, ngayVaoLam, anhDaiDien,
@@ -727,6 +730,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		}
 	}
 
+	// HÀM GET TẤT CẢ DATA VÀ THÊM VÀO BẢNG
 	private void getDataToTable() {
 		dsCN = cn_dao.getAllCongNhan();
 		themAllCongNhanVaoBang(dsCN);
@@ -735,10 +739,10 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	// HÀM THÊM CÔNG NHÂN VÀO BẢNG
 	private void themCongNhanVaoBang(CongNhan cn) {
 		String[] row = new String[14];
-		row[0] = String.valueOf(dtblModel.getRowCount() + 1);
+		row[0] = String.valueOf(dtblModel.getRowCount() + 1); //STT
 		row[1] = cn.getMaCN();
 		row[2] = cn.getHoTen();
-		row[3] = cn.getGioiTinh() ? "Nam" : "Nữ";
+		row[3] = cn.getGioiTinh() ? "Nam" : "Nữ"; //true:nam, false: nu
 		row[4] = new SimpleDateFormat("dd-MM-YYYY").format(cn.getNgaySinh());
 		row[5] = cn.getSDT();
 		row[6] = cn.getEmail();
@@ -764,6 +768,8 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 //		btnEditAvatar.setText(dsCN.get(index).getAnhDaiDien());
 //		System.out.println(dsCN.get(index).getAnhDaiDien());
+		
+		
 		if (dsCN.get(index).getAnhDaiDien() == null) {
 			lblAvatar.setIcon(new ImageScaler("image_cn_df.jpg", 150, 150).getScaledImageIcon());
 		} else {
@@ -800,7 +806,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		String sdt = txtSoDT.getText();
 		String email = txtEmail.getText();
 		String scccd = txtSoCCCD.getText();
-		Date ngayVaoLam = dpNgayVaoLam.getDate();
+//		Date ngayVaoLam = dpNgayVaoLam.getDate();
 
 //		if (pathNameAvatar.equals("image_cn_df.jpg")) {
 //			alertNotification("Ảnh đại diện là bắt buộc ");
@@ -866,6 +872,8 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			if (cnNew != null) {
 				if (cn_dao.suaCongNhan(cnNew)) {
 					xoaRong();
+					displayButtonSaveAndCancel(false);
+					setEditableForTextField(false);
 					alertSuccess("Sửa thành công");
 					dtblModel.fireTableDataChanged();
 				} else {
@@ -886,7 +894,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 				if (cn_dao.xoaCongNhan(maHD)) {
 					xoaRong();
 					alertSuccess("Xóa thành công");
-					xoaRong();
 					dtblModel.fireTableDataChanged();
 				} else {
 					alertNotification("Xóa không thành công! Không tìm thấy công nhân cần xóa");
@@ -905,6 +912,20 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// ALERT
 
 	public int alertNotification(String textError) {
