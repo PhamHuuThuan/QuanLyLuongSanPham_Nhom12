@@ -847,13 +847,12 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			alertNotification("Số căn cước không đúng định dạng (12 số)");
 			return false;
 		}
-
-		Date ngayHienTai = new Date();
-		if (ngayVaoLam.before(ngayHienTai)||ngayVaoLam.equals(ngayHienTai)) {
-			alertNotification("Ngày vào làm phải bằng hoặc sau ngày hiện tại");
-			return false;
-		}
-
+//		Date ngayHienTai = new Date();
+//		if (ngayVaoLam.before(ngayHienTai)||ngayVaoLam.equals(ngayHienTai)) {
+//			alertNotification("Ngày vào làm phải bằng hoặc sau ngày hiện tại");
+//			return false;
+//		}
+	
 		return true;
 	}
 	// SUA CONG NHAN

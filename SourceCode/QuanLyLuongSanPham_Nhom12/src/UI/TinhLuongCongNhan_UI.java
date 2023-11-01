@@ -65,10 +65,13 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		pnlBody.setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlTitle = new JPanel();
+		pnlTitle.setBorder(new EmptyBorder(10, 0, 0, 0));
+		pnlTitle.setBackground(new Color(255, 255, 255));
 		pnlBody.add(pnlTitle, BorderLayout.NORTH);
 		pnlTitle.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JLabel lblTitle = new JLabel("TÍNH LƯƠNG CÔNG NHÂN");
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlTitle.add(lblTitle);
 
@@ -77,6 +80,7 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		pnlChamCong.setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlCCSelectAll = new JPanel();
+		pnlCCSelectAll.setBackground(new Color(255, 255, 255));
 		pnlCCSelectAll
 				.setBorder(new CompoundBorder(
 						new TitledBorder(
@@ -90,10 +94,12 @@ public class TinhLuongCongNhan_UI extends JPanel {
 //		pnlCCSelectAll.setPreferredSize(new Dimension(200, 300));
 
 		JPanel pnlCcAll = new JPanel();
+		pnlCcAll.setBackground(new Color(255, 255, 255));
 		pnlCCSelectAll.add(pnlCcAll, BorderLayout.NORTH);
 		pnlCcAll.setLayout(new BoxLayout(pnlCcAll, BoxLayout.Y_AXIS));
 
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		pnlCcAll.add(panel);
 
 		Box horizontalBox = Box.createHorizontalBox();
@@ -113,20 +119,6 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		
 		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
 		horizontalBox.add(horizontalStrut_8);
-
-		JLabel lblChonMaCongDoan = new JLabel("Mã công Đoạn");
-		horizontalBox.add(lblChonMaCongDoan);
-
-		Component horizontalStrut_9 = Box.createHorizontalStrut(20);
-		horizontalBox.add(horizontalStrut_9);
-
-		JComboBox<String> cmbChonMaCongDoan = new JComboBox<String>();
-		cmbChonMaCongDoan.addItem("CD00001");
-		cmbChonMaCongDoan.addItem("CD00002");
-		horizontalBox.add(cmbChonMaCongDoan);
-		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-		horizontalBox.add(horizontalStrut_1);
 
 		JLabel lblTenCongDoan = new JLabel("Tên công đoạn");
 		horizontalBox.add(lblTenCongDoan);
@@ -164,6 +156,7 @@ public class TinhLuongCongNhan_UI extends JPanel {
 
 
 		JPanel pnlBangChamCong = new JPanel();
+		pnlBangChamCong.setBackground(new Color(255, 255, 255));
 		pnlBangChamCong
 				.setBorder(new CompoundBorder(
 						new TitledBorder(
