@@ -93,14 +93,14 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 		// tao jpanel chua Title va Thong tin cong doan
 		JPanel pnlNorth = new JPanel();
-		pnlNorth.setBorder(new EmptyBorder(10, 0, 10, 0));
+		pnlNorth.setBorder(new EmptyBorder(0, 0, 10, 0));
 		pnlNorth.setBackground(bgColor);
 		pnlNhanVien.add(pnlNorth, BorderLayout.NORTH);
 		pnlNorth.setLayout(new BorderLayout(0, 0));
 
 		// Tao jpanel Title
 		JPanel pnlTitle = new JPanel();
-		pnlTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		pnlTitle.setBorder(new EmptyBorder(0, 0, 10, 0));
 		pnlTitle.setBackground(bgColor);
 		pnlNorth.add(pnlTitle, BorderLayout.NORTH);
 
