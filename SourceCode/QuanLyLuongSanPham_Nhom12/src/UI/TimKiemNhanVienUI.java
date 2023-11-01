@@ -210,6 +210,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		dtpNgaySinhS.setBackground(bgColor);
 		dtpNgaySinhS.setForeground(textColor);
 		dtpNgaySinhS.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
+		dtpNgaySinhS.getMonthView().setZoomable(true);
 		JButton btnDateNSS = (JButton) dtpNgaySinhS.getComponent(1);
 		btnDateNSS.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
 		btnDateNSS.setBackground(bgColor);
