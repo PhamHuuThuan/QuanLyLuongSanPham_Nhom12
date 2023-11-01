@@ -42,6 +42,7 @@ import org.jdesktop.swingx.JXDatePicker;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.NhanVien_Dao;
+import Dao.PhongBan_Dao;
 import Entity.HopDong;
 import Entity.NhanVien;
 import Util.SinhMaTuDong;
@@ -656,6 +657,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtCCCD.setText(dsNV.get(index).getcCCD());
 		txtDiaChi.setText(dsNV.get(index).getDiaChi());
 		lblAvatar.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
+		radNam.setSelected(dsNV.get(index).isGioiTinh());
 		
 		String dateString = (String) dtblModel.getValueAt(index, 4); // Lấy chuỗi ngày từ bảng
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -736,10 +738,10 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		if(validDataNV()==true) {
 			NhanVien nvNew = convertDataToNhanVien();
 			if(nvNew != null) {
+				nvNew.setHinhAnh(main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV()));
 				if(nv_Dao.themNhanVien(nvNew)) {
-					nvNew.setHinhAnh(main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV()));
-					lblMessage.setText("Thêm nhân viên thành công!");
 					xoaRong();
+					lblMessage.setText("Thêm nhân viên thành công!");
 				}else {
 					setTextError("Thêm thất bại! Trùng mã!");
 				}
@@ -754,12 +756,12 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			if(validDataNV()==true) {
 				NhanVien nvNew = convertDataToNhanVien();
 				if(nvNew != null) {
+					nvNew.setHinhAnh(main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV()));
 					if(nv_Dao.suaThongTinNhanVien(nvNew)) {
-						main.l.copyFileAvatar(btnChonAnh.getText(), nvNew.getMaNV());
-						lblMessage.setText("Sửa thành công!");
 						displayButtonSaveAndCancel(false);
 						setEditableForTextField(false);
 						xoaRong();
+						lblMessage.setText("Sửa thành công!");
 					}else {
 						setTextError("Sửa thất bại! Không tìm thấy nhân viên!");
 					}
@@ -779,8 +781,8 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 				if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 					if(nv_Dao.xoaNhanVien(maNV)) {
 						main.l.xoaFileAvatar(maNV);
-						lblMessage.setText("Xóa thành công!");
 						xoaRong();
+						lblMessage.setText("Xóa thành công!");
 					}else {
 						setTextError("Xóa thất bại! Không tìm thấy nhân viên!");
 					}
