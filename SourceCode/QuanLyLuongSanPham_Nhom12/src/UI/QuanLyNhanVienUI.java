@@ -49,6 +49,9 @@ import Util.SinhMaTuDong;
 
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
 
 public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseListener{
 	private MainUI main;
@@ -85,7 +88,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		//tao jpanel chua Title va Thong tin NV
 		JPanel pnNorth = new JPanel();
-		pnNorth.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+		pnNorth.setBorder(new EmptyBorder(10, 0, 10, 0));
 		pnNorth.setBackground(bgColor);
 		add(pnNorth, BorderLayout.NORTH);
 		pnNorth.setLayout(new BorderLayout(0, 0));
@@ -108,7 +111,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin nhân viên");
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
-		pnlThongTin.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
+		pnlThongTin.setBorder(new CompoundBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(66, 66, 66)), "Th\u00F4ng tin nh\u00E2n vi\u00EAn", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(20, 0, 20, 0)));
 		pnNorth.add(pnlThongTin, BorderLayout.CENTER);
 		
 		JPanel pnlAnhDD = new JPanel();
@@ -118,7 +121,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlThongTin.add(Box.createHorizontalStrut(30));
 		
 		lblAvatar = new JLabel("");
-		lblAvatar.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
+		lblAvatar.setIcon(new ImageScaler("/image/employee.png", 50, 50).getScaledImageIcon());
 		lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlAnhDD.add(lblAvatar, BorderLayout.CENTER);
 		
