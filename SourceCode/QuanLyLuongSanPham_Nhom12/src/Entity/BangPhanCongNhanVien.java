@@ -24,6 +24,14 @@ public class BangPhanCongNhanVien {
 			// TODO: handle exception
 		}
 	}
+	
+	public BangPhanCongNhanVien(String maPhanCong, NhanVien nhanVien, Date ngayCongTac) {
+		super();
+		this.maPhanCong = maPhanCong;
+		this.nhanVien = nhanVien;
+		this.ngayCongTac = ngayCongTac;
+	}
+
 	//Khởi tạo đối tượng bangphancongnhanvien mặc định không có tham số
 	public BangPhanCongNhanVien() {
 		super();
