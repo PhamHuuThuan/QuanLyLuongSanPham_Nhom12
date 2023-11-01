@@ -27,30 +27,26 @@ public class LuuTru {
 		return pathFileData;
 	}
 	public String copyFileAvatar(String sourceFilePath, String maNV) {
-        try {
-            // Tạo đường dẫn đến thư mục mới trong project
-            Path path = Paths.get("res/avatar/" + maNV);
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
-            }
-            // Tạo đường dẫn đến file nguồn và thư mục đích
-            Path sourcePath = Paths.get(sourceFilePath);
-            Path destPath = Paths.get(path.toString(), sourcePath.getFileName().toString());
+	    try {
+	        // Tạo đường dẫn đến thư mục mới trong project
+	        Path path = Paths.get("res/avatar/" + maNV);
+	        if (!Files.exists(path)) {
+	            Files.createDirectories(path);
+	        }
+	        // Tạo đường dẫn đến file nguồn và thư mục đích
+	        Path sourcePath = Paths.get(sourceFilePath);
+	        Path destPath = Paths.get(path.toString(), sourcePath.getFileName().toString());
 
-            // Kiểm tra xem file có tồn tại tại đường dẫn đích hay không
-            if (!Files.exists(destPath)) {
-                // Sao chép file
-                Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
-                return destPath.toString();
-            } else {
-                System.out.println("File đã tồn tại tại đường dẫn đích!");
-            }
+	        // Sao chép file và ghi đè nếu tồn tại
+	        Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
+	        return destPath.toString();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
+
 	public void xoaFileAvatar(String maNV) {
 	    try {
 	        // Tạo đường dẫn đến thư mục của nhân viên trong project
