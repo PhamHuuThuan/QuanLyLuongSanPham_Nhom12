@@ -75,4 +75,208 @@ public class PhanCongNhanVien_Dao {
 
 	    return phanCongList;
 	}
+	//get ma phan cong lon nhat
+	public String getMaPCLonNhat() {
+	    String maPCLonNhat = null;
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        st = con.prepareStatement("SELECT MAX(maPhanCong) as maPhanCong FROM BangPhanCongNhanVien");
+	        rs = st.executeQuery();
+
+	        if (rs.next()) {
+	            maPCLonNhat = rs.getString("maPhanCong");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return maPCLonNhat;
+	}
+	//get ds phan cong theo phong ban
+	public ArrayList<BangPhanCongNhanVien> getDSPhanCongTheoPhongBan(String maPhongBan) {
+	    ArrayList<BangPhanCongNhanVien> phanCongList = new ArrayList<>();
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        st = con.prepareStatement("SELECT * FROM BangPhanCongNhanVien pcnv JOIN NhanVien nv ON pcnv.maNhanVien = nv.maNV WHERE pcnv.maPhongBan = ? AND pcnv.chucVu IS NOT NULL");
+	        st.setString(1, maPhongBan);
+	        rs = st.executeQuery();
+
+	        while (rs.next()) {
+	            NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
+	                    rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
+	                    rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
+	            BangPhanCongNhanVien pcnv = new BangPhanCongNhanVien(rs.getString("maPhanCong"), nv, new PhongBan_Dao().timPhongBanTheoMa(rs.getString("maPhongBan")), rs.getString("chucVu"), new java.util.Date(rs.getDate("ngayCongTac").getTime()), rs.getString("ghiChu"));
+	            phanCongList.add(pcnv);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return phanCongList;
+	}
+
+	public ArrayList<BangPhanCongNhanVien> getAllPhanCong() {
+	    ArrayList<BangPhanCongNhanVien> phanCongList = new ArrayList<>();
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        st = con.prepareStatement("SELECT * FROM BangPhanCongNhanVien pcnv Join NhanVien nv on pcnv.maNhanVien = nv.maNV WHERE pcnv.chucVu IS NOT NULL");
+	        rs = st.executeQuery();
+
+	        while (rs.next()) {
+	            NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
+	                    rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
+	                    rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
+	            BangPhanCongNhanVien pcnv = new BangPhanCongNhanVien(rs.getString("maPhanCong"), nv, new PhongBan_Dao().timPhongBanTheoMa(rs.getString("maPhongBan")), rs.getString("chucVu"), new java.util.Date(rs.getDate("ngayCongTac").getTime()), rs.getString("ghiChu"));
+	            phanCongList.add(pcnv);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return phanCongList;
+	}
+
+	//thêm phân công vào csdl
+	public boolean luuPhanCong(BangPhanCongNhanVien pcnv) {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    int n = 0;
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String query = "INSERT INTO BangPhanCongNhanVien (maPhanCong, maNhanVien, maPhongBan, chucVu, ngayCongTac, ghiChu) VALUES (?, ?, ?, ?, ?, ?)";
+	        st = con.prepareStatement(query);
+	        st.setString(1, pcnv.getMaPhanCong());
+	        st.setString(2, pcnv.getNhanVien().getMaNV());
+	        st.setString(3, pcnv.getPhongBan().getMaPhongBan());
+	        st.setString(4, pcnv.getChucVu());
+	        st.setDate(5, new java.sql.Date(pcnv.getNgayCongTac().getTime()));
+	        st.setString(6, pcnv.getGhiChu());
+
+	        n = st.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return n>0;
+	}
+	//cập nhật phân công
+	public boolean capNhatPhanCong(BangPhanCongNhanVien pcnv) {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    int n = 0;
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String query = "UPDATE BangPhanCongNhanVien SET maNhanVien = ?, maPhongBan = ?, chucVu = ?, ngayCongTac = ?, ghiChu = ? WHERE maPhanCong = ?";
+	        st = con.prepareStatement(query);
+	        st.setString(1, pcnv.getNhanVien().getMaNV());
+	        st.setString(2, pcnv.getPhongBan().getMaPhongBan());
+	        st.setString(3, pcnv.getChucVu());
+	        st.setDate(4, new java.sql.Date(pcnv.getNgayCongTac().getTime()));
+	        st.setString(5, pcnv.getGhiChu());
+	        st.setString(6, pcnv.getMaPhanCong());
+
+	        n = st.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return n>0;
+	}
+	//Xóa phân công
+	public boolean xoaThongTinPhanCong(String maPhanCong) {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    int n = 0;
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String query = "UPDATE BangPhanCongNhanVien SET maPhongBan = NULL, chucVu = NULL, ghiChu = NULL WHERE maPhanCong = ?";
+	        st = con.prepareStatement(query);
+	        st.setString(1, maPhanCong);
+
+	        n = st.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return n>0;
+	}
+	//kiểm tra xem tồn tại mã phân công hay chưa
+	public BangPhanCongNhanVien kiemTraPhanCong(String maNV) {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+	    BangPhanCongNhanVien pcnv = null;
+
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String query = "SELECT * FROM BangPhanCongNhanVien WHERE maNhanVien = ?";
+	        st = con.prepareStatement(query);
+	        st.setString(1, maNV);
+	        rs = st.executeQuery();
+
+	        if (rs.next()) {
+	            pcnv = new BangPhanCongNhanVien(rs.getString("maPhanCong"), new NhanVien(rs.getString("maNhanVien")), new PhongBan_Dao().timPhongBanTheoMa(rs.getString("maPhongBan")), rs.getString("chucVu"), new java.util.Date(rs.getDate("ngayCongTac").getTime()), rs.getString("ghiChu"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return pcnv;
+	}
+
+
 }

@@ -210,6 +210,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		dtpNgaySinhS.setBackground(bgColor);
 		dtpNgaySinhS.setForeground(textColor);
 		dtpNgaySinhS.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
+		dtpNgaySinhS.getMonthView().setZoomable(true);
 		JButton btnDateNSS = (JButton) dtpNgaySinhS.getComponent(1);
 		btnDateNSS.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
 		btnDateNSS.setBackground(bgColor);
@@ -782,7 +783,6 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtEmail.setText(dsNV.get(index).getEmail());
 		txtCCCD.setText(dsNV.get(index).getcCCD());
 		txtDiaChi.setText(dsNV.get(index).getDiaChi());
-		lblAnh.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
 		rbtnNu.setSelected(dsNV.get(index).isGioiTinh()?false:true);
 		rbtnNam.setSelected(dsNV.get(index).isGioiTinh());
 		dtpNgaySinh.setDate(dsNV.get(index).getNgaySinh()); // Đặt giá trị cho JXDatePicker
@@ -793,7 +793,6 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 			txtChucVu.setText("");
 			txtGhiChu.setText("");
 		}else {
-			cmbPhongBan.setSelectedItem(dsPCNV.get(index).getPhongBan());
 			for(int i = 0; i < cmbPhongBan.getItemCount(); i++) {
 				if(cmbPhongBan.getItemAt(i).getMaPhongBan().equals(dsPCNV.get(index).getPhongBan().getMaPhongBan())) {
 					cmbPhongBan.setSelectedIndex(i);
@@ -803,6 +802,10 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 			txtChucVu.setText(dsPCNV.get(index).getChucVu());
 			txtGhiChu.setText(dsPCNV.get(index).getGhiChu());
 		}
+		if(dsNV.get(index).getHinhAnh()==null || dsNV.get(index).getHinhAnh().trim().length()<=0)
+			lblAnh.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
+		else
+			lblAnh.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
 	}
 	// thông báo lỗi
 	private void setTextError(String message) {

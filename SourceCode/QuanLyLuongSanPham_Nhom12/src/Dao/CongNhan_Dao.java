@@ -12,6 +12,39 @@ import Entity.CongNhan;
 public class CongNhan_Dao {
 	
 	
+	//GET MA CONG NHAN TU DONG LON NHAT
+	public String getMaCongNhanTuDong() {
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		String maCNLonNhat = null;
+		
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "SELECT MAX(maCN) AS maCNMax FROM CongNhan";
+			st= conn.prepareStatement(querry);
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				maCNLonNhat = rs.getString("maCNMax");
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			try {
+				rs.close();
+				st.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+		
+		
+		
+		return maCNLonNhat;
+	}
+	
 	// THEM CONG NHAN
 	public boolean themCongNhan(CongNhan cn) {
 		ConnectDB.getInstance();	

@@ -49,6 +49,7 @@ import Util.SinhMaTuDong;
 
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
 
 public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseListener{
 	private MainUI main;
@@ -122,12 +123,12 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlAnhDD.add(lblAvatar, BorderLayout.CENTER);
 		
-		btnChonAnh = new RoundedButton("Image", null, 5, 0, 1f);
+		btnChonAnh = new RoundedButton("Chọn ảnh", null, 5, 0, 1f);
 		btnChonAnh.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnChonAnh.setForeground(Color.WHITE);
 		btnChonAnh.setBackground(componentColor);
 		btnChonAnh.setIcon(new ImageScaler("/image/add-image.png", 16, 16).getScaledImageIcon());
-		btnChonAnh.setBorder(BorderFactory.createEmptyBorder(5, 45, 5, 45));
+		btnChonAnh.setBorder(BorderFactory.createEmptyBorder(5, 35, 5, 35));
 		Dimension size = btnChonAnh.getPreferredSize();
 		btnChonAnh.setMinimumSize(size);
 		btnChonAnh.setMaximumSize(size);
@@ -244,6 +245,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpNgaySinh.getEditor().setBackground(bgColor);
 		dtpNgaySinh.getEditor().setForeground(textColor);
+		dtpNgaySinh.getMonthView().setZoomable(true);
 		pnlB2.add(dtpNgaySinh);
 		
 		pnlB2.add(Box.createHorizontalStrut(20));
@@ -606,7 +608,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtCCCD.setText("");
 		txtDiaChi.setText("");
 		lblAvatar.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
-		btnChonAnh.setText("");
+		btnChonAnh.setText("Chọn ảnh");
 		radNam.setSelected(true);
 		dtpNgaySinh.setDate(new Date(100, 0, 1));
 		lblMessage.setText("");
@@ -659,7 +661,10 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtEmail.setText(dsNV.get(index).getEmail());
 		txtCCCD.setText(dsNV.get(index).getcCCD());
 		txtDiaChi.setText(dsNV.get(index).getDiaChi());
-		lblAvatar.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
+		if(dsNV.get(index).getHinhAnh()!=null && dsNV.get(index).getHinhAnh().trim().length()>0)
+			lblAvatar.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
+		else
+			lblAvatar.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
 		radNu.setSelected(dsNV.get(index).isGioiTinh()?false:true);
 		radNam.setSelected(dsNV.get(index).isGioiTinh());
 		

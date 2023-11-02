@@ -9,11 +9,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import org.jdesktop.swingx.plaf.basic.CalendarHeaderHandler;
+import org.jdesktop.swingx.plaf.basic.SpinningCalendarHeaderHandler;
 
 import ConnectDB.ConnectDB;
 import Entity.NhanVien;
@@ -39,7 +44,10 @@ public class MainUI extends JFrame {
 	 * Create the frame.
 	 */
 	public MainUI(NhanVien nv) {
+		ImageIcon appIcon = new ImageIcon("assets/icon_logo.png");
+		setIconImage(appIcon.getImage());
 		this.nv = nv;
+		
 		try {
 			ConnectDB.getInstance().connect();
 		} catch (SQLException e) {
@@ -56,6 +64,11 @@ public class MainUI extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
+		
+		
+		
+		
+		
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setBounds(0, 0, 1500, 800);
 		add(new MenuUI(this), BorderLayout.NORTH);
@@ -74,6 +87,7 @@ public class MainUI extends JFrame {
 		borderFocusColor = new Color(0, 0, 255, 64);  // set màu mặc định cho border khi được focus
 		pnlContent = new JPanel(new BorderLayout()); // Phần jpanel chứa các giao diện chức năng
 		music = new SoundPlay(); // Khởi tạo âm thanh ứng dụng
+		UIManager.put(CalendarHeaderHandler.uiControllerID, SpinningCalendarHeaderHandler.class.getName());
 	}
 	
 }

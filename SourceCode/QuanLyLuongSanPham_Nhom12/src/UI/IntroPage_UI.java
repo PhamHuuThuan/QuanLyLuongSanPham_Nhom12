@@ -21,6 +21,10 @@ import Util.SoundPlay;
 public class IntroPage_UI extends JFrame{
 	private MainUI main;
 	private SoundPlay sound = new SoundPlay();
+	
+	ImageIcon appIcon = new ImageIcon("assets/logo_v1.png");
+	
+	
 	private boolean isShowPageLogin = false;
 	private void OpenPageLogin() {
 		this.dispose();
@@ -36,7 +40,7 @@ public class IntroPage_UI extends JFrame{
 		this.setSize(1200,600);
 		this.setLocationRelativeTo(null);
 		this.setUndecorated(true);
-		
+		setIconImage(appIcon.getImage());
 		
 		ImageIcon gifAnimation = new ImageIcon("assets/crop_v8.gif");
 		JLabel gifAniLabel = new JLabel(gifAnimation);
