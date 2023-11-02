@@ -11,7 +11,6 @@ import Entity.CongNhan;
 
 public class CongNhan_Dao {
 	
-	
 	//GET MA CONG NHAN TU DONG LON NHAT
 	public String getMaCongNhanTuDong() {
 		ConnectDB.getInstance();
@@ -81,6 +80,8 @@ public class CongNhan_Dao {
 		}
 		return n>0;
 	}
+	
+	// GET TẤT CẢ CÁC CÔNG NHÂN
 	public ArrayList<CongNhan> getAllCongNhan(){
 		ArrayList<CongNhan> listCN = new ArrayList<>();
 		ConnectDB.getInstance();
@@ -187,6 +188,9 @@ public class CongNhan_Dao {
 			
 			return n>0;
 		}
+	
+		
+	//	TÌM KIẾM CÔNG NHÂN
 	
 }
 
