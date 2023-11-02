@@ -27,6 +27,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -50,7 +52,7 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 
-public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseListener{
+public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseListener, ItemListener{
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
@@ -407,6 +409,9 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblNV.addMouseListener(this);
 		tblNVPC.addMouseListener(this);
 		
+		cmbPhongBan.addItemListener(this);
+		cmbChucVu.addItemListener(this);
+		
 		
 		//get dữ liệu từ csdl
 		dsNV = nv_Dao.timNhanVienChuaPhanCong();
@@ -672,6 +677,23 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		else {
 			btnFocus = (RoundedButton) o;
 			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+	}
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		Object o = e.getSource();
+		if(o == cmbPhongBan || o == cmbChucVu) {
+			PhongBan pb = (PhongBan)cmbPhongBan.getSelectedItem();
+			if(cmbPhongBan.getSelectedIndex()!=0 && cmbChucVu.getSelectedIndex()!=0) {
+				dsPCNV = pcnv_Dao.getDSPhanCong(pb.getMaPhongBan(), cmbChucVu.getSelectedItem().toString());
+			}else if(cmbPhongBan.getSelectedIndex()!=0 && cmbChucVu.getSelectedIndex()==0) {
+				dsPCNV = pcnv_Dao.getDSPhanCong(pb.getMaPhongBan(), null);
+			}else if(cmbPhongBan.getSelectedIndex()==0 && cmbChucVu.getSelectedIndex()!=0) {
+				dsPCNV = pcnv_Dao.getDSPhanCong(null, cmbChucVu.getSelectedItem().toString());
+			}else {
+				return;
+			}
+			themTatCaPCNhanVienVaoBangPC(dsPCNV);
 		}
 	}
 }
