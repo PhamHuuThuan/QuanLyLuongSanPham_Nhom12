@@ -755,6 +755,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 			themAllCongNhanVaoTable(dsCN);
 		}else {
 			alertNotification("Không tìm thấy công nhân");
+			themAllCongNhanVaoTable(dsCN);
 		}
 	}
 
