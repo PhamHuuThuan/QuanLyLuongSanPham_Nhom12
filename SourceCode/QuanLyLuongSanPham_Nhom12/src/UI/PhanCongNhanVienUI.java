@@ -426,6 +426,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	public void mousePressed(MouseEvent e) {
 		Object o = e.getSource();
 		if (o instanceof RoundedButton) {
+			setBorderForFocusButton(o);
 	    }
 	}
 	@Override
@@ -596,26 +597,28 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private void phanCongNhanVien() {
 		if(tblNV.getSelectedRow()!=-1) {
 			BangPhanCongNhanVien pcnv = convertDataToPhanCong();
-			if(!pcnv.getMaPhanCong().equals(new SinhMaTuDong().sinhMaPCNV())) { //đã từng được phân công
-				if(pcnv_Dao.capNhatPhanCong(pcnv)) {
-					System.out.println("Cập nhật!");
-					dsNV = nv_Dao.timNhanVienChuaPhanCong();
-					themTatCaNhanVienVaoBangChuaPC(dsNV);
-					dsPCNV = pcnv_Dao.getAllPhanCong(); // thêm vào bảng mới
-					themTatCaPCNhanVienVaoBangPC(dsPCNV);
-					lblMessage.setText("Thêm thành công!");
-				}else {
-					setTextError("Phân công thất bại đã xảy ra lỗi!");
-				}
-			}else { // phân công mới
-				if(pcnv_Dao.luuPhanCong(pcnv)) {
-					dsNV.remove(tblNV.getSelectedRow());
-					tblNV.remove(tblNV.getSelectedRow()); //xóa thông tin ở bảng chưa phân công
-					dsPCNV.add(pcnv); // thêm vào bảng mới
-					themTatCaPCNhanVienVaoBangPC(dsPCNV);
-					lblMessage.setText("Thêm thành công!");
-				}else {
-					setTextError("Phân công thất bại đã xảy ra lỗi!");
+			if(pcnv!=null) {
+				if(!pcnv.getMaPhanCong().equals(new SinhMaTuDong().sinhMaPCNV())) { //đã từng được phân công
+					if(pcnv_Dao.capNhatPhanCong(pcnv)) {
+						System.out.println("Cập nhật!");
+						dsNV = nv_Dao.timNhanVienChuaPhanCong();
+						themTatCaNhanVienVaoBangChuaPC(dsNV);
+						dsPCNV = pcnv_Dao.getAllPhanCong(); // thêm vào bảng mới
+						themTatCaPCNhanVienVaoBangPC(dsPCNV);
+						lblMessage.setText("Thêm thành công!");
+					}else {
+						setTextError("Phân công thất bại đã xảy ra lỗi!");
+					}
+				}else { // phân công mới
+					if(pcnv_Dao.luuPhanCong(pcnv)) {
+						dsNV.remove(tblNV.getSelectedRow());
+						tblNV.remove(tblNV.getSelectedRow()); //xóa thông tin ở bảng chưa phân công
+						dsPCNV.add(pcnv); // thêm vào bảng mới
+						themTatCaPCNhanVienVaoBangPC(dsPCNV);
+						lblMessage.setText("Thêm thành công!");
+					}else {
+						setTextError("Phân công thất bại đã xảy ra lỗi!");
+					}
 				}
 			}
 		}else {
@@ -626,12 +629,14 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private void capNhatPhanCongNhanVien() {
 		if(tblNVPC.getSelectedRow()!=-1) {
 			BangPhanCongNhanVien pcnv = convertDataToPhanCong();
-			if(pcnv_Dao.capNhatPhanCong(pcnv)) {
-				dsPCNV = pcnv_Dao.getAllPhanCong();
-				themTatCaPCNhanVienVaoBangPC(dsPCNV);
-				lblMessage.setText("Cập nhật thành công!");
-			}else {
-				setTextError("Cập nhật phân công thất bại đã xảy ra lỗi!");
+			if(pcnv!=null) {
+				if(pcnv_Dao.capNhatPhanCong(pcnv)) {
+					dsPCNV = pcnv_Dao.getAllPhanCong();
+					themTatCaPCNhanVienVaoBangPC(dsPCNV);
+					lblMessage.setText("Cập nhật thành công!");
+				}else {
+					setTextError("Cập nhật phân công thất bại đã xảy ra lỗi!");
+				}
 			}
 		}else {
 			setTextError("Bạn phải chọn nhân viên cần sửa phân công!");
@@ -653,6 +658,20 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 			}
 		}else {
 			setTextError("Bạn phải chọn nhân viên cần xóa phân công!");
+		}
+	}
+	//hiển thị border cho button được user nhấn
+	private void setBorderForFocusButton(Object o) {
+		if(btnFocus!=null && btnFocus!=o) {
+			btnFocus.setFocusButton(null, 0);
+		}
+		if(btnFocus==null) {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+		else {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
 		}
 	}
 }
