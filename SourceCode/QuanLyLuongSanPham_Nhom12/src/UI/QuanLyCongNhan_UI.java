@@ -43,6 +43,8 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.JComboBox;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EtchedBorder;
 
 public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseListener {
 	private MainUI main;
@@ -431,6 +433,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlControl.add(btnHuy);
 
 		JPanel pnlTable = new JPanel();
+		pnlTable.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Danh s\u00E1ch to\u00E0n b\u1ED9 c\u00F4ng nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(0, 5, 0, 5)));
 		pnlTable.setBackground(new Color(255, 255, 255));
 		add(pnlTable, BorderLayout.CENTER);
 

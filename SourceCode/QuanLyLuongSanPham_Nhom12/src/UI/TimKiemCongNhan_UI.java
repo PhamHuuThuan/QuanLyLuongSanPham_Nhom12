@@ -16,6 +16,8 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.CongNhan_Dao;
+import Entity.CongNhan;
 
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
@@ -33,6 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
@@ -60,12 +63,20 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 
 	private RoundedButton btnTim, btnXoaRong, btnXuat;
 	private DefaultTableModel dtbModelCN;
+	private JTable tblCN;
 	private JTableHeader tbhCN;
 	private JTextField txtMaCN_dt;
-	private JTextField txtHoTen_dt;
+	private JTextField txtHoTenCN_dt;
 	private JTextField txtSoCCCD_dt;
 	private JTextField txtEmail_dt;
-	private JTextField txtSoCCCD_search;
+	private JTextField txtSoCCCD;
+	private JXDatePicker dpNgaySinh;
+	private JCheckBox chkNam, chkNu;
+	private JLabel lblAvatar_dt;
+	
+	private ArrayList<CongNhan> dsCN = new ArrayList<>();
+	private CongNhan_Dao cn_dao = new CongNhan_Dao();
+	
 
 	public TimKiemCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -140,7 +151,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		Component horizontalStrut_9 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_9);
 
-		JXDatePicker dpNgaySinh = new JXDatePicker((Date) null);
+		dpNgaySinh = new JXDatePicker((Date) null);
 		dpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgaySinh.setLocale(new Locale("vi", "VN"));
@@ -155,14 +166,14 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_11);
 
-		JCheckBox chkNam = new JCheckBox("Nam");
+		chkNam = new JCheckBox("Nam");
 		chkNam.setBackground(new Color(255, 255, 255));
 		box_2.add(chkNam);
 
 		Component horizontalStrut_7_1 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_7_1);
 
-		JCheckBox chkNu = new JCheckBox("Nữ");
+		chkNu = new JCheckBox("Nữ");
 		chkNu.setBackground(new Color(255, 255, 255));
 		box_2.add(chkNu);
 
@@ -207,9 +218,9 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		box_4.add(horizontalStrut);
 
-		txtSoCCCD_search = new JTextField();
-		box_4.add(txtSoCCCD_search);
-		txtSoCCCD_search.setColumns(10);
+		txtSoCCCD = new JTextField();
+		box_4.add(txtSoCCCD);
+		txtSoCCCD.setColumns(10);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		box_4.add(horizontalStrut_1);
@@ -244,13 +255,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		JPanel pnlThongTinCongNhan = new JPanel();
 		pnlThongTinCongNhan.setBackground(new Color(255, 255, 255));
 		pnlThongTinCongNhan
-				.setBorder(new CompoundBorder(
-						new TitledBorder(
-								new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255),
-										new Color(160, 160, 160)),
-								"Th\u00F4ng tin C\u00F4ng Nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null,
-								new Color(0, 0, 0)),
-						new EmptyBorder(10, 0, 10, 10)));
+				.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin C\u00F4ng Nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(10, 20, 10, 20)));
 		pnlBody.add(pnlThongTinCongNhan, BorderLayout.CENTER);
 		pnlThongTinCongNhan.setLayout(new BoxLayout(pnlThongTinCongNhan, BoxLayout.X_AXIS));
 
@@ -259,9 +264,12 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		pnlAvatar.setBorder(new EmptyBorder(30, 0, 0, 0));
 		pnlThongTinCongNhan.add(pnlAvatar);
 
-		JLabel lblAvatar_dt = new JLabel("");
+		lblAvatar_dt = new JLabel("");
 		lblAvatar_dt.setIcon(new ImageScaler("/image/image_cn_df.jpg", 140, 140).getScaledImageIcon());
 		pnlAvatar.add(lblAvatar_dt);
+		
+		Component horizontalStrut_15 = Box.createHorizontalStrut(20);
+		pnlThongTinCongNhan.add(horizontalStrut_15);
 
 		JPanel pnlInforDetail_1 = new JPanel();
 		pnlInforDetail_1.setBackground(new Color(255, 255, 255));
@@ -424,23 +432,23 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		Box box_info_1_1 = Box.createHorizontalBox();
 		pnlInfoDetail_2.add(box_info_1_1);
 
-		JLabel lblHoTen_dt = new JLabel("Họ Tên");
-		lblHoTen_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		box_info_1_1.add(lblHoTen_dt);
+		JLabel lblHoTenCN_dt = new JLabel("Họ Tên");
+		lblHoTenCN_dt.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		box_info_1_1.add(lblHoTenCN_dt);
 
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
 		box_info_1_1.add(horizontalStrut_2_1);
 
-		txtHoTen_dt = new JTextField("");
-		txtHoTen_dt.setEditable(false);
-		txtHoTen_dt.setForeground(Color.BLACK);
-		txtHoTen_dt.setFont(null);
-		txtHoTen_dt.setColumns(10);
-		txtHoTen_dt.setBorder(
+		txtHoTenCN_dt = new JTextField("");
+		txtHoTenCN_dt.setEditable(false);
+		txtHoTenCN_dt.setForeground(Color.BLACK);
+		txtHoTenCN_dt.setFont(null);
+		txtHoTenCN_dt.setColumns(10);
+		txtHoTenCN_dt.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtHoTen_dt.setBackground(Color.WHITE);
-		box_info_1_1.add(txtHoTen_dt);
+		txtHoTenCN_dt.setBackground(Color.WHITE);
+		box_info_1_1.add(txtHoTenCN_dt);
 
 		Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 		pnlInfoDetail_2.add(verticalStrut_1_1);
@@ -563,7 +571,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 
 		String cols[] = { "Mã CN", "Họ tên", "Giới tính", "SĐT", "Email", "Địa chỉ", "Ngày vào làm", "Ghi chú" };
 		dtbModelCN = new DefaultTableModel(cols, 0);
-		JTable tblCN = new JTable(dtbModelCN);
+		tblCN = new JTable(dtbModelCN);
 
 		JPanel pnlXuat = new JPanel();
 		pnlXuat.setBackground(Color.WHITE);
@@ -600,12 +608,27 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		pnlTable.add(scrSP);
 
 		pnlTKCN.add(pnlTable, BorderLayout.CENTER);
+		
+		btnTim.addActionListener(this);
+		btnXoaRong.addActionListener(this);
+		
+		tblCN.addMouseListener(this);
+		
+		
+		setEditableForTextField(false);
+		
 
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if(o==tblCN) {
+			int item = tblCN.getSelectedRow();
+			if(item != -1) {
+				hienThiThongTinCN(item);
+			}
+		}
 
 	}
 
@@ -636,31 +659,129 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-
+		if(o==btnTim) {
+			timKiemCongNhan();
+		}
+		if(o==btnXoaRong) {
+			xoaRong();
+		}
 	}
 
 	// HÀM ĐỂ SET CÁC BUTTON EDITABLE
 	private void setEditableForTextField(boolean active) {
-
+		txtMaCN_dt.setEditable(active);
+		txtHoTenCN_dt.setEditable(active);
+		txtSoCCCD_dt.setEditable(active);
+		txtEmail_dt.setEditable(active);
+		txtSoDT_dt.setEditable(active);
+		txtNgaySinh_dt.setEditable(active);
+		txtGioiTinh_dt.setEditable(active);
+		txtNgayVaoLam_dt.setEditable(active);
+		txtDiaChi_dt.setEditable(active);
+		txtMatKhau_dt.setEditable(active);
+		txtGhiChu_dt.setEditable(active);
+		
+		
+		chkNam.setSelected(true);
+		chkNu.setSelected(true);
 	}
 
 	// HÀM XÓA RỖNG
 	private void xoaRong() {
-
+		txtMaCN.setText("");
+		txtHoTenCN.setText("");
+		txtSoCCCD.setText("");
+		txtSoDT_dt.setText("");
+		dpNgaySinh.setDate(null);
+		chkNam.setSelected(true);
+		chkNu.setSelected(true);
+		txtSoDT.setText("");
+		txtDiaChi.setText("");
+		txtSoCCCD.setText("");
+		
+		txtMaCN_dt.setText("");
+		txtHoTenCN_dt.setText("");
+		txtSoCCCD_dt.setText("");
+		txtEmail_dt.setText("");
+		txtSoDT_dt.setText("");
+		txtNgaySinh_dt.setText("");
+		txtGioiTinh_dt.setText("");
+		txtNgayVaoLam_dt.setText("");
+		txtDiaChi_dt.setText("");
+		txtMatKhau_dt.setText("");
+		txtGhiChu_dt.setText("");
 	}
-	// HÀM TÌM KIẾM CÔNG NHÂN
-	private void timKiemCongNhan() {
+	// HÀM HIỂN THỊ CÔNG NHÂN KHI CHỌN ROW Ở TABLE
+	private void hienThiThongTinCN(int index) {
+		txtMaCN_dt.setText(dsCN.get(index).getMaCN());
+		txtHoTenCN_dt.setText(dsCN.get(index).getHoTen());
+		txtSoCCCD_dt.setText(dsCN.get(index).getSoCCCD());
+		txtEmail_dt.setText(dsCN.get(index).getEmail());
+		txtSoDT_dt.setText(dsCN.get(index).getSDT());
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String dateNgaySinhString = dateFormat.format(dsCN.get(index).getNgaySinh());
+		txtNgaySinh_dt.setText(dateNgaySinhString);
+		
+		txtGioiTinh_dt.setText(dsCN.get(index).getGioiTinh() ? "Nam": "Nữ");
+		String dateNgayVaoLamString = dateFormat.format(dsCN.get(index).getNgayVaoLam());
+		txtNgayVaoLam_dt.setText(dateNgayVaoLamString);
+		
+		txtDiaChi_dt.setText(dsCN.get(index).getDiaChi());
+		txtMatKhau_dt.setText(dsCN.get(index).getMatKhau());
+		txtGhiChu_dt.setText(dsCN.get(index).getGhiChu());
+		
+		lblAvatar_dt.setIcon(new ImageScaler("/image/" + dsCN.get(index).getAnhDaiDien(), 140, 140).getScaledImageIcon());
 		
 	}
 	
-	// 	THÊM 1 CÔNG NHÂN VÀO TABLE
-	private void themMotCongNhanVaoTable() {
+	
+
+	// HÀM TÌM KIẾM CÔNG NHÂN
+	private void timKiemCongNhan() {
+		String maCN = txtMaCN.getText();
+		String hoten = txtHoTenCN.getText();
+		Date ngaySinh = dpNgaySinh.getDate();
+		int nam = chkNam.isSelected() ? 1 : -1;
+		int nu = chkNu.isSelected() ? 0 : -1;
+		String sDT = txtSoDT.getText();
+		String diaChi = txtDiaChi.getText();
+		String soCCCD = txtSoCCCD.getText();
+		
+		dsCN = cn_dao.timKiemCongNhan(maCN, hoten, ngaySinh, nam, nu, sDT, diaChi, soCCCD);
+		
+		if(dsCN.size()!=0) {
+			alertSuccess("Đã tìm thấy " + dsCN.size() + " Công nhân");
+			themAllCongNhanVaoTable(dsCN);
+		}else {
+			alertNotification("Không tìm thấy công nhân");
+		}
+	}
+
+	// THÊM 1 CÔNG NHÂN VÀO TABLE
+	private void themMotCongNhanVaoTable(CongNhan cn) {
+		Object[] row = new Object[99];
+		
+		row[0] = dtbModelCN.getRowCount() +1;
+		row[1] = cn.getMaCN();
+		row[2] = cn.getHoTen();
+		row[3] = cn.getGioiTinh() ? "Nam" : "Nữ";
+		row[4] = cn.getSDT();
+		row[5] = cn.getEmail();
+		row[6] = cn.getNgayVaoLam();
+		row[7] = cn.getGhiChu();
+		dtbModelCN.addRow(row);
 		
 	}
-	//	THÊM TẤT CẢ CÔNG NHÂN VÀO TABLE
-	private void themAllCongNhanVaoTable() {
-		
+
+	// THÊM TẤT CẢ CÔNG NHÂN VÀO TABLE
+	private void themAllCongNhanVaoTable(ArrayList<CongNhan> listCn) {
+		dtbModelCN.setRowCount(0);
+		for(int i=0; i< dsCN.size();i++) {
+			themMotCongNhanVaoTable(dsCN.get(i));
+		}
 	}
+
 	
 	
 	
