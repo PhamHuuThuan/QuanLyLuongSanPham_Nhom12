@@ -8,14 +8,14 @@ public class BangChamCongNhanVien {
 	private BangPhanCongNhanVien phanCong;
 	private Date ngayChamCong;
 	private int caLam; // 1: nua ngay, 2: ca ngay
-	private int trangThai; // 1: đúng giờ, 2: trễ, 3: nghỉ, 4: nghỉ phép
-	private Timer gioDen;
+	private int trangThai; // 0: đúng giờ, 1: trễ, 2: nghỉ, 3: nghỉ phép
+	private String gioDen;
 	private float gioTangCa;
 	private String ghiChu;
 	
 	//Khởi tạo đối tượng bangchamcongnhanvien đầy đủ tham số
 	public BangChamCongNhanVien(BangPhanCongNhanVien phanCong, Date ngayChamCong, int caLam, int trangThai,
-			Timer gioDen, float gioTangCa, String ghiChu) {
+			String gioDen, float gioTangCa, String ghiChu) {
 		super();
 		try {
 			setPhanCong(phanCong);
@@ -65,10 +65,10 @@ public class BangChamCongNhanVien {
 	public void setTrangThai(int trangThai) {
 		this.trangThai = trangThai;
 	}
-	public Timer getGioDen() {
+	public String getGioDen() {
 		return gioDen;
 	}
-	public void setGioDen(Timer gioDen) {
+	public void setGioDen(String gioDen) {
 		this.gioDen = gioDen;
 	}
 	public float getGioTangCa() {

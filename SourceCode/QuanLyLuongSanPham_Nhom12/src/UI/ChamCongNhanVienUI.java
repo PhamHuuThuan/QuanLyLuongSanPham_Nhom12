@@ -15,25 +15,38 @@ import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.ChamCongNhanVien_Dao;
+import Dao.PhanCongNhanVien_Dao;
+import Dao.PhongBan_Dao;
+import Entity.BangChamCongNhanVien;
+import Entity.BangPhanCongNhanVien;
+import Entity.PhongBan;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 import java.awt.FlowLayout;
@@ -44,19 +57,29 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 
-public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseListener{
+public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseListener, ItemListener{
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private RoundedButton btnChamCongALL, btnChamCong, btnChamLai, btnXuat,  btnXoa, btnFocus;
-	private DefaultTableModel dtblModelNVPC, dtblModelNV;
-	private JTable tblDSCC, tblNV;
+	private DefaultTableModel dtblModelDSCC, dtblModelDSPC;
+	private JTable tblDSCC, tblDSPC;
 	private JTableHeader tbhNVPC, tbhNV;
 	private JTextField  txtGhiChu;
-	private JComboBox cmbPhongBan, cmbCaLam, cmbTrangThai;
+	private JComboBox<PhongBan> cmbPhongBan;
+	private JXDatePicker dtbNgayCC;
+	private JComboBox cmbCaLam, cmbTrangThai;
 	private JSpinner spnGioDen, spnTangCa;
+	private SpinnerModel spnModelGioDen;
 	private JTextField txtMaNV;
+	private JLabel lblMessage;
+	private PhanCongNhanVien_Dao pcnv_Dao = new PhanCongNhanVien_Dao();
+	private ChamCongNhanVien_Dao ccnv_Dao = new ChamCongNhanVien_Dao();
+	private PhongBan_Dao pb_Dao = new PhongBan_Dao();
+	private Date timeDefault;
+	private ArrayList<BangPhanCongNhanVien> dsChuaCC = new ArrayList<>();
+	private ArrayList<BangChamCongNhanVien> dsChamCong = new ArrayList<>();
 	/**
 	 * Create the panel.
 	 */
@@ -120,9 +143,20 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblPhongBan.setForeground(textColor);
 		lblPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
-		cmbPhongBan = new JComboBox();
+		cmbPhongBan = new JComboBox<>();
+		// Tạo một đối tượng DefaultComboBoxModel
+		DefaultComboBoxModel modelPB = new DefaultComboBoxModel();
+		modelPB.addElement(new PhongBan("PB00", "Tất cả", 0, ""));
+
+		// Lấy danh sách tất cả các phòng ban
+		ArrayList<PhongBan> listPB = pb_Dao.getAllPhongBan();
+
+		// Thêm phòng ban vào model
+		modelPB.addAll(listPB);
+		    
+		// Đặt model cho JComboBox
+		cmbPhongBan.setModel(modelPB);
 		pnlPBvaTime.add(cmbPhongBan);
-		cmbPhongBan.setModel(new DefaultComboBoxModel(new String[] {"Nhân sự", "Kế toán"}));
 		Border cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		cmbPhongBan.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
@@ -139,20 +173,21 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblNgayCham.setForeground(textColor);
 		lblNgayCham.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
-		JXDatePicker dtbNgayVL = new JXDatePicker((Date) null);
-		pnlPBvaTime.add(dtbNgayVL);
+		dtbNgayCC = new JXDatePicker(new Date());
+		pnlPBvaTime.add(dtbNgayCC);
 		pnlPBvaTime.add(Box.createHorizontalStrut(30));
-		dtbNgayVL.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
-		dtbNgayVL.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		dtbNgayVL.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
-		dtbNgayVL.getEditor().setBackground(bgColor);
-		dtbNgayVL.getEditor().setForeground(textColor);
-		JButton btnDateNVL = (JButton) dtbNgayVL.getComponent(1);
+		dtbNgayCC.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
+		dtbNgayCC.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dtbNgayCC.setLocale(new Locale("vi", "VN"));	// set thoi gian local la VN
+		dtbNgayCC.getEditor().setBackground(bgColor);
+		dtbNgayCC.getEditor().setForeground(textColor);
+		dtbNgayCC.getMonthView().setUpperBound(new Date());
+		JButton btnDateNVL = (JButton) dtbNgayCC.getComponent(1);
 		btnDateNVL.setIcon(new ImageScaler("/image/calendar_icon.png", 18, 18).getScaledImageIcon());
 		btnDateNVL.setBackground(bgColor);
 		btnDateNVL.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		cmbPhongBan.setPreferredSize(dtbNgayVL.getPreferredSize());
+		cmbPhongBan.setPreferredSize(dtbNgayCC.getPreferredSize());
 		
 		btnChamCongALL = new RoundedButton("Chấm tất cả", null, 20, 0, 1.0f);
 		btnChamCongALL.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
@@ -163,25 +198,25 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlPBvaTime.add(btnChamCongALL);
 		
 		String cols[] = {"STT", "Mã NV", "Họ tên", "Phòng ban", "Chức vụ"};
-		dtblModelNV = new DefaultTableModel(cols, 0);
-		tblNV = new JTable(dtblModelNV);
+		dtblModelDSPC = new DefaultTableModel(cols, 0);
+		tblDSPC = new JTable(dtblModelDSPC);
 
-		tbhNV = new JTableHeader(tblNV.getColumnModel());
+		tbhNV = new JTableHeader(tblDSPC.getColumnModel());
 		tbhNV.setReorderingAllowed(false);
 		tbhNV.setBackground(componentColor);
 		tbhNV.setForeground(Color.WHITE);
 		tbhNV.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		tblNV.setTableHeader(tbhNV);
+		tblDSPC.setTableHeader(tbhNV);
 		
-		tblNV.setRowHeight(20);
-		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(2).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblDSPC.setRowHeight(20);
+		tblDSPC.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblDSPC.getColumnModel().getColumn(1).setPreferredWidth(75);
+		tblDSPC.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblDSPC.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tblDSPC.getColumnModel().getColumn(4).setPreferredWidth(150);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
-		JScrollPane scrNV = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane scrNV = new JScrollPane(tblDSPC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangNV.add(scrNV, BorderLayout.CENTER);
 		
 		
@@ -262,12 +297,19 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		
         // Tạo một Calendar để thiết lập thời gian
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 7); // Thiết lập giờ là 7
+        calendar.set(Calendar.HOUR_OF_DAY, 6); // Thiết lập giờ là 7
         calendar.set(Calendar.MINUTE, 0); // Thiết lập phút là 0
-        Date defaultTime = calendar.getTime(); // Lấy thời gian từ Calendar
+        Date startDate = calendar.getTime();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 18); // Giờ kết thúc
+        Date endDate = calendar.getTime();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 7); // Giờ hiện tại
+        timeDefault = calendar.getTime();
 
         // Tạo JSpinner với SpinnerDateModel và giá trị mặc định đã thiết lập
-        spnGioDen = new JSpinner(new SpinnerDateModel(defaultTime, null, null, Calendar.HOUR_OF_DAY));
+        spnModelGioDen = new SpinnerDateModel(timeDefault, null, null, Calendar.HOUR_OF_DAY);
+        spnGioDen = new JSpinner(spnModelGioDen);
         JSpinner.DateEditor editor = new JSpinner.DateEditor(spnGioDen, "HH:mm");
         spnGioDen.setEditor(editor);
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
@@ -320,6 +362,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 		txtMaNV.setBackground(Color.WHITE);
+		txtMaNV.setEditable(false);
 		pnlB4.add(txtMaNV);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
@@ -342,6 +385,13 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		
 		lblTangCa.setPreferredSize(lblTrangThai.getPreferredSize());
 		lblCaLam.setPreferredSize(lblGioDen.getPreferredSize());
+		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnlMessage.setBackground(bgColor);
+		pnlTTRight.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel(" "));
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(main.roboto_regular.deriveFont(Font.ITALIC, 14F));
 		
 		//Khởi tạo jpanel chức năng chứa các button chức năng
 		JPanel pnlChucNang = new JPanel(new FlowLayout());
@@ -399,9 +449,9 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String colsPCNV[] = {"STT", "Mã NV", "Họ tên", "Phòng ban", "Ngày", "Ca làm", "Trạng thái", "Phép", "Giờ đến", "Tăng ca", "Ghi chú"};
-		dtblModelNVPC = new DefaultTableModel(colsPCNV, 0);
-		tblDSCC = new JTable(dtblModelNVPC);
+		String colsPCNV[] = {"STT", "Mã NV", "Họ tên", "Phòng ban", "Ngày", "Ca làm", "Trạng thái", "Giờ đến", "Tăng ca", "Ghi chú"};
+		dtblModelDSCC = new DefaultTableModel(colsPCNV, 0);
+		tblDSCC = new JTable(dtblModelDSCC);
 
 		tbhNVPC = new JTableHeader(tblDSCC.getColumnModel());
 		tbhNVPC.setReorderingAllowed(false);
@@ -418,33 +468,52 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblDSCC.getColumnModel().getColumn(4).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(75);
 		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(50);
+		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(9).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(10).setPreferredWidth(100);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangChamCong.add(scrSP, BorderLayout.CENTER);
 		
+		btnChamCongALL.addActionListener(this);
 		btnChamCong.addActionListener(this);
 		btnChamLai.addActionListener(this);
+		btnXoa.addActionListener(this);
+		btnXuat.addActionListener(this);
+		dtbNgayCC.addActionListener(this);
 		
+		btnChamCongALL.addMouseListener(this);
 		btnChamCong.addMouseListener(this);
 		btnChamLai.addMouseListener(this);
+		btnXoa.addMouseListener(this);
+		btnXuat.addMouseListener(this);
+		tblDSCC.addMouseListener(this);
+		tblDSPC.addMouseListener(this);
 		
+		cmbPhongBan.addItemListener(this);
 		
 		//Set giá trị mặc định để hiển thị
-		
+		uploadDataToTable();
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		Object o = e.getSource();
+		if(o == tblDSCC) {
+			tblDSPC.clearSelection();
+			hienThiChamCong(tblDSCC.getSelectedRow());
+		}
+		if(o == tblDSPC) {
+			tblDSCC.clearSelection();
+			xoaRongTTCC();
+			txtMaNV.setText(tblDSPC.getValueAt(tblDSPC.getSelectedRow(), 1).toString());
+		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Object o = e.getSource();
 		if (o instanceof RoundedButton) {
+			setBorderForFocusButton(o);
 	    }
 	}
 	@Override
@@ -462,13 +531,220 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		lblMessage.setText("");
 		Object o = e.getSource();
 		if(o == btnChamCong) {
-			
+			chamCongNV();
 		}
 		if(o == btnChamLai) {
-
-			
+			suaChamCongNV();
 		}
+		if(o == btnChamCongALL) {
+			chamTatCa();
+		}
+		if(o == btnXoa) {
+			xoaChamCong();
+		}
+		if(o == dtbNgayCC) {
+			if(dtbNgayCC.getDate()!=null) {
+				uploadDataToTable();
+			}else {
+				setTextError("Chỉ có thể chấm công từ ngày hiện tại về trước!");
+			}
+		}
+	}
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		Object o = e.getSource();
+		if(o == cmbPhongBan) {
+			uploadDataToTable();
+		}
+	}
+	//thêm một phân công vào bảng chưa chấm công
+	private void themPCNhanVienVaoBangCCC(BangPhanCongNhanVien pcnv) {
+	    Object[] row = new Object[10];
+	    row[0] = dtblModelDSPC.getRowCount() + 1;  // STT
+	    row[1] = pcnv.getNhanVien().getMaNV();  // Mã NV
+	    row[2] = pcnv.getNhanVien().getHoTen();  // Họ tên
+	    row[3] = pcnv.getPhongBan().getTenPhongBan(); // Phòng ban
+	    row[4] = pcnv.getChucVu();  // Chức vụ
+	    
+	    dtblModelDSPC.addRow(row);
+	}
+	//thêm một ds chưa chấm công vào bảng
+	private void themTatCaPCNhanVienVaoBangCCC(ArrayList<BangPhanCongNhanVien> list) {
+		dtblModelDSPC.setRowCount(0);
+	    for (BangPhanCongNhanVien pcnv : list) {
+	        themPCNhanVienVaoBangCCC(pcnv);
+	    }
+	}
+	//thêm một phân công vào bảng chấm công
+	private void themCCNhanVienVaoBangChamCong(BangChamCongNhanVien ccnv) {
+	    Object[] row = new Object[10];
+	    row[0] = dtblModelDSCC.getRowCount() + 1;  // STT
+	    row[1] = ccnv.getPhanCong().getNhanVien().getMaNV();  // Mã NV
+	    row[2] = ccnv.getPhanCong().getNhanVien().getHoTen();  // Họ tên
+	    row[3] = ccnv.getPhanCong().getPhongBan().getTenPhongBan(); // Phòng ban
+	    row[4] = new SimpleDateFormat("dd-MM-yyyy").format(ccnv.getNgayChamCong());  // Chức vụ
+	    row[5] = ccnv.getCaLam()==1?"Nửa ngày":"Cả ngày";
+	    row[6] = cmbTrangThai.getItemAt(ccnv.getTrangThai()).toString();
+	    row[7] = ccnv.getGioDen();
+	    row[8] = ccnv.getGioTangCa() + " giờ";
+	    row[9] = ccnv.getGhiChu();
+	    dtblModelDSCC.addRow(row);
+	}
+	//thêm một ds chấm công vào bảng
+	private void themTatCaCCNhanVienVaoBangChamCong(ArrayList<BangChamCongNhanVien> list) {
+		dtblModelDSCC.setRowCount(0);
+	    for (BangChamCongNhanVien ccnv : list) {
+	        themCCNhanVienVaoBangChamCong(ccnv);
+	    }
+	}
+	// thông báo lỗi
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
+	}
+	//hiển thị border cho button được user nhấn
+	private void setBorderForFocusButton(Object o) {
+		if(btnFocus!=null && btnFocus!=o) {
+			btnFocus.setFocusButton(null, 0);
+		}
+		if(btnFocus==null) {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+		else {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+	}
+	//xóa thông tin trên giao diện
+	private void xoaRongTTCC() {
+		cmbCaLam.setSelectedIndex(0);
+		spnModelGioDen.setValue(timeDefault);
+		spnTangCa.setValue(0);
+		txtMaNV.setText("");
+		txtGhiChu.setText("");
+		lblMessage.setText("");
+	}
+	//chấm công tất cả
+	private void chamTatCa() {
+		if(dsChuaCC.size()>0) {
+			Date ngayCham = dtbNgayCC.getDate();
+			int caLam = cmbCaLam.getSelectedIndex()==0?2:1;
+			int trangThai = cmbTrangThai.getSelectedIndex();
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+			String gioDen = format.format(spnModelGioDen.getValue());
+			float tangCa = Float.parseFloat(spnTangCa.getValue().toString());
+			String ghiChu = txtGhiChu.getText();
+			for(BangPhanCongNhanVien pcnv : dsChuaCC) {
+				BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, trangThai, gioDen, tangCa, ghiChu);
+				if(ccnv_Dao.themBangChamCongNhanVien(bccnv)) {
+					
+				}else {
+					setTextError("Chấm công thất bại!" + pcnv.getNhanVien().getMaNV());
+				}
+			}
+			uploadDataToTable();
+			lblMessage.setText("Hoàn tất chấm công tất cả nhân viên!");
+		}else {
+			lblMessage.setText("Đã chấm công tất cả nhân viên!");
+		}
+	}
+	//chấm công 1 nhân viên
+	private void chamCongNV() {
+		if(tblDSPC.getSelectedRow()!=-1) {
+			Date ngayCham = dtbNgayCC.getDate();
+			int caLam = cmbCaLam.getSelectedIndex()==0?2:1;
+			int trangThai = cmbTrangThai.getSelectedIndex();
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+			String gioDen = format.format(spnModelGioDen.getValue());
+			float tangCa = Float.parseFloat(spnTangCa.getValue().toString());
+			String ghiChu = txtGhiChu.getText();
+			BangPhanCongNhanVien pcnv = dsChuaCC.get(tblDSPC.getSelectedRow());
+			BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, trangThai, gioDen, tangCa, ghiChu);
+			if(ccnv_Dao.themBangChamCongNhanVien(bccnv)) {
+				lblMessage.setText("Chấm công thành công!");
+			}else {
+				setTextError("Chấm công thất bại!" + pcnv.getNhanVien().getMaNV());
+			}
+			uploadDataToTable();
+		}else if(dsChuaCC.size()<=0){
+			setTextError("Đã chấm công tất cả nhân viên!");
+		}
+		else {
+			setTextError("Bạn cần chọn nhân viên để chấm công!");
+		}
+	}
+	// sửa chấm công 1 nhân viên
+	private void suaChamCongNV() {
+		if(tblDSCC.getSelectedRow()!=-1) {
+			Date ngayCham = dtbNgayCC.getDate();
+			int caLam = cmbCaLam.getSelectedIndex()==0?2:1;
+			int trangThai = cmbTrangThai.getSelectedIndex();
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+			String gioDen = format.format(spnModelGioDen.getValue());
+			float tangCa = Float.parseFloat(spnTangCa.getValue().toString());
+			String ghiChu = txtGhiChu.getText();
+			BangPhanCongNhanVien pcnv = dsChamCong.get(tblDSCC.getSelectedRow()).getPhanCong();
+			BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, trangThai, gioDen, tangCa, ghiChu);
+			if(ccnv_Dao.suaBangChamCongNhanVien(bccnv)) {
+				lblMessage.setText("Sửa chấm công thành công!");
+			}else {
+				setTextError("Sửa chấm công thất bại!" + pcnv.getNhanVien().getMaNV());
+			}
+			uploadDataToTable();
+		}
+		else {
+			setTextError("Bạn cần chọn nhân viên cần sửa chấm công!");
+		}
+	}
+	//xóa chấm công
+	private void xoaChamCong() {
+		if(tblDSCC.getSelectedRow()!=-1) {
+			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa chấm công này?", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				BangChamCongNhanVien ccnv = dsChamCong.get(tblDSCC.getSelectedRow());
+				if(ccnv_Dao.xoaBangChamCongNhanVien(ccnv.getPhanCong().getMaPhanCong(), ccnv.getNgayChamCong())) {
+					lblMessage.setText("Xóa chấm công thành công!");
+				}else {
+					setTextError("Xóa chấm công thất bại!" + ccnv.getPhanCong().getNhanVien().getMaNV());
+				}
+				uploadDataToTable();
+			}
+		}
+		else {
+			setTextError("Bạn cần chọn nhân viên cần xóa chấm công!");
+		}
+	}
+	//cập nhật lại 2 table
+	private void uploadDataToTable() {
+		if(cmbPhongBan.getSelectedIndex()!=0) {
+			PhongBan pb = (PhongBan) cmbPhongBan.getSelectedItem();
+			dsChuaCC = ccnv_Dao.getDSChuaChamCong(pb.getMaPhongBan(), dtbNgayCC.getDate());
+			dsChamCong = ccnv_Dao.getDSDaChamCong(pb.getMaPhongBan(), dtbNgayCC.getDate());
+		}else {
+			dsChuaCC = ccnv_Dao.getDSChuaChamCong(null, dtbNgayCC.getDate());
+			dsChamCong = ccnv_Dao.getDSDaChamCong(null, dtbNgayCC.getDate());
+		}
+		themTatCaPCNhanVienVaoBangCCC(dsChuaCC);
+		themTatCaCCNhanVienVaoBangChamCong(dsChamCong);
+	}
+	//hiển thị dữ liệu chấm công lên bảng thông tin
+	private void hienThiChamCong(int index) {
+		BangChamCongNhanVien ccnv = dsChamCong.get(index);
+		cmbCaLam.setSelectedIndex(ccnv.getCaLam()-1);
+        DateFormat formatter = new SimpleDateFormat("HH:mm");
+        Date date = new Date(2000, 01, 01, 07, 00);
+        try {
+			date = formatter.parse(ccnv.getGioDen());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		spnModelGioDen.setValue(date);
+		spnTangCa.setValue(ccnv.getGioTangCa());
+		txtMaNV.setText(ccnv.getPhanCong().getNhanVien().getMaNV());
+		txtGhiChu.setText(ccnv.getGhiChu());
 	}
 }
