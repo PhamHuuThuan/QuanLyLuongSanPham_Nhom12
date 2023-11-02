@@ -133,7 +133,6 @@ public class PhanCongNhanVien_Dao {
 	            e2.printStackTrace();
 	        }
 	    }
-
 	    return phanCongList;
 	}
 
@@ -277,6 +276,41 @@ public class PhanCongNhanVien_Dao {
 
 	    return pcnv;
 	}
+	//get phân công theo phòng ban và chức vụ
+	public ArrayList<BangPhanCongNhanVien> getDSPhanCong(String maPhongBan, String chucVu) {
+	    ArrayList<BangPhanCongNhanVien> phanCongList = new ArrayList<>();
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
 
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String sql = "SELECT * FROM BangPhanCongNhanVien pcnv JOIN NhanVien nv ON pcnv.maNhanVien = nv.maNV WHERE (pcnv.maPhongBan = ? OR ? IS NULL) AND (pcnv.chucVu = ? OR ? IS NULL)";
+	        st = con.prepareStatement(sql);
+	        st.setString(1, maPhongBan);
+	        st.setString(2, maPhongBan);
+	        st.setString(3, chucVu);
+	        st.setString(4, chucVu);
+	        rs = st.executeQuery();
+
+	        while (rs.next()) {
+	            NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
+	                    rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
+	                    rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
+	            BangPhanCongNhanVien pcnv = new BangPhanCongNhanVien(rs.getString("maPhanCong"), nv, new PhongBan_Dao().timPhongBanTheoMa(rs.getString("maPhongBan")), rs.getString("chucVu"), new java.util.Date(rs.getDate("ngayCongTac").getTime()), rs.getString("ghiChu"));
+	            phanCongList.add(pcnv);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return phanCongList;
+	}
 
 }
