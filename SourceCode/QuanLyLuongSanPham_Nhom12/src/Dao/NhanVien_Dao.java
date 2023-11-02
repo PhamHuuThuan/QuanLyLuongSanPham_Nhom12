@@ -178,10 +178,10 @@ public class NhanVien_Dao {
 		        		+ "  AND nv.soCCCD LIKE ?"
 		        		+ "  AND nv.diaChi LIKE ?";
 		        if (ngaySinh != null) {
-		            query += " AND nv.ngaySinh = " + ngaySinh;
+		            query += " AND nv.ngaySinh = ?";
 		        }
 		        if(!maPhongBan.equals("PB00")) {
-		        	query += " AND pcnv.maPhongBan = " + maPhongBan;
+		        	query += " AND pcnv.maPhongBan = '" + maPhongBan +"'";
 		        }
 		        st = con.prepareStatement(query);
 		        st.setString(1, "%" + maNV + "%");
@@ -191,6 +191,8 @@ public class NhanVien_Dao {
 		        st.setString(5, "%" + sdt + "%");
 		        st.setString(6, "%" + cCCD + "%");
 		        st.setString(7, "%" + diaChi + "%");
+		        if(ngaySinh != null)
+		        	st.setDate(8, new Date(ngaySinh.getTime()));
 		        rs = st.executeQuery();
 		        while (rs.next()) {
 		        	 NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
@@ -211,4 +213,35 @@ public class NhanVien_Dao {
 		    }
 		    return list;
 		}
+		//tìm nhân viên chưa phân công
+		public ArrayList<NhanVien> timNhanVienChuaPhanCong() {
+		    ArrayList<NhanVien> list = new ArrayList<>();
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    ResultSet rs = null;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        String query = "SELECT distinct * FROM NhanVien nv LEFT JOIN BangPhanCongNhanVien pcnv ON nv.maNV = pcnv.maNhanVien "
+		                + "  WHERE pcnv.maPhongBan IS NULL OR pcnv.chucVu IS NULL";
+		        st = con.prepareStatement(query);
+		        rs = st.executeQuery();
+		        while (rs.next()) {
+		            NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
+		                    rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
+		                    rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
+		            list.add(nv);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (rs != null) rs.close();
+		            if (st != null) st.close();
+		        } catch (SQLException e2) {
+		            e2.printStackTrace();
+		        }
+		    }
+		    return list;
+		}
+
 }

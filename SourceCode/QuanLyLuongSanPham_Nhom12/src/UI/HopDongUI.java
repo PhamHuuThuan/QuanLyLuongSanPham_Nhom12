@@ -426,6 +426,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpBatDau.getEditor().setBackground(bgColor);
 		dtpBatDau.getEditor().setForeground(textColor);
+		dtpBatDau.getMonthView().setZoomable(true);
 		pnlB5.add(dtpBatDau);
 		
 		pnlB5.add(Box.createHorizontalStrut(20));
@@ -449,6 +450,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		btnDateKT.setBackground(bgColor);
 		btnDateKT.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		dtpKetThuc.getMonthView().setZoomable(true);
 		pnlB5.add(dtpKetThuc);
 		
 		pnThongTinHD.add(Box.createVerticalStrut(20));
