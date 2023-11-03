@@ -312,5 +312,36 @@ public class PhanCongNhanVien_Dao {
 	    }
 	    return phanCongList;
 	}
+//get phân công theo mã phân công
+	public BangPhanCongNhanVien getPhanCongTheoMa(String maPhanCong) {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+	    BangPhanCongNhanVien pcnv = null;
+
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        st = con.prepareStatement("SELECT * FROM BangPhanCongNhanVien pcnv JOIN NhanVien nv ON pcnv.maNhanVien = nv.maNV WHERE pcnv.maPhanCong = ?");
+	        st.setString(1, maPhanCong);
+	        rs = st.executeQuery();
+
+	        if (rs.next()) {
+	            NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
+	                    rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
+	                    rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
+	            pcnv = new BangPhanCongNhanVien(rs.getString("maPhanCong"), nv, new PhongBan_Dao().timPhongBanTheoMa(rs.getString("maPhongBan")), rs.getString("chucVu"), new java.util.Date(rs.getDate("ngayCongTac").getTime()), rs.getString("ghiChu"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return pcnv;
+	}
 
 }
