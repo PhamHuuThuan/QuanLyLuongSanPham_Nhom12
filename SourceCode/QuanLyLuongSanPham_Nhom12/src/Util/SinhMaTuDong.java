@@ -5,6 +5,7 @@ import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
 import Dao.PhanCongNhanVien_Dao;
 import Dao.SanPham_Dao;
+import Dao.TinhLuongNhanVien_Dao;
 
 public class SinhMaTuDong {
 	//sinh ma hop dong  +1
@@ -80,6 +81,22 @@ public class SinhMaTuDong {
 	        try {
 	            int ma = Integer.parseInt(maPre.substring(2)) + 1;
 	            maNew += String.format("%05d", ma);
+	        } catch (NumberFormatException e) {
+	            // Xử lý ngoại lệ ở đây
+	        }
+	    }
+	    return maNew;
+	}
+	//sinh maBangLuong
+	public String sinhMaBLNV() {
+	    String maNew = "LN";
+	    String maPre = new TinhLuongNhanVien_Dao().getMaBangLuongLonNhat();
+	    if (maPre == null || maPre.length() < 7) {
+	        maNew += "0000001";
+	    } else {
+	        try {
+	            int ma = Integer.parseInt(maPre.substring(2)) + 1;
+	            maNew += String.format("%07d", ma);
 	        } catch (NumberFormatException e) {
 	            // Xử lý ngoại lệ ở đây
 	        }

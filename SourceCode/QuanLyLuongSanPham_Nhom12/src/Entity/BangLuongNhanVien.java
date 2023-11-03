@@ -2,6 +2,8 @@ package Entity;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class BangLuongNhanVien {
 	private String maBangLuong;
@@ -16,6 +18,9 @@ public class BangLuongNhanVien {
 	private double thucLanh;
 	private YearMonth thangNam;
 	private String ghiChu;
+	private final float luongCoBanTTS = 4000000; //lương cơ bản là 4tr vnđ
+	private final float luongCoBanNV = 7000000; //lương cơ bản là 7tr vnđ
+	private final float luongCoBanQL = 10000000; //lương cơ bản là 10tr vnđ
 	
 	//Khởi tạo đối tượng bangluongnhanvien đầy đủ tham số
 	public BangLuongNhanVien(String maBangLuong, NhanVien nhanVien, ArrayList<BangChamCongNhanVien> dsChamCong,
@@ -39,6 +44,41 @@ public class BangLuongNhanVien {
 			// TODO: handle exception
 		}
 	}
+	//Khởi tạo đối tượng bangluongnhanvien
+	public BangLuongNhanVien(String maBangLuong, NhanVien nhanVien,
+			float ngayLam, float ngayNghi, float ngayNghiPhep, 
+			double luongThang, double luongTangCa, double phuCap,
+			double thucLanh, YearMonth thangNam, String ghiChu) {
+		super();
+		try {
+			setMaBangLuong(maBangLuong);
+			setNhanVien(nhanVien);
+			setNgayLam(ngayLam);
+			setNgayNghi(ngayNghi);
+			setNgayNghiPhep(ngayNghiPhep);
+			setLuongThang(luongThang);
+			setLuongTangCa(luongTangCa);
+			setPhuCap(phuCap);
+			setThucLanh(thucLanh);
+			setThangNam(thangNam);
+			setGhiChu(ghiChu);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	//Khởi tạo đối tượng bangluongnhanvien
+	public BangLuongNhanVien(String maBangLuong, NhanVien nhanVien, ArrayList<BangChamCongNhanVien> dsChamCong, YearMonth thangNam, String ghiChu) {
+		super();
+		try {
+			setMaBangLuong(maBangLuong);
+			setNhanVien(nhanVien);
+			setDsChamCong(dsChamCong);
+			setThangNam(thangNam);
+			setGhiChu(ghiChu);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	//Khởi tạo đối tượng bangluongnhanvien mặc định không có tham số
 	public BangLuongNhanVien() {
 		super();
@@ -54,7 +94,7 @@ public class BangLuongNhanVien {
 		if(!maBangLuong.matches("\\S+")){
 		    throw new Exception("Mã bảng lương không được chứa khoảng trắng!");
 		}
-		else if(!maBangLuong.matches("^PB\\d{2}$")){
+		else if(!maBangLuong.matches("^LN\\d{7}$")){
 		    throw new Exception("Mã bảng lương có dạng LN1234567");
 		}
 		else {
@@ -150,5 +190,86 @@ public class BangLuongNhanVien {
 				+ ", ngayLam=" + ngayLam + ", ngayNghi=" + ngayNghi + ", ngayNghiPhep=" + ngayNghiPhep + ", luongThang="
 				+ luongThang + ", luongTangCa=" + luongTangCa + ", phuCap=" + phuCap + ", thucLanh=" + thucLanh
 				+ ", thangNam=" + thangNam + ", ghiChu=" + ghiChu + "]";
+	}
+	//tính lương cho nhân viên
+	public void tinhLuongNhanVien(BangPhanCongNhanVien pcnv) {
+		int diTre = 0;
+		int tangCa = 0;
+		//chạy vòng lặp lấy dữ liệu chấm công 1 tháng
+		for(BangChamCongNhanVien ccnv : this.dsChamCong) {
+			switch (ccnv.getTrangThai()) {
+			case 0: {
+				ngayLam+=ccnv.getCaLam();
+				break;
+			}
+			case 1: {
+				ngayLam+=ccnv.getCaLam();
+				diTre += 1;
+				break;
+			}
+			case 2: {
+				ngayNghi += 1;
+				break;
+			}
+			case 3: {
+				ngayNghiPhep += 1;
+				break;
+			}
+			}
+			tangCa += ccnv.getGioTangCa();
+		}
+		ngayLam/=2; //nửa ngày tính là 1 và cả ngày tính 2
+		
+		//tính lương
+		tinhThucLanh(pcnv, tangCa, diTre);
+		
+	}
+	//tính lương tháng
+	private double tinhLuongThang(int diTre, float luongCoBan) {
+		luongThang = (ngayLam + ngayNghiPhep - ngayNghi)/30*luongCoBan - diTre*50000;
+		return luongThang;
+	}
+	//tính lương tăng ca
+	private double tinhLuongTangCa(float gioTangCa, float luongCoBan) {
+		luongTangCa = gioTangCa * luongCoBan/30/24 * 2; //lương tăng ca bằng x2 lương bình thường
+		return luongTangCa;
+	}
+	//tính phụ cấp
+	public double tinhPhuCap(Date ngayVL, float luongCoBan) {
+	    // Lấy năm hiện tại
+	    int yearNow = Calendar.getInstance().get(Calendar.YEAR);
+
+	    // Lấy năm bắt đầu làm việc
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(ngayVL);
+	    int yearVL = cal.get(Calendar.YEAR);
+
+	    // Tính số năm làm việc
+	    int soNamLamViec = yearNow - yearVL;
+
+	    // Tính phụ cấp: mỗi năm tăng 10%
+	    phuCap = soNamLamViec * 0.1 * luongCoBan;
+
+	    return phuCap;
+	}
+	//tính thực lãnh
+	public double tinhThucLanh(BangPhanCongNhanVien pcnv, float gioTangCa, int diTre) {
+		float luongCB = 0;
+		switch (pcnv.getChucVu()) {
+		case "Quản lý": {
+			luongCB = luongCoBanQL;
+			break;
+		}
+		case "Nhân viên": {
+			luongCB = luongCoBanNV;
+			break;
+		}
+		case "Thực tập sinh": {
+			luongCB = luongCoBanTTS;
+			break;
+		}
+		}
+		thucLanh = tinhLuongThang(diTre, luongCB) + tinhLuongTangCa(gioTangCa, luongCB) + tinhPhuCap(pcnv.getNgayCongTac(), luongCB);
+		return thucLanh;
 	}
 }

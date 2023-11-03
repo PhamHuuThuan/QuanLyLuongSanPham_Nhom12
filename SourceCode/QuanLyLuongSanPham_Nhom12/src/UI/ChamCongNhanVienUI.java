@@ -272,7 +272,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblTrangThai.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
 		cmbTrangThai = new JComboBox<>();
-		cmbTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Đúng giờ", "Trễ", "Nghỉ", "Nghỉ phép"}));
+		cmbTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Đúng giờ", "Trễ", "Nghỉ 0 phép", "Nghỉ phép"}));
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		cmbTrangThai.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
