@@ -16,6 +16,7 @@ import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.ChamCongNhanVien_Dao;
+import Dao.PhanCongNhanVien_Dao;
 import Dao.PhongBan_Dao;
 import Dao.TinhLuongNhanVien_Dao;
 import Entity.BangChamCongNhanVien;
@@ -23,6 +24,9 @@ import Entity.BangLuongNhanVien;
 import Entity.BangPhanCongNhanVien;
 import Entity.PhongBan;
 import Util.SinhMaTuDong;
+import Util.XuatChamCongForm;
+import Util.XuatPDF;
+import net.sf.jasperreports.engine.JRException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -77,7 +81,9 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 	private TinhLuongNhanVien_Dao tinhLuong_Dao = new TinhLuongNhanVien_Dao();
 	private PhongBan_Dao pb_Dao = new PhongBan_Dao();
 	private ChamCongNhanVien_Dao ccnv_Dao = new ChamCongNhanVien_Dao();
+	private PhanCongNhanVien_Dao pcnv_Dao = new PhanCongNhanVien_Dao();
 	private SinhMaTuDong maTuDong = new SinhMaTuDong();
+	private XuatPDF xuat = new XuatPDF();
 	/**
 	 * Create the panel.
 	 */
@@ -500,7 +506,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 			tinhLuongALLNhanVien();
 		}
 		if(o == btnChiTiet) {
-			
+			xuatChiTietLuong();
 		}
 	}
 	@Override
@@ -667,5 +673,22 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 	private void setTextError(String message) {
 		main.music.playSE(3);
 		lblMessage.setText(message);
+	}
+	//xuất chi tiết lương của một nhân viên
+	private void xuatChiTietLuong() {
+		int index = tblLuongNV.getSelectedRow();
+		if(index!=-1) {			
+			BangLuongNhanVien blnv = dsLuong.get(index);
+			ArrayList<BangChamCongNhanVien> dscc = new ArrayList<>();
+			dscc = ccnv_Dao.getDSChamCongNhanVien(blnv.getNhanVien().getMaNV(), DateTimeFormatter.ofPattern("MM/yyyy").format(blnv.getThangNam()));
+			try {
+				xuat.xuatChiTietLuong(dscc, blnv, pcnv_Dao.timPCNhanVien(blnv.getNhanVien().getMaNV()));
+			} catch (JRException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			setTextError("Bạn cần chọn nhân viên muốn xem chi tiết lương!!!");
+		}
 	}
 }

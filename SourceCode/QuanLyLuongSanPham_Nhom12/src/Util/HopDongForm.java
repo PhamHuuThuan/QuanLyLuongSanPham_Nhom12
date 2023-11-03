@@ -1,6 +1,6 @@
 package Util;
 
-public class XuatHopDongForm {
+public class HopDongForm {
 	private String maHD;
 	private String tenHD;
 	private String tenKH;
@@ -12,7 +12,7 @@ public class XuatHopDongForm {
 	private String tienCoc;
 	private String time;
 
-	public XuatHopDongForm(String time, String maHD, String tenHD, String tenKH, String tenNguoiDD, String thoaThuan, String ngayBD,
+	public HopDongForm(String time, String maHD, String tenHD, String tenKH, String tenNguoiDD, String thoaThuan, String ngayBD,
 			String ngayKT, String giaTri, String tienCoc) {
 		super();
 		this.time = time;
