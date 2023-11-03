@@ -243,5 +243,35 @@ public class NhanVien_Dao {
 		    }
 		    return list;
 		}
+//tìm nhân viên theo mã
+		public NhanVien timNhanVienTheoMaNV(String maNV) {
+		    NhanVien nv = null;
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    ResultSet rs = null;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        String query = "SELECT * FROM NhanVien WHERE maNV = ?";
 
+		        st = con.prepareStatement(query);
+		        st.setString(1, maNV);
+		        rs = st.executeQuery();
+
+		        if (rs.next()) {
+		            nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
+		                    rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
+		                    rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (rs != null) rs.close();
+		            if (st != null) st.close();
+		        } catch (SQLException e2) {
+		            e2.printStackTrace();
+		        }
+		    }
+		    return nv;
+		}
 }

@@ -32,6 +32,11 @@ public class BangPhanCongNhanVien {
 		this.ngayCongTac = ngayCongTac;
 	}
 
+	public BangPhanCongNhanVien(String maPhanCong) {
+		super();
+		this.maPhanCong = maPhanCong;
+	}
+
 	//Khởi tạo đối tượng bangphancongnhanvien mặc định không có tham số
 	public BangPhanCongNhanVien() {
 		super();
