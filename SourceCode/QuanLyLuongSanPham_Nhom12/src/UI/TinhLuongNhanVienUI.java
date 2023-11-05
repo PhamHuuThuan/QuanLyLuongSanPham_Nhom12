@@ -8,6 +8,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -231,13 +232,22 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		tbhNV.setForeground(Color.WHITE);
 		tbhNV.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblNV.setTableHeader(tbhNV);
+		tblNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
 		tblNV.setRowHeight(20);
 		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(2).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(250);
+		tblNV.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(100);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblNV.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrNV = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -431,18 +441,31 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		tbhNVPC.setForeground(Color.WHITE);
 		tbhNVPC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblLuongNV.setTableHeader(tbhNVPC);
+		tblLuongNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
+		//kích thước column
 		tblLuongNV.setRowHeight(20);
-		tblLuongNV.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblLuongNV.getColumnModel().getColumn(1).setPreferredWidth(50);
-		tblLuongNV.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tblLuongNV.getColumnModel().getColumn(3).setPreferredWidth(50);
-		tblLuongNV.getColumnModel().getColumn(4).setPreferredWidth(50);
-		tblLuongNV.getColumnModel().getColumn(5).setPreferredWidth(50);
+		tblLuongNV.getColumnModel().getColumn(0).setPreferredWidth(25);
+		tblLuongNV.getColumnModel().getColumn(1).setPreferredWidth(40);
+		tblLuongNV.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tblLuongNV.getColumnModel().getColumn(3).setPreferredWidth(40);
+		tblLuongNV.getColumnModel().getColumn(4).setPreferredWidth(40);
+		tblLuongNV.getColumnModel().getColumn(5).setPreferredWidth(40);
 		tblLuongNV.getColumnModel().getColumn(6).setPreferredWidth(100);
 		tblLuongNV.getColumnModel().getColumn(7).setPreferredWidth(100);
 		tblLuongNV.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblLuongNV.getColumnModel().getColumn(9).setPreferredWidth(100);
+		
+		//trái phải dữ liệu
+		tblLuongNV.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		
+		tblLuongNV.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+		tblLuongNV.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		tblLuongNV.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+		tblLuongNV.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+		tblLuongNV.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
+		tblLuongNV.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
+		tblLuongNV.getColumnModel().getColumn(9).setCellRenderer(rightRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblLuongNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -575,10 +598,10 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 	    row[3] = blnv.getNgayLam() + " ngày"; // Số ngày làm
 	    row[4] = blnv.getNgayNghi()+ " ngày"; // Số ngày nghỉ k phép
 	    row[5] = blnv.getNgayNghiPhep()+ " ngày"; // Số ngày nghỉ có phép
-	    row[6] = new DecimalFormat("#,###").format(blnv.getLuongThang()) + "VNĐ"; // Lương tháng
-	    row[7] = new DecimalFormat("#,###").format(blnv.getLuongTangCa()) + "VNĐ"; // tăng ca
-	    row[8] = new DecimalFormat("#,###").format(blnv.getPhuCap()) + "VNĐ";  // Phụ cấp
-	    row[9] = new DecimalFormat("#,###").format(blnv.getThucLanh()) + "VNĐ";  // Thực lãnh
+	    row[6] = new DecimalFormat("#,###").format(blnv.getLuongThang()) + " VNĐ"; // Lương tháng
+	    row[7] = new DecimalFormat("#,###").format(blnv.getLuongTangCa()) + " VNĐ"; // tăng ca
+	    row[8] = new DecimalFormat("#,###").format(blnv.getPhuCap()) + " VNĐ";  // Phụ cấp
+	    row[9] = new DecimalFormat("#,###").format(blnv.getThucLanh()) + " VNĐ";  // Thực lãnh
 	    
 	    dtblModelLuongNV.addRow(row);
 	}

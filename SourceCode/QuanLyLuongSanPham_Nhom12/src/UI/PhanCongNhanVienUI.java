@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -138,11 +139,21 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		
 		tblNV.setRowHeight(20);
 		tblNV.getColumnModel().getColumn(0).setPreferredWidth(20);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(3).setPreferredWidth(75);
 		tblNV.getColumnModel().getColumn(4).setPreferredWidth(100);
 		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblNV.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblNV.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		tblNV.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng nhân viên chưa phân công
 		JScrollPane scrNV = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -411,16 +422,24 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tbhNVPC.setForeground(Color.WHITE);
 		tbhNVPC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblNVPC.setTableHeader(tbhNVPC);
+		tblNVPC.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
+		//size của column
 		tblNVPC.setRowHeight(20);
 		tblNVPC.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblNVPC.getColumnModel().getColumn(1).setPreferredWidth(75);
-		tblNVPC.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(3).setPreferredWidth(75);
-		tblNVPC.getColumnModel().getColumn(4).setPreferredWidth(100);
-		tblNVPC.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblNVPC.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblNVPC.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblNVPC.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tblNVPC.getColumnModel().getColumn(3).setPreferredWidth(50);
+		tblNVPC.getColumnModel().getColumn(4).setPreferredWidth(75);
+		tblNVPC.getColumnModel().getColumn(5).setPreferredWidth(250);
+		tblNVPC.getColumnModel().getColumn(6).setPreferredWidth(100);
 		tblNVPC.getColumnModel().getColumn(7).setPreferredWidth(100);
+		
+		//chỉnh trái phải các cột
+		tblNVPC.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblNVPC.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		
+		tblNVPC.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblNVPC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

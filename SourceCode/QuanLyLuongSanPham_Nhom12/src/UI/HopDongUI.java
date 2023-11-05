@@ -7,6 +7,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -301,6 +302,16 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		tblSP.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblSP.getColumnModel().getColumn(3).setPreferredWidth(100);
 		tblSP.setFillsViewportHeight(true);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		tblSP.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+		tblSP.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblSP.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
 		JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -664,7 +675,9 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		tbhHD.setForeground(Color.WHITE);
 		tbhHD.setFont(fontText);
 		tblHD.setTableHeader(tbhHD);
+		tblHD.setFont(fontText.deriveFont(14F));
 		
+		//chỉnh size cho các cột
 		tblHD.setRowHeight(20);
 		tblHD.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblHD.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -676,6 +689,16 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		tblHD.getColumnModel().getColumn(7).setPreferredWidth(200);
 		tblHD.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblHD.getColumnModel().getColumn(9).setPreferredWidth(150);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		tblHD.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+		tblHD.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+		tblHD.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
+		tblHD.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
+		
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblHD.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
 		JScrollPane scrHD = new JScrollPane(tblHD,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -758,7 +781,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			setEditableForTextField(true);
 			xoaRong();	
 			txtMaHD.setText(new SinhMaTuDong().sinhMaHD());
-			txtDaiDien.setText(main.nv.getHoTen());
+			txtDaiDien.setText(main.nv.getNhanVien().getHoTen());
 			xoaRongSP();
 			isThem = true;
 		}
@@ -865,6 +888,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtTenHD.setEditable(true);
+			txtTenHD.requestFocus(true);
 			txtTenKH.setEditable(true);
 			dtpBatDau.setEditable(true);
 			dtpKetThuc.setEditable(true);
@@ -991,7 +1015,6 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			HopDong hd = dsHD.get(tblHD.getSelectedRow());
 			try {
 				xf.xuatHD(hd, dsSP);
-				main.music.playSE(1);
 			} catch (JRException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1005,7 +1028,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		String maHD = txtMaHD.getText();
 		String tenHD = txtTenHD.getText();
 		String tenKH = txtTenKH.getText();
-		NhanVien nguoiDD = main.nv;
+		NhanVien nguoiDD = main.nv.getNhanVien();
 		Date ngayBD = dtpBatDau.getDate();
 		Date ngayKT = dtpKetThuc.getDate();
 		Double giaTri = Double.parseDouble(txtGiaTri.getText().replace(",", ""));
@@ -1066,7 +1089,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	    row[1] = hd.getMaHD();
 	    row[2] = hd.getTenHD();
 	    row[3] = hd.getTenKhachHang();
-	    row[4] = hd.getNguoiDaiDien().getMaNV();
+	    row[4] = hd.getNguoiDaiDien().getHoTen();
 	    row[5] = new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayBatDau());
 	    row[6] = new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayKetThuc());
 	    row[7] = new DecimalFormat("#,###").format(hd.getGiaTriHD());
@@ -1132,7 +1155,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private boolean validDataHD() {
 		String tenHD = txtTenHD.getText();
 		String tenKH = txtTenKH.getText();
-		NhanVien nguoiDD = main.nv;
+		NhanVien nguoiDD = main.nv.getNhanVien();
 		Date ngayBD = dtpBatDau.getDate();
 		Date ngayKT = dtpKetThuc.getDate();
 		String giaTri = txtGiaTri.getText().replace(",", "");

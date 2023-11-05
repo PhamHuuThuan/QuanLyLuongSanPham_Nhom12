@@ -194,6 +194,7 @@ public class XuatExcel {
 
 	    // Create file excel
 	    createOutputFile(workbook, excelFilePath);
+		new SoundPlay().playSE(1);
 	    int dialogResult = JOptionPane.showConfirmDialog (null, "Bạn có muốn mở tệp này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 	    if(dialogResult == JOptionPane.YES_OPTION){
 	      // Mở tệp
@@ -233,6 +234,7 @@ public class XuatExcel {
 
 	    // Create file excel
 	    createOutputFile(workbook, excelFilePath);
+		new SoundPlay().playSE(1);
 	    int dialogResult = JOptionPane.showConfirmDialog (null, "Bạn có muốn mở tệp này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 	    if(dialogResult == JOptionPane.YES_OPTION){
 	      // Mở tệp
@@ -273,6 +275,7 @@ public class XuatExcel {
 
 	    // Create file excel
 	    createOutputFile(workbook, excelFilePath);
+		new SoundPlay().playSE(1);
 	    int dialogResult = JOptionPane.showConfirmDialog (null, "Bạn có muốn mở tệp này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 	    if(dialogResult == JOptionPane.YES_OPTION){
 	      // Mở tệp

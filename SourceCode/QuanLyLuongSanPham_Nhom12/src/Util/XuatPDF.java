@@ -75,6 +75,7 @@ public class XuatPDF {
 		JasperPrint print = JasperFillManager.fillReport(report, ttHD, new JRBeanCollectionDataSource(list));
 		
 		JasperViewer.viewReport(print, false);
+		new SoundPlay().playSE(1);
 	}
 	public void xuatChiTietLuong(ArrayList<BangChamCongNhanVien> dscc, BangLuongNhanVien blnv, BangPhanCongNhanVien pcnv) throws JRException {
 		InputStream arq = getClass().getResourceAsStream("/export_template/chitietluong.jrxml");
@@ -133,6 +134,7 @@ public class XuatPDF {
 		JasperPrint print = JasperFillManager.fillReport(report, ttLuong, dataSource);
 		
 		JasperViewer.viewReport(print, false);
+		new SoundPlay().playSE(1);
 	}
 	public void xuatThongTinNhanVien(NhanVien nv ,BangPhanCongNhanVien pcnv) throws JRException {
 		InputStream arq = getClass().getResourceAsStream("/export_template/ThongTinNV.jrxml");
@@ -168,5 +170,6 @@ public class XuatPDF {
 		JasperPrint print = JasperFillManager.fillReport(report, ttnv, new JRBeanCollectionDataSource(content));
 		
 		JasperViewer.viewReport(print, false);
+		new SoundPlay().playSE(1);
 	}
 }

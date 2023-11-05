@@ -6,6 +6,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -213,13 +214,22 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tbhNV.setForeground(Color.WHITE);
 		tbhNV.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblDSPC.setTableHeader(tbhNV);
+		tblDSPC.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
 		tblDSPC.setRowHeight(20);
 		tblDSPC.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblDSPC.getColumnModel().getColumn(1).setPreferredWidth(75);
-		tblDSPC.getColumnModel().getColumn(2).setPreferredWidth(150);
-		tblDSPC.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tblDSPC.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblDSPC.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblDSPC.getColumnModel().getColumn(2).setPreferredWidth(275);
+		tblDSPC.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblDSPC.getColumnModel().getColumn(4).setPreferredWidth(100);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblDSPC.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrNV = new JScrollPane(tblDSPC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -465,7 +475,9 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tbhNVPC.setForeground(Color.WHITE);
 		tbhNVPC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblDSCC.setTableHeader(tbhNVPC);
+		tblDSCC.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
+		//chỉnh kích thước coloumn
 		tblDSCC.setRowHeight(20);
 		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(50);
@@ -477,6 +489,14 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(9).setPreferredWidth(100);
+		
+		//trái phải của dữ liệu
+		tblDSCC.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblDSCC.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		
+		tblDSCC.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		tblDSCC.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
+		tblDSCC.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
