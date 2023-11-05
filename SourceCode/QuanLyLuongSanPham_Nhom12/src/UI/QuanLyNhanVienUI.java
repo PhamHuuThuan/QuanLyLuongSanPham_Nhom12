@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -396,6 +397,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		String cols[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "Ngày sinh", "SDT", "Email", "CCCD", "Địa chỉ"};
 		dtblModel = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModel);
+		tblNV.setFont(fontText.deriveFont(14F));
 		
 		tbhNV = new JTableHeader(tblNV.getColumnModel());
 		tbhNV.setReorderingAllowed(false);
@@ -404,16 +406,30 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		tbhNV.setFont(fontText);
 		tblNV.setTableHeader(tbhNV);
 		
+		//set kích thước cho cột
 		tblNV.setRowHeight(20);
 		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(2).setPreferredWidth(200);
-		tblNV.getColumnModel().getColumn(3).setPreferredWidth(175);
-		tblNV.getColumnModel().getColumn(4).setPreferredWidth(175);
-		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(250);
+		tblNV.getColumnModel().getColumn(3).setPreferredWidth(75);
+		tblNV.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(5).setPreferredWidth(100);
+		tblNV.getColumnModel().getColumn(6).setPreferredWidth(200);
 		tblNV.getColumnModel().getColumn(7).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(8).setPreferredWidth(200);
+		tblNV.getColumnModel().getColumn(8).setPreferredWidth(300);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		tblNV.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		tblNV.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblNV.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblNV.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		tblNV.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		tblNV.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng nhân viên
 		JScrollPane scrHD = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -561,9 +577,9 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	}
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
-			txtMaNV.setEditable(true);
 			txtMatKhau.setEditable(true);
 			txtTenNV.setEditable(true);
+			txtTenNV.requestFocus();
 			dtpNgaySinh.setEditable(true);
 			txtSDT.setEditable(true);
 			txtCCCD.setEditable(true);
@@ -703,10 +719,14 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		}
 		if(!matKhau.matches("\\S+") || !matKhau.matches(".*[0-9].*") || !matKhau.matches(".*[a-zA-Z].*") || !matKhau.matches(".*[@#$%^&+=].*")) {
 			setTextError("Mật khẩu ít nhất 6 kí tự, bao gồm: chữ cái, số, kí tự đặc biệt!");
+			txtMatKhau.selectAll();
+			txtMatKhau.requestFocus();
 			return false;
 		}
 		if(tenNV==null && tenNV.trim().length()<=0) {
 			setTextError("Tên nhân viên không được để trống!");
+			txtTenNV.selectAll();
+			txtTenNV.requestFocus();
 			return false;
 		}
 		Calendar cal = Calendar.getInstance();
@@ -718,14 +738,20 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		}
 		if(!sdt.matches("^(\\+84|84|0)\\d{9}$")) {
 			setTextError("Số điện thoại không được rỗng và bắt đầu 0, 84!");
+			txtSDT.selectAll();
+			txtSDT.requestFocus();
 			return false;
 		}
 		if(!email.matches("^([a-zA-Z0-9]){5,}@([a-zA-Z0-9])+\\.com$")) {
 			setTextError("Email phải có dạng abcde@domain.com!");
+			txtEmail.selectAll();
+			txtEmail.requestFocus();
 			return false;
 		}
 		if(!cccd.matches("^\\d{12}$")) {
 			setTextError("Căn cước công dân chỉ gồm 12 chữ số!");
+			txtCCCD.selectAll();
+			txtCCCD.requestFocus();
 			return false;
 		}
 		return true;
