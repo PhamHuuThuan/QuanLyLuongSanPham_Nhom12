@@ -493,9 +493,13 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			
 		}
 		if(o == btnSua) {
-			displayButtonSaveAndCancel(true);
-			setEditableForTextField(true);
-			isThem = false;
+			if(tblNV.getSelectedRow()!=-1) {
+				displayButtonSaveAndCancel(true);
+				setEditableForTextField(true);
+				isThem = false;
+			}else {
+				setTextError("Bạn chưa chọn nhân viên cần chỉnh sửa!!!");
+			}
 		}
 		if(o == btnXoa) {
 			xoaNhanVien();
