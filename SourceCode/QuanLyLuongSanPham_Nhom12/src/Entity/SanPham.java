@@ -28,7 +28,7 @@ public class SanPham {
 	public HopDong getMaHopDong() {
 		return maHopDong;
 	}
-	public void setMaHopDong() throws Exception{
+	public void setMaHopDong(HopDong maHopDong) throws Exception{
 		this.maHopDong = maHopDong;
 	}
 	public String getTenSP() {
@@ -65,18 +65,18 @@ public class SanPham {
 	public void setDonGia(double donGia) {
 		this.donGia = donGia;
 	}
-	public SanPham(String maSP, HopDong maHD, String tenSP, String donViTinh, int soLuong, String yeuCau,
+	public SanPham(String maSP, HopDong maHopDong, String tenSP, String donViTinh, int soLuong, String yeuCau,
 			double donGia) {
 		super();
 		this.maSP = maSP;
-		this.maHopDong = maHD;
+		this.maHopDong = maHopDong;
 		this.tenSP = tenSP;
 		this.donViTinh = donViTinh;
 		this.soLuong = soLuong;
 		this.yeuCau = yeuCau;
 		this.donGia = donGia;
 	}
-	public SanPham(String string) {
+	public SanPham() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -84,10 +84,6 @@ public class SanPham {
 	public String toString() {
 		return "SanPham [maSP=" + maSP + ", tenSP=" + tenSP + ", donViTinh=" + donViTinh + ", soLuong=" + soLuong
 				+ ", yeuCau=" + yeuCau + ", donGia=" + donGia + "]";
-	}
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 	

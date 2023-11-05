@@ -1,16 +1,16 @@
 package Entity;
 
 public class PhongBan {
-	private String maPB;
+	private String maPhongBan;
 	private String tenPhongBan;
 	private int soNhanVien;
 	private String moTa;
 	
 	//Khởi tạo đối tượng phòng ban đầy đủ tham số
-	public PhongBan(String maPB, String tenPhongBan, int soNhanVien, String moTa) {
+	public PhongBan(String maPhongBan, String tenPhongBan, int soNhanVien, String moTa) {
 		super();
 		try {
-			setMaPhongBan(maPB);
+			setMaPhongBan(maPhongBan);
 			setTenPhongBan(tenPhongBan);
 			setSoNhanVien(soNhanVien);
 			setMoTa(moTa);
@@ -23,8 +23,13 @@ public class PhongBan {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public String getMaPB() {
-		return maPB;
+	
+	public PhongBan(String maPhongBan) {
+		super();
+		this.maPhongBan = maPhongBan;
+	}
+	public String getMaPhongBan() {
+		return maPhongBan;
 	}
 	public void setMaPhongBan(String maPhongBan) throws Exception {
 		if(maPhongBan==null || maPhongBan.trim().length()<=0) {
@@ -37,7 +42,7 @@ public class PhongBan {
 		    throw new Exception("Mã phòng ban có dạng PB12");
 		}
 		else {
-			this.maPB = maPhongBan;
+			this.maPhongBan = maPhongBan;
 		}
 	}
 	public String getTenPhongBan() {
@@ -51,7 +56,7 @@ public class PhongBan {
 			throw new Exception("Tên phòng ban không được rỗng!");
 		}
 	}
-	public int getsoLuongNV() {
+	public int getSoNhanVien() {
 		return soNhanVien;
 	}
 	public void setSoNhanVien(int soNhanVien) throws Exception {
@@ -69,7 +74,7 @@ public class PhongBan {
 	}
 	@Override
 	public String toString() {
-		return "PhongBan [maPhongBan=" + maPB + ", tenPhongBan=" + tenPhongBan + ", soNhanVien=" + soNhanVien
-				+ ", moTa=" + moTa + "]";
+		return tenPhongBan;
 	}
+	
 }
