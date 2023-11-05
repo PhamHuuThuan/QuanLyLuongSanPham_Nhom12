@@ -49,8 +49,7 @@ import Entity.HopDong;
 import Entity.NhanVien;
 import Entity.SanPham;
 import Util.SinhMaTuDong;
-import Util.XuatForm;
-import Util.XuatHopDongForm;
+import Util.XuatPDF;
 import net.sf.jasperreports.engine.JRException;
 
 import java.awt.Component;
@@ -76,7 +75,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private JLabel lblGiaTriText, lblTienCocText, lblMessage;
 	private JSpinner spnSoLuong;
 	private SpinnerNumberModel modelSPN;
-	private XuatForm xf;
+	private XuatPDF xf;
 	private Font fontText;
 	private HopDong_Dao hd_Dao = new HopDong_Dao();
 	private SanPham_Dao sp_Dao = new SanPham_Dao();
@@ -88,7 +87,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	 */
 	public HopDongUI(MainUI main) {
 		this.main = main;
-		xf = new XuatForm();
+		xf = new XuatPDF();
 		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 14F);
 		
 		//set gia tri cho jpanel HopDong
@@ -792,12 +791,12 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			}
 		}
 		if(o == btnHuy) {
-			displayButtonSaveAndCancel(false);
-			setEditableForTextField(false);
 			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thoát? Toàn bộ thông tin thay đổi sẽ mất", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				if(isThem == true)
 					xoaHopDongTamThoi();
 				xoaRong();
+				displayButtonSaveAndCancel(false);
+				setEditableForTextField(false);
 			}
 		}
 		if(o == btnThemSP) {
@@ -990,21 +989,9 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
     }
 	private void xuatHopDong() {
 		if(tblHD.getSelectedRow()!=-1) {
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			String giaTriHD = txtGiaTri.getText() + lblGiaTriText.getText();
-			String tienCocHD = txtTienCoc.getText() + lblTienCocText.getText();
-			XuatHopDongForm hd = new XuatHopDongForm("Gò Vấp, ngày "+ LocalDate.now().getDayOfMonth() + " tháng " + LocalDate.now().getMonthValue() + " năm " + LocalDate.now().getYear(), 
-					txtMaHD.getText(), 
-					txtTenHD.getText(), 
-					txtTenKH.getText(), 
-					txtDaiDien.getText(), 
-					txtThoaThuan.getText(),
-					formatter.format(dtpBatDau.getDate()), 
-					formatter.format(dtpKetThuc.getDate()), 
-					giaTriHD, 
-					tienCocHD);
+			HopDong hd = dsHD.get(tblHD.getSelectedRow());
 			try {
-				xf.xuatHD(hd);
+				xf.xuatHD(hd, dsSP);
 				main.music.playSE(1);
 			} catch (JRException e) {
 				// TODO Auto-generated catch block

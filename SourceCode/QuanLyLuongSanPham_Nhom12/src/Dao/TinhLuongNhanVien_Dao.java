@@ -169,5 +169,4 @@ public class TinhLuongNhanVien_Dao {
 
 	    return maBangLuongLonNhat;
 	}
-
 }

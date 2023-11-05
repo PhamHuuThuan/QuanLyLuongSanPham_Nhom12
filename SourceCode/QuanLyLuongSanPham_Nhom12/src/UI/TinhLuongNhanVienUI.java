@@ -16,6 +16,7 @@ import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.ChamCongNhanVien_Dao;
+import Dao.PhanCongNhanVien_Dao;
 import Dao.PhongBan_Dao;
 import Dao.TinhLuongNhanVien_Dao;
 import Entity.BangChamCongNhanVien;
@@ -23,6 +24,10 @@ import Entity.BangLuongNhanVien;
 import Entity.BangPhanCongNhanVien;
 import Entity.PhongBan;
 import Util.SinhMaTuDong;
+import Util.XuatChamCongForm;
+import Util.XuatExcel;
+import Util.XuatPDF;
+import net.sf.jasperreports.engine.JRException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,7 +38,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -48,6 +56,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Dimension;
@@ -77,7 +87,10 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 	private TinhLuongNhanVien_Dao tinhLuong_Dao = new TinhLuongNhanVien_Dao();
 	private PhongBan_Dao pb_Dao = new PhongBan_Dao();
 	private ChamCongNhanVien_Dao ccnv_Dao = new ChamCongNhanVien_Dao();
+	private PhanCongNhanVien_Dao pcnv_Dao = new PhanCongNhanVien_Dao();
 	private SinhMaTuDong maTuDong = new SinhMaTuDong();
+	private XuatPDF xuat = new XuatPDF();
+	private XuatExcel xuatExcel = new XuatExcel();
 	/**
 	 * Create the panel.
 	 */
@@ -438,10 +451,12 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		btnTinhLuong.addActionListener(this);
 		btnTinhLuongALL.addActionListener(this);
 		btnChiTiet.addActionListener(this);
+		btnXuat.addActionListener(this);
 		
 		btnTinhLuong.addMouseListener(this);
 		btnTinhLuongALL.addMouseListener(this);
 		btnChiTiet.addMouseListener(this);
+		btnXuat.addMouseListener(this);
 		tblLuongNV.addMouseListener(this);
 		tblNV.addMouseListener(this);
 		
@@ -500,7 +515,10 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 			tinhLuongALLNhanVien();
 		}
 		if(o == btnChiTiet) {
-			
+			xuatChiTietLuong();
+		}
+		if(o == btnXuat) {
+			xuatDSLuong();
 		}
 	}
 	@Override
@@ -667,5 +685,45 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 	private void setTextError(String message) {
 		main.music.playSE(3);
 		lblMessage.setText(message);
+	}
+	//xuất chi tiết lương của một nhân viên
+	private void xuatChiTietLuong() {
+		int index = tblLuongNV.getSelectedRow();
+		if(index!=-1) {			
+			BangLuongNhanVien blnv = dsLuong.get(index);
+			ArrayList<BangChamCongNhanVien> dscc = new ArrayList<>();
+			dscc = ccnv_Dao.getDSChamCongNhanVien(blnv.getNhanVien().getMaNV(), DateTimeFormatter.ofPattern("MM/yyyy").format(blnv.getThangNam()));
+			try {
+				xuat.xuatChiTietLuong(dscc, blnv, pcnv_Dao.timPCNhanVien(blnv.getNhanVien().getMaNV()));
+			} catch (JRException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			setTextError("Bạn cần chọn nhân viên muốn xem chi tiết lương!!!");
+		}
+	}
+	//xuất danh sách lương ra excel
+	private void xuatDSLuong() {
+		if(dsLuong.size()>0) {
+	        JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Chỉ cho phép chọn thư mục
+	        int option = fileChooser.showSaveDialog(null);
+	        if(option == JFileChooser.APPROVE_OPTION){
+	           File file = fileChooser.getSelectedFile();
+	           String saveDir = file.getAbsolutePath(); // Đây là thư mục mà người dùng đã chọn
+	           try {
+	        	   String filePath = saveDir + File.separator + "BangLuongThang-" + thangNamString().replaceAll("/", "-") + ".xlsx";
+					xuatExcel.writeExcelTTLuong(dsLuong, filePath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }else{
+	           setTextError("Phải chọn thư mục lưu file!");
+	        }
+		}else{
+			setTextError("Không có thông tin nào để xuất!");
+		}
 	}
 }

@@ -225,12 +225,12 @@ public class BangLuongNhanVien {
 		
 	}
 	//tính lương tháng
-	private double tinhLuongThang(int diTre, float luongCoBan) {
+	public double tinhLuongThang(int diTre, float luongCoBan) {
 		luongThang = (ngayLam + ngayNghiPhep - ngayNghi)/30*luongCoBan - diTre*50000;
 		return luongThang;
 	}
 	//tính lương tăng ca
-	private double tinhLuongTangCa(float gioTangCa, float luongCoBan) {
+	public double tinhLuongTangCa(float gioTangCa, float luongCoBan) {
 		luongTangCa = gioTangCa * luongCoBan/30/24 * 2; //lương tăng ca bằng x2 lương bình thường
 		return luongTangCa;
 	}
