@@ -21,6 +21,7 @@ import Dao.PhongBan_Dao;
 import Entity.BangChamCongNhanVien;
 import Entity.BangPhanCongNhanVien;
 import Entity.PhongBan;
+import Util.XuatExcel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,6 +32,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +52,8 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -80,6 +85,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private Date timeDefault;
 	private ArrayList<BangPhanCongNhanVien> dsChuaCC = new ArrayList<>();
 	private ArrayList<BangChamCongNhanVien> dsChamCong = new ArrayList<>();
+	private XuatExcel xuatExcel = new XuatExcel();
 	/**
 	 * Create the panel.
 	 */
@@ -552,6 +558,9 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 				setTextError("Chỉ có thể chấm công từ ngày hiện tại về trước!");
 			}
 		}
+		if(o == btnXuat) {
+			xuatDSChamCongNhanVienExcel();
+		}
 	}
 	@Override
 	public void itemStateChanged(ItemEvent e) {
@@ -746,5 +755,28 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		spnTangCa.setValue(ccnv.getGioTangCa());
 		txtMaNV.setText(ccnv.getPhanCong().getNhanVien().getMaNV());
 		txtGhiChu.setText(ccnv.getGhiChu());
+	}
+	//xuất thông tin ds chấm công nhân viên ra excel
+	private void xuatDSChamCongNhanVienExcel() {
+		if(dsChamCong.size()>0) {
+	        JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Chỉ cho phép chọn thư mục
+	        int option = fileChooser.showSaveDialog(null);
+	        if(option == JFileChooser.APPROVE_OPTION){
+	           File file = fileChooser.getSelectedFile();
+	           String saveDir = file.getAbsolutePath(); // Đây là thư mục mà người dùng đã chọn
+	           try {
+	        	   String filePath = saveDir + File.separator + "DanhSachChamCong-" + new SimpleDateFormat("dd-MM-yyyy").format(dtbNgayCC.getDate()) + ".xlsx";
+					xuatExcel.writeExcelTTCC(dsChamCong, filePath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }else{
+	           setTextError("Phải chọn thư mục lưu file!");
+	        }
+		}else{
+			setTextError("Không có thông tin nào để xuất!");
+		}
 	}
 }

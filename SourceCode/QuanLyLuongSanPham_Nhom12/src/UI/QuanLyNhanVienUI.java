@@ -57,7 +57,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JTextField txtMaNV, txtMatKhau, txtTenNV, txtSDT, txtEmail;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn, btnFocus, btnChonAnh;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnFocus, btnChonAnh;
 	private JRadioButton radNam, radNu;
 	private ButtonGroup grpGioiTinh;
 	private DefaultTableModel dtblModel;
@@ -370,14 +370,6 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlChucNang.add(btnXoa);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnIn = new RoundedButton("Xuất", null, 20, 0, 1.0f);
-		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
-		btnIn.setForeground(Color.WHITE);
-		btnIn.setBackground(Color.decode("#17a2b8"));
-		btnIn.setIcon(new ImageScaler("/image/printer_icon.png", 24, 24).getScaledImageIcon());
-		btnIn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-		pnlChucNang.add(btnIn);
-		
 		pnlChucNang.add(Box.createHorizontalStrut(200));
 		
 		btnLuu = new RoundedButton("Lưu", null, 20, 0, 0.6f);
@@ -430,7 +422,6 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnXoa.addActionListener(this);
-		btnIn.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
 		btnChonAnh.addActionListener(this);
@@ -438,7 +429,6 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		btnThem.addMouseListener(this);
 		btnSua.addMouseListener(this);
 		btnXoa.addMouseListener(this);
-		btnIn.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
 		tblNV.addMouseListener(this);
@@ -510,8 +500,6 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		if(o == btnXoa) {
 			xoaNhanVien();
 		}
-		if(o == btnIn) {
-		}
 		if(o == btnLuu) {
 			if(isThem==true)
 				themNhanVien();
@@ -550,8 +538,6 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			btnSua.setAlpha(0.6f);
 			btnXoa.setEnabled(false);
 			btnXoa.setAlpha(0.6f);
-			btnIn.setEnabled(false);
-			btnIn.setAlpha(0.6f);
 			
 		}else {
 			btnLuu.setEnabled(false);
@@ -567,8 +553,6 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			btnSua.setAlpha(1f);
 			btnXoa.setEnabled(true);
 			btnXoa.setAlpha(1f);
-			btnIn.setEnabled(true);
-			btnIn.setAlpha(1f);
 		}
 	}
 	private void setEditableForTextField(boolean edit) {
@@ -628,7 +612,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 				btnFocus.setFocusButton(main.borderFocusColor, 3);
 			}
 		}else if(btnFocus == btnLuu || btnFocus == btnHuy) {
-			if(o == btnThem || o == btnSua || o == btnXoa || o == btnIn) {
+			if(o == btnThem || o == btnSua || o == btnXoa) {
 				btnFocus = (RoundedButton) o;
 				btnFocus.setFocusButton(main.borderFocusColor, 3);
 			}

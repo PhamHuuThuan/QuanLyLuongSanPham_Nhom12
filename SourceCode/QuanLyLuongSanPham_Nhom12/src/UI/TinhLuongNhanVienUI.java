@@ -25,6 +25,7 @@ import Entity.BangPhanCongNhanVien;
 import Entity.PhongBan;
 import Util.SinhMaTuDong;
 import Util.XuatChamCongForm;
+import Util.XuatExcel;
 import Util.XuatPDF;
 import net.sf.jasperreports.engine.JRException;
 
@@ -37,7 +38,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -52,6 +56,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Dimension;
@@ -84,6 +90,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 	private PhanCongNhanVien_Dao pcnv_Dao = new PhanCongNhanVien_Dao();
 	private SinhMaTuDong maTuDong = new SinhMaTuDong();
 	private XuatPDF xuat = new XuatPDF();
+	private XuatExcel xuatExcel = new XuatExcel();
 	/**
 	 * Create the panel.
 	 */
@@ -444,10 +451,12 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		btnTinhLuong.addActionListener(this);
 		btnTinhLuongALL.addActionListener(this);
 		btnChiTiet.addActionListener(this);
+		btnXuat.addActionListener(this);
 		
 		btnTinhLuong.addMouseListener(this);
 		btnTinhLuongALL.addMouseListener(this);
 		btnChiTiet.addMouseListener(this);
+		btnXuat.addMouseListener(this);
 		tblLuongNV.addMouseListener(this);
 		tblNV.addMouseListener(this);
 		
@@ -507,6 +516,9 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		}
 		if(o == btnChiTiet) {
 			xuatChiTietLuong();
+		}
+		if(o == btnXuat) {
+			xuatDSLuong();
 		}
 	}
 	@Override
@@ -689,6 +701,29 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 			}
 		}else {
 			setTextError("Bạn cần chọn nhân viên muốn xem chi tiết lương!!!");
+		}
+	}
+	//xuất danh sách lương ra excel
+	private void xuatDSLuong() {
+		if(dsLuong.size()>0) {
+	        JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Chỉ cho phép chọn thư mục
+	        int option = fileChooser.showSaveDialog(null);
+	        if(option == JFileChooser.APPROVE_OPTION){
+	           File file = fileChooser.getSelectedFile();
+	           String saveDir = file.getAbsolutePath(); // Đây là thư mục mà người dùng đã chọn
+	           try {
+	        	   String filePath = saveDir + File.separator + "BangLuongThang-" + thangNamString().replaceAll("/", "-") + ".xlsx";
+					xuatExcel.writeExcelTTLuong(dsLuong, filePath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }else{
+	           setTextError("Phải chọn thư mục lưu file!");
+	        }
+		}else{
+			setTextError("Không có thông tin nào để xuất!");
 		}
 	}
 }
