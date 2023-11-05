@@ -87,6 +87,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		setLayout(new BorderLayout(0, 0));
 		setUIManagerColor();
 		createGUI();
+		checkUser();
 
 		// thêm sự kiện cho các button
 		mniTrangChu.addActionListener(this);
@@ -180,7 +181,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		lblHello.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 20F));
 		pnlControl.add(lblHello);
 
-		lblNameUser = new JLabel("Nguyễn Văn Phong");
+		lblNameUser = new JLabel(main.nv.getNhanVien().getHoTen());
 		lblNameUser.setFont(main.roboto_bold.deriveFont(Font.BOLD, 20F));
 		pnlControl.add(lblNameUser);
 
@@ -779,5 +780,12 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 		clock.start();
 	}
-
+	private void checkUser() {
+		if(main.nv.getChucVu().equals("Nhân viên")) {
+			mniHopDong.setEnabled(false);
+			mnNhanVien.setEnabled(false);
+			mniPhongBan.setEnabled(false);
+			mniThongKe.setEnabled(false);
+		}
+	}
 }

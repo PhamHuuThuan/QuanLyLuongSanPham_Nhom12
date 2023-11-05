@@ -866,7 +866,6 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		if(edit == true) {
 			txtTenHD.setEditable(true);
 			txtTenKH.setEditable(true);
-			txtDaiDien.setEditable(true);
 			dtpBatDau.setEditable(true);
 			dtpKetThuc.setEditable(true);
 			txtGiaTri.setEditable(true);
@@ -1140,10 +1139,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		String tienCoc = txtTienCoc.getText().replace(",", "");
 		
 		if(tenHD==null || tenHD.trim().length()<=0) {
+			txtTenHD.selectAll();
+			txtTenHD.requestFocus(true);
 			setTextError("Tên hợp đồng không được rỗng");
 			return false;
 		}
 		if(tenKH==null || tenKH.trim().length()<=0) {
+			txtTenKH.selectAll();
+			txtTenKH.requestFocus(true);
 			setTextError("Tên khách hàng không được rỗng");
 			return false;
 		}
@@ -1164,10 +1167,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		}
 		if(giaTri.matches("\\d+")==false || Double.parseDouble(giaTri)<0) {
 			setTextError("Giá trị có định dạng #,### hoặc chỉ gồm số và >= 0");
+			txtGiaTri.selectAll();
+			txtGiaTri.requestFocus(true);
 			return false;
 		}
 		if(tienCoc.matches("\\d+")==false && Double.parseDouble(tienCoc)<0 || Double.parseDouble(tienCoc)>Double.parseDouble(giaTri)) {
 			setTextError("Tiền cọc có định dạng #,### và Giá trị HĐ >= Tiền cọc >= 0");
+			txtTienCoc.selectAll();
+			txtTienCoc.requestFocus(true);
 			return false;
 		}
 		return true;
@@ -1197,6 +1204,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		if(tenSP==null || tenSP.trim().length()<=0) {
 			setTextError("Tên sản phẩm không được rỗng");
+			txtTenSP.selectAll();
+			txtTenSP.requestFocus(true);
 			return false;
 		}
 		if(soLuong < 0) {
@@ -1204,6 +1213,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			return false;
 		}if(donGia.matches("\\d+")==false && Double.parseDouble(donGia)<0) {
 			setTextError("Đơn giá sản phẩm có định dạng #,### hoặc chỉ gồm số và >= 0");
+			txtDonGia.selectAll();
+			txtDonGia.requestFocus(true);
 			return false;
 		}
 		double tongTienSP = sp_Dao.tinhTongTien(txtMaHD.getText()) + soLuong*Double.parseDouble(donGia);
@@ -1227,24 +1238,23 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//Thêm sản phẩm từ giao diện vào csdl
 	private void themSanpham() {
-		if(hd_Dao.getHopDongTheoMa(txtMaHD.getText())!=null) {
-			if(validDataSP()==true) {
-				SanPham spNew = convertDataToSanPham();
-				if(spNew != null) {
-					if(sp_Dao.themSanPham(spNew)) {
-						dsSP.add(spNew);
-						themTatCaSanPhamVaoBang(dsSP);
-						lblMessage.setText("Thêm thành công sản phẩm!");
-						xoaRongSP();
-					}else {
-						setTextError("Thêm sản phẩm thất bại! Trùng mã!");
-					}
-				}else {
-					setTextError("Thêm sản phẩm thất bại! Có lỗi xảy ra!");
-				}
-			}
-		}else {
+		if(hd_Dao.getHopDongTheoMa(txtMaHD.getText())==null) {
 			themHDTamThoi();
+		}
+		if(validDataSP()==true) {
+			SanPham spNew = convertDataToSanPham();
+			if(spNew != null) {
+				if(sp_Dao.themSanPham(spNew)) {
+					dsSP.add(spNew);
+					themTatCaSanPhamVaoBang(dsSP);
+					lblMessage.setText("Thêm thành công sản phẩm!");
+					xoaRongSP();
+				}else {
+					setTextError("Thêm sản phẩm thất bại! Trùng mã!");
+				}
+			}else {
+				setTextError("Thêm sản phẩm thất bại! Có lỗi xảy ra!");
+			}
 		}
 	}
 	// sửa một sản phẩm được chọn

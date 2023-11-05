@@ -90,7 +90,7 @@ public class HopDong_Dao {
 	        st = con.prepareStatement("select * from HopDong");
 	        ResultSet rs = st.executeQuery();
 	        while (rs.next()) {
-	            HopDong hd = new HopDong(rs.getString(1), rs.getString(2), rs.getString(3), new NhanVien(rs.getString(4)),
+	            HopDong hd = new HopDong(rs.getString(1), rs.getString(2), rs.getString(3), new NhanVien_Dao().timNhanVienTheoMaNV(rs.getString(4)),
 	            		new java.util.Date(rs.getDate(5).getTime()), new java.util.Date(rs.getDate(6).getTime()),
 	            		rs.getDouble(7), rs.getDouble(8), rs.getString(9), rs.getBoolean(10), rs.getString(11));
 	            list.add(hd);

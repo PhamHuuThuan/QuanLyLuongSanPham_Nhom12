@@ -40,7 +40,7 @@ public class XuatPDF {
 		
 		Map<String, Object> ttHD = new HashMap<String, Object>();
 		
-		ttHD.put("time", "TP HCM, ngày " + new Date().getDay() + " tháng " + new Date().getMonth() + " năm " + new Date().getYear());
+		ttHD.put("time", "TP HCM, ngày " + hd.getNgayBatDau().getDate() + " tháng " + (hd.getNgayBatDau().getMonth() + 1) + " năm " + (hd.getNgayBatDau().getYear() + 1900));
 		
 		ttHD.put("maHD", hd.getMaHD());
 		
@@ -89,7 +89,11 @@ public class XuatPDF {
 		
 		ttLuong.put("chucVu", pcnv.getChucVu());
 		
-		ttLuong.put("thangNam", blnv.getThangNam().toString());
+		String thangNam = blnv.getThangNam().toString();
+		String[] parts = thangNam.split("-");
+		String result = parts[1] + "-" + parts[0];
+		
+		ttLuong.put("thangNam", result);
 		
 		ttLuong.put("ngayLam", blnv.getNgayLam() + " ngày");
 		
@@ -102,6 +106,9 @@ public class XuatPDF {
 		ttLuong.put("thucLanh", new DecimalFormat("#,###").format(blnv.getThucLanh()) + " VNĐ");
 		
 		ArrayList<XuatChamCongForm> ds = new ArrayList<>();
+		if(dscc.size()<=0) {
+			ds.add(null);
+		}
 		
 		for(BangChamCongNhanVien ccnv : dscc) {
 			String trangThai;
