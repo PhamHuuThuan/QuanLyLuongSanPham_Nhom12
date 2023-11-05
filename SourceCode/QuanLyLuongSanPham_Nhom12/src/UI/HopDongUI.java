@@ -97,7 +97,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		//tạo jpanel north
 		JPanel pnlNorth = new JPanel();
-		pnlNorth.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+		pnlNorth.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		pnlNorth.setBackground(bgColor);
 		add(pnlNorth, BorderLayout.NORTH);
 		
@@ -109,7 +109,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("title_border_DSSP"));
 		titleBorderTTSP.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 14F));
 		pnlNorth.setLayout(new BorderLayout(0, 0));
-		pnlThongTinSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
+		pnlThongTinSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(10, 0, 10, 0)));
 		pnlThongTinSP.setSize(new Dimension(400, 300));
 		pnlNorth.add(pnlThongTinSP, BorderLayout.EAST);
 		
@@ -311,7 +311,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		//tao jpanel chua Title va Thong tin HD
 		JPanel pnlHopDong = new JPanel();
-		pnlHopDong.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+		pnlHopDong.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		pnlHopDong.setBackground(bgColor);
 		pnlNorth.add(pnlHopDong, BorderLayout.CENTER);
 		pnlHopDong.setLayout(new BorderLayout(0, 0));

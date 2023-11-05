@@ -39,6 +39,21 @@ public class CongNhan {
 		super();
 		this.maCN = maCN;
 	}
+	
+	public CongNhan(String maCN, String hoTen) {
+		super();
+		this.maCN = maCN;
+		this.hoTen = hoTen;
+	}
+	
+
+	public CongNhan(String maCN, String hoTen, Date ngaySinh, Date ngayVaoLam) {
+		super();
+		this.maCN = maCN;
+		this.hoTen = hoTen;
+		this.ngaySinh = ngaySinh;
+		this.ngayVaoLam = ngayVaoLam;
+	}
 
 	public String getMaCN() {
 		return maCN;

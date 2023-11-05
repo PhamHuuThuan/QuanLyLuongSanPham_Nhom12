@@ -623,6 +623,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
+		main.music.playSE(2);
 		if(o==tblCN) {
 			int item = tblCN.getSelectedRow();
 			if(item != -1) {
@@ -659,6 +660,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		main.music.playSE(2);
 		if(o==btnTim) {
 			timKiemCongNhan();
 		}

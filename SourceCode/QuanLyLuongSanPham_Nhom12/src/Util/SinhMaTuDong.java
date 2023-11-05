@@ -3,6 +3,7 @@ package Util;
 import Dao.CongNhan_Dao;
 import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
+import Dao.PhanCongCongDoan_Dao;
 import Dao.PhanCongNhanVien_Dao;
 import Dao.SanPham_Dao;
 
@@ -86,4 +87,20 @@ public class SinhMaTuDong {
 	    }
 	    return maNew;
 	}
+	// HÀM SINH MÃ PHÂN CÔNG CÔNG ĐOẠN
+		public String sinhMaPCCD() {
+		    String maNew = "PCD";
+		    String maPre = new PhanCongCongDoan_Dao().getMaPCCDMax();
+		    if (maPre == null || maPre.length() < 7) {
+		        maNew += "0000001";
+		    } else {
+		        try {
+		            int ma = Integer.parseInt(maPre.substring(3)) + 1;
+		            maNew += String.format("%07d", ma);
+		        } catch (NumberFormatException e) {
+		        	// Xử lý ngoại lệ ở đây
+		        }
+		    }
+		    return maNew;
+		}
 }
