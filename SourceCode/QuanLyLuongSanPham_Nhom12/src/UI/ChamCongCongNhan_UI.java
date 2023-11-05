@@ -74,6 +74,7 @@ public class ChamCongCongNhan_UI extends JPanel {
 		pnlTitle.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblTitle = new JLabel("CHẤM CÔNG CÔNG NHÂN");
+		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlTitle.add(lblTitle);
 		

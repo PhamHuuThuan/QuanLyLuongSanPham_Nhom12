@@ -197,6 +197,7 @@ public class CongNhan_Dao {
 				querry  = querry + "AND ngaySinh LIKE ? ";
 			}
 			st = conn.prepareStatement(querry);
+			
 			st.setString(1, "%" + maCN + "%");
 			st.setString(2, "%" + hoten + "%");
 			st.setInt(3, nam);
@@ -204,9 +205,11 @@ public class CongNhan_Dao {
 			st.setString(5, "%" + sDT +"%");
 			st.setString(6, "%"+ diaChi +"%");
 			st.setString(7, "%" + soCCCD + "%");
+			
 			if(ngaySinh !=null) {
 				st.setDate(8, new java.sql.Date(ngaySinh.getTime()));
 			}
+			
 			rs  = st.executeQuery();
 			while(rs.next()) {
 				CongNhan cn = new CongNhan(

@@ -11,30 +11,42 @@ public class BangPhanCongCongDoan {
 	// bo sung trong class
 	private String ghiChu;
 	
+	private SanPham sanPham;
 	
-
-	@Override
-	public String toString() {
-		return "BangPhanCongCongDoan [maPhanCong=" + maPhanCong + ", congNhan=" + congNhan + ", congDoan=" + congDoan
-				+ ", ngayPhanCong=" + ngayPhanCong + ", soLuongCanLam=" + soLuongCanLam + ", ghiChu=" + ghiChu + "]";
-	}
-
-	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan, CongDoan congDoan, Date ngayPhanCong,
+	
+	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan, CongDoan congDoan,Date ngayPhanCong,
 			int soLuongCanLam, String ghiChu) {
 		super();
-		try {
-			setMaPhanCong(maPhanCong);
-			setCongNhan(congNhan);
-			setCongDoan(congDoan);
-			setNgayPhanCong(ngayPhanCong);
-			setSoLuongCanLam(soLuongCanLam);
-			setGhiChu(ghiChu);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
+		this.maPhanCong = maPhanCong;
+		this.congNhan = congNhan;
+		this.congDoan = congDoan;
+		this.ngayPhanCong = ngayPhanCong;
+		this.soLuongCanLam = soLuongCanLam;
+		this.ghiChu = ghiChu;
 	}
 	
+	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan, CongDoan congDoan,SanPham sanPham,Date ngayPhanCong,
+			int soLuongCanLam, String ghiChu) {
+		super();
+		this.maPhanCong = maPhanCong;
+		this.congNhan = congNhan;
+		this.congDoan = congDoan;
+		this.sanPham = sanPham;
+		this.ngayPhanCong = ngayPhanCong;
+		this.soLuongCanLam = soLuongCanLam;
+		this.ghiChu = ghiChu;
+	}
+	
+
+
+	public SanPham getSanPham() {
+		return sanPham;
+	}
+
+	public void setSanPham(SanPham sanPham) {
+		this.sanPham = sanPham;
+	}
+
 	public BangPhanCongCongDoan() {
 		super();
 		

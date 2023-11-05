@@ -569,7 +569,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 				null, new Color(0, 0, 0)), new EmptyBorder(0, 10, 0, 10)));
 		pnlTable.setLayout(new BorderLayout(0, 0));
 
-		String cols[] = { "Mã CN", "Họ tên", "Giới tính", "SĐT", "Email", "Địa chỉ", "Ngày vào làm", "Ghi chú" };
+		String cols[] = { "STT","Mã CN", "Họ tên", "Giới tính", "SĐT", "Email", "Ngày vào làm", "Ghi chú" };
 		dtbModelCN = new DefaultTableModel(cols, 0);
 		tblCN = new JTable(dtbModelCN);
 
@@ -594,12 +594,12 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		tblCN.setTableHeader(tbhCN);
 
 		tblCN.setRowHeight(20);
-		tblCN.getColumnModel().getColumn(0).setPreferredWidth(75);
-		tblCN.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tblCN.getColumnModel().getColumn(2).setPreferredWidth(75);
-		tblCN.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblCN.getColumnModel().getColumn(4).setPreferredWidth(150);
-		tblCN.getColumnModel().getColumn(5).setPreferredWidth(150);
+		tblCN.getColumnModel().getColumn(0).setPreferredWidth(45);
+		tblCN.getColumnModel().getColumn(1).setPreferredWidth(80);
+		tblCN.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblCN.getColumnModel().getColumn(3).setPreferredWidth(50);
+		tblCN.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tblCN.getColumnModel().getColumn(5).setPreferredWidth(120);
 		tblCN.getColumnModel().getColumn(6).setPreferredWidth(100);
 
 		// Tạo jscrollpane để tạo scroll cho bảng sản phẩm
@@ -623,6 +623,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
+		main.music.playSE(2);
 		if(o==tblCN) {
 			int item = tblCN.getSelectedRow();
 			if(item != -1) {
@@ -659,6 +660,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		main.music.playSE(2);
 		if(o==btnTim) {
 			timKiemCongNhan();
 		}
@@ -769,7 +771,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		row[3] = cn.getGioiTinh() ? "Nam" : "Nữ";
 		row[4] = cn.getSDT();
 		row[5] = cn.getEmail();
-		row[6] = cn.getNgayVaoLam();
+		row[6] = new SimpleDateFormat("dd-MM-YYYY").format(cn.getNgayVaoLam());
 		row[7] = cn.getGhiChu();
 		dtbModelCN.addRow(row);
 		

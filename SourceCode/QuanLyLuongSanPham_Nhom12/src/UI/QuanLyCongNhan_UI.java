@@ -564,7 +564,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 				displayButtonSaveAndCancel(true);
 				setEditableForTextField(true);
 			} else {
-				alertNotification("Cần chọn Công nhân để sửa");
+				alertNotification("Cần chọn 1 Công nhân để sửa");
 			}
 
 		}

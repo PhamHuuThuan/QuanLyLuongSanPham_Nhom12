@@ -13,27 +13,29 @@ public class CongDoan {
 	private Date ngayHoanThanh;
 	private SanPham sanPham;
 
+	
 	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong, double donGia, boolean tinhTrang,
 			Date ngayHoanThanh, SanPham sanPham) {
 		super();
-		try {
-			setMaCD(maCD);
-			setTenCD(tenCD);
-			setThuTu(thuTu);
-			setSoLuong(soLuong);
-			setDonGia(donGia);
-			setTinhTrang(tinhTrang);
-			setNgayHoanThanh(ngayHoanThanh);
-			setSanPham(sanPham);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+		this.soLuong = soLuong;
+		this.donGia = donGia;
+		this.tinhTrang = tinhTrang;
+		this.ngayHoanThanh = ngayHoanThanh;
+		this.sanPham = sanPham;
 	}
 
-	public CongDoan() {
+	public CongDoan(String maCD) {
 		super();
-
+		this.maCD = maCD;
+	}
+	
+	public CongDoan(String maCD, String tenCD) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
 	}
 
 	public String getMaCD() {
