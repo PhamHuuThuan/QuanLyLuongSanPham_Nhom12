@@ -7,6 +7,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -49,8 +50,7 @@ import Entity.HopDong;
 import Entity.NhanVien;
 import Entity.SanPham;
 import Util.SinhMaTuDong;
-import Util.XuatForm;
-import Util.XuatHopDongForm;
+import Util.XuatPDF;
 import net.sf.jasperreports.engine.JRException;
 
 import java.awt.Component;
@@ -76,7 +76,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private JLabel lblGiaTriText, lblTienCocText, lblMessage;
 	private JSpinner spnSoLuong;
 	private SpinnerNumberModel modelSPN;
-	private XuatForm xf;
+	private XuatPDF xf;
 	private Font fontText;
 	private HopDong_Dao hd_Dao = new HopDong_Dao();
 	private SanPham_Dao sp_Dao = new SanPham_Dao();
@@ -88,7 +88,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	 */
 	public HopDongUI(MainUI main) {
 		this.main = main;
-		xf = new XuatForm();
+		xf = new XuatPDF();
 		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 14F);
 		
 		//set gia tri cho jpanel HopDong
@@ -302,6 +302,16 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		tblSP.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblSP.getColumnModel().getColumn(3).setPreferredWidth(100);
 		tblSP.setFillsViewportHeight(true);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		tblSP.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+		tblSP.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblSP.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
 		JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -665,7 +675,9 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		tbhHD.setForeground(Color.WHITE);
 		tbhHD.setFont(fontText);
 		tblHD.setTableHeader(tbhHD);
+		tblHD.setFont(fontText.deriveFont(14F));
 		
+		//chỉnh size cho các cột
 		tblHD.setRowHeight(20);
 		tblHD.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblHD.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -677,6 +689,16 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		tblHD.getColumnModel().getColumn(7).setPreferredWidth(200);
 		tblHD.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblHD.getColumnModel().getColumn(9).setPreferredWidth(150);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		tblHD.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+		tblHD.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+		tblHD.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
+		tblHD.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
+		
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblHD.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng hợp đồng
 		JScrollPane scrHD = new JScrollPane(tblHD,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -759,7 +781,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			setEditableForTextField(true);
 			xoaRong();	
 			txtMaHD.setText(new SinhMaTuDong().sinhMaHD());
-			txtDaiDien.setText(main.nv.getHoTen());
+			txtDaiDien.setText(main.nv.getNhanVien().getHoTen());
 			xoaRongSP();
 			isThem = true;
 		}
@@ -792,12 +814,12 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			}
 		}
 		if(o == btnHuy) {
-			displayButtonSaveAndCancel(false);
-			setEditableForTextField(false);
 			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thoát? Toàn bộ thông tin thay đổi sẽ mất", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				if(isThem == true)
 					xoaHopDongTamThoi();
 				xoaRong();
+				displayButtonSaveAndCancel(false);
+				setEditableForTextField(false);
 			}
 		}
 		if(o == btnThemSP) {
@@ -866,8 +888,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtTenHD.setEditable(true);
+			txtTenHD.requestFocus(true);
 			txtTenKH.setEditable(true);
-			txtDaiDien.setEditable(true);
 			dtpBatDau.setEditable(true);
 			dtpKetThuc.setEditable(true);
 			txtGiaTri.setEditable(true);
@@ -990,22 +1012,9 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
     }
 	private void xuatHopDong() {
 		if(tblHD.getSelectedRow()!=-1) {
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			String giaTriHD = txtGiaTri.getText() + lblGiaTriText.getText();
-			String tienCocHD = txtTienCoc.getText() + lblTienCocText.getText();
-			XuatHopDongForm hd = new XuatHopDongForm("Gò Vấp, ngày "+ LocalDate.now().getDayOfMonth() + " tháng " + LocalDate.now().getMonthValue() + " năm " + LocalDate.now().getYear(), 
-					txtMaHD.getText(), 
-					txtTenHD.getText(), 
-					txtTenKH.getText(), 
-					txtDaiDien.getText(), 
-					txtThoaThuan.getText(),
-					formatter.format(dtpBatDau.getDate()), 
-					formatter.format(dtpKetThuc.getDate()), 
-					giaTriHD, 
-					tienCocHD);
+			HopDong hd = dsHD.get(tblHD.getSelectedRow());
 			try {
-				xf.xuatHD(hd);
-				main.music.playSE(1);
+				xf.xuatHD(hd, dsSP);
 			} catch (JRException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1019,7 +1028,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		String maHD = txtMaHD.getText();
 		String tenHD = txtTenHD.getText();
 		String tenKH = txtTenKH.getText();
-		NhanVien nguoiDD = main.nv;
+		NhanVien nguoiDD = main.nv.getNhanVien();
 		Date ngayBD = dtpBatDau.getDate();
 		Date ngayKT = dtpKetThuc.getDate();
 		Double giaTri = Double.parseDouble(txtGiaTri.getText().replace(",", ""));
@@ -1080,7 +1089,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	    row[1] = hd.getMaHD();
 	    row[2] = hd.getTenHD();
 	    row[3] = hd.getTenKhachHang();
-	    row[4] = hd.getNguoiDaiDien().getMaNV();
+	    row[4] = hd.getNguoiDaiDien().getHoTen();
 	    row[5] = new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayBatDau());
 	    row[6] = new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayKetThuc());
 	    row[7] = new DecimalFormat("#,###").format(hd.getGiaTriHD());
@@ -1146,17 +1155,21 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	private boolean validDataHD() {
 		String tenHD = txtTenHD.getText();
 		String tenKH = txtTenKH.getText();
-		NhanVien nguoiDD = main.nv;
+		NhanVien nguoiDD = main.nv.getNhanVien();
 		Date ngayBD = dtpBatDau.getDate();
 		Date ngayKT = dtpKetThuc.getDate();
 		String giaTri = txtGiaTri.getText().replace(",", "");
 		String tienCoc = txtTienCoc.getText().replace(",", "");
 		
 		if(tenHD==null || tenHD.trim().length()<=0) {
+			txtTenHD.selectAll();
+			txtTenHD.requestFocus(true);
 			setTextError("Tên hợp đồng không được rỗng");
 			return false;
 		}
 		if(tenKH==null || tenKH.trim().length()<=0) {
+			txtTenKH.selectAll();
+			txtTenKH.requestFocus(true);
 			setTextError("Tên khách hàng không được rỗng");
 			return false;
 		}
@@ -1177,10 +1190,14 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		}
 		if(giaTri.matches("\\d+")==false || Double.parseDouble(giaTri)<0) {
 			setTextError("Giá trị có định dạng #,### hoặc chỉ gồm số và >= 0");
+			txtGiaTri.selectAll();
+			txtGiaTri.requestFocus(true);
 			return false;
 		}
 		if(tienCoc.matches("\\d+")==false && Double.parseDouble(tienCoc)<0 || Double.parseDouble(tienCoc)>Double.parseDouble(giaTri)) {
 			setTextError("Tiền cọc có định dạng #,### và Giá trị HĐ >= Tiền cọc >= 0");
+			txtTienCoc.selectAll();
+			txtTienCoc.requestFocus(true);
 			return false;
 		}
 		return true;
@@ -1210,6 +1227,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		if(tenSP==null || tenSP.trim().length()<=0) {
 			setTextError("Tên sản phẩm không được rỗng");
+			txtTenSP.selectAll();
+			txtTenSP.requestFocus(true);
 			return false;
 		}
 		if(soLuong < 0) {
@@ -1217,6 +1236,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			return false;
 		}if(donGia.matches("\\d+")==false && Double.parseDouble(donGia)<0) {
 			setTextError("Đơn giá sản phẩm có định dạng #,### hoặc chỉ gồm số và >= 0");
+			txtDonGia.selectAll();
+			txtDonGia.requestFocus(true);
 			return false;
 		}
 		double tongTienSP = sp_Dao.tinhTongTien(txtMaHD.getText()) + soLuong*Double.parseDouble(donGia);
@@ -1240,24 +1261,23 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//Thêm sản phẩm từ giao diện vào csdl
 	private void themSanpham() {
-		if(hd_Dao.getHopDongTheoMa(txtMaHD.getText())!=null) {
-			if(validDataSP()==true) {
-				SanPham spNew = convertDataToSanPham();
-				if(spNew != null) {
-					if(sp_Dao.themSanPham(spNew)) {
-						dsSP.add(spNew);
-						themTatCaSanPhamVaoBang(dsSP);
-						lblMessage.setText("Thêm thành công sản phẩm!");
-						xoaRongSP();
-					}else {
-						setTextError("Thêm sản phẩm thất bại! Trùng mã!");
-					}
-				}else {
-					setTextError("Thêm sản phẩm thất bại! Có lỗi xảy ra!");
-				}
-			}
-		}else {
+		if(hd_Dao.getHopDongTheoMa(txtMaHD.getText())==null) {
 			themHDTamThoi();
+		}
+		if(validDataSP()==true) {
+			SanPham spNew = convertDataToSanPham();
+			if(spNew != null) {
+				if(sp_Dao.themSanPham(spNew)) {
+					dsSP.add(spNew);
+					themTatCaSanPhamVaoBang(dsSP);
+					lblMessage.setText("Thêm thành công sản phẩm!");
+					xoaRongSP();
+				}else {
+					setTextError("Thêm sản phẩm thất bại! Trùng mã!");
+				}
+			}else {
+				setTextError("Thêm sản phẩm thất bại! Có lỗi xảy ra!");
+			}
 		}
 	}
 	// sửa một sản phẩm được chọn

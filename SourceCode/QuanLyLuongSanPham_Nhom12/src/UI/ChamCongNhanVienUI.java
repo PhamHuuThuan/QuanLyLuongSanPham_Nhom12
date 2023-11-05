@@ -6,6 +6,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -21,6 +22,7 @@ import Dao.PhongBan_Dao;
 import Entity.BangChamCongNhanVien;
 import Entity.BangPhanCongNhanVien;
 import Entity.PhongBan;
+import Util.XuatExcel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,6 +33,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +53,8 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -80,6 +86,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private Date timeDefault;
 	private ArrayList<BangPhanCongNhanVien> dsChuaCC = new ArrayList<>();
 	private ArrayList<BangChamCongNhanVien> dsChamCong = new ArrayList<>();
+	private XuatExcel xuatExcel = new XuatExcel();
 	/**
 	 * Create the panel.
 	 */
@@ -207,13 +214,22 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tbhNV.setForeground(Color.WHITE);
 		tbhNV.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblDSPC.setTableHeader(tbhNV);
+		tblDSPC.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
 		tblDSPC.setRowHeight(20);
 		tblDSPC.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblDSPC.getColumnModel().getColumn(1).setPreferredWidth(75);
-		tblDSPC.getColumnModel().getColumn(2).setPreferredWidth(150);
-		tblDSPC.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tblDSPC.getColumnModel().getColumn(4).setPreferredWidth(150);
+		tblDSPC.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblDSPC.getColumnModel().getColumn(2).setPreferredWidth(275);
+		tblDSPC.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblDSPC.getColumnModel().getColumn(4).setPreferredWidth(100);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblDSPC.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrNV = new JScrollPane(tblDSPC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -272,7 +288,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblTrangThai.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
 		cmbTrangThai = new JComboBox<>();
-		cmbTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Đúng giờ", "Trễ", "Nghỉ", "Nghỉ phép"}));
+		cmbTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Đúng giờ", "Trễ", "Nghỉ 0 phép", "Nghỉ phép"}));
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		cmbTrangThai.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
@@ -459,7 +475,9 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tbhNVPC.setForeground(Color.WHITE);
 		tbhNVPC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblDSCC.setTableHeader(tbhNVPC);
+		tblDSCC.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
+		//chỉnh kích thước coloumn
 		tblDSCC.setRowHeight(20);
 		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(50);
@@ -471,6 +489,14 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(9).setPreferredWidth(100);
+		
+		//trái phải của dữ liệu
+		tblDSCC.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblDSCC.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		
+		tblDSCC.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		tblDSCC.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
+		tblDSCC.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -551,6 +577,9 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 			}else {
 				setTextError("Chỉ có thể chấm công từ ngày hiện tại về trước!");
 			}
+		}
+		if(o == btnXuat) {
+			xuatDSChamCongNhanVienExcel();
 		}
 	}
 	@Override
@@ -746,5 +775,28 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		spnTangCa.setValue(ccnv.getGioTangCa());
 		txtMaNV.setText(ccnv.getPhanCong().getNhanVien().getMaNV());
 		txtGhiChu.setText(ccnv.getGhiChu());
+	}
+	//xuất thông tin ds chấm công nhân viên ra excel
+	private void xuatDSChamCongNhanVienExcel() {
+		if(dsChamCong.size()>0) {
+	        JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Chỉ cho phép chọn thư mục
+	        int option = fileChooser.showSaveDialog(null);
+	        if(option == JFileChooser.APPROVE_OPTION){
+	           File file = fileChooser.getSelectedFile();
+	           String saveDir = file.getAbsolutePath(); // Đây là thư mục mà người dùng đã chọn
+	           try {
+	        	   String filePath = saveDir + File.separator + "DanhSachChamCong-" + new SimpleDateFormat("dd-MM-yyyy").format(dtbNgayCC.getDate()) + ".xlsx";
+					xuatExcel.writeExcelTTCC(dsChamCong, filePath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }else{
+	           setTextError("Phải chọn thư mục lưu file!");
+	        }
+		}else{
+			setTextError("Không có thông tin nào để xuất!");
+		}
 	}
 }

@@ -79,11 +79,9 @@ public class ChamCongNhanVien_Dao {
 	        rs = st.executeQuery();
 
 	        while (rs.next()) {
-	            NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("matKhau"), rs.getString("hoTen"),
-	                    rs.getBoolean("gioiTinh"), new java.util.Date(rs.getDate("ngaySinh").getTime()), rs.getString("sDT"), rs.getString("email"),
-	                    rs.getString("soCCCD"), rs.getString("diaChi"), rs.getString("anhDaiDien"));
-	            BangPhanCongNhanVien pcnv = new BangPhanCongNhanVien(rs.getString("maPhanCong"), nv, new PhongBan_Dao().timPhongBanTheoMa(rs.getString("maPhongBan")), rs.getString("chucVu"), new java.util.Date(rs.getDate("ngayCongTac").getTime()), rs.getString("ghiChu"));
-	            BangChamCongNhanVien bccnv = new BangChamCongNhanVien(new PhanCongNhanVien_Dao().getPhanCongTheoMa(rs.getString("phanCongNV")), new java.util.Date(rs.getDate("ngayChamCong").getTime()), rs.getInt("caLam"), rs.getInt("trangThai"), rs.getString("gioDen"), rs.getFloat("gioTangCa"), rs.getString("ghiChu"));
+	            BangChamCongNhanVien bccnv = new BangChamCongNhanVien(new PhanCongNhanVien_Dao().getPhanCongTheoMa(rs.getString("phanCongNV")), 
+	            		new java.util.Date(rs.getDate("ngayChamCong").getTime()), rs.getInt("caLam"), rs.getInt("trangThai"), rs.getString("gioDen"), 
+	            		rs.getFloat("gioTangCa"), rs.getString("ghiChu"));
 	            chamCongList.add(bccnv);
 	        }
 	    } catch (SQLException e) {
@@ -176,6 +174,46 @@ public class ChamCongNhanVien_Dao {
 	            }
 	        }
 	        return n > 0;
+	    }
+//get ds chấm công của nhân viên theo maNV và thangNam
+	    public ArrayList<BangChamCongNhanVien> getDSChamCongNhanVien(String maNV, String thangNam) {
+	        ArrayList<BangChamCongNhanVien> list = new ArrayList<>();
+	        ConnectDB.getInstance();
+	        PreparedStatement st = null;
+	        ResultSet rs = null;
+	        try {
+	            Connection con = ConnectDB.getConnection();
+	            String sql = "SELECT * FROM BangChamCongNhanVien bccnv "
+	                        + "JOIN BangPhanCongNhanVien pcnv "
+	                        + "ON bccnv.phanCongNV = pcnv.maPhanCong "
+	                        + "WHERE pcnv.maNhanVien = ? "
+	                        + "AND MONTH(bccnv.ngayChamCong) = MONTH(CONVERT(datetime, '01/' + ?, 103)) "
+	                        + "AND YEAR(bccnv.ngayChamCong) = YEAR(CONVERT(datetime, '01/' + ?, 103))";
+
+	            st = con.prepareStatement(sql);
+	            st.setString(1, maNV);
+	            st.setString(2, thangNam);
+	            st.setString(3, thangNam);
+	            rs = st.executeQuery();
+
+	            while (rs.next()) {
+	                // Tạo đối tượng BangChamCongNhanVien từ kết quả truy vấn
+		            BangChamCongNhanVien bccnv = new BangChamCongNhanVien(new BangPhanCongNhanVien(rs.getString("phanCongNV")), 
+		            		new java.util.Date(rs.getDate("ngayChamCong").getTime()), rs.getInt("caLam"), rs.getInt("trangThai"), rs.getString("gioDen"), 
+		            		rs.getFloat("gioTangCa"), rs.getString("ghiChu"));
+	                list.add(bccnv);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                if (rs != null) rs.close();
+	                if (st != null) st.close();
+	            } catch (SQLException e2) {
+	                e2.printStackTrace();
+	            }
+	        }
+	        return list;
 	    }
 
 }

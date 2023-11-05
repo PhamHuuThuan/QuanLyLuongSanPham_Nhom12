@@ -15,6 +15,8 @@ import java.awt.Insets;
 import javax.swing.border.MatteBorder;
 
 import CustomUI.RoundedButton;
+import Dao.PhanCongNhanVien_Dao;
+import Entity.BangPhanCongNhanVien;
 import Entity.NhanVien;
 
 import javax.swing.SwingConstants;
@@ -140,7 +142,7 @@ public class Login_UI extends JFrame {
 
 		input_user = new JTextField();
 		input_user.requestFocusInWindow();
-		input_user.setHorizontalAlignment(SwingConstants.CENTER);
+		input_user.setHorizontalAlignment(SwingConstants.LEFT);
 		input_user.setForeground(new Color(255, 255, 255));
 		input_user.setBackground(Color.decode("#515151"));
 		input_user.setCaretColor(Color.WHITE);
@@ -164,7 +166,7 @@ public class Login_UI extends JFrame {
 
 		input_password = new JPasswordField();
 		input_password.setCaretColor(Color.WHITE);
-		input_password.setHorizontalAlignment(SwingConstants.CENTER);
+		input_password.setHorizontalAlignment(SwingConstants.LEFT);
 		input_password.setForeground(Color.WHITE);
 		input_password.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		input_password.setColumns(10);
@@ -245,16 +247,27 @@ public class Login_UI extends JFrame {
 					ex.printStackTrace();
 				}
 				
-				openViewHome();
+				checkLogin();
 			}
 		});
+		input_user.setText("NV00001");
+		input_password.setText("123456a@");
 	}
-
-	private void openViewHome() {
-		this.dispose();
-		NhanVien nv = new NhanVien("NV00001", "123456a@", "Phạm Hữu Thuận", false, new java.util.Date(Date.UTC(103, 4, 14, 0, 0, 0)), "+84123456789", "", "", "", "");
-		MainUI goPageMenu = new MainUI(nv);
-//		ViewHome goPageMenu =  new ViewHome();
-		goPageMenu.setVisible(true);
+	//kiểm tra thông tin nhân viên trong csdl
+	private void checkLogin() {
+		String maNV = input_user.getText();
+		String matKhau = input_password.getText();
+		BangPhanCongNhanVien pcnv = new PhanCongNhanVien_Dao().kiemTraDangNhap(maNV, matKhau);
+		if(pcnv!=null) {
+			if(pcnv.getChucVu().equals("Quản lý")) {
+				this.dispose();
+				new MainUI(pcnv).setVisible(true);
+			}else if(pcnv.getChucVu().equals("Nhân viên")) {
+				this.dispose();
+				new MainUI(pcnv).setVisible(true);
+			}else {
+				//thực tập sinh
+			}
+		}
 	}
 }

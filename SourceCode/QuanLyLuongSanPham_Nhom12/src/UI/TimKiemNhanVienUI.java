@@ -6,6 +6,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -21,6 +22,9 @@ import Dao.PhongBan_Dao;
 import Entity.BangPhanCongNhanVien;
 import Entity.NhanVien;
 import Entity.PhongBan;
+import Util.XuatExcel;
+import Util.XuatPDF;
+import net.sf.jasperreports.engine.JRException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,6 +33,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +51,8 @@ import javax.swing.JTextField;
 
 import java.awt.Component;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -63,7 +71,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private RoundedButton btnTim, btnXoaRong, btnXuat, btnFocus;
+	private RoundedButton btnTim, btnXoaRong, btnIn, btnXuat, btnFocus;
 	private DefaultTableModel dtbModelNV;
 	private JTable tblNV;
 	private JTableHeader tbhNV;
@@ -85,6 +93,8 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	private NhanVien_Dao nv_Dao = new NhanVien_Dao();
 	private PhanCongNhanVien_Dao pcnv_Dao = new PhanCongNhanVien_Dao();
 	private ArrayList<BangPhanCongNhanVien> dsPCNV = new ArrayList<>();
+	private XuatPDF xuatPDF = new XuatPDF();
+	private XuatExcel xuatExcel = new XuatExcel();
 	/**
 	 * Create the panel.
 	 */
@@ -358,12 +368,20 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		txtMaNV.setHorizontalAlignment(SwingConstants.CENTER);
 		txtMaNV.setColumns(5);
 		pnlAnhDaiDien.add(txtMaNV, BorderLayout.SOUTH);
-		pnlAnhDaiDien.add(Box.createVerticalStrut(100));
+		pnlAnhDaiDien.add(Box.createVerticalStrut(50));
 		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtMaNV.setForeground(textColor);
 		txtMaNV.setBackground(bgColor);
 		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		
+		btnIn = new RoundedButton("", null, 5, 0, 1.0f);
+		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnIn.setForeground(Color.WHITE);
+		btnIn.setBackground(Color.decode("#17a2b8"));
+		btnIn.setIcon(new ImageScaler("/image/printer_icon.png", 24, 24).getScaledImageIcon());
+		btnIn.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		pnlAnhDaiDien.add(btnIn);
 		
 		
 		JPanel pnlTTRight = new JPanel();
@@ -633,17 +651,29 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		tbhNV.setForeground(Color.WHITE);
 		tbhNV.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblNV.setTableHeader(tbhNV);
+		tblNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
 		
 		tblNV.setRowHeight(20);
 		tblNV.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblNV.getColumnModel().getColumn(1).setPreferredWidth(75);
-		tblNV.getColumnModel().getColumn(2).setPreferredWidth(125);
-		tblNV.getColumnModel().getColumn(3).setPreferredWidth(75);
+		tblNV.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblNV.getColumnModel().getColumn(2).setPreferredWidth(175);
+		tblNV.getColumnModel().getColumn(3).setPreferredWidth(50);
 		tblNV.getColumnModel().getColumn(4).setPreferredWidth(100);
-		tblNV.getColumnModel().getColumn(5).setPreferredWidth(150);
-		tblNV.getColumnModel().getColumn(6).setPreferredWidth(150);
+		tblNV.getColumnModel().getColumn(5).setPreferredWidth(200);
+		tblNV.getColumnModel().getColumn(6).setPreferredWidth(100);
 		tblNV.getColumnModel().getColumn(7).setPreferredWidth(100);
 		tblNV.getColumnModel().getColumn(8).setPreferredWidth(100);
+		
+		//chỉnh trái phải của dữ liệu trong bảng
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		tblNV.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+		tblNV.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tblNV.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		tblNV.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		
 		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -656,10 +686,12 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		btnTim.addActionListener(this);
 		btnXoaRong.addActionListener(this);
 		btnXuat.addActionListener(this);
+		btnIn.addActionListener(this);
 		
 		btnTim.addMouseListener(this);
 		btnXoaRong.addMouseListener(this);
 		btnXuat.addMouseListener(this);
+		btnIn.addMouseListener(this);
 		
 		tblNV.addMouseListener(this);
 		
@@ -696,12 +728,19 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		lblMessage.setText("");
 		Object o = e.getSource();
 		if(o == btnTim) {
 			timKiemNhanVien();
 		}
 		if(o == btnXoaRong) {
 			xoaRong();
+		}
+		if(o == btnIn) {
+			xuatNhanVien();
+		}
+		if(o == btnXuat) {
+			xuatDSNhanVienExcel();
 		}
 	}
 	private void setEditableForTextField(boolean edit) {
@@ -845,11 +884,11 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	    if(pcnv.getMaPhanCong()==null) {
 		    row[6] = "";  // Phòng ban
 		    row[7] = "";  // chức vụ
-		    row[8] = "";  // ghi chú
+		    row[8] = "";  // 
 	    }else {
 		    row[6] = pcnv.getPhongBan().getTenPhongBan();  // Phòng ban
 		    row[7] = pcnv.getChucVu();  // chức vụ
-		    row[8] = pcnv.getGhiChu();  // ghi chú
+		    row[8] = new SimpleDateFormat("dd-MM-yyyy").format(pcnv.getNgayCongTac());
 	    }
 	    dtbModelNV.addRow(row);
 	}
@@ -859,5 +898,38 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	    for (int i = 0; i < dsNV.size(); i++) {
 	        themNhanVienVaoBang(dsNV.get(i), dsPCNV.get(i));
 	    }
+	}
+	//xuất thông tin chi tiết 1 nhân viên
+	private void xuatNhanVien() {
+		int index = tblNV.getSelectedRow();
+		if(index!=-1) {
+			try {
+				xuatPDF.xuatThongTinNhanVien(dsNV.get(index), dsPCNV.get(index));
+			} catch (JRException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			setTextError("Bạn phải chọn nhân viên muốn xuất!");
+		}
+	}
+	//xuất thông tin ds nhân viên ra excel
+	private void xuatDSNhanVienExcel() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Chỉ cho phép chọn thư mục
+        int option = fileChooser.showSaveDialog(null);
+        if(option == JFileChooser.APPROVE_OPTION){
+           File file = fileChooser.getSelectedFile();
+           String saveDir = file.getAbsolutePath(); // Đây là thư mục mà người dùng đã chọn
+           try {
+        	   String filePath = saveDir + File.separator + "DanhSachNhanVien" + new SimpleDateFormat("ddMMyyHHmmss").format(new Date()) + ".xlsx";
+				xuatExcel.writeExcelTTPC(dsPCNV, dsNV, filePath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }else{
+           setTextError("Phải chọn thư mục lưu file!");
+        }
 	}
 }

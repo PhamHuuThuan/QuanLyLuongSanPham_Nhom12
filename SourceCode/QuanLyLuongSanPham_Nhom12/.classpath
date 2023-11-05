@@ -7,7 +7,8 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
-	<classpathentry excluding="src/|res/" kind="src" path=""/>
+	<classpathentry excluding="src/|res/|lib/jasper_report_lib/" kind="src" path=""/>
+	<classpathentry kind="src" path="lib/jasper_report_lib"/>
 	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-beanutils-1.8.3.jar"/>
 	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-collections-3.2.1-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasper_report_lib/commons-digester-2.1.jar"/>
@@ -18,5 +19,12 @@
 	<classpathentry kind="lib" path="lib/jasper_report_lib/jasperreports-fonts-5.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/sqljdbc42.jar"/>
+	<classpathentry kind="lib" path="lib/excel_lib/commons-codec-1.11.jar"/>
+	<classpathentry kind="lib" path="lib/excel_lib/commons-collections4-4.2.jar"/>
+	<classpathentry kind="lib" path="lib/excel_lib/commons-compress-1.18.jar"/>
+	<classpathentry kind="lib" path="lib/excel_lib/poi-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/excel_lib/poi-ooxml-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/excel_lib/poi-ooxml-schemas-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/excel_lib/xmlbeans-3.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

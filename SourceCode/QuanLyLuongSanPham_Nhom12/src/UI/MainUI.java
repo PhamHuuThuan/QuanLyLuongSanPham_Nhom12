@@ -21,6 +21,7 @@ import org.jdesktop.swingx.plaf.basic.CalendarHeaderHandler;
 import org.jdesktop.swingx.plaf.basic.SpinningCalendarHeaderHandler;
 
 import ConnectDB.ConnectDB;
+import Entity.BangPhanCongNhanVien;
 import Entity.NhanVien;
 import Util.ImportFont;
 import Util.LuuTru;
@@ -37,13 +38,13 @@ public class MainUI extends JFrame {
 	public LuuTru l = new LuuTru();
 	public ResourceBundle read_file_languages = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
 	public ResourceBundle read_file_themes = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
-	public NhanVien nv;
+	public BangPhanCongNhanVien nv;
 	private JLabel clockLabel;
 
 	/**
 	 * Create the frame.
 	 */
-	public MainUI(NhanVien nv) {
+	public MainUI(BangPhanCongNhanVien nv) {
 		ImageIcon appIcon = new ImageIcon("assets/icon_logo.png");
 		setIconImage(appIcon.getImage());
 		this.nv = nv;
