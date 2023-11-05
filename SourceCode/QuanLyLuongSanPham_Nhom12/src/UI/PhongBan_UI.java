@@ -3,6 +3,7 @@ package UI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
@@ -11,18 +12,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.NhanVien_Dao;
+import Dao.PhongBan_Dao;
+import Entity.NhanVien;
+import Entity.PhongBan;
+import Util.SinhMaTuDong;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.EmptyBorder;
@@ -37,13 +53,18 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JTextField txtMaPhongBan, txtTenPb, txtSoNv, txtMota;
+	private JTextField txtMaPB, txtTenPB, txtSoNv, txtMota;
 	private Font fontText;
 	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy;
 	private JTable tblPb;
+	private JLabel lblMessage;
 	private JTableHeader tbhPb;
-
+	private RoundedButton btnFocus, btnIn;
 	private DefaultTableModel tabModel;
+	private PhongBan_Dao pb_Dao = new PhongBan_Dao();
+	private ArrayList<PhongBan> dsPB = new ArrayList<>();
+	private boolean isThem = false;
+	private Object maPhongBan;
 
 	public PhongBan_UI(MainUI main) {
 		this.main = main;
@@ -100,15 +121,15 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		box_1.add(horizontalStrut);
 
-		txtMaPhongBan = new JTextField();
-		txtMaPhongBan.setFont(fontText);
-		txtMaPhongBan.setForeground(textColor);
-		txtMaPhongBan.setBackground(bgColor);
-		txtMaPhongBan.setBorder(
+		txtMaPB = new JTextField();
+		txtMaPB.setFont(fontText);
+		txtMaPB.setForeground(textColor);
+		txtMaPB.setBackground(bgColor);
+		txtMaPB.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		box_1.add(txtMaPhongBan);
-		txtMaPhongBan.setColumns(10);
+		box_1.add(txtMaPB);
+		txtMaPB.setColumns(10);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(50);
 		box_1.add(horizontalStrut_1);
@@ -119,17 +140,17 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		box_1.add(horizontalStrut_2);
 
-		txtTenPb = new JTextField();
-		txtTenPb.setForeground(Color.BLACK);
-		txtTenPb.setFont(fontText);
-		txtTenPb.setBackground(bgColor);
-		txtTenPb.setColumns(10);
-		txtTenPb.setBorder(
+		txtTenPB = new JTextField();
+		txtTenPB.setForeground(Color.BLACK);
+		txtTenPB.setFont(fontText);
+		txtTenPB.setBackground(bgColor);
+		txtTenPB.setColumns(10);
+		txtTenPB.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		;
-		box_1.add(txtTenPb);
-		txtTenPb.setColumns(10);
+		box_1.add(txtTenPB);
+		txtTenPB.setColumns(10);
 
 		Component verticalStrut = Box.createVerticalStrut(20);
 		pnlThongTinPhongBan.add(verticalStrut);
@@ -174,6 +195,13 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
 		box_2.add(txtMota);
+		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		pnlMessage.setBackground(bgColor);
+		pnlThongTinPhongBan.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel(""));
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(fontText.deriveFont(Font.ITALIC));
 
 		JPanel pnlChucNang = new JPanel();
 		pnlChucNang.setBackground(bgColor);
@@ -232,7 +260,7 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		pnlListPb.setLayout(new BoxLayout(pnlListPb, BoxLayout.X_AXIS));
 		add(pnlListPb, BorderLayout.CENTER);
 
-		String cols[] = { "Mã Phòng ban", "Tên Phòng ban", "Số Nhân Viên", "Mô tả" };
+		String cols[] = {"STT", "Mã Phòng ban", "Tên Phòng ban", "Số Nhân Viên", "Mô tả" };
 		tabModel = new DefaultTableModel(cols, 0);
 
 		tblPb = new JTable(tabModel);
@@ -263,58 +291,85 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		btnXoa.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
+		tblPb.addMouseListener(this);
 
 		hanleButtonSaveAndCanle(false);
-		setEditTextFiled(false);
+		//Không thể chỉnh sửa txt
+		setEditableForTextField(false);
+		
+		//Set giá trị mặc định để hiển thị
+		txtMaPB.setText("PB12");
+		txtTenPB.setText("PhongBan");
+		txtSoNv.setText("1234");
+		txtMota.setText("LL");
 
-		txtMaPhongBan.setText("PB0001");
-
+		
+		//get du lieu len
+		dsPB= pb_Dao.getAllPhongBan();
+		themTatCaPhongBanVaoBang(dsPB);
+		setEditableForTextField(false);
+		resetTextFiled();
+		
 	}
+
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
+		if(e.getSource() == tblPb) {
+			int index = tblPb.getSelectedRow();
+			if(index != -1) {
+				hienThiThongTinPB(index);
+			}
+		}
+		}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			Object o = e.getSource();
+			if (o instanceof RoundedButton) {
+				setBorderForFocusButton(o);
+		    }
+		}
+		@Override
+		public void mouseReleased(MouseEvent e) {
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			
+		}
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o == btnThem) {
 			hanleButtonSaveAndCanle(true);
 			setEditTextFiled(true);
+			isThem = true;
 			resetTextFiled();
 		}
 		if (o == btnSua) {
+			isThem = false;
 			hanleButtonSaveAndCanle(true);
 			setEditTextFiled(true);
+		    // Lấy chỉ số của hàng được chọn
 		}
-		if (o == btnXoa) {
 
+		if (o == btnXoa) {
+		  xoaPhongBan();
 		}
 		if(o==btnLuu) {
+			if(isThem==true) {
+				themPhongban();	
+			}else {
+				suaPhongBan();
+			}
 			hanleButtonSaveAndCanle(false);
 			setEditTextFiled(false);
-		}
+			}
 		if(o==btnHuy) {
 			hanleButtonSaveAndCanle(false);
 			setEditTextFiled(false);
@@ -353,23 +408,193 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 
 	private void setEditTextFiled(boolean edit) {
 		if (edit == true) {
-			txtMaPhongBan.setEditable(true);
-			txtTenPb.setEditable(true);
+			txtMaPB.setEditable(true);
+			txtTenPB.setEditable(true);
 			txtSoNv.setEditable(true);
 			txtMota.setEditable(true);
 		} else {
-			txtMaPhongBan.setEditable(false);
-			txtTenPb.setEditable(false);
+			txtMaPB.setEditable(false);
+			txtTenPB.setEditable(false);
 			txtSoNv.setEditable(false);
 			txtMota.setEditable(false);
 		}
 	}
 
 	private void resetTextFiled() {
-		txtMaPhongBan.setText("");
-		txtTenPb.setText("");
+		txtMaPB.setText("");
+		txtTenPB.setText("");
 		txtSoNv.setText("");
 		txtMota.setText("");
 	}
 
+	//hiển thị border cho button được user nhấn
+	private void setBorderForFocusButton(Object o) {
+		if(btnFocus!=null && btnFocus!=o) {
+			btnFocus.setFocusButton(null, 0);
+		}
+		if(btnFocus==null) {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+		else if(btnFocus == btnThem || btnFocus == btnSua) {
+			if(o == btnHuy || o == btnLuu) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}else if(btnFocus == btnLuu || btnFocus == btnHuy) {
+			if(o == btnThem || o == btnSua || o == btnXoa || o == btnIn) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}else {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+	}
+	//Hàm get dữ liệu trên txt ra đối tượng nhân viên
+	private PhongBan convertDataToPhongBan() {
+		String maPhongBan = txtMaPB.getText();
+		String tenPb = txtTenPB.getText();
+		String soNv = txtSoNv.getText();
+		String moTa = txtMota.getText();
+		
+		return new PhongBan(maPhongBan, tenPb, Integer.parseInt(soNv), moTa);
+	}
+	//Hiển thị nhân viên được chọn từ table lên bảng thông tin
+	private void hienThiThongTinPB(int index) {
+		txtMaPB.setText(dsPB.get(index).getMaPB());
+		txtTenPB.setText(dsPB.get(index).getTenPhongBan());
+		txtSoNv.setText(dsPB.get(index).getsoLuongNV()+"");
+		txtMota.setText(dsPB.get(index).getMoTa());
+	}
+	
+	private boolean validDataPB() {
+		String maPhongBan = txtMaPB.getText();
+		String tenPb  = txtTenPB.getText();
+		String soNv = txtSoNv.getText();
+		String moTa = txtMota.getText();
+
+		if(!maPhongBan.matches("\\S+") || !maPhongBan.matches("^PB\\d{2}$")) {
+			setTextError("Mã nhân viên phải có dạng: PB12!");
+			return false;
+		}
+		if(tenPb==null || tenPb.trim().length()<=0) {
+			setTextError("Tên Phòng ban không được để trống!");
+			return false;
+		}
+		
+		if (soNv.matches("\\d+")) { // Kiểm tra xem soNv có phải là một chuỗi chỉ chứa số hay không
+		    int soNvInt = Integer.parseInt(soNv); // Chuyển đổi chuỗi thành số nguyên
+		    if (soNvInt < 0) {
+		    	setTextError("Số nhân viên phải lớn hơn 0!");
+		        return false;
+		    }
+		}
+		return true;
+
+	}
+	//Thêm nhân viên từ giao diện vào csdl
+	private void themPhongban() {
+		if(validDataPB()==true) {
+			PhongBan pbNew = convertDataToPhongBan();
+			if(pbNew != null) {
+				if(pb_Dao.themPhongBan(pbNew)) {
+					lblMessage.setText("Thêm phòng ban thành công!");
+					themPhongBanVaoBang(pbNew);
+					resetTextFiled();
+				}else {
+					setTextError("Thêm thất bại! Trùng mã!");
+				}
+			}else {
+				setTextError("Thêm thất bại! Có lỗi xảy ra!");
+			}
+		}
+	}
+
+
+	// sửa một pb được chọn
+	private void suaPhongBan() {
+		if(tblPb.getSelectedRow()!=-1) {
+			if(validDataPB()==true) {
+				PhongBan pbNew = convertDataToPhongBan();
+				if(pbNew != null) {
+					if(pb_Dao.suaPhongBan(pbNew)) {
+						lblMessage.setText("Sửa thành công!");
+						displayButtonSaveAndCancel(false);
+						setEditableForTextField(false);
+						resetTextFiled();
+						dsPB = pb_Dao.getAllPhongBan();
+						themTatCaPhongBanVaoBang(dsPB);
+					}else {
+						setTextError("Sửa thất bại! Không tìm thấy phòng ban!");
+					}
+				}else {
+					setTextError("Sửa thất bại! Lỗi không xác định!");
+				}
+			}
+		}else {
+			setTextError("Bạn cần chọn phòng ban muốn sửa!");
+		}
+	}
+	
+	
+	private void setEditableForTextField(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void displayButtonSaveAndCancel(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//Xóa phòng ban được chọn
+	private void xoaPhongBan() {
+		if(tblPb.getSelectedRow()!=-1) {
+			String maPB = txtMaPB.getText();
+			if(maPB != null) {
+				if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+					if(pb_Dao.xoaPhongBan(maPB)) {
+						lblMessage.setText("Xóa thành công!");
+						resetKeyboardActions();
+					}else {
+						setTextError("Xóa thất bại! Không tìm thấy nhân viên!");
+					}
+				}
+			}else {
+				setTextError("Xóa thất bại! Có lỗi xảy ra!");
+			}
+		}else {
+			setTextError("Bạn cần chọn nhân viên muốn xóa!");
+		}
+	}
+	// thông báo lỗi
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
+	}
+	//get danh sách phòng ban từ csdl lên table
+	private void getDataToTable() {
+		dsPB = pb_Dao.getAllPhongBan();
+		themTatCaPhongBanVaoBang(dsPB);
+	}
+	//thêm một phòng ban vào table 
+	private void themPhongBanVaoBang(PhongBan pb) {
+	    Object[] row = new Object[10];
+	    row[0] = tabModel.getRowCount() + 1;  // STT
+	    row[1] = pb.getMaPB();  // Mã NV
+	    row[2] = pb.getTenPhongBan();  // Họ tên
+	    row[3] = String.valueOf(pb.getsoLuongNV());  // SDT
+	    row[4] = pb.getMoTa();  // Email
+	    
+	    tabModel.addRow(row);
+	}
+	//thêm một ds phòng ban vào bảng
+	private void themTatCaPhongBanVaoBang(ArrayList<PhongBan> list) {
+		tabModel.setRowCount(0);
+	    for (PhongBan pb : list) {
+	        themPhongBanVaoBang(pb);
+	    }
+	}
 }
+

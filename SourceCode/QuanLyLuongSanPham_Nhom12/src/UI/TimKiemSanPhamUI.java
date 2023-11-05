@@ -13,6 +13,13 @@ import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.HopDong_Dao;
+import Dao.SanPham_Dao;
+import Entity.BangPhanCongNhanVien;
+import Entity.HopDong;
+import Entity.NhanVien;
+import Entity.PhongBan;
+import Entity.SanPham;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,6 +29,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -42,12 +51,26 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JTextField txtMaHD, txtMaSP, txtTenSP, txtDonGia;
-	private RoundedButton btnTimKiem, btnXoaRong, btnXuat, btnFocus;
+	private RoundedButton btnTimKiem, btnXoaRong, btnXuat, btnTim, btnFocus;
 	private DefaultTableModel dtblModelSP;
 	private JTable tblSP;
 	private JTableHeader tbhSP;
-	private JPanel pnlChucNang;
-	
+	private JPanel pnlChucNang, pnlBangSP, pnlNorth;
+	private JTextField   txtdonViTinh, txtSoLuong, txtYeuCau;;
+	private DefaultTableModel dtbModelSP, dtblModelHD;
+	private JTable  tblHD;
+	private JTableHeader  tbhHD;
+	private JSpinner spnSoLuong;
+	private JTable tblPb;
+	private JLabel lblMessage;
+	private JTableHeader tbhPb;
+	private DefaultTableModel tabModel;
+	private HopDong_Dao hd_Dao = new HopDong_Dao();
+	private ArrayList<HopDong> dsHD = new ArrayList<>();
+	private SanPham_Dao sp_Dao = new SanPham_Dao();
+	private ArrayList<SanPham> dsSP = new ArrayList<>();
+	private boolean isThem = false;
+
 	private JTextField txtMaHDS;
 	private JTextField txtMaSPS;
 	private JTextField txtTenSPS;
@@ -246,6 +269,12 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlThongTinSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		b.add(pnlThongTinSP);
 		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlMessage.setBackground(bgColor);
+		pnlThongTinSP.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel());
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		// Tao box chua cac phan tu hang 1: maHD, ma SP, tenSP
 		Box b1 = Box.createHorizontalBox();
 		pnlThongTinSP.add(b1);
@@ -480,42 +509,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		//Set giá trị mặc định để hiển thị
 		
 	}
-	@Override
-	public void mouseClicked(MouseEvent e) {
 
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		Object o = e.getSource();
-		if (o instanceof RoundedButton) {
-	    }
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if(o == btnTimKiem) {
-			setEditableForTextField(true);
-			xoaRong();
-			
-		}
-		if(o == btnXoaRong) {
-			setEditableForTextField(true);
-			
-		}
-	}
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtMaHD.setEditable(true);
@@ -567,4 +561,207 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
         }
         return text;
     }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource() == tblPb) {
+			int index = tblPb.getSelectedRow();
+			if(index != -1) {
+				hienThiThongTinSP(index);
+			}
+		}
+		}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			Object o = e.getSource();
+			if (o instanceof RoundedButton) {
+				setBorder(getBorder());
+		    }
+		}
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object o = e.getSource();
+			if(o == btnTim) {
+				timKiemNhanVien();
+			}
+			if(o == btnXoaRong) {
+				xoaRong();
+			}
+		}
+
+		//Hàm get dữ liệu trên txt ra đối tượng nhân viên
+		private SanPham convertDataToSanPham() {
+			HopDong maHopDong = main.sp;
+			String maSP = txtMaSP.getText();
+			String tenSP = txtTenSP.getText();
+			String donGia = txtDonGia.getText();
+			String donViTinh = txtdonViTinh.getText();
+			int soLuong = Integer.parseInt(spnSoLuong.getValue().toString());
+			String yeuCau = txtYeuCau.getText();
+			
+			return new SanPham(maSP, new HopDong(txtMaHD.getText()), tenSP, donViTinh, soLuong, yeuCau, Double.parseDouble(donGia));
+		}
+		
+		//hiển thị border cho button được user nhấn
+		private void setBorderForFocusButton(Object o) {
+			if(btnFocus!=null && btnFocus!=o) {
+				btnFocus.setFocusButton(null, 0);
+			}
+			if(btnFocus==null) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+			else {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}
+		//Hiển thị nhân viên được chọn từ table lên bảng thông tin
+		private void hienThiThongTinSP(int index) {
+			txtMaSP.setText(dsSP.get(index).getMaSP());
+			txtTenSP.setText(dsSP.get(index).getTenSP());
+			txtDonGia.setText(String.valueOf(dsSP.get(index).getDonGia()));;
+			txtdonViTinh.setText(dsSP.get(index).getDonViTinh());
+			txtSoLuong.setText(dsSP.get(index).getSoLuong()+"");
+			txtYeuCau.setText(dsSP.get(index).getYeuCau());
+		}
+
+		private boolean validDataSP() {
+			String maHopDong = txtMaHD.getText();
+			String maSP = txtMaSP.getText();
+			String tenSP  = txtTenSP.getText();
+			String soLuong = txtSoLuong.getText();
+			String donViTinh = txtdonViTinh.getText();
+			String donGia = txtDonGia.getText();
+			String yeuCau = txtYeuCau.getText();
+			
+
+			if(!maHopDong.matches("\\S+") || !maHopDong.matches("^HD\\d{5}$")) {
+				setTextError("Mã HD phải có dạng: PB12345!");
+				return false;
+			}
+			if(!maSP.matches("\\S+") || !maSP.matches("^SP\\d{5}$")) {
+				setTextError("Mã SP phải có dạng: SP12345!");
+				return false;
+			}
+			if(tenSP==null || tenSP.trim().length()<=0) {
+				setTextError("Tên SP không được để trống!");
+				return false;
+			}
+			
+			if (soLuong.matches("\\d+")) { // Kiểm tra xem soNv có phải là một chuỗi chỉ chứa số hay không
+			    int soLuongInt = Integer.parseInt(soLuong); // Chuyển đổi chuỗi thành số nguyên
+			    if (soLuongInt < 0) {
+			    	setTextError("Số Luong phải lớn hơn 0!");
+			        return false;
+			    }
+			}
+			return true;
+
+		}
+	private void setEditTextFiled(boolean edit) {
+		if (edit == true) {
+			txtMaHD.setEditable(true);
+			txtMaSP.setEditable(true);
+			txtTenSP.setEditable(true);
+			txtDonGia.setEditable(true);
+			txtdonViTinh.setEditable(true);
+			txtSoLuong.setEditable(true);
+			txtYeuCau.setEditable(true);
+		} else {
+			txtMaHD.setEditable(false);
+			txtMaSP.setEditable(false);
+			txtTenSP.setEditable(false);
+			txtDonGia.setEditable(false);
+			txtdonViTinh.setEditable(false);
+			txtSoLuong.setEditable(false);
+			txtYeuCau.setEditable(false);
+		}
+	//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
+			JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			pnlBangSP.add(scrSP);
+			
+			pnlNorth.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
+			
+			setEditableForTextField(false);
+			
+			btnTim.addActionListener(this);
+			btnXoaRong.addActionListener(this);
+			btnXuat.addActionListener(this);
+			
+			btnTim.addMouseListener(this);
+			btnXoaRong.addMouseListener(this);
+			btnXuat.addMouseListener(this);
+			
+			tblSP.addMouseListener(this);
+			
+			xoaRong();
+		}
+	private void resetTextFiled() {
+		txtMaHD.setText("");
+		txtMaSP.setText("");;
+		txtTenSP.setText("");
+		txtDonGia.setText("");
+		txtdonViTinh.setText("");
+		txtSoLuong.setText("");
+		txtYeuCau.setText("");
+	}
+	// thông báo lỗi
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
+	}
+	private void timKiemNhanVien() {
+		HopDong maHopDong = main.sp;
+		String maSP = txtMaSP.getText();
+		String tenSP = txtTenSP.getText();
+		String donGia = txtDonGia.getText();
+		String donViTinh = txtdonViTinh.getText();
+		int soLuong = Integer.parseInt(spnSoLuong.getValue().toString());
+		String yeuCau = txtYeuCau.getText();
+		
+		return new SanPham(maSP, maHopDong, tenSP, donViTinh, Integer.parseInt(spnSoLuong), yeuCau, soLuong);
+	    if(dsSP.size()!=0) {
+	    	dsSP = sp_Dao.getSanPhamTheoHopDong(maSP);
+	    	lblMessage.setText("Tìm thấy " + dsSP.size() + " sản phẩm." );
+	    	themTatCaSanPhamVaoBang(dsSP);
+	    }else {
+	    	setTextError("Không tìm thấy sản phẩm nào phù hợp!");
+	    }
+	    
+	}
+	//thêm một nhân viên vào table 
+	private void themSanPhamVaoBang(SanPham sp) {
+	    Object[] row = new Object[10];
+	    row[0] = tabModel.getRowCount() + 1;  // STT
+	    row[1] = sp.getMaSP();  
+	    row[2] = sp.getMaHopDong();  
+	    row[3] = sp.getTenSP();  
+	    row[4] = sp.getDonViTinh();  
+	    row[5] = String.valueOf(sp.getSoLuong()); 
+	    row[6] = sp.getYeuCau();  
+	    row[7] = sp.getDonGia();
+	    
+	    tabModel.addRow(row);
+	}
+	//thêm một ds nhân viên vào bảng
+	private void themTatCaSanPhamVaoBang(ArrayList<SanPham> list) {
+		tabModel.setRowCount(0);
+	    for (SanPham sp : list) {
+	        themSanPhamVaoBang(sp);
+	    }
+	}
 }

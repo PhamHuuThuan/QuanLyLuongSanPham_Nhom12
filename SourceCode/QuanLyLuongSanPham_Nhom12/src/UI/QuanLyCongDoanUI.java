@@ -1,11 +1,13 @@
 package UI;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.awt.*;
@@ -20,44 +22,17 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.CongDoan_Dao;
+import Dao.HopDong_Dao;
+import Dao.SanPham_Dao;
+import Entity.CongDoan;
+import Entity.HopDong;
+import Entity.SanPham;
+import Util.SinhMaTuDong;
 
 public class QuanLyCongDoanUI extends JPanel implements ActionListener, MouseListener{
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
@@ -69,8 +44,15 @@ public class QuanLyCongDoanUI extends JPanel implements ActionListener, MouseLis
 	private JXDatePicker dtpNgayHT;
 	private JTableHeader tbhCD, tbhSP;
 	private JPanel pnlChucNang; 
+	private JLabel lblMessage;
 	private JTextArea txaTinhTrang;
-	private JSpinner spnSoLuong;
+	private JSpinner spnSoLuong, spnThuTu;
+	private CongDoan_Dao cd_Dao = new CongDoan_Dao();
+	private SanPham_Dao sp_Dao = new SanPham_Dao();
+	private ArrayList<SanPham> dsSP = new ArrayList<>();
+	private ArrayList<CongDoan> dsCD = new ArrayList<>();
+	private boolean isThem = false;
+	private JSpinner modelCD;
 	
 	public QuanLyCongDoanUI(MainUI main) {
 		this.main = main;
@@ -117,7 +99,6 @@ public class QuanLyCongDoanUI extends JPanel implements ActionListener, MouseLis
 				main.read_file_languages.getString("lblDonGia")};
 		dtblModelSP = new DefaultTableModel(colsSPName, 0);
 		tblSP = new JTable(dtblModelSP);
-		
 		tbhSP = new JTableHeader(tblSP.getColumnModel());
 		tbhSP.setReorderingAllowed(false);
 		tbhSP.setBackground(componentColor);
@@ -263,24 +244,29 @@ public class QuanLyCongDoanUI extends JPanel implements ActionListener, MouseLis
 		pnlThongTinCD.add(b3);
 		b3.setBackground(bgColor);
 		
+		//Tao box chua thong tin hang 4: 
+		Box b4 = Box.createHorizontalBox();
+		pnlThongTinCD.add(b4);
 		JLabel lblTinhTrang = new JLabel("Tình trạng:");
 		lblTinhTrang.setForeground(textColor);
 		lblTinhTrang.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		b3.add(lblTinhTrang);
-		b3.add(Box.createHorizontalStrut(35));
+		b4.add(lblTinhTrang);
 		
-		txaTinhTrang = new JTextArea();
-		txaTinhTrang.setRows(3);
-		txaTinhTrang.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		txaTinhTrang.setForeground(textColor);
-		txaTinhTrang.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		JScrollPane scrYC = new JScrollPane(txaTinhTrang,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		b3.add(scrYC);
+		b4.add(Box.createHorizontalStrut(15));
 		
-		//Tao box chua thong tin hang 4: 
-		Box b4 = Box.createHorizontalBox();
-		pnlThongTinCD.add(b3);
+		txtTinhTrang = new JTextField();
+		txtTinhTrang.setForeground(textColor);
+		txtTinhTrang.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtTinhTrang.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtTinhTrang.setBackground(bgColor);
+		txtTinhTrang.setColumns(7);
+		b4.add(txtTinhTrang);
+		b4.add(Box.createHorizontalStrut(75));
+		
+		pnlThongTinCD.add(Box.createVerticalStrut(20));
+		
+		
 		JLabel lblNgayHT = new JLabel("Ngày hoàn thành:");
 		lblNgayHT.setForeground(textColor);
 		lblNgayHT.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -299,9 +285,17 @@ public class QuanLyCongDoanUI extends JPanel implements ActionListener, MouseLis
 		BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		dtpNgayHT.getEditor().setBackground(bgColor);
 		dtpNgayHT.getEditor().setForeground(textColor);
-		b3.add(dtpNgayHT);
-		b3.add(Box.createHorizontalStrut(30));
+		b4.add(dtpNgayHT);
+		b4.add(Box.createHorizontalStrut(30));
 
+		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlMessage.setBackground(bgColor);
+		pnlThongTinCD.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel());
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
+		
 		
 		pnlChucNang = new JPanel();
 		pnlNorth.add(pnlChucNang, BorderLayout.SOUTH);
@@ -383,6 +377,337 @@ public class QuanLyCongDoanUI extends JPanel implements ActionListener, MouseLis
 		btnXoa.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
+		
+		dsSP= sp_Dao.getALLSanPham(null);
+		themTatCaSanPhamVaoBang(dsSP);
+		setEditTextFiled(isThem);
+				
+	}
+		
+		
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource() == tblCD) {
+			int index = tblCD.getSelectedRow();
+			if(index != -1) {
+				hienThiThongTinCD(index);
+			}
+		}
+		
+	if(e.getSource() == tblCD) {
+		int index = tblCD.getSelectedRow();
+		if(index != -1) {
+			txtMaSP.setText(tblSP.getValueAt(index,0).toString());
+		}
+	}
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Object o = e.getSource();
+		if (o instanceof RoundedButton) {
+			setBorderForFocusButton(o);
+	    }
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
+	}
+public void actionPerformed(ActionEvent e) {
+	lblMessage.setText("");
+	Object o = e.getSource();
+	main.music.playSE(2);
+	if(o == btnThem) {
+		hanleButtonSaveAndCanle(true);
+		setEditTextFiled(true);
+		resetTextFiled();	
+		txtMaCD.setText(new SinhMaTuDong().sinhMaCD());
+
+		isThem = true;
+	}
+	if (o == btnSua) {
+		isThem = false;
+		hanleButtonSaveAndCanle(true);
+		setEditTextFiled(true);
+	    // Lấy chỉ số của hàng được chọn
 	}
 
+	if (o == btnXoa) {
+	  xoaCongDoan();
+	}
+	if(o==btnLuu) {
+		if(isThem==true) {
+			themCongDoan();	
+		}else {
+			suaCongDoan();
+		}
+		hanleButtonSaveAndCanle(false);
+		setEditTextFiled(false);
+		}
+if(o==btnHuy) {
+	hanleButtonSaveAndCanle(false);
+	setEditTextFiled(false);
+}
+}
+
+private void hanleButtonSaveAndCanle(boolean display) {
+	if (display == true) {
+		btnLuu.setEnabled(true);
+		btnLuu.setAlpha(1f);
+
+		btnHuy.setEnabled(true);
+		btnHuy.setAlpha(1f);
+
+		btnThem.setEnabled(false);
+		btnThem.setAlpha(0.6f);
+		btnSua.setEnabled(false);
+		btnSua.setAlpha(0.6f);
+		btnXoa.setEnabled(false);
+		btnXoa.setAlpha(0.6f);
+	} else {
+		btnLuu.setEnabled(false);
+		btnLuu.setAlpha(0.6f);
+
+		btnHuy.setEnabled(false);
+		btnHuy.setAlpha(0.6f);
+
+		btnThem.setEnabled(true);
+		btnThem.setAlpha(1f);
+		btnSua.setEnabled(true);
+		btnSua.setAlpha(1f);
+		btnXoa.setEnabled(true);
+		btnXoa.setAlpha(1f);
+	}
+}
+
+private void setEditTextFiled(boolean edit) {
+	if (edit == true) {
+		txtDonGia.setEditable(true);
+		txtTenCD.setEditable(true);
+		
+	} else {
+		txtMaCD.setEditable(false);
+		txtMaSP.setEditable(false);
+
+	}
+}
+
+//xóa rỗng thông tin Cong doan
+private void resetTextFiled() {
+	txtMaCD.setText(new SinhMaTuDong().sinhMaCD());
+	txtMaSP.setText("");
+	txtTenCD.setText("");
+	txtThuTu.setText("");
+	txtDonGia.setText("");
+	txtSoLuong.setText("");
+	txtTinhTrang.setText("");
+	dtpNgayHT.setDate(null);
+	
+}
+//hiển thị border cho button được user nhấn
+private void setBorderForFocusButton(Object o) {
+	if(btnFocus!=null && btnFocus!=o) {
+		btnFocus.setFocusButton(null, 0);
+	}
+	if(btnFocus==null) {
+		btnFocus = (RoundedButton) o;
+		btnFocus.setFocusButton(main.borderFocusColor, 3);
+	}
+	else if(btnFocus == btnThem || btnFocus == btnSua) {
+		if(o == btnHuy || o == btnLuu) {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+	}else if(btnFocus == btnLuu || btnFocus == btnHuy) {
+		if(o == btnThem || o == btnSua || o == btnXoa || o == btnIn) {
+			btnFocus = (RoundedButton) o;
+			btnFocus.setFocusButton(main.borderFocusColor, 3);
+		}
+	}else {
+		btnFocus = (RoundedButton) o;
+		btnFocus.setFocusButton(main.borderFocusColor, 3);
+	}
+}
+
+
+//kiểm tra dữ liệu người dùng nhập vào có đúng không
+private boolean validDataCD() {
+	String maCD = txtMaCD.getText();
+	String tenCD = txtTenCD.getText();
+	int thuTu = Integer.parseInt(spnThuTu.getValue().toString());
+	int soLuong = Integer.parseInt(spnSoLuong.getValue().toString());
+	String donGia = txtDonGia.getText().replace(",", "");
+
+	if(!maCD.matches("\\S+") || !maCD.matches("^PB\\d{5}$")) {
+		setTextError("Mã công đoạn phải có dạng: CD12345!");
+		return false;
+	}
+	if(tenCD==null || tenCD.trim().length()<=0) {
+		setTextError("Tên công đoạn không được rỗng");
+		return false;
+	}
+	if(thuTu < 0) {
+		setTextError("Số lượng sản phẩm phải lớn hơn 0");
+		return false;
+	}
+	if(soLuong < 0) {
+		setTextError("Số lượng sản phẩm phải lớn hơn 0");
+		return false;
+	}if(donGia.matches("\\d+")==false && Double.parseDouble(donGia)<0) {
+		setTextError("Đơn giá công đoạn có định dạng #,### hoặc chỉ gồm số và >= 0");
+		return false;
+	}
+	
+	return true;
+}
+
+//thêm một hợp đồng vào table 
+	private void themSanPhamVaoBang(SanPham sp) {
+	    String[] row = new String[10];
+	    row[0] = sp.getMaSP();
+	    row[1] = sp.getTenSP();
+	    row[2] = String.valueOf(sp.getSoLuong());
+	    row[3] = new DecimalFormat("#,###").format(sp.getDonGia());
+	    
+	    dtblModelSP.addRow(row);
+	}
+	//thêm một ds hợp đồng vào bảng
+	private void themTatCaSanPhamVaoBang(ArrayList<SanPham> list) {
+		dtblModelSP.setRowCount(0);
+	    for (SanPham sp : list) {
+	        themSanPhamVaoBang(sp);
+	    }
+}
+///thêm một sản phẩm vào table 
+	private void themCongDoanVaoBang(CongDoan cd) {
+	    String[] row = new String[10];
+	    row[0] = String.valueOf(dtblModelCD.getRowCount() + 1);
+	    row[1] = cd.getMaSanPham();
+	    row[2] = cd.getMaCD();
+	    row[3] = cd.getTenCD();
+	    row[4] = String.valueOf(cd.getThuTu());
+	    row[5] =  new DecimalFormat("#,###").format(cd.getDonGia());
+	    row[6] = String.valueOf(cd.getSoLuong());
+	    row[7] = new SimpleDateFormat("dd-MM-yyyy").format(cd.getNgayHoanThanh());
+	    
+	    dtblModelSP.addRow(row);
+	}
+	//thêm một ds công đoạn vào bảng
+	private void themTatCaCongDoanVaoBang(ArrayList<CongDoan> list) {
+		dtblModelSP.setRowCount(0);
+	    for (CongDoan cd : list) {
+	        themCongDoanVaoBang(cd);
+	    }
+	}
+//chuyển dữ liệu thành đối tượng công đoạn
+private CongDoan convertDataToCongDoan() {
+	String maSP = txtMaSP.getText();
+	String maCD = txtMaCD.getText();
+	String tenCD = txtTenCD.getText();
+	int thuTu = Integer.parseInt(spnThuTu.getValue().toString());
+	String donGia = txtDonGia.getText().replace(",", "");
+	int soLuong = Integer.parseInt(spnSoLuong.getValue().toString());
+	
+	Date ngayHT = dtpNgayHT.getDate();
+	
+	return new CongDoan( maSP, maCD, tenCD, Integer.parseInt(spnThuTu), donGia,Integer.parseInt(spnSoLuong), ngayHT);
+}	
+	
+//get dữ liệu từ csdl lên table
+private void getDataToTable(int index) {
+	dsCD = cd_Dao.getCongDoanTheoSanPham(tblSP.getValueAt(index, 0).toString());
+	themTatCaCongDoanVaoBang(dsCD);
+}
+//Thêm sản phẩm từ giao diện vào csdl
+private void themCongDoan() {
+	if(cd_Dao.getCongDoanTheoMa(txtMaCD.getText())!=null) {
+		if(validDataCD()==true) {
+			CongDoan cdNew = convertDataToCongDoan();
+			if(cdNew != null) {
+				if(cd_Dao.themCongDoan(cdNew)) {
+					lblMessage.setText("Thêm thành công sản phẩm!");
+					themCongDoanVaoBang(cdNew);
+					resetTextFiled();
+				}else {
+					setTextError("Thêm sản phẩm thất bại! Trùng mã!");
+				}
+			}else {
+				setTextError("Thêm sản phẩm thất bại! Có lỗi xảy ra!");
+			}
+		}
+	}else {
+	}
+}
+// sửa một sản phẩm được chọn
+private void suaCongDoan() {
+	if(tblCD.getSelectedRow()!=-1) {
+		if(validDataCD()==true) {
+			CongDoan cdNew = convertDataToCongDoan();
+			if(cdNew != null) {
+				if(cd_Dao.suaCongDoan(cdNew)) {
+					dsCD.set(tblSP.getSelectedRow(), cdNew);
+					themTatCaSanPhamVaoBang(dsSP);
+					lblMessage.setText("Sửa thành công sản phẩm!");
+					resetTextFiled() ;
+				}else {
+					setTextError("Sửa sản phẩm thất bại! Không tìm thấy trong csdl!");
+				}
+			}else {
+				setTextError("Sửa sản phẩm thất bại! Có lỗi xảy ra!");
+			}
+		}
+	}else {
+		setTextError("Bạn cần chọn một sản phẩm cần sửa!");
+	}
+}
+
+//Xóa sản phẩm được chọn
+private void xoaCongDoan() {
+	int index = tblSP.getSelectedRow();
+	if(index != -1 && cd_Dao.getCongDoanTheoMa(txtMaCD.getText()).size()>1) {
+		if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa cong doan đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+
+				themTatCaSanPhamVaoBang(dsSP);
+				lblMessage.setText("Xóa thành công công đoạn!");
+				resetTextFiled() ;
+			}else {
+				setTextError("Xóa thất bại! Không tìm thấy công đoạn trong csdl!");
+			}
+		
+	}else {
+		setTextError("Bạn cần chọn công đoạn muốn xóa và không thể xóa toàn bộ công đoạn");
+	}
+}
+//Hiển thị sản phẩm được chọn từ table lên bảng thông tin
+private void hienThiThongTinCD(int index) {
+	txtMaSP.setText(dsSP.get(index).getMaSP());
+	txtMaCD.setText(dsCD.get(index).getMaCD());
+	txtTenCD.setText(dsCD.get(index).getTenCD());
+	modelCD.setValue(dsCD.get(index).getThuTu());
+	txtDonGia.setText(new DecimalFormat("#,###").format(dsCD.get(index).getDonGia()));
+	modelCD.setValue(dsCD.get(index).getSoLuong());
+	String dateString = (String) dtblModelCD.getValueAt(index, 5); // Lấy chuỗi ngày từ bảng
+	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	try {
+	    java.util.Date date = formatter.parse(dateString); // Chuyển đổi chuỗi thành java.util.Date
+	    dtpNgayHT.setDate(date); // Đặt giá trị cho JXDatePicker
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	}
+
+}
+	
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
+	}
 }

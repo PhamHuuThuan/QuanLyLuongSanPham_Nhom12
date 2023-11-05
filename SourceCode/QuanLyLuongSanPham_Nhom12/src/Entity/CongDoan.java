@@ -31,7 +31,7 @@ public class CongDoan {
 
 	}
 
-	public CongDoan() {
+	public CongDoan(String string, SanPham sanPham2, String string2, String string3, int i, String string4, double d) {
 		super();
 
 	}
@@ -125,4 +125,21 @@ public class CongDoan {
 		return "CongDoan [maCD=" + maCD + ", tenCD=" + tenCD + ", thuTu=" + thuTu + ", soLuong=" + soLuong + ", donGia="
 				+ donGia + ", tinhTrang=" + tinhTrang + ", ngayHoanThanh=" + ngayHoanThanh + "]";
 	}
+
+	public String getMaSanPham() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String getMaCDLonNhat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }
