@@ -375,7 +375,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		txtMaNV.setForeground(textColor);
 		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtMaNV.setPreferredSize(cmbCaLam.getPreferredSize());
-		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
 						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 		txtMaNV.setBackground(Color.WHITE);
 		txtMaNV.setEditable(false);

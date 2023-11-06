@@ -4,9 +4,9 @@ GO
 CREATE DATABASE [QuanLyLuongSanPham-TPT]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'QuanLyLuongSanPham-TPT', FILENAME = N'T:\database_TPT\QuanLyLuongSanPham-TPT.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'QuanLyLuongSanPham-TPT', FILENAME = N'D:\database_TPT\QuanLyLuongSanPham-TPT.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'QuanLyLuongSanPham-TPT_log', FILENAME = N'T:\database_TPT\QuanLyLuongSanPham-TPT_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'QuanLyLuongSanPham-TPT_log', FILENAME = N'D:\database_TPT\QuanLyLuongSanPham-TPT_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
 ALTER DATABASE [QuanLyLuongSanPham-TPT] SET COMPATIBILITY_LEVEL = 150
@@ -111,7 +111,7 @@ CREATE TABLE [dbo].[BangChamCongNhanVien](
 	[ngayChamCong] [date] NOT NULL,
 	[caLam] [int] NOT NULL,
 	[trangThai] [int] NOT NULL,
-	[gioDen] [smalldatetime] NOT NULL,
+	[gioDen] [nvarchar](5) NULL,
 	[gioTangCa] [float] NULL,
 	[ghiChu] [nvarchar](100) NULL,
  CONSTRAINT [PK_BangChamCongNhanVien] PRIMARY KEY CLUSTERED 
@@ -191,8 +191,8 @@ GO
 CREATE TABLE [dbo].[BangPhanCongNhanVien](
 	[maPhanCong] [char](7) NOT NULL,
 	[maNhanVien] [char](7) NOT NULL,
-	[maPhongBan] [char](4) NOT NULL,
-	[chucVu] [nvarchar](30) NOT NULL,
+	[maPhongBan] [char](4) NULL,
+	[chucVu] [nvarchar](30) NULL,
 	[ngayCongTac] [date] NOT NULL,
 	[ghiChu] [nvarchar](100) NULL,
  CONSTRAINT [PK_BangPhanCongNhanVien] PRIMARY KEY CLUSTERED 
