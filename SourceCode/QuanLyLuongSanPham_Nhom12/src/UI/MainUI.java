@@ -35,10 +35,10 @@ public class MainUI extends JFrame {
 	private ImportFont impFont;
 	public Color borderFocusColor;
 	public JPanel pnlContent;
-	public SoundPlay music;
+	public SoundPlay music = new SoundPlay();
 	public LuuTru l = new LuuTru();
 	public ConfigManager config = new ConfigManager("/config/config.properties");
-	public ResourceBundle read_file_languages = l.getLanguageConfig(config.getLanguage());
+	public ResourceBundle read_file_languages;
 	public ResourceBundle read_file_themes = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
 	public BangPhanCongNhanVien nv;
 	private JLabel clockLabel;
@@ -58,20 +58,15 @@ public class MainUI extends JFrame {
 			e.printStackTrace();
 		}
 		khoiTaoGiaTriDefault();
+		getConfig();
 		getFonts();
 		setTitle("TPT_FUNITURE");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setUndecorated(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
-		
-		
-		
-		
-		
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setBounds(0, 0, 1500, 800);
 		add(new MenuUI(this), BorderLayout.NORTH);
@@ -89,8 +84,14 @@ public class MainUI extends JFrame {
 	public void khoiTaoGiaTriDefault() {
 		borderFocusColor = new Color(0, 0, 255, 64);  // set màu mặc định cho border khi được focus
 		pnlContent = new JPanel(new BorderLayout()); // Phần jpanel chứa các giao diện chức năng
-		music = new SoundPlay(); // Khởi tạo âm thanh ứng dụng
 		UIManager.put(CalendarHeaderHandler.uiControllerID, SpinningCalendarHeaderHandler.class.getName());
+	}
+	
+	public void getConfig() {
+		read_file_languages = l.getLanguageConfig(config.getLanguage());
+		int value = config.getSoundSetting();
+		music.music.setVolumeScale(value);
+		music.se.setVolumeScale(value);
 	}
 	
 }

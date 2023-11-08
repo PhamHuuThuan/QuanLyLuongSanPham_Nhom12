@@ -74,7 +74,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 	public MenuUI(MainUI main) {
 		this.main = main;
 		l = new LuuTru();
-		main.music = new SoundPlay();
 
 		main.pnlContent.add(new TrangChu_UI(), BorderLayout.CENTER);
 
@@ -176,7 +175,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		pnlControl.setBackground(Color.decode(read_file_themes.getString("color_main")));
 		pnlControl.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
-		lblHello = new JLabel("Xin chào, ");
+		lblHello = new JLabel(read_file_languages.getString("lblChao"));
 		lblHello.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 20F));
 		pnlControl.add(lblHello);
 

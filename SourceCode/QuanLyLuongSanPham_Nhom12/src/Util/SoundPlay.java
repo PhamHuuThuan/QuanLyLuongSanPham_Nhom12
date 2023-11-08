@@ -1,9 +1,15 @@
 package Util;
 
 public class SoundPlay {
-	public Sound music = new Sound();
-	public Sound se = new Sound();
+	public Sound music;
+	public Sound se;
 	
+	
+	public SoundPlay() {
+		super();
+		music = new Sound();
+		se = new Sound();
+	}
 	//bắt đầu vòng lặp phát âm thanh
 	public void playMusic(int i) {
 		music.setFile(i);

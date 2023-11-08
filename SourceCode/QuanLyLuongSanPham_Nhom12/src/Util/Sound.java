@@ -13,13 +13,14 @@ public class Sound {
 	FloatControl fc;
 	int volumeScale = 3;
 	float volume;
-	
+
 	// set url tới file âm thanh
 	public Sound() {
 		soundURL[0] = getClass().getResource("/sound/loadingSound.wav");
 		soundURL[1] = getClass().getResource("/sound/export_Sound.wav");
 		soundURL[2] = getClass().getResource("/sound/mouseClickSound.wav");
 		soundURL[3] = getClass().getResource("/sound/wrong-answer-126515.wav");
+		
 	}
 	
 	//set audio từ url

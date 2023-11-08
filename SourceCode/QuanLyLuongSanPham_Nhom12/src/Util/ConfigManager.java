@@ -3,6 +3,10 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import java.io.*;
+import java.net.URISyntaxException;
+import java.util.*;
+
 public class ConfigManager {
     private Properties configProps;
     private String configPath;
@@ -46,6 +50,35 @@ public class ConfigManager {
         saveChanges();
     }
 
+    public boolean getRememberAccount() {
+        return configProps.getProperty("remember_account").startsWith("1");
+    }
+
+    public String getUsername() {
+        if (getRememberAccount()) {
+            return configProps.getProperty("remember_account").split(" ")[1];
+        } else {
+            return null;
+        }
+    }
+
+    public String getPassword() {
+        if (getRememberAccount()) {
+            return configProps.getProperty("remember_account").split(" ")[2];
+        } else {
+            return null;
+        }
+    }
+
+    public void setRememberAccount(boolean remember, String username, String password) {
+        if (remember) {
+            configProps.setProperty("remember_account", "1 " + username + " " + password);
+        } else {
+            configProps.setProperty("remember_account", "0");
+        }
+        saveChanges();
+    }
+
     private void saveChanges() {
         try {
             FileWriter writer = new FileWriter(new File(getClass().getResource(configPath).toURI()));
@@ -60,3 +93,4 @@ public class ConfigManager {
         }
     }
 }
+
