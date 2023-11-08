@@ -18,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,7 +96,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnTitle.setBackground(bgColor);
 		pnNorth.add(pnTitle, BorderLayout.NORTH);
 		
-		JLabel lblTitle = new JLabel("QUẢN LÝ NHÂN VIÊN");
+		JLabel lblTitle = new JLabel(main.read_file_languages.getString("text_header_QLNV"));
 		lblTitle.setForeground(textColor);
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnTitle.add(lblTitle);
@@ -108,7 +107,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlThongTin.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnlThongTin.setBackground(bgColor);
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin nhân viên");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("text_border_TTNV"));
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnlThongTin.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		pnNorth.add(pnlThongTin, BorderLayout.CENTER);
@@ -124,7 +123,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlAnhDD.add(lblAvatar, BorderLayout.CENTER);
 		
-		btnChonAnh = new RoundedButton("Chọn ảnh", null, 5, 0, 1f);
+		btnChonAnh = new RoundedButton(main.read_file_languages.getString("btnChonAnh"), null, 5, 0, 1f);
 		btnChonAnh.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnChonAnh.setForeground(Color.WHITE);
 		btnChonAnh.setBackground(componentColor);
@@ -146,7 +145,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlB1.setBackground(bgColor);
 		pnThongTinNV.add(pnlB1);
 		
-		JLabel lblMaNV = new JLabel("Mã NV:");
+		JLabel lblMaNV = new JLabel(main.read_file_languages.getString("lblMaNV") +":");
 		lblMaNV.setFont(fontText);
 		lblMaNV.setForeground(textColor);
 		pnlB1.add(lblMaNV);
@@ -156,13 +155,13 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtMaNV.setFont(fontText);
 		txtMaNV.setForeground(textColor);
 		txtMaNV.setBackground(bgColor);
-		txtMaNV.setColumns(7);
+		txtMaNV.setColumns(5);
 		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 		pnlB1.add(txtMaNV);
 		pnlB1.add(Box.createHorizontalStrut(20));
 		
-		JLabel lblTenHD = new JLabel("Mật khẩu:");
+		JLabel lblTenHD = new JLabel(main.read_file_languages.getString("text_heading_password") + ":");
 		lblTenHD.setForeground(textColor);
 		lblTenHD.setFont(fontText);
 		pnlB1.add(lblTenHD);
@@ -173,12 +172,12 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtMatKhau.setFont(fontText);
 		txtMatKhau.setColumns(10);
 		txtMatKhau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-				BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+				BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 		txtMatKhau.setBackground(bgColor);
 		pnlB1.add(txtMatKhau);
 		pnlB1.add(Box.createHorizontalStrut(20));
 		
-		JLabel lblTenKH = new JLabel("Họ tên:");
+		JLabel lblTenKH = new JLabel(main.read_file_languages.getString("lblHoTen") + ":");
 		lblTenKH.setForeground(textColor);
 		lblTenKH.setFont(fontText);
 		pnlB1.add(lblTenKH);
@@ -195,21 +194,20 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		pnlB1.add(Box.createHorizontalStrut(20));
 		
-		JLabel lblGT = new JLabel("Giới tính:");
+		JLabel lblGT = new JLabel(main.read_file_languages.getString("lblGioiTinh") + ":");
 		lblGT.setForeground(textColor);
 		lblGT.setFont(fontText);
 		pnlB1.add(lblGT);
-		pnlB1.add(Box.createHorizontalStrut(10));
+		pnlB1.add(Box.createHorizontalStrut(5));
 		
-		radNam = new JRadioButton("Nam");
+		radNam = new JRadioButton(main.read_file_languages.getString("rad_Nam"));
 		radNam.setSelected(true);
 		radNam.setBackground(bgColor);
 		radNam.setForeground(textColor);
 		radNam.setFont(fontText);
 		pnlB1.add(radNam);
-		pnlB1.add(Box.createHorizontalStrut(10));
 		
-		radNu = new JRadioButton("Nữ");
+		radNu = new JRadioButton(main.read_file_languages.getString("rad_Nu"));
 		radNu.setBackground(bgColor);
 		radNu.setForeground(textColor);
 		radNu.setFont(fontText);
@@ -226,7 +224,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlB2.setBackground(bgColor);
 		pnThongTinNV.add(pnlB2);
 	
-		JLabel lblNgaySinh = new JLabel("Ngày sinh:");
+		JLabel lblNgaySinh = new JLabel(main.read_file_languages.getString("lblNgaySinh") + ":");
 		lblNgaySinh.setForeground(textColor);
 		lblNgaySinh.setFont(fontText);
 		pnlB2.add(lblNgaySinh);
@@ -251,7 +249,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		pnlB2.add(Box.createHorizontalStrut(20));
 		
-		JLabel lblSDT = new JLabel("SĐT:");
+		JLabel lblSDT = new JLabel(main.read_file_languages.getString("lblSDT") + ":");
 		lblSDT.setForeground(textColor);
 		lblSDT.setFont(fontText);
 		pnlB2.add(lblSDT);
@@ -287,7 +285,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		pnlB2.add(Box.createHorizontalStrut(20));
 		
-		JLabel lblCCCD = new JLabel("CCCD:");
+		JLabel lblCCCD = new JLabel(main.read_file_languages.getString("lblCCCD") + ":");
 		lblCCCD.setForeground(Color.BLACK);
 		lblCCCD.setFont(fontText);
 		pnlB2.add(lblCCCD);
@@ -311,7 +309,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlB3.setBackground(bgColor);
 		pnThongTinNV.add(pnlB3);
 		
-		JLabel lblDiaChi = new JLabel("Địa chỉ:");
+		JLabel lblDiaChi = new JLabel(main.read_file_languages.getString("lblDiaChi") + ":");
 		lblDiaChi.setForeground(Color.BLACK);
 		lblDiaChi.setFont(fontText);
 		pnlB3.add(lblDiaChi);
@@ -344,7 +342,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlChucNang.setBackground(bgColor);
 		pnlChucNang.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		
-		btnThem = new RoundedButton("Thêm", null, 20, 0, 1.0f);
+		btnThem = new RoundedButton(main.read_file_languages.getString("btnThem"), null, 20, 0, 1.0f);
 		btnThem.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnThem.setForeground(Color.WHITE);
 		btnThem.setBackground(Color.decode("#3B71CA"));
@@ -353,7 +351,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlChucNang.add(btnThem);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnSua = new RoundedButton("Sửa", null, 20, 0, 1.0f);
+		btnSua = new RoundedButton(main.read_file_languages.getString("btnSua"), null, 20, 0, 1.0f);
 		btnSua.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnSua.setForeground(Color.WHITE);
 		btnSua.setBackground(Color.decode("#ffc107"));
@@ -362,7 +360,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlChucNang.add(btnSua);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnXoa = new RoundedButton("Xóa", null, 20, 0, 1.0f);
+		btnXoa = new RoundedButton(main.read_file_languages.getString("btnXoa"), null, 20, 0, 1.0f);
 		btnXoa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnXoa.setForeground(Color.WHITE);
 		btnXoa.setBackground(Color.decode("#dc3545"));
@@ -373,7 +371,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		
 		pnlChucNang.add(Box.createHorizontalStrut(200));
 		
-		btnLuu = new RoundedButton("Lưu", null, 20, 0, 0.6f);
+		btnLuu = new RoundedButton(main.read_file_languages.getString("btnLuu"), null, 20, 0, 0.6f);
 		btnLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnLuu.setForeground(Color.WHITE);
 		btnLuu.setBackground(Color.decode("#28a745"));
@@ -382,7 +380,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		pnlChucNang.add(btnLuu);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnHuy = new RoundedButton("Hủy", null, 20, 0, 0.6f);
+		btnHuy = new RoundedButton(main.read_file_languages.getString("btnHuy"), null, 20, 0, 0.6f);
 		btnHuy.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnHuy.setForeground(Color.WHITE);
 		btnHuy.setBackground(Color.decode("#ffc107"));
@@ -394,7 +392,15 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		JPanel pnlBangNV = new JPanel();
 		pnlBangNV.setLayout(new BoxLayout(pnlBangNV, BoxLayout.X_AXIS));
 		add(pnlBangNV, BorderLayout.CENTER);
-		String cols[] = {"STT", "Mã NV", "Họ tên", "Giới tính", "Ngày sinh", "SDT", "Email", "CCCD", "Địa chỉ"};
+		String cols[] = {main.read_file_languages.getString("stt"),
+				main.read_file_languages.getString("lblMaNV"), 
+				main.read_file_languages.getString("lblHoTen"), 
+				main.read_file_languages.getString("lblGioiTinh"),
+				main.read_file_languages.getString("lblNgaySinh"), 
+				main.read_file_languages.getString("lblSDT"), 
+				"Email", 
+				main.read_file_languages.getString("lblCCCD"),
+				main.read_file_languages.getString("lblDiaChi")};
 		dtblModel = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModel);
 		tblNV.setFont(fontText.deriveFont(14F));
@@ -612,7 +618,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 		txtCCCD.setText("");
 		txtDiaChi.setText("");
 		lblAvatar.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
-		btnChonAnh.setText("Chọn ảnh");
+		btnChonAnh.setText(main.read_file_languages.getString("btnChonAnh"));
 		radNam.setSelected(true);
 		dtpNgaySinh.setDate(new Date(100, 0, 1));
 		lblMessage.setText("");
