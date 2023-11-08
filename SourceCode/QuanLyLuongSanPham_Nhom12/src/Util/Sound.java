@@ -60,4 +60,12 @@ public class Sound {
 		}
 		fc.setValue(volume);
 	}
+
+	public int getVolumeScale() {
+		return volumeScale;
+	}
+
+	public void setVolumeScale(int volumeScale) {
+		this.volumeScale = volumeScale;
+	}
 }

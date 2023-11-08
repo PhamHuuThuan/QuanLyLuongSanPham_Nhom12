@@ -23,6 +23,7 @@ import org.jdesktop.swingx.plaf.basic.SpinningCalendarHeaderHandler;
 import ConnectDB.ConnectDB;
 import Entity.BangPhanCongNhanVien;
 import Entity.NhanVien;
+import Util.ConfigManager;
 import Util.ImportFont;
 import Util.LuuTru;
 import Util.SoundPlay;
@@ -36,7 +37,8 @@ public class MainUI extends JFrame {
 	public JPanel pnlContent;
 	public SoundPlay music;
 	public LuuTru l = new LuuTru();
-	public ResourceBundle read_file_languages = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
+	public ConfigManager config = new ConfigManager("/config/config.properties");
+	public ResourceBundle read_file_languages = l.getLanguageConfig(config.getLanguage());
 	public ResourceBundle read_file_themes = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
 	public BangPhanCongNhanVien nv;
 	private JLabel clockLabel;

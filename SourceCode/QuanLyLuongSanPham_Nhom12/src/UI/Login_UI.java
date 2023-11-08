@@ -17,22 +17,25 @@ import javax.swing.border.MatteBorder;
 import CustomUI.RoundedButton;
 import Dao.PhanCongNhanVien_Dao;
 import Entity.BangPhanCongNhanVien;
-import Entity.NhanVien;
+import Util.ConfigManager;
+import Util.LuuTru;
 
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
+import java.util.ResourceBundle;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 @SuppressWarnings("serial")
-public class Login_UI extends JFrame {
+public class Login_UI extends JFrame implements ItemListener{
 
 	private static MainUI main;
 	private JPanel contentPane;
@@ -45,9 +48,12 @@ public class Login_UI extends JFrame {
 	private JPanel panel_input_password;
 	private JLabel text_heading_password;
 	private JPasswordField input_password;
-
-	public String pathFileLanguage = "config/languages/vietnamese";
-	public String pathFileTheme = "config/themes/lightmode";
+	private JComboBox<String> combox_languages;
+	private JCheckBox checkbox_remember_user;
+	private RoundedButton button_login;
+	public LuuTru l = new LuuTru();
+	public ConfigManager config = new ConfigManager("/config/config.properties");
+	public ResourceBundle read_file_languages = l.getLanguageConfig(config.getLanguage());
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -175,38 +181,25 @@ public class Login_UI extends JFrame {
 		input_password.setBounds(12, 38, 424, 35);
 		panel_input_password.add(input_password);
 
-		RoundedButton button_login = new RoundedButton("ĐĂNG NHẬP", null, 15, 0, 2f);
+		button_login = new RoundedButton("ĐĂNG NHẬP", null, 15, 0, 2f);
 		button_login.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		button_login.setBounds(20, 282, 429, 35);
 		panel_in_right.add(button_login);
 
-		JCheckBox checkbox_remember_user = new JCheckBox("Nhớ tài khoản");
+		checkbox_remember_user = new JCheckBox("Nhớ tài khoản");
 		checkbox_remember_user.setSelected(true);
 		checkbox_remember_user.setBackground(Color.decode("#424242"));
 		checkbox_remember_user.setForeground(Color.WHITE);
 		checkbox_remember_user.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		checkbox_remember_user.setBounds(346, 250, 103, 21);
+		checkbox_remember_user.setBounds(300, 250, 150, 21);
 		panel_in_right.add(checkbox_remember_user);
 
-		JComboBox<String> combox_languages = new JComboBox<>();
+		combox_languages = new JComboBox<>();
 		combox_languages.addItem("Vietnamese");
 		combox_languages.addItem("English");
 		combox_languages.setBounds(20, 353, 150, 31);
+		combox_languages.setSelectedIndex(config.getLanguage());
 		panel_in_right.add(combox_languages);
-
-		combox_languages.addActionListener(new ActionListener() {
-			@Override
-
-			public void actionPerformed(ActionEvent e) {
-				String selectLG = (String) combox_languages.getSelectedItem();
-				if (selectLG.equals("English")) {
-					pathFileLanguage = "config/languages/english";
-				} else {
-					pathFileLanguage = "config/languages/vietnamese";
-				}
-
-			}
-		});
 		
 
 		JComboBox<String> combox_theme = new JComboBox<>();
@@ -215,41 +208,32 @@ public class Login_UI extends JFrame {
 		combox_theme.setBounds(334, 353, 115, 31);
 		panel_in_right.add(combox_theme);
 
-		combox_theme.addActionListener(new ActionListener() {
-			@Override
-
-			public void actionPerformed(ActionEvent e) {
-				String selectT = (String) combox_theme.getSelectedItem();
-				if (selectT.equals("Darkmode")) {
-					pathFileTheme = "config/themes/darkmode";
-				} else {
-					pathFileTheme = "config/themes/lightmode";
-				}
-
-			}
-		});
-
 		button_login.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					FileWriter writer = new FileWriter("src/config/languages/selectedLanguage.txt");
-					writer.write(pathFileLanguage);
-					writer.close();
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				};
-				try {
-					FileWriter writer = new FileWriter("src/config/themes/selectedTheme.txt");
-					writer.write(pathFileTheme);
-					writer.close();
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-				
+//				try {
+//					FileWriter writer = new FileWriter("src/config/languages/selectedLanguage.txt");
+//					writer.write(pathFileLanguage);
+//					writer.close();
+//				} catch (IOException ex) {
+//					ex.printStackTrace();
+//				};
+//				try {
+//					FileWriter writer = new FileWriter("src/config/themes/selectedTheme.txt");
+//					writer.write(pathFileTheme);
+//					writer.close();
+//				} catch (IOException ex) {
+//					ex.printStackTrace();
+//				}
+				//kiểm tra đăng nhập
 				checkLogin();
 			}
 		});
+		
+		combox_languages.addItemListener(this);
+		
+		setTextLanguage();
+
 		input_user.setText("NV00001");
 		input_password.setText("123456a@");
 	}
@@ -269,5 +253,21 @@ public class Login_UI extends JFrame {
 				//thực tập sinh
 			}
 		}
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if(e.getSource() == combox_languages) {
+			config.setLanguage(combox_languages.getSelectedIndex());
+			setTextLanguage();
+		}
+	}
+	public void setTextLanguage() {
+		read_file_languages = l.getLanguageConfig(config.getLanguage());
+		text_heading_login.setText(read_file_languages.getString("text_heading_login"));
+		text_heading_user.setText(read_file_languages.getString("text_heading_user"));
+		text_heading_password.setText(read_file_languages.getString("text_heading_password"));
+		checkbox_remember_user.setText(read_file_languages.getString("checkbox_remember_user"));
+		button_login.setText(read_file_languages.getString("text_heading_login"));
 	}
 }

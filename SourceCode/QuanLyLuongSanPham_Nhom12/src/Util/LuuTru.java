@@ -3,29 +3,42 @@ package Util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.nio.file.DirectoryStream;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ResourceBundle;
 
 public class LuuTru {
-	public String readFile(String filePath) {
-		String pathFileData = "";
-		try {
-			FileReader reader = new FileReader(filePath);
-			BufferedReader bufferedReader = new BufferedReader(reader);
-			pathFileData = bufferedReader.readLine();
-			bufferedReader.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		return pathFileData;
-	}
+    public ResourceBundle getLanguageConfig(int language) {
+        ResourceBundle languageBundle = null;
+		switch (language) {
+            case 0:
+                languageBundle  = ResourceBundle.getBundle("config/languages/vietnamese");
+                break;
+            case 1:
+                languageBundle = ResourceBundle.getBundle("config/languages/english");
+                break;
+            default:
+                System.out.println("Invalid language setting in config file.");
+                break;
+        }
+		return languageBundle;
+    }
+
+    public String readFile(String filePath) {
+        String fileData = "";
+        try {
+            FileReader reader = new FileReader(filePath);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            fileData = bufferedReader.readLine();
+            bufferedReader.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return fileData;
+    }
 	public String copyFileAvatar(String sourceFilePath, String maNV) {
 	    try {
 	        // Tạo đường dẫn đến thư mục mới trong project

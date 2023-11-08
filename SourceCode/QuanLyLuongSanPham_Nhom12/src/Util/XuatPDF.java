@@ -1,23 +1,12 @@
 package Util;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import CustomUI.ImageScaler;
 import Entity.BangChamCongNhanVien;
 import Entity.BangLuongNhanVien;
 import Entity.BangPhanCongNhanVien;
