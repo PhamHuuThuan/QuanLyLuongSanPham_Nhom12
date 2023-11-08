@@ -62,7 +62,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		pnlTitle1.setBackground(bgColor);
 		pnlCaiDat.add(pnlTitle1);
 		
-		JLabel lblTitle1 = new JLabel("Cài đặt ứng dụng");
+		JLabel lblTitle1 = new JLabel(main.read_file_languages.getString("lblCDUD"));
 		lblTitle1.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle1.add(lblTitle1);
 		
@@ -75,11 +75,11 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		pnlCaiDat.add(pnlCDUD);
 		pnlCaiDat.add(Box.createVerticalStrut(25));
 		
-		JLabel lblAmThanh = new JLabel("Âm thanh");
+		JLabel lblAmThanh = new JLabel(main.read_file_languages.getString("lblAmThanh"));
 		lblAmThanh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 18F));
 		pnlCDUD.add(lblAmThanh);
 		
-		JLabel lblLanguage = new JLabel("Ngôn ngữ");
+		JLabel lblLanguage = new JLabel(main.read_file_languages.getString("lblLanguage"));
 		lblLanguage.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 18F));
 		pnlCDUD.add(lblLanguage);
 		
@@ -136,7 +136,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		pnlTitle2.setBackground(bgColor);
 		pnlCaiDat.add(pnlTitle2);
 		
-		JLabel lblTitle2 = new JLabel("Sao lưu dữ liệu");
+		JLabel lblTitle2 = new JLabel(main.read_file_languages.getString("lblSaoLuu"));
 		lblTitle2.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle2.add(lblTitle2);
 		
@@ -152,7 +152,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		pnlSaoLuu.add(pnlB1);
 		
 		txtSaoLuu = new PlaceholderTextField();
-		txtSaoLuu.setPlaceholder("Nhập tên file để sao lưu...");
+		txtSaoLuu.setPlaceholder(main.read_file_languages.getString("lblInputFile"));
 		txtSaoLuu.setColumns(20);
 		txtSaoLuu.setForeground(textColor);
 		txtSaoLuu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -167,7 +167,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		lblBAK.setForeground(textColor);
 		lblBAK.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
-		btnSaoLuu = new RoundedButton("Sao Lưu", null, 20, 0, 1.0f);
+		btnSaoLuu = new RoundedButton(main.read_file_languages.getString("btnSaoLuu"), null, 20, 0, 1.0f);
 		btnSaoLuu.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		btnSaoLuu.setForeground(Color.WHITE);
 		btnSaoLuu.setBackground(Color.decode("#28a745"));
@@ -179,7 +179,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		pnlGhiChu1.setBackground(bgColor);
 		pnlSaoLuu.add(Box.createVerticalStrut(5));
 		pnlSaoLuu.add(pnlGhiChu1);
-		JLabel lblGhiChu1 = new JLabel("Chú ý: Dữ liệu từ database sẽ được backup vào tệp có đuôi (Tên File.bak) tại ổ D:/Backup/ ");
+		JLabel lblGhiChu1 = new JLabel(main.read_file_languages.getString("lblCBBU"));
 		pnlGhiChu1.add(lblGhiChu1);
 		lblGhiChu1.setForeground(textColor);
 		lblGhiChu1.setFont(main.roboto_light.deriveFont(Font.ITALIC, 14F));
@@ -188,7 +188,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		pnlTitle3.setBackground(bgColor);
 		pnlCaiDat.add(pnlTitle3);
 		
-		JLabel lblTitle3 = new JLabel("Khôi phục dữ liệu");
+		JLabel lblTitle3 = new JLabel(main.read_file_languages.getString("lblKhoiPhuc"));
 		lblTitle3.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle3.add(lblTitle3);
 		
@@ -204,7 +204,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		
 		txtKhoiPhuc = new PlaceholderTextField();
 		txtKhoiPhuc.setEditable(false);
-		txtKhoiPhuc.setPlaceholder("Chọn file muốn import dữ liệu");
+		txtKhoiPhuc.setPlaceholder(main.read_file_languages.getString("lblInputFileR"));
 		txtKhoiPhuc.setColumns(20);
 		txtKhoiPhuc.setForeground(textColor);
 		txtKhoiPhuc.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -221,7 +221,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		btnChonFile.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlB2.add(btnChonFile);
 		
-		btnKhoiPhuc = new RoundedButton("Khôi phục", null, 20, 0, 1.0f);
+		btnKhoiPhuc = new RoundedButton(main.read_file_languages.getString("btnKhoiPhuc"), null, 20, 0, 1.0f);
 		btnKhoiPhuc.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		btnKhoiPhuc.setForeground(Color.WHITE);
 		btnKhoiPhuc.setBackground(Color.decode("#ffc107"));
@@ -235,7 +235,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		pnlKhoiPhuc.add(Box.createVerticalStrut(5));
 		pnlKhoiPhuc.add(pnlGhiChu2);
 		
-		JLabel lblGhiChu2 = new JLabel("Cảnh báo: Nên sao lưu dữ liệu trước khi đưa dữ liệu khác vào nhằm trách mất mát dữ liệu hiện có.");
+		JLabel lblGhiChu2 = new JLabel(main.read_file_languages.getString("lblCBKP"));
 		pnlGhiChu2.add(lblGhiChu2);
 		lblGhiChu2.setForeground(Color.decode("#dc3545"));
 		lblGhiChu2.setFont(main.roboto_light.deriveFont(Font.ITALIC, 14F));
