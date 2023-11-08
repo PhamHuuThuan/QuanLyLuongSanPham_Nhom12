@@ -157,6 +157,7 @@ public class Login_UI extends JFrame implements ItemListener{
 		panel_input_user.add(input_user);
 		input_user.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		input_user.setColumns(10);
+		input_user.setText(config.getUsername());
 
 		panel_input_password = new JPanel();
 		panel_input_password.setLayout(null);
@@ -180,6 +181,7 @@ public class Login_UI extends JFrame implements ItemListener{
 		input_password.setBackground(new Color(81, 81, 81));
 		input_password.setBounds(12, 38, 424, 35);
 		panel_input_password.add(input_password);
+		input_password.setText(config.getPassword());
 
 		button_login = new RoundedButton("ĐĂNG NHẬP", null, 15, 0, 2f);
 		button_login.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -187,7 +189,7 @@ public class Login_UI extends JFrame implements ItemListener{
 		panel_in_right.add(button_login);
 
 		checkbox_remember_user = new JCheckBox("Nhớ tài khoản");
-		checkbox_remember_user.setSelected(true);
+		checkbox_remember_user.setSelected(config.getRememberAccount());
 		checkbox_remember_user.setBackground(Color.decode("#424242"));
 		checkbox_remember_user.setForeground(Color.WHITE);
 		checkbox_remember_user.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -211,6 +213,7 @@ public class Login_UI extends JFrame implements ItemListener{
 		button_login.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(), input_password.getText());
 //				try {
 //					FileWriter writer = new FileWriter("src/config/languages/selectedLanguage.txt");
 //					writer.write(pathFileLanguage);
@@ -231,11 +234,10 @@ public class Login_UI extends JFrame implements ItemListener{
 		});
 		
 		combox_languages.addItemListener(this);
+		checkbox_remember_user.addItemListener(this);
 		
 		setTextLanguage();
 
-		input_user.setText("NV00001");
-		input_password.setText("123456a@");
 	}
 	//kiểm tra thông tin nhân viên trong csdl
 	private void checkLogin() {
@@ -260,6 +262,9 @@ public class Login_UI extends JFrame implements ItemListener{
 		if(e.getSource() == combox_languages) {
 			config.setLanguage(combox_languages.getSelectedIndex());
 			setTextLanguage();
+		}
+		if(e.getSource() == checkbox_remember_user) {
+			config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(), input_password.getText());
 		}
 	}
 	public void setTextLanguage() {

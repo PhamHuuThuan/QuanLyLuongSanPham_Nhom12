@@ -221,7 +221,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 			int result = JOptionPane.showConfirmDialog(main, "Bạn có muốn đăng xuất khỏi hệ thống?",
 					"ĐĂNG XUẤT HỆ THỐNG", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (result == JOptionPane.YES_OPTION) {
-				main.setVisible(false);
+				main.dispose();
 				Login_UI loginUi = new Login_UI(main);
 				loginUi.setVisible(true);
 			} else if (result == JOptionPane.NO_OPTION) {

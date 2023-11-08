@@ -2,6 +2,7 @@ package CustomUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class ImageScaler {
     private String filePath;
@@ -21,9 +22,15 @@ public class ImageScaler {
         return new ImageIcon(newimg);
     }
     public ImageIcon getScaledImageAvatar() {
-        ImageIcon imageIcon = new ImageIcon(filePath);
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-        return new ImageIcon(newimg);
+	    File file = new File(filePath);
+    	if(file.exists()) {
+            ImageIcon imageIcon = new ImageIcon(filePath);
+            Image image = imageIcon.getImage();
+            Image newimg = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+            return new ImageIcon(newimg);
+    	}else {
+    		filePath = "/image/employee.png";
+    		return getScaledImageIcon();
+    	}
     }
 }

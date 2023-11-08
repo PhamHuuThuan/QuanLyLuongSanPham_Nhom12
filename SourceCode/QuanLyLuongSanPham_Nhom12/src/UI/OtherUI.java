@@ -8,9 +8,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import CustomUI.*;
+import Dao.HeThong_Dao;
 import Util.ConfigManager;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -20,12 +23,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 
 public class OtherUI extends JPanel implements ChangeListener, ItemListener, ActionListener{
 	private MainUI main;
@@ -37,6 +42,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 	private PlaceholderTextField txtSaoLuu, txtKhoiPhuc;
 	private JSlider slider;
 	private ConfigManager config = new ConfigManager("/config/config.properties");
+	private HeThong_Dao ht_Dao = new HeThong_Dao();
 	/**
 	 * Create the panel.
 	 */
@@ -236,11 +242,19 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		
 		cmbLanguage.addItemListener(this);
 		slider.addChangeListener(this);
+		btnChonFile.addActionListener(this);
+		btnSaoLuu.addActionListener(this);
+		btnKhoiPhuc.addActionListener(this);
 	}
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		if(e.getSource() == cmbLanguage) {
+		if(e.getSource() == cmbLanguage && e.getStateChange() == ItemEvent.SELECTED) {
 			config.setLanguage(cmbLanguage.getSelectedIndex());
+			if(JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng xuất để cập lại lại ngôn ngữ?", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				main.dispose();
+				Login_UI loginUi = new Login_UI(main);
+				loginUi.setVisible(true);
+			}
 		}
 	}
 	@Override
@@ -254,7 +268,49 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		Object o = e.getSource();
+		if(o==btnSaoLuu) {
+			String fileInput = txtSaoLuu.getText();
+			if(fileInput!=null && fileInput.trim().length()>=0) {
+				
+		        // Tạo thư mục backup nếu nó chưa tồn tại
+		        File directory = new File("D:\\backup");
+		        if (! directory.exists()){
+		            directory.mkdir();
+		        }
+		        
+		        //
+		        String fileName = fileInput + ".bak"; 
+		        if (ht_Dao.BackUp(fileName)) {
+		            JOptionPane.showMessageDialog(this, "Sao lưu dữ liệu thành công!");
+		        } else {
+		            JOptionPane.showMessageDialog(this, "Sao lưu dữ liệu thất bại!");
+		        }
+			}
+		}
+		if(o == btnChonFile) {
+			JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	        int option = fileChooser.showOpenDialog(null);
+	        if (option == JFileChooser.APPROVE_OPTION) {
+	            File file = fileChooser.getSelectedFile();
+	            String fileName = file.getAbsolutePath();
+	            txtKhoiPhuc.setText(fileName);
+	        }
+		}
+		if(o == btnKhoiPhuc) {
+            String fileName = txtKhoiPhuc.getText();
+            if(fileName!=null&&fileName.trim().length()>=0) {
+            	if(JOptionPane.showConfirmDialog(this, "Tất cả dữ liệu hiện tại sẽ bị ghi đè,Bạn có chắc muốn khôi phục dữ liệu mới?", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+                    if (ht_Dao.Restore(fileName)) {
+                        JOptionPane.showMessageDialog(null, "Khôi phục dữ liệu thành công!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Khôi phục dữ liệu thất bại!");
+                    }
+            	}
+            }else {
+            	
+            }
+		}
 	}
 }
