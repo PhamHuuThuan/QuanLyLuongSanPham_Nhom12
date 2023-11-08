@@ -78,7 +78,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 		main.pnlContent.add(new TrangChu_UI(), BorderLayout.CENTER);
 
-		pathFileLanguage = l.readFile("src/config/languages/selectedLanguage.txt");
 		pathFileTheme = l.readFile("src/config/themes/selectedTheme.txt");
 
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
@@ -122,7 +121,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 	// Tạo giao diện menu
 	public void createGUI() {
 
-		ResourceBundle read_file_languages = ResourceBundle.getBundle(pathFileLanguage);
+		ResourceBundle read_file_languages = main.read_file_languages;
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 
 		JPanel pnlHead = new JPanel();
@@ -644,6 +643,10 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mniCaiDat.setBackground(Color.decode("#424242"));
 			mniCaiDat.setForeground(Color.WHITE);
 			mniCaiDat.setIcon(new ImageScaler("/image/cogwheel_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new OtherUI(main), BorderLayout.CENTER);// thêm giao diện cài đặt vào
+			main.validate(); // cập nhật lại
 		}
 	}
 
