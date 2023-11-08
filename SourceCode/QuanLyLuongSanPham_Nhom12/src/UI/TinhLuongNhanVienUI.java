@@ -121,7 +121,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlNorth.add(pnlTitle, BorderLayout.NORTH);
 		
 		//Tiêu đề
-		JLabel lblTitle = new JLabel("TÍNH LƯƠNG NHÂN VIÊN");
+		JLabel lblTitle = new JLabel(main.read_file_languages.getString("text_header_TLNV"));
 		lblTitle.setForeground(textColor);
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle.add(lblTitle);
@@ -134,7 +134,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		// tạo jpanel chứa table nhân viên
 		JPanel pnlBangNV = new JPanel();
 		TitledBorder titleBorderTTNV = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh sách nhân viên");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("text_border_DSNV"));
 		titleBorderTTNV.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnlBangNV.setBorder(BorderFactory.createCompoundBorder(titleBorderTTNV, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
 		pnlBangNV.setLayout(new BorderLayout());
@@ -148,7 +148,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlPBvaTime.setBorder(BorderFactory.createEmptyBorder(0, 30, 10, 30));
 		pnlBangNV.add(pnlPBvaTime, BorderLayout.NORTH);
 		
-		JLabel lblPhongBan = new JLabel("Phòng ban:");
+		JLabel lblPhongBan = new JLabel(main.read_file_languages.getString("lblPhongBan1")+":");
 		pnlPBvaTime.add(lblPhongBan);
 		lblPhongBan.setForeground(textColor);
 		lblPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -156,7 +156,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		cmbPhongBan = new JComboBox<>();
 		// Tạo một đối tượng DefaultComboBoxModel
 		DefaultComboBoxModel modelPB = new DefaultComboBoxModel();
-		modelPB.addElement(new PhongBan("PB00", "Tất cả", 0, ""));
+		modelPB.addElement(new PhongBan("PB00", main.read_file_languages.getString("lblALL"), 0, ""));
 
 		// Lấy danh sách tất cả các phòng ban
 		ArrayList<PhongBan> listPB = pb_Dao.getAllPhongBan();
@@ -178,7 +178,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		cmbPhongBan.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		pnlPBvaTime.add(Box.createHorizontalStrut(30));
 		
-		JLabel lblNgayThang = new JLabel("Thời gian tính:");
+		JLabel lblNgayThang = new JLabel(main.read_file_languages.getString("lblThangNam") + ":");
 		pnlPBvaTime.add(lblNgayThang);
 		lblNgayThang.setForeground(textColor);
 		lblNgayThang.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -211,8 +211,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
         pnlPBvaTime.add(spnThangNam);
         pnlPBvaTime.add(Box.createHorizontalStrut(30));
 		
-		btnTinhLuongALL = new RoundedButton("Chấm tất cả", null, 20, 0, 1.0f);
-		btnTinhLuongALL.setText("Tính lương tất cả");
+		btnTinhLuongALL = new RoundedButton(main.read_file_languages.getString("btnTinhALL"), null, 20, 0, 1.0f);
 		btnTinhLuongALL.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		btnTinhLuongALL.setForeground(Color.WHITE);
 		btnTinhLuongALL.setBackground(Color.decode("#28a745"));
@@ -220,7 +219,11 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		btnTinhLuongALL.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlPBvaTime.add(btnTinhLuongALL);
 		
-		String cols[] = {"STT", "Mã NV", "Họ tên", "Phòng ban", "Chức vụ"};
+		String cols[] = {main.read_file_languages.getString("stt"),
+				main.read_file_languages.getString("lblMaNV"), 
+				main.read_file_languages.getString("lblHoTen"), 
+				main.read_file_languages.getString("lblPhongBan1"), 
+				main.read_file_languages.getString("lblChucVu")};
 		dtblModelNV = new DefaultTableModel(cols, 0);
 		tblNV = new JTable(dtblModelNV);
 
@@ -257,7 +260,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnThongTinNV.setLayout(new BorderLayout());
 		pnThongTinNV.setBackground(bgColor);
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin lương");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("text_border_TTLuong"));
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnThongTinNV.setBorder(BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(10, 20, 10, 10)));
 		pnThongTinNV.setPreferredSize(new Dimension(600, 300));
@@ -273,7 +276,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlB1.setBackground(bgColor);
 		pnlTTRight.add(pnlB1);
 		
-		JLabel lblMaNV = new JLabel("Mã NV:");
+		JLabel lblMaNV = new JLabel(main.read_file_languages.getString("lblMaNV")+ ":");
 		lblMaNV.setForeground(textColor);
 		lblMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		pnlB1.add(lblMaNV);
@@ -288,7 +291,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlB1.add(txtMaNV);
 		pnlB1.add(Box.createHorizontalStrut(10));
 		
-		JLabel lblTenNV = new JLabel("Tên NV:");
+		JLabel lblTenNV = new JLabel(main.read_file_languages.getString("lblHoTen")+ ":");
 		pnlB1.add(lblTenNV);
 		lblTenNV.setForeground(textColor);
 		lblTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -297,7 +300,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		txtTenNV.setColumns(12);
 		txtTenNV.setForeground(Color.BLACK);
 		txtTenNV.setForeground(textColor);
-		txtTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtTenNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 15F));
 		txtTenNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
 						BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 		txtTenNV.setBackground(Color.WHITE);
@@ -307,7 +310,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlB2.setBackground(bgColor);
 		pnlTTRight.add(pnlB2);
 		
-		JLabel lblCongLam = new JLabel("Số ngày:");
+		JLabel lblCongLam = new JLabel(main.read_file_languages.getString("lblSoNgay")+ ":");
 		pnlB2.add(lblCongLam);
 		lblCongLam.setForeground(textColor);
 		lblCongLam.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -323,7 +326,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		
 		pnlB2.add(Box.createHorizontalStrut(15));
 		
-		JLabel lblPhuCap = new JLabel("Phụ cấp:");
+		JLabel lblPhuCap = new JLabel(main.read_file_languages.getString("lblPhuCap")+ ":");
 		pnlB2.add(lblPhuCap);
 		lblPhuCap.setForeground(textColor);
 		lblPhuCap.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -341,7 +344,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlB4.setBackground(bgColor);
 		pnlTTRight.add(pnlB4);
 		
-		JLabel lblTangCa = new JLabel("Tăng ca:");
+		JLabel lblTangCa = new JLabel(main.read_file_languages.getString("lblTangCa")+ ":");
 		pnlB4.add(lblTangCa);
 		lblTangCa.setForeground(textColor);
 		lblTangCa.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
@@ -357,7 +360,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		
 		pnlB4.add(Box.createHorizontalStrut(10));
 		
-		JLabel lblThucLanh = new JLabel("Thực lãnh:");
+		JLabel lblThucLanh = new JLabel(main.read_file_languages.getString("lblThucLanh")+ ":");
 		lblThucLanh.setForeground(Color.decode("#dc3545"));
 		lblThucLanh.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		pnlB4.add(lblThucLanh);
@@ -387,8 +390,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlChucNang.setBackground(bgColor);
 		pnlTTRight.add(pnlChucNang);
 		
-		btnTinhLuong = new RoundedButton("Phân công", null, 20, 0, 1.0f);
-		btnTinhLuong.setText("Tính lương");
+		btnTinhLuong = new RoundedButton(main.read_file_languages.getString("btnTinhLuong"), null, 20, 0, 1.0f);
 		btnTinhLuong.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		btnTinhLuong.setForeground(Color.WHITE);
 		btnTinhLuong.setBackground(Color.decode("#3B71CA"));
@@ -397,8 +399,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlChucNang.add(btnTinhLuong);
 		pnlChucNang.add(Box.createHorizontalStrut(50));
 		
-		btnChiTiet = new RoundedButton("Cập Nhật", null, 20, 0, 1.0f);
-		btnChiTiet.setText("Xem chi tiết");
+		btnChiTiet = new RoundedButton(main.read_file_languages.getString("btnXemC"), null, 20, 0, 1.0f);
 		btnChiTiet.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		btnChiTiet.setForeground(Color.WHITE);
 		btnChiTiet.setBackground(Color.decode("#ffc107"));
@@ -409,7 +410,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		// tạo jpanel chứa table phân công nhân viên
 		JPanel pnlDSLuong = new JPanel();
 		TitledBorder titleBorderTTNVPC = BorderFactory.createTitledBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh sách lương nhân viên");
+                BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("text_border_DSLuong"));
 		titleBorderTTNVPC.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnlDSLuong.setBorder(BorderFactory.createCompoundBorder(titleBorderTTNVPC, BorderFactory.createEmptyBorder(0, 20, 10, 20)));
 		pnlDSLuong.setLayout(new BorderLayout());
@@ -421,7 +422,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		pnlXuat.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnlDSLuong.add(pnlXuat, BorderLayout.NORTH);
 		
-		btnXuat = new RoundedButton("Xuất DS", null, 5, 0, 1.0f);
+		btnXuat = new RoundedButton(main.read_file_languages.getString("btn_XuatDS"), null, 5, 0, 1.0f);
 		btnXuat.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		btnXuat.setForeground(Color.WHITE);
 		btnXuat.setBackground(Color.decode("#28a745"));
@@ -429,7 +430,16 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 		
-		String colsPCNV[] = {"STT", "Mã NV", "Họ tên", "Làm", "Nghỉ", "Phép", "Lương tháng", "Tăng ca", "Phụ cấp", "Thực lãnh"};
+		String colsPCNV[] = {main.read_file_languages.getString("stt"),
+				main.read_file_languages.getString("lblMaNV"), 
+				main.read_file_languages.getString("lblHoTen"),  
+				main.read_file_languages.getString("lblLam"), 
+				main.read_file_languages.getString("lblNghi"),
+				main.read_file_languages.getString("lblNghiPhep"), 
+				main.read_file_languages.getString("lblLuongThang"), 
+				main.read_file_languages.getString("lblTangCa"),
+				main.read_file_languages.getString("lblPhuCap"), 
+				main.read_file_languages.getString("lblThucLanh")};
 		dtblModelLuongNV = new DefaultTableModel(colsPCNV, 0);
 		tblLuongNV = new JTable(dtblModelLuongNV);
 
