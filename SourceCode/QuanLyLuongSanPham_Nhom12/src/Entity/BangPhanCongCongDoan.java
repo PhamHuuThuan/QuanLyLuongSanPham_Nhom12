@@ -39,6 +39,12 @@ public class BangPhanCongCongDoan {
 	
 
 
+	public BangPhanCongCongDoan(SanPham sanPham, CongDoan congDoan) {
+		super();
+		this.sanPham = sanPham;
+		this.congDoan = congDoan;
+	}
+
 	public SanPham getSanPham() {
 		return sanPham;
 	}

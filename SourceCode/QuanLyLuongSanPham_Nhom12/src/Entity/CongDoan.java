@@ -37,6 +37,13 @@ public class CongDoan {
 		this.maCD = maCD;
 		this.tenCD = tenCD;
 	}
+	public CongDoan(String maCD, String tenCD, Integer thuTu) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+	}
+
 
 	public String getMaCD() {
 		return maCD;

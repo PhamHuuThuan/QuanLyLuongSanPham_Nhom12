@@ -14,21 +14,20 @@ public class BangChamCongCongNhan {
 	private  int soLuongLam ;
 	private String ghiChu;
 	
+	
+	
 	public BangChamCongCongNhan(Date ngayChamCong, Timer gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
-			String ghiChu){
+			String ghiChu) {
 		super();
-		try {
-			setNgayChamCong(ngayChamCong);
-			setGioVaoLam(gioVaoLam);
-			setPhanCong(phanCong);
-			setSoLuongLam(soLuongLam);
-			setGhiChu(ghiChu);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
+		this.ngayChamCong = ngayChamCong;
+		this.gioVaoLam = gioVaoLam;
+		this.phanCong = phanCong;
+		this.soLuongLam = soLuongLam;
+		this.ghiChu = ghiChu;
 	}
 	
+	
+
 	public BangChamCongCongNhan() {
 		super();
 	}

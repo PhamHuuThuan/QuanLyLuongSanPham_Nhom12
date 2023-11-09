@@ -88,7 +88,7 @@ public class PhanCongCongDoan_Dao {
 		ArrayList<CongNhan> listCN = new ArrayList<>();
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT cn.maCN, cn.hoTen, cn.ngaySinh, cn.ngayVaoLam FROM CongNhan cn WHERE NOT EXISTS (SELECT 1 FROM "
+			String querry = "SELECT * FROM CongNhan cn WHERE NOT EXISTS (SELECT 1 FROM "
 					+ "BangPhanCongCongDoan pccd WHERE pccd.maCN = cn.maCN)";
 			st = conn.prepareStatement(querry);
 			rs = st.executeQuery();
@@ -127,7 +127,7 @@ public class PhanCongCongDoan_Dao {
 
 			while (rs.next()) {
 				CongNhan congNhan = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
-				CongDoan congDoan = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"));
+				CongDoan congDoan = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("soLuong"));
 				SanPham sanPham = new SanPham(rs.getString("maSP"), rs.getString("tenSP"));
 
 				BangPhanCongCongDoan cdNew = new BangPhanCongCongDoan(rs.getString("maPhanCong"), congNhan, congDoan,

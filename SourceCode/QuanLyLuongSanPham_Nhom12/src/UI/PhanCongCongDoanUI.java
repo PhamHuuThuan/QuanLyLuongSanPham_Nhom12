@@ -97,6 +97,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 	private boolean isThemPCCD = false;
 	private JTextField txtTongSoLuong;
+	private JButton btnGetProduct;
+	private JTextField txtSLChuaPC;
 
 	public PhanCongCongDoanUI(MainUI main) {
 		this.main = main;
@@ -174,6 +176,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tblCNCPC.getColumnModel().getColumn(4).setPreferredWidth(100);
 
 		getDataLenTable();
+		
+		tblCNCPC.setEnabled(false);
 
 		// Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrCNCPC = new JScrollPane(tblCNCPC, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -314,7 +318,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		JLabel lblMaSP = new JLabel("Mã SP");
 		horizontalBox_2.add(lblMaSP);
 
-		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_2 = Box.createHorizontalStrut(15);
 		horizontalBox_2.add(horizontalStrut_2);
 
 		txtMaSP = new JTextField();
@@ -328,13 +332,27 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		JLabel lblTenSP = new JLabel("Tên SP");
 		horizontalBox_2.add(lblTenSP);
 
-		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_11 = Box.createHorizontalStrut(15);
 		horizontalBox_2.add(horizontalStrut_11);
 
 		txtTenSp = new JTextField();
 		txtTenSp.setEditable(false);
 		horizontalBox_2.add(txtTenSp);
 		txtTenSp.setColumns(10);
+		
+		Component horizontalStrut_19 = Box.createHorizontalStrut(20);
+		horizontalBox_2.add(horizontalStrut_19);
+		
+		JLabel lblSLChuaPC = new JLabel("SL chưa PC");
+		horizontalBox_2.add(lblSLChuaPC);
+		
+		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
+		horizontalBox_2.add(horizontalStrut_20);
+		
+		txtSLChuaPC = new JTextField();
+		txtSLChuaPC.setEditable(false);
+		horizontalBox_2.add(txtSLChuaPC);
+		txtSLChuaPC.setColumns(10);
 
 		Component horizontalStrut_17 = Box.createHorizontalStrut(20);
 		horizontalBox_2.add(horizontalStrut_17);
@@ -506,16 +524,18 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		main.music.playSE(2);
+		
 		if (o == tblCNCPC) {
 			int index = tblCNCPC.getSelectedRow();
 			if (index != -1) {
 				hienThiThongTinCongNhan(index);
+				main.music.playSE(2);
 			}
 		}
 		if (o == tblCDPC) {
 			int index = tblCDPC.getSelectedRow();
 			if (index != -1) {
+				main.music.playSE(2);
 				hienThithongTinPCCD(index);
 				displayButtonSaveAndCancel(false);
 				setEditableForTextField(false);
@@ -652,11 +672,11 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 	// HÀM MỞ MODAL LẤY DANH SÁCH CÔNG ĐOẠN
 	private void showJDialogSP() {
-		JDialog listSp = new JDialog(mainFrame, "Danh sách Công đoạn chưa hoàn thành",
+		JDialog listCD = new JDialog(mainFrame, "Danh sách Công đoạn chưa hoàn thành",
 				JDialog.ModalityType.APPLICATION_MODAL);
-		listSp.setSize(1200, 500);
-		listSp.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		listSp.setLocationRelativeTo(null);
+		listCD.setSize(1200, 500);
+		listCD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		listCD.setLocationRelativeTo(null);
 
 		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ tự", "Mã SP", "Tên SP", "Đơn giá", "Số lượng", "Tình trạng",
 				"Ngày HT" };
@@ -695,15 +715,18 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 				if (!e.getValueIsAdjusting()) {
 					main.music.playSE(2);
 					selectedRowIndex = tblCD.getSelectedRow();
+					btnGetProduct.setEnabled(true);
 				}
 			}
 		});
 		// BUTTON LẤY THÔNG TIN CÔNG ĐOẠN
-		JButton btnGetProduct = new JButton("Lấy Thông tin công đoạn");
+		btnGetProduct = new JButton("Lấy Thông tin công đoạn");
+		btnGetProduct.setEnabled(false);
 		btnGetProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				main.music.playSE(2);
 				if (selectedRowIndex != -1) {
+					
 					String maCD = dtblModelCD.getValueAt(selectedRowIndex, 1).toString();
 					String tenCD = dtblModelCD.getValueAt(selectedRowIndex, 2).toString();
 					String maSP = dtblModelCD.getValueAt(selectedRowIndex, 4).toString();
@@ -717,15 +740,15 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 					txtTongSoLuong.setText(tongSL);
 
 				}
-				listSp.dispose();
+				listCD.dispose();
 			}
 		});
 
-		listSp.getContentPane().setLayout(new BorderLayout());
-		listSp.getContentPane().add(scrCD, BorderLayout.CENTER);
-		listSp.getContentPane().add(btnGetProduct, BorderLayout.SOUTH);
+		listCD.getContentPane().setLayout(new BorderLayout());
+		listCD.getContentPane().add(scrCD, BorderLayout.CENTER);
+		listCD.getContentPane().add(btnGetProduct, BorderLayout.SOUTH);
 
-		listSp.setVisible(true);
+		listCD.setVisible(true);
 
 	}
 
@@ -848,6 +871,10 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		txtTenCD.setText(dspccd.get(index).getCongDoan().getTenCD());
 		txtMaSP.setText(dspccd.get(index).getSanPham().getMaSP());
 		txtTenSp.setText(dspccd.get(index).getSanPham().getTenSP());
+		
+		
+		String tongSL = String.valueOf(dspccd.get(index).getCongDoan().getSoLuong());
+		txtTongSoLuong.setText(tongSL);
 
 		txtSoLuongLam.setText(String.valueOf(dspccd.get(index).getSoLuongCanLam()));
 		txtGhiChu.setText(dspccd.get(index).getGhiChu());

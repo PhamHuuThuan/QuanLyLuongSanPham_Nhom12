@@ -237,6 +237,9 @@ public class Login_UI extends JFrame implements ItemListener{
 		checkbox_remember_user.addItemListener(this);
 		
 		setTextLanguage();
+		
+		input_user.setText("NV00001");
+		input_password.setText("123456a@");
 
 	}
 	//kiểm tra thông tin nhân viên trong csdl

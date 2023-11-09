@@ -54,6 +54,15 @@ public class CongNhan {
 		this.ngaySinh = ngaySinh;
 		this.ngayVaoLam = ngayVaoLam;
 	}
+	
+	
+
+	public CongNhan(String maCN, String hoTen, Date ngaySinh) {
+		super();
+		this.maCN = maCN;
+		this.hoTen = hoTen;
+		this.ngaySinh = ngaySinh;
+	}
 
 	public String getMaCN() {
 		return maCN;
