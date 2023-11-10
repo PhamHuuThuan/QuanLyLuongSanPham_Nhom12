@@ -731,6 +731,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		lblMessage.setText("");
+		main.music.playSE(2);
 		Object o = e.getSource();
 		if(o == btnTim) {
 			timKiemNhanVien();
