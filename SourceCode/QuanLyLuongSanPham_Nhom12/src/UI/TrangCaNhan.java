@@ -1,6 +1,5 @@
 package UI;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -22,7 +21,6 @@ import java.awt.Panel;
 import javax.swing.border.TitledBorder;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -31,6 +29,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
 public class TrangCaNhan extends JPanel implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
 	private Color componentColor = Color.decode("#424242");
 	private Font fontText;

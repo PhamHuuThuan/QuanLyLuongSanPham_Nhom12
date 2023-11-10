@@ -42,16 +42,17 @@ import org.jdesktop.swingx.JXDatePicker;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.NhanVien_Dao;
-import Dao.PhongBan_Dao;
-import Entity.HopDong;
 import Entity.NhanVien;
 import Util.SinhMaTuDong;
 
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
-import javax.swing.border.EmptyBorder;
 
 public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");

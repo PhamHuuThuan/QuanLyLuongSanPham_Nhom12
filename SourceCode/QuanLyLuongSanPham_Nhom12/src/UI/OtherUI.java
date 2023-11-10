@@ -2,7 +2,6 @@ package UI;
 
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -33,6 +32,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 
 public class OtherUI extends JPanel implements ChangeListener, ItemListener, ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");

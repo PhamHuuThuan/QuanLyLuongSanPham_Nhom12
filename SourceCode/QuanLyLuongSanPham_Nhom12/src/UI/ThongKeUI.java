@@ -39,6 +39,10 @@ import Dao.NhanVien_Dao;
 import Dao.TinhLuongNhanVien_Dao;
 
 public class ThongKeUI extends JPanel implements ChangeListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");

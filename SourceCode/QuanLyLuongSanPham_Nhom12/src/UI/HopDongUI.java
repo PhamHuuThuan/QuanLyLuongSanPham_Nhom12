@@ -58,6 +58,10 @@ import javax.swing.JComboBox;
 import java.awt.FlowLayout;
 
 public class HopDongUI extends JPanel implements ActionListener, MouseListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
