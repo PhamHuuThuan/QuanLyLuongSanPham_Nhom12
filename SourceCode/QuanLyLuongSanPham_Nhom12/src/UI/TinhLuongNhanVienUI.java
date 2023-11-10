@@ -538,6 +538,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		lblMessage.setText("");
+		main.music.playSE(2);
 		Object o = e.getSource();
 		if(o == btnTinhLuong) {
 			tinhLuongNVDuocChon();

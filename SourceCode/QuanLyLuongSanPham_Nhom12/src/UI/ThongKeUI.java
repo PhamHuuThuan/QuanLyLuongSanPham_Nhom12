@@ -7,7 +7,9 @@ import java.awt.GridLayout;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,19 +20,25 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Dao.CongNhan_Dao;
+import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
 import Dao.TinhLuongNhanVien_Dao;
 
-public class ThongKeUI extends JPanel {
+public class ThongKeUI extends JPanel implements ChangeListener{
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
@@ -38,9 +46,13 @@ public class ThongKeUI extends JPanel {
 	private JSpinner spnThangNam, spnNam;
 	private SpinnerModel spnModelThangNam, spnModelNam;
 	private Date timeDefault;
+	private DefaultCategoryDataset dataset, dataset2;
 	private JLabel lblNV[], lblCN[];
+	private Map<String, Double> luongTrungBinhTheoPhongBan = new HashMap<>();
+	private Map<Integer, Double> tongGiaTriHopDongTheoThang = new HashMap<>();
 	private NhanVien_Dao nv_Dao = new NhanVien_Dao();
 	private CongNhan_Dao cn_Dao = new CongNhan_Dao();
+	private HopDong_Dao hd_Dao = new HopDong_Dao();
 	private TinhLuongNhanVien_Dao tlnv_Dao = new TinhLuongNhanVien_Dao();
 	
 	public ThongKeUI(MainUI main) {
@@ -91,14 +103,8 @@ public class ThongKeUI extends JPanel {
 		pnlThangNam.add(spnThangNam);
 		
         // Tạo tập dữ liệu
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(15000, "Lương", "Kỹ thuật");
-        dataset.addValue(18000, "Lương", "Kinh doanh");
-        dataset.addValue(17000, "Lương", "Nhân sự");
-        dataset.addValue(16000, "Lương", "Phát triển");
-        dataset.addValue(19000, "Lương", "Tiếp thị");
-        dataset.addValue(17500, "Lương", "Hỗ trợ");
-        
+        dataset = new DefaultCategoryDataset();
+
         // Tạo biểu đồ
         JFreeChart chart = ChartFactory.createBarChart(
                 "Biểu đồ lương trung bình theo phòng ban", 
@@ -204,7 +210,7 @@ public class ThongKeUI extends JPanel {
 		calendar1.add(Calendar.YEAR, -2);
 		Date earliestDate1 = calendar1.getTime();
 		// Giới hạn trên là ngày hiện tại
-		SpinnerModel spnModelNam = new SpinnerDateModel(timeDefault1, earliestDate1, latestDate1, Calendar.YEAR);
+		spnModelNam = new SpinnerDateModel(timeDefault1, earliestDate1, latestDate1, Calendar.YEAR);
 		    
 		// Tạo một JSpinner với model đã tạo
 		spnNam = new JSpinner(spnModelNam);
@@ -222,7 +228,7 @@ public class ThongKeUI extends JPanel {
 		pnlNamHD.add(spnNam);
 
         // Tạo tập dữ liệu
-        DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
+        dataset2 = new DefaultCategoryDataset();
         dataset2.addValue(10000, "Tổng giá trị", "1");
         dataset2.addValue(15000, "Tổng giá trị", "2");
         dataset2.addValue(17000, "Tổng giá trị", "3");
@@ -245,9 +251,21 @@ public class ThongKeUI extends JPanel {
         ChartPanel chartPnlHD = new ChartPanel(chart2);
         pnlHopDong.add(chartPnlHD);
         
-        dsLuongCaoNhat(tlnv_Dao.layTop3NhanVienLuongCaoNhat(), null);
+		CategoryPlot plot = (CategoryPlot) chart2.getPlot();
+		ValueAxis rangeAxis = plot.getRangeAxis();
+		DecimalFormat decimalFormat = new DecimalFormat("0,000");
+		((NumberAxis) rangeAxis).setNumberFormatOverride(decimalFormat);
+        
+        //đưa dữ liệu lên
+        luongTBTheoPB();
+        giaTriHDTheoThang();
+        
+        spnThangNam.addChangeListener(this);
+        spnNam.addChangeListener(this);
 	}
+	//đưa ds nhân viên và công nhân lương cao nhất
 	public void dsLuongCaoNhat(List<String[]> dsNV, List<String[]> dsCN) {
+		clearData();
 		int i = 0;
 		if(dsNV != null && dsNV.size()>0) {
 			for (String[] nhanVien : dsNV) {
@@ -263,6 +281,58 @@ public class ThongKeUI extends JPanel {
 			    String thucLanh = congNhan[1];
 			    lblCN[i++].setText(hoTen + thucLanh + " VNĐ");
 			}
+		}
+	}
+	//Đưa Lương trung bình theo phòng ban vào biểu đồ
+	private void luongTBTheoPB() {
+		dataset.clear();
+        luongTrungBinhTheoPhongBan = tlnv_Dao.layTenPhongBanVaLuongTrungBinh(thangNamString());
+        for (Map.Entry<String, Double> entry : luongTrungBinhTheoPhongBan.entrySet()) {
+            String maPhongBan = entry.getKey();
+            Double luongTrungBinh = entry.getValue();
+            dataset.addValue(luongTrungBinh, "Lương", maPhongBan);
+        }
+        dsLuongCaoNhat(tlnv_Dao.layTop5NhanVienLuongCaoNhat(thangNamString()), null);
+	}
+	//Đưa Tổng giá trị hợ đồng theo tháng vào biểu đồ
+	private void giaTriHDTheoThang() {
+		dataset2.clear();
+        tongGiaTriHopDongTheoThang = hd_Dao.layTongGiaTriHopDongTheoThang(namInt());
+        for (Map.Entry<Integer, Double> entry : tongGiaTriHopDongTheoThang.entrySet()) {
+            int thang = entry.getKey();
+            double tongGiaTri = entry.getValue();
+            dataset2.addValue(tongGiaTri, "Tổng giá trị", "T"+thang);
+        }
+        dsLuongCaoNhat(tlnv_Dao.layTop5NhanVienLuongCaoNhat(thangNamString()), null);
+	}
+	//Clear dữ liệu trong label
+	private void clearData() {
+		for(int i = 0; i < 5; i++) {
+			lblNV[i].setText("");
+			lblCN[i].setText("");
+		}
+	}
+	//Get thang Nam từ giao diện thành chuỗi
+	private String thangNamString() {
+		int month = ((Date) spnModelThangNam.getValue()).getMonth()+1; //lấy tháng từ spinner tháng bắt đầu từ 0 
+		int year = ((Date) spnModelThangNam.getValue()).getYear()+1900; //lấy năm từ spinner năm bắt đầu từ 1900
+		String thangNam = (month<10)?("0"+month):(month)+"";
+		thangNam += "/" + (year);
+		return thangNam;
+	}
+	//Get  Nam từ giao diện thành chuỗi
+	private int namInt() {
+		int year = ((Date) spnModelNam.getValue()).getYear()+1900; //lấy năm từ spinner năm bắt đầu từ 1900
+		return year;
+	}
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		main.music.playSE(2);
+		if(e.getSource() == spnThangNam) {
+			luongTBTheoPB();
+		}
+		if(e.getSource() == spnNam) {
+			giaTriHDTheoThang();
 		}
 	}
 }
