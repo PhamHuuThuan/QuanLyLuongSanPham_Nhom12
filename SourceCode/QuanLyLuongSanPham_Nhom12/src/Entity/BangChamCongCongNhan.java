@@ -4,33 +4,89 @@ package Entity;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.Timer;
 
 public class BangChamCongCongNhan {
 	private Date ngayChamCong;
-	// sua class thanh Timer
-	private Timer gioVaoLam;
+	// sua class thanh String
+	private String gioVaoLam;
 	private BangPhanCongCongDoan phanCong;
 	private  int soLuongLam ;
 	private String ghiChu;
+	private Integer trangThai;
 	
-	public BangChamCongCongNhan(Date ngayChamCong, Timer gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
-			String ghiChu){
+	private CongNhan congNhan;
+	private CongDoan congDoan;
+	private SanPham sanPham;
+	
+	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
+			String ghiChu, Integer trangThai) {
 		super();
-		try {
-			setNgayChamCong(ngayChamCong);
-			setGioVaoLam(gioVaoLam);
-			setPhanCong(phanCong);
-			setSoLuongLam(soLuongLam);
-			setGhiChu(ghiChu);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
+		this.ngayChamCong = ngayChamCong;
+		this.gioVaoLam = gioVaoLam;
+		this.phanCong = phanCong;
+		this.soLuongLam = soLuongLam;
+		this.ghiChu = ghiChu;
+		this.trangThai = trangThai;
 	}
-	
+
+
 	public BangChamCongCongNhan() {
 		super();
+	}
+	
+
+
+	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
+			String ghiChu, Integer trangThai, CongNhan congNhan, CongDoan congDoan, SanPham sanPham) {
+		super();
+		this.ngayChamCong = ngayChamCong;
+		this.gioVaoLam = gioVaoLam;
+		this.phanCong = phanCong;
+		this.soLuongLam = soLuongLam;
+		this.ghiChu = ghiChu;
+		this.trangThai = trangThai;
+		this.congNhan = congNhan;
+		this.congDoan = congDoan;
+		this.sanPham = sanPham;
+	}
+
+
+	public CongNhan getCongNhan() {
+		return congNhan;
+	}
+
+
+	public void setCongNhan(CongNhan congNhan) {
+		this.congNhan = congNhan;
+	}
+
+
+	public CongDoan getCongDoan() {
+		return congDoan;
+	}
+
+
+	public void setCongDoan(CongDoan congDoan) {
+		this.congDoan = congDoan;
+	}
+
+
+	public SanPham getSanPham() {
+		return sanPham;
+	}
+
+
+	public void setSanPham(SanPham sanPham) {
+		this.sanPham = sanPham;
+	}
+
+
+	public Integer getTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(Integer trangThai) {
+		this.trangThai = trangThai;
 	}
 	
 	public Date getNgayChamCong() {
@@ -46,10 +102,10 @@ public class BangChamCongCongNhan {
 			this.ngayChamCong = ngayChamCong;
 		}
 	}
-	public Timer getGioVaoLam() {
+	public String getGioVaoLam() {
 		return gioVaoLam;
 	}
-	public void setGioVaoLam(Timer gioVaoLam) {
+	public void setGioVaoLam(String gioVaoLam) {
 
 		this.gioVaoLam = gioVaoLam;
 	}

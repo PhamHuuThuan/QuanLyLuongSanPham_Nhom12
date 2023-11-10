@@ -50,14 +50,13 @@ public class TinhLuongCongNhan_UI extends JPanel {
 	private JTable tblDSTL;
 	private JTableHeader tbhCN, tbhCNCC;
 	private RoundedButton btnXuat;
-	private JTextField textField;
 
 	public TinhLuongCongNhan_UI(MainUI main) {
 		this.main = main;
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlTinhLuongCN = new JPanel();
-		add(pnlTinhLuongCN, BorderLayout.NORTH);
+		add(pnlTinhLuongCN, BorderLayout.CENTER);
 		pnlTinhLuongCN.setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlBody = new JPanel();
@@ -71,7 +70,8 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		pnlTitle.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JLabel lblTitle = new JLabel("TÍNH LƯƠNG CÔNG NHÂN");
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lblTitle.setForeground(textColor);
+		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlTitle.add(lblTitle);
 
@@ -82,13 +82,7 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		JPanel pnlCCSelectAll = new JPanel();
 		pnlCCSelectAll.setBackground(new Color(255, 255, 255));
 		pnlCCSelectAll
-				.setBorder(new CompoundBorder(
-						new TitledBorder(
-								new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255),
-										new Color(160, 160, 160)),
-								"Danh s\u00E1ch C\u00F4ng Nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null,
-								new Color(0, 0, 0)),
-						new EmptyBorder(10, 10, 0, 10)));
+				.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin t\u00EDnh l\u01B0\u01A1ng C\u00F4ng Nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(10, 10, 0, 10)));
 		pnlChamCong.add(pnlCCSelectAll, BorderLayout.CENTER);
 		pnlCCSelectAll.setLayout(new BorderLayout(0, 0));
 //		pnlCCSelectAll.setPreferredSize(new Dimension(200, 300));
@@ -117,54 +111,27 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		dtbNgayChamCong.setLocale(new Locale("vi", "VN"));
 		horizontalBox.add(dtbNgayChamCong);
 		
-		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
-		horizontalBox.add(horizontalStrut_8);
-
-		JLabel lblTenCongDoan = new JLabel("Tên công đoạn");
-		horizontalBox.add(lblTenCongDoan);
-
-		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
-		horizontalBox.add(horizontalStrut_11);
-
-		textField = new JTextField("Gia công");
-		textField.setEditable(false);
-		textField.setColumns(10);
-		horizontalBox.add(textField);
-
-		Component verticalStrut_3 = Box.createVerticalStrut(20);
-		pnlCcAll.add(verticalStrut_3);
+		Component horizontalStrut_1 = Box.createHorizontalStrut(60);
+		horizontalBox.add(horizontalStrut_1);
+		
+		JButton btnChamTatCa = new JButton("Tính lương tất cả");
+		horizontalBox.add(btnChamTatCa);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(30);
+		horizontalBox.add(horizontalStrut);
+		
+		JButton btnXemChiTiet = new JButton("Xem chi tiết");
+		horizontalBox.add(btnXemChiTiet);
 
 		Box box_ChamCong = Box.createHorizontalBox();
 		box_ChamCong.setBorder(new EmptyBorder(0, 0, 10, 0));
 		pnlCcAll.add(box_ChamCong);
 
-		JButton btnChamTatCa = new JButton("Tính lương tất cả");
-		btnChamTatCa.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Date selectedDate = dtbNgayChamCong.getDate();
-				System.out.println(selectedDate);
-
-			}
-		});
-		box_ChamCong.add(btnChamTatCa);
-
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		box_ChamCong.add(horizontalStrut);
-
-		JButton btnXemChiTiet = new JButton("Xem chi tiết");
-		box_ChamCong.add(btnXemChiTiet);
-
 
 		JPanel pnlBangChamCong = new JPanel();
 		pnlBangChamCong.setBackground(new Color(255, 255, 255));
 		pnlBangChamCong
-				.setBorder(new CompoundBorder(
-						new TitledBorder(
-								new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255),
-										new Color(160, 160, 160)),
-								"Danh s\u00E1ch L\u01B0\u01A1ng C\u00F4ng nh\u00E2n \u0111\u00E3 t\u00EDnh",
-								TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)),
-						new EmptyBorder(10, 0, 0, 0)));
+				.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Danh s\u00E1ch L\u01B0\u01A1ng C\u00F4ng nh\u00E2n \u0111\u00E3 t\u00EDnh", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(0, 0, 0, 0)));
 		pnlTinhLuongCN.add(pnlBangChamCong, BorderLayout.CENTER);
 		pnlBangChamCong.setLayout(new BorderLayout(0, 0));
 
@@ -193,7 +160,7 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		tbhCNCC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblDSTL.setTableHeader(tbhCNCC);
 
-		tblDSTL.setRowHeight(20);
+		tblDSTL.setRowHeight(30);
 		tblDSTL.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblDSTL.getColumnModel().getColumn(1).setPreferredWidth(50);
 		tblDSTL.getColumnModel().getColumn(2).setPreferredWidth(80);

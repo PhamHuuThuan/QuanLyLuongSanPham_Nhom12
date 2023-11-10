@@ -12,6 +12,8 @@ public class CongDoan {
 	private boolean tinhTrang;// true: đã hoàn thành | false: chưa hoàn thành
 	private Date ngayHoanThanh;
 	private SanPham sanPham;
+	
+	private int soLuongConLai;
 
 	
 	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong, double donGia, boolean tinhTrang,
@@ -21,6 +23,26 @@ public class CongDoan {
 		this.tenCD = tenCD;
 		this.thuTu = thuTu;
 		this.soLuong = soLuong;
+		this.donGia = donGia;
+		this.tinhTrang = tinhTrang;
+		this.ngayHoanThanh = ngayHoanThanh;
+		this.sanPham = sanPham;
+	}
+	
+	public CongDoan(int soLuong, int soLuongConLai) {
+		super();
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
+	}
+
+	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong,int soLuongConLai ,double donGia, boolean tinhTrang,
+			Date ngayHoanThanh, SanPham sanPham) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
 		this.donGia = donGia;
 		this.tinhTrang = tinhTrang;
 		this.ngayHoanThanh = ngayHoanThanh;
@@ -36,6 +58,32 @@ public class CongDoan {
 		super();
 		this.maCD = maCD;
 		this.tenCD = tenCD;
+	}
+	public CongDoan(String maCD, String tenCD, Integer thuTu) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+	}
+
+	public CongDoan(String maCD,String tenCD, Integer soLuong, Integer soLuongConLai) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
+	}
+	
+	
+	
+	
+
+	public int getSoLuongConLai() {
+		return soLuongConLai;
+	}
+
+	public void setSoLuongConLai(int soLuongConLai) {
+		this.soLuongConLai = soLuongConLai;
 	}
 
 	public String getMaCD() {

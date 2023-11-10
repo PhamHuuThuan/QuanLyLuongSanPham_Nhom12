@@ -9,14 +9,18 @@ import java.awt.Color;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.border.MatteBorder;
 
 import CustomUI.RoundedButton;
+import Dao.NhanVien_Dao;
 import Dao.PhanCongNhanVien_Dao;
 import Entity.BangPhanCongNhanVien;
+import Entity.NhanVien;
 import Util.ConfigManager;
 import Util.LuuTru;
 
@@ -27,13 +31,17 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 @SuppressWarnings("serial")
-public class Login_UI extends JFrame implements ItemListener{
+public class Login_UI extends JFrame implements ItemListener {
 
 	private static MainUI main;
 	private JPanel contentPane;
@@ -41,7 +49,7 @@ public class Login_UI extends JFrame implements ItemListener{
 	private JPanel panel_in_right;
 	private JLabel text_heading_login;
 	private JPanel panel_input_user;
-	private JLabel text_heading_user; 
+	private JLabel text_heading_user;
 	private JTextField input_user;
 	private JPanel panel_input_password;
 	private JLabel text_heading_password;
@@ -52,6 +60,12 @@ public class Login_UI extends JFrame implements ItemListener{
 	public LuuTru l = new LuuTru();
 	public ConfigManager config = new ConfigManager("/config/config.properties");
 	public ResourceBundle read_file_languages = l.getLanguageConfig(config.getLanguage());
+
+	private boolean isLoading = false;
+
+	public BangPhanCongNhanVien pcnv;
+	private ArrayList<NhanVien> dsnv = new ArrayList<>();
+	private NhanVien_Dao nv_dao = new NhanVien_Dao();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -67,15 +81,14 @@ public class Login_UI extends JFrame implements ItemListener{
 	}
 
 	private void ClosePage() {
-//		this.dispose();
-		System.exit(0);
+		this.dispose();
 	}
 
 	public Login_UI(MainUI main) {
 		this.main = main;
 		ImageIcon appIcon = new ImageIcon("assets/icon_logo.png");
 		setIconImage(appIcon.getImage());
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1111, 456);
 		contentPane = new JPanel();
@@ -191,7 +204,7 @@ public class Login_UI extends JFrame implements ItemListener{
 		checkbox_remember_user.setBackground(Color.decode("#424242"));
 		checkbox_remember_user.setForeground(Color.WHITE);
 		checkbox_remember_user.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		checkbox_remember_user.setBounds(300, 250, 150, 21);
+		checkbox_remember_user.setBounds(350, 250, 150, 21);
 		panel_in_right.add(checkbox_remember_user);
 
 		combox_languages = new JComboBox<>();
@@ -200,7 +213,6 @@ public class Login_UI extends JFrame implements ItemListener{
 		combox_languages.setBounds(20, 353, 150, 31);
 		combox_languages.setSelectedIndex(config.getLanguage());
 		panel_in_right.add(combox_languages);
-		
 
 		JComboBox<String> combox_theme = new JComboBox<>();
 		combox_theme.addItem("Lightmode");
@@ -211,60 +223,83 @@ public class Login_UI extends JFrame implements ItemListener{
 		button_login.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(), input_password.getText());
-//				try {
-//					FileWriter writer = new FileWriter("src/config/languages/selectedLanguage.txt");
-//					writer.write(pathFileLanguage);
-//					writer.close();
-//				} catch (IOException ex) {
-//					ex.printStackTrace();
-//				};
-//				try {
-//					FileWriter writer = new FileWriter("src/config/themes/selectedTheme.txt");
-//					writer.write(pathFileTheme);
-//					writer.close();
-//				} catch (IOException ex) {
-//					ex.printStackTrace();
-//				}
-				//kiểm tra đăng nhập
-				checkLogin();
+				config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(),
+						input_password.getText());
+
+				if (checkLogin()) {
+					new MainUI(pcnv).music.playSE(1);
+					new MainUI(pcnv).setVisible(true);
+					ClosePage();
+				}
+
 			}
 		});
 		
 		combox_languages.addItemListener(this);
 		checkbox_remember_user.addItemListener(this);
-		
+
 		setTextLanguage();
 
+		input_user.setText("NV00001");
+		input_password.setText("123456a@");
+
 	}
-	//kiểm tra thông tin nhân viên trong csdl
-	private void checkLogin() {
-		String maNV = input_user.getText();
-		String matKhau = input_password.getText();
-		BangPhanCongNhanVien pcnv = new PhanCongNhanVien_Dao().kiemTraDangNhap(maNV, matKhau);
-		if(pcnv!=null) {
-			if(pcnv.getChucVu().equals("Quản lý")) {
-				this.dispose();
-				new MainUI(pcnv).setVisible(true);
-			}else if(pcnv.getChucVu().equals("Nhân viên")) {
-				this.dispose();
-				new MainUI(pcnv).setVisible(true);
-			}else {
-				//thực tập sinh
+
+	// HÀM KIỂM TRA MÃ NV CÓ TỒN TẠI
+	private static boolean contrainsMaNV(ArrayList<NhanVien> dsnv, String maNV, String matKhau) {
+		for (NhanVien nv : dsnv) {
+			if (nv.getMaNV().equals(maNV) && nv.getMatKhau().equals(matKhau)) {
+				return true;
 			}
 		}
+		return false;
+
+	}
+
+	// kiểm tra thông tin nhân viên trong csdl
+	private boolean checkLogin() {
+		String maNV = input_user.getText();
+		String matKhau = input_password.getText();
+
+		pcnv = new PhanCongNhanVien_Dao().kiemTraDangNhap(maNV, matKhau);
+
+		if (Pattern.matches("^NV\\d{5}$", maNV)) {
+			dsnv = nv_dao.getAllNhanVien();
+
+			if (!contrainsMaNV(dsnv, maNV, matKhau)) {
+				alertNotification("Mã nhân viên hoặc mật khẩu không chính xác");
+				return false;
+			}
+
+			if (pcnv != null) {
+				if (pcnv.getChucVu().equals("Quản lý")) {
+					return true;
+				} else if (pcnv.getChucVu().equals("Nhân viên")) {
+					return true;
+				}
+			} else {
+				alertNotification("Tài khoản không tồn tại");
+				return false;
+			}
+		} else {
+			alertNotification("Mã NV không đúng định dạng");
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		if(e.getSource() == combox_languages) {
+		if (e.getSource() == combox_languages) {
 			config.setLanguage(combox_languages.getSelectedIndex());
 			setTextLanguage();
 		}
-		if(e.getSource() == checkbox_remember_user) {
-			config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(), input_password.getText());
+		if (e.getSource() == checkbox_remember_user) {
+			config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(),
+					input_password.getText());
 		}
 	}
+
 	public void setTextLanguage() {
 		read_file_languages = l.getLanguageConfig(config.getLanguage());
 		text_heading_login.setText(read_file_languages.getString("text_heading_login"));
@@ -272,5 +307,12 @@ public class Login_UI extends JFrame implements ItemListener{
 		text_heading_password.setText(read_file_languages.getString("text_heading_password"));
 		checkbox_remember_user.setText(read_file_languages.getString("checkbox_remember_user"));
 		button_login.setText(read_file_languages.getString("text_heading_login"));
+	}
+
+	public int alertNotification(String textError) {
+		String[] options = { "Cancel" };
+		int result = JOptionPane.showOptionDialog(main, textError, "NOTIFICATION", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		return result;
 	}
 }
