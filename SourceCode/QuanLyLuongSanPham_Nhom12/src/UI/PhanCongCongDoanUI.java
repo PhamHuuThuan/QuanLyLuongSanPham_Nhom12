@@ -357,7 +357,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		Component horizontalStrut_17 = Box.createHorizontalStrut(20);
 		horizontalBox_2.add(horizontalStrut_17);
 
-		JLabel lblTongSoLuong = new JLabel("Tổng Số Lượng");
+		JLabel lblTongSoLuong = new JLabel("Tổng SL");
 		horizontalBox_2.add(lblTongSoLuong);
 
 		Component horizontalStrut_18 = Box.createHorizontalStrut(20);
@@ -674,11 +674,11 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	private void showJDialogSP() {
 		JDialog listCD = new JDialog(mainFrame, "Danh sách Công đoạn chưa hoàn thành",
 				JDialog.ModalityType.APPLICATION_MODAL);
-		listCD.setSize(1200, 500);
+		listCD.setSize(1280, 500);
 		listCD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		listCD.setLocationRelativeTo(null);
 
-		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ tự", "Mã SP", "Tên SP", "Đơn giá", "Số lượng", "Tình trạng",
+		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ Tự", "Mã SP", "Tên SP", "Đơn giá", "SL","SL chưa PC", "Tình trạng",
 				"Ngày HT" };
 		dtblModelCD = new DefaultTableModel(cols_cd, 0);
 		tblCD = new JTable(dtblModelCD);
@@ -701,6 +701,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tblCD.getColumnModel().getColumn(7).setPreferredWidth(30);
 		tblCD.getColumnModel().getColumn(8).setPreferredWidth(90);
 		tblCD.getColumnModel().getColumn(9).setPreferredWidth(90);
+		tblCD.getColumnModel().getColumn(10).setPreferredWidth(90);
 
 		JScrollPane scrCD = new JScrollPane(tblCD, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -732,12 +733,14 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 					String maSP = dtblModelCD.getValueAt(selectedRowIndex, 4).toString();
 					String tenSP = dtblModelCD.getValueAt(selectedRowIndex, 5).toString();
 					String tongSL = dtblModelCD.getValueAt(selectedRowIndex, 7).toString();
+					String slChuaPC = dtblModelCD.getValueAt(selectedRowIndex, 8).toString();
 
 					txtMaCD.setText(maCD);
 					txtTenCD.setText(tenCD);
 					txtMaSP.setText(maSP);
 					txtTenSp.setText(tenSP);
 					txtTongSoLuong.setText(tongSL);
+					txtSLChuaPC.setText(slChuaPC);
 
 				}
 				listCD.dispose();
@@ -789,8 +792,9 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		row[5] = cd.getSanPham().getTenSP();
 		row[6] = String.valueOf(Double.valueOf(cd.getDonGia()));
 		row[7] = String.valueOf(Integer.valueOf(cd.getSoLuong()));
-		row[8] = cd.isTinhTrang() ? "Đã HT" : "Chưa HT";
-		row[9] = new SimpleDateFormat("dd-MM-yyyy").format(cd.getNgayHoanThanh());
+		row[8] = String.valueOf(Integer.valueOf(cd.getSoLuongConLai()));
+		row[9] = cd.isTinhTrang() ? "Đã HT" : "Chưa HT";
+		row[10] = new SimpleDateFormat("dd-MM-yyyy").format(cd.getNgayHoanThanh());
 		dtblModelCD.addRow(row);
 	}
 
@@ -935,8 +939,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		String soLuongLam = txtSoLuongLam.getText();
 		try {
 			int sll = Integer.parseInt(soLuongLam);
-			if (sll > Integer.parseInt(txtTongSoLuong.getText())) {
-				alertNotification("Số lượng làm phải nhỏ hơn hoặc bằng Tổng số lượng công đoạn");
+			if (sll > Integer.parseInt(txtSLChuaPC.getText())) {
+				alertNotification("Số lượng làm phải nhỏ hơn hoặc bằng Số lượng chưa phân công công đoạn");
 				return false;
 			} else if (sll <= 0) {
 				alertNotification("Số lượng làm phải lớn hơn 0");

@@ -56,13 +56,31 @@ public class PhanCongCongDoan_Dao {
 
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT * FROM CongDoan cd JOIN SanPham sp ON cd.maSP = sp.maSP WHERE tinhTrang LIKE 0;";
+			String querry = "WITH CongDoanWithConLai AS (\r\n"
+					+ "    SELECT \r\n"
+					+ "        cd.maCD, cd.tenCD, cd.soLuong, cd.maSP, cd.tinhTrang, cd.donGia, cd.thuTu, cd.ngayHoanThanh, \r\n"
+					+ "        cd.soLuong - COALESCE(SUM(pccd.soLuongCanLam), 0) AS soLuongConLai\r\n"
+					+ "    FROM \r\n"
+					+ "        CongDoan cd\r\n"
+					+ "        LEFT JOIN BangPhanCongCongDoan pccd ON pccd.maCongDoan = cd.maCD\r\n"
+					+ "        LEFT JOIN CongNhan cn ON pccd.maCN = cn.maCN \r\n"
+					+ "        LEFT JOIN SanPham sp ON cd.maSP = sp.maSP\r\n"
+					+ "    GROUP BY \r\n"
+					+ "        cd.maCD, cd.tenCD, cd.soLuong, cd.maSP, cd.tinhTrang, cd.ngayHoanThanh, cd.donGia, cd.thuTu\r\n"
+					+ ")\r\n"
+					+ "SELECT \r\n"
+					+ "    CongDoanWithConLai.*,  sp.*\r\n"
+					+ "FROM \r\n"
+					+ "    CongDoanWithConLai LEFT JOIN SanPham sp ON CongDoanWithConLai.maSP = sp.maSP\r\n"
+					+ "WHERE \r\n"
+					+ "    (CongDoanWithConLai.tinhTrang LIKE '0' OR CongDoanWithConLai.tinhTrang IS NULL)\r\n"
+					+ "    AND CongDoanWithConLai.soLuongConLai > 0;";
 			st = conn.prepareStatement(querry);
 			rs = st.executeQuery();
 
 			while (rs.next()) {
 				CongDoan cd = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("thuTu"),
-						rs.getInt("soLuong"), rs.getDouble("donGia"), rs.getBoolean("tinhTrang"),
+						rs.getInt("soLuong"),rs.getInt("soLuongConLai"), rs.getDouble("donGia"), rs.getBoolean("tinhTrang"),
 						rs.getDate("ngayHoanThanh"), new SanPham(rs.getString("maSP"), rs.getString("tenSP")));
 				listCD.add(cd);
 			}
@@ -239,6 +257,9 @@ public class PhanCongCongDoan_Dao {
 		
 		return n>0;
 	}
+	
+	// HÀM TÍNH SỐ LƯỢNG CÒN LẠI CẦN PHÂN CÔNG
+	
 	
 
 }
