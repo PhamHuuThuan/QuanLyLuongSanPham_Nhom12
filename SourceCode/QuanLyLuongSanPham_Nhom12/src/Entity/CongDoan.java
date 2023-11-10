@@ -29,8 +29,11 @@ public class CongDoan {
 		this.sanPham = sanPham;
 	}
 	
-	
-	
+	public CongDoan(int soLuong, int soLuongConLai) {
+		super();
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
+	}
 
 	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong,int soLuongConLai ,double donGia, boolean tinhTrang,
 			Date ngayHoanThanh, SanPham sanPham) {
@@ -45,23 +48,6 @@ public class CongDoan {
 		this.ngayHoanThanh = ngayHoanThanh;
 		this.sanPham = sanPham;
 	}
-
-
-
-
-	public int getSoLuongConLai() {
-		return soLuongConLai;
-	}
-
-
-
-
-	public void setSoLuongConLai(int soLuongConLai) {
-		this.soLuongConLai = soLuongConLai;
-	}
-
-
-
 
 	public CongDoan(String maCD) {
 		super();
@@ -80,6 +66,25 @@ public class CongDoan {
 		this.thuTu = thuTu;
 	}
 
+	public CongDoan(String maCD,String tenCD, Integer soLuong, Integer soLuongConLai) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
+	}
+	
+	
+	
+	
+
+	public int getSoLuongConLai() {
+		return soLuongConLai;
+	}
+
+	public void setSoLuongConLai(int soLuongConLai) {
+		this.soLuongConLai = soLuongConLai;
+	}
 
 	public String getMaCD() {
 		return maCD;

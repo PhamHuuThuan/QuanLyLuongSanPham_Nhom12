@@ -137,15 +137,34 @@ public class PhanCongCongDoan_Dao {
 		ArrayList<BangPhanCongCongDoan> listPCCD = new ArrayList<>();
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT * FROM BangPhanCongCongDoan pccd  "
-					+ "JOIN CongDoan cd ON pccd.maCongDoan =  cd.maCD " + "JOIN CongNhan cn ON pccd.maCN = cn.maCN "
-					+ "JOIN SanPham sp ON cd.maSP = sp.maSP";
+			String querry = "WITH CongDoanWithConLai AS (\r\n"
+					+ "    SELECT \r\n"
+					+ "        cd.maCD,cd.tenCD, cd.soLuong, cd.maSP, pccd.maPhanCong,\r\n"
+					+ "		pccd.ngayPhanCong, pccd.soLuongCanLam, pccd.ghiChu,\r\n"
+					+ "		cn.maCN, cn.hoTen, \r\n"
+					+ "        cd.soLuong - COALESCE(SUM(pccd.soLuongCanLam), 0) AS soLuongConLai\r\n"
+					+ "    FROM \r\n"
+					+ "        CongDoan cd\r\n"
+					+ "        LEFT JOIN BangPhanCongCongDoan pccd ON pccd.maCongDoan = cd.maCD\r\n"
+					+ "        LEFT JOIN CongNhan cn ON pccd.maCN = cn.maCN \r\n"
+					+ "        LEFT JOIN SanPham sp ON cd.maSP = sp.maSP\r\n"
+					+ "    GROUP BY \r\n"
+					+ "        cd.maCD, cd.tenCD, cd.soLuong, cd.maSP, pccd.maPhanCong, \r\n"
+					+ "		pccd.ngayPhanCong, pccd.soLuongCanLam, pccd.ghiChu,\r\n"
+					+ "		cn.maCN, cn.hoTen\r\n"
+					+ ")\r\n"
+					+ "SELECT \r\n"
+					+ "    CongDoanWithConLai.*, sp.*\r\n"
+					+ "FROM \r\n"
+					+ "    CongDoanWithConLai LEFT JOIN SanPham sp ON CongDoanWithConLai.maSP = sp.maSP\r\n"
+					+ "WHERE \r\n"
+					+ "    CongDoanWithConLai.maPhanCong IS NOT NULL";
 			st = conn.prepareStatement(querry);
 			rs = st.executeQuery();
 
 			while (rs.next()) {
 				CongNhan congNhan = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
-				CongDoan congDoan = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("soLuong"));
+				CongDoan congDoan = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("soLuong"), rs.getInt("soLuongConLai"));
 				SanPham sanPham = new SanPham(rs.getString("maSP"), rs.getString("tenSP"));
 
 				BangPhanCongCongDoan cdNew = new BangPhanCongCongDoan(rs.getString("maPhanCong"), congNhan, congDoan,
@@ -258,7 +277,61 @@ public class PhanCongCongDoan_Dao {
 		return n>0;
 	}
 	
-	// HÀM TÍNH SỐ LƯỢNG CÒN LẠI CẦN PHÂN CÔNG
+//	// HÀM LẤY TỔNG SỐ LƯỢNG VÀ TỔNG SỐ LƯỢNG
+//	public ArrayList<BangPhanCongCongDoan> getSLAndSLConLai( String maCD, String maSP ){
+//		ArrayList<CongDoan> listCD = new ArrayList<>();
+//		ConnectDB.getInstance();
+//		PreparedStatement st = null;
+//		ResultSet rs = null;
+//		try {
+//			Connection conn = ConnectDB.getConnection();
+//			String querry = "WITH CongDoanWithConLai AS (\r\n"
+//					+ "    SELECT \r\n"
+//					+ "        cd.maCD, cd.soLuong, cd.maSP,\r\n"
+//					+ "        cd.soLuong - COALESCE(SUM(pccd.soLuongCanLam), 0) AS soLuongConLai\r\n"
+//					+ "    FROM \r\n"
+//					+ "        CongDoan cd\r\n"
+//					+ "        LEFT JOIN BangPhanCongCongDoan pccd ON pccd.maCongDoan = cd.maCD\r\n"
+//					+ "        LEFT JOIN CongNhan cn ON pccd.maCN = cn.maCN \r\n"
+//					+ "        LEFT JOIN SanPham sp ON cd.maSP = sp.maSP\r\n"
+//					+ "    GROUP BY \r\n"
+//					+ "        cd.maCD, cd.soLuong, cd.maSP\r\n"
+//					+ ")\r\n"
+//					+ "SELECT \r\n"
+//					+ "    CongDoanWithConLai.*\r\n"
+//					+ "FROM \r\n"
+//					+ "    CongDoanWithConLai LEFT JOIN SanPham sp ON CongDoanWithConLai.maSP = sp.maSP\r\n"
+//					+ "WHERE \r\n"
+//					+ "    CongDoanWithConLai.maCD LIKE ? AND  CongDoanWithConLai.maSP LIKE ?";
+//			
+//			st = conn.prepareStatement(querry);
+//			
+//			st.setString(1, "%" + maCD + "%");
+//			st.setString(2, "%" + maSP + "%");
+//			
+//			rs  = st.executeQuery();
+//			while(rs.next()) {
+//				CongDoan cd = new CongDoan(
+//						rs.getString("soLuong"),
+//						rs.getString("soLuongConLai")
+//						);
+//				listCD.add(cd);
+//			}
+//			
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}finally {
+//			try {
+//				if(st !=null) rs.close();
+//				if(rs != null) st.close();
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//			}
+//		}
+//		
+//		return listCD;
+//	}
 	
 	
 

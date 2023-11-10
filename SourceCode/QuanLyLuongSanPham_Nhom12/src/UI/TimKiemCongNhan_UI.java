@@ -593,7 +593,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		tbhCN.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblCN.setTableHeader(tbhCN);
 
-		tblCN.setRowHeight(20);
+		tblCN.setRowHeight(30);
 		tblCN.getColumnModel().getColumn(0).setPreferredWidth(45);
 		tblCN.getColumnModel().getColumn(1).setPreferredWidth(80);
 		tblCN.getColumnModel().getColumn(2).setPreferredWidth(100);

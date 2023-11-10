@@ -71,7 +71,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	private JTextField txtMaCD;
 	private JTextField txtMaSP;
 	private JTextField txtMaPCCD;
-	private JTextField txtTenCD;
+	private JTextField txtTenCD; 
 	private JTextField txtSoLuongLam;
 
 	private JFrame mainFrame;
@@ -91,9 +91,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	private ArrayList<BangPhanCongCongDoan> dspccd = new ArrayList<>();
 
 	private int selectedRowIndex = -1;
-	private JTextField txtMaCN;
-	private JTextField txtTenCN;
-	private JTextField txtGhiChu;
+	private JTextField txtMaCN, txtTenCN, txtGhiChu;
 
 	private boolean isThemPCCD = false;
 	private JTextField txtTongSoLuong;
@@ -105,7 +103,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 		// set gia tri cho jpanel SanPham
 		setLayout(new BorderLayout(0, 0));
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setBorder(new EmptyBorder(10, 0, 0, 0));
 		setBackground(bgColor);
 
 		JPanel pnlNhanVien = new JPanel();
@@ -155,7 +153,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		pnlBangNV.setBackground(bgColor);
 		pnlBangNV.setPreferredSize(new Dimension(700, 300));
 		b.add(pnlBangNV);
-		b.add(Box.createHorizontalStrut(10));
+		b.add(Box.createHorizontalStrut(5));
 
 		String cols[] = { "STT", "Mã CN", "Tên CN", "Ngày sinh", "Ngày vào làm" };
 		dtblModelCNCPC = new DefaultTableModel(cols, 0);
@@ -168,7 +166,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tbhCNCPC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblCNCPC.setTableHeader(tbhCNCPC);
 
-		tblCNCPC.setRowHeight(25);
+		tblCNCPC.setRowHeight(30);
 		tblCNCPC.getColumnModel().getColumn(0).setPreferredWidth(45);
 		tblCNCPC.getColumnModel().getColumn(1).setPreferredWidth(75);
 		tblCNCPC.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -480,7 +478,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tbhCDPC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 
 		tblCDPC.setTableHeader(tbhCDPC);
-		tblCDPC.setRowHeight(20);
+		tblCDPC.setRowHeight(30);
 		tblCDPC.getColumnModel().getColumn(0).setPreferredWidth(10);
 		tblCDPC.getColumnModel().getColumn(1).setPreferredWidth(70);
 		tblCDPC.getColumnModel().getColumn(2).setPreferredWidth(60);
@@ -690,7 +688,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tbhCD.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 
 		tblCD.setTableHeader(tbhCD);
-		tblCD.setRowHeight(30);
+		tblCD.setRowHeight(35);
 		tblCD.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblCD.getColumnModel().getColumn(1).setPreferredWidth(80);
 		tblCD.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -876,13 +874,13 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		txtMaSP.setText(dspccd.get(index).getSanPham().getMaSP());
 		txtTenSp.setText(dspccd.get(index).getSanPham().getTenSP());
 		
-		
-		String tongSL = String.valueOf(dspccd.get(index).getCongDoan().getSoLuong());
-		txtTongSoLuong.setText(tongSL);
+		txtTongSoLuong.setText(String.valueOf(Integer.valueOf(dspccd.get(index).getCongDoan().getSoLuong())));
+		txtSLChuaPC.setText(String.valueOf(Integer.valueOf(dspccd.get(index).getCongDoan().getSoLuongConLai())));
 
 		txtSoLuongLam.setText(String.valueOf(dspccd.get(index).getSoLuongCanLam()));
 		txtGhiChu.setText(dspccd.get(index).getGhiChu());
 	}
+
 
 	/* CÁC HÀM PHÂN CÔNG CÔNG ĐOẠN */
 
@@ -898,6 +896,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 		Date ngayPC = dpNgayPhanCong.getDate();
 		Integer soLuongLam = Integer.parseInt(txtSoLuongLam.getText());
+		
+		
 		String ghiChu = txtGhiChu.getText();
 
 		return new BangPhanCongCongDoan(maPC, CN, CD, ngayPC, soLuongLam, ghiChu);
@@ -937,10 +937,12 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		}
 
 		String soLuongLam = txtSoLuongLam.getText();
+		String slChuaPC = txtSLChuaPC.getText();
 		try {
 			int sll = Integer.parseInt(soLuongLam);
-			if (sll > Integer.parseInt(txtSLChuaPC.getText())) {
-				alertNotification("Số lượng làm phải nhỏ hơn hoặc bằng Số lượng chưa phân công công đoạn");
+			int slcpc = Integer.parseInt(slChuaPC);
+			if (sll > slcpc) {
+				alertNotification("Số lượng làm phải nhỏ hơn hoặc bằng Số Lượng Chưa Phân Công ");
 				return false;
 			} else if (sll <= 0) {
 				alertNotification("Số lượng làm phải lớn hơn 0");
@@ -957,7 +959,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 	// HÀM CẬP NHẬT PHÂN CÔNG CÔNG ĐOẠN
 	public void capNhatPCCD() {
-		if (validPCCD() == true) {
+		if (validPCCD()) {
 			BangPhanCongCongDoan pccdNew = convertDataPCCD();
 			if (pccdNew != null) {
 				if (pccd_dao.suaPCCD(pccdNew)) {

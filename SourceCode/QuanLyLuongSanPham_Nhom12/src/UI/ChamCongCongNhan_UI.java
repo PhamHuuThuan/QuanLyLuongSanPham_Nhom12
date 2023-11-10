@@ -99,6 +99,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlChamCongCN = new JPanel();
+		pnlChamCongCN.setBackground(new Color(255, 255, 255));
 		add(pnlChamCongCN, BorderLayout.CENTER);
 		pnlChamCongCN.setLayout(new BorderLayout(0, 0));
 
@@ -107,17 +108,19 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		pnlBody.setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlTitle = new JPanel();
-		pnlTitle.setBorder(new EmptyBorder(10, 0, 0, 0));
+		pnlTitle.setBorder(new EmptyBorder(10, 0, 10, 0));
 		pnlTitle.setBackground(new Color(255, 255, 255));
 		pnlBody.add(pnlTitle, BorderLayout.NORTH);
 		pnlTitle.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JLabel lblTitle = new JLabel("CHẤM CÔNG CÔNG NHÂN");
+		lblTitle.setForeground(textColor);
 		lblTitle.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		pnlTitle.add(lblTitle);
 
 		JPanel pnlChamCong = new JPanel();
+		pnlChamCong.setBackground(new Color(255, 255, 255));
 		pnlChamCong.setBorder(new EmptyBorder(0, 5, 0, 5));
 		pnlBody.add(pnlChamCong, BorderLayout.SOUTH);
 		pnlChamCong.setLayout(new BorderLayout(0, 0));
@@ -456,7 +459,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 												new Color(160, 160, 160)),
 										"Danh s\u00E1ch C\u00F4ng nh\u00E2n \u0111\u00E3 ch\u1EA5m",
 										TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)),
-								new EmptyBorder(10, 8, 0, 8)));
+								new EmptyBorder(0, 8, 0, 8)));
 		pnlChamCongCN.add(pnlBangChamCong, BorderLayout.CENTER);
 		pnlBangChamCong.setLayout(new BorderLayout(0, 0));
 
@@ -485,7 +488,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		tbhCNCC.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		tblDSCC.setTableHeader(tbhCNCC);
 
-		tblDSCC.setRowHeight(20);
+		tblDSCC.setRowHeight(30);
 		tblDSCC.getColumnModel().getColumn(0).setPreferredWidth(20);
 		tblDSCC.getColumnModel().getColumn(1).setPreferredWidth(60);
 		tblDSCC.getColumnModel().getColumn(2).setPreferredWidth(80);
@@ -498,6 +501,8 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		tblDSCC.getColumnModel().getColumn(9).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(10).setPreferredWidth(60);
 		tblDSCC.getColumnModel().getColumn(11).setPreferredWidth(90);
+
+		getDataCCCNLenBang();
 
 		// Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSCC, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -522,8 +527,6 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		displayButtonSaveAndCancel(false);
 		setEditableForTextField(false);
 
-		getDataCCCNLenBang();
-
 	}
 
 	@Override
@@ -538,9 +541,9 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 			}
 		}
 		if (o == tblDSCC) {
-			int index = tblDSCC.getSelectedRow();
-			if (index != -1) {
-				hienThiCCCNChiTiet(index);
+			int index_2 = tblDSCC.getSelectedRow();
+			if (index_2 != -1) {
+				hienThiCCCNChiTiet(index_2);
 			}
 		}
 
@@ -651,9 +654,9 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 			txtSoLuongLam_dt.setEditable(true);
 			txtGhiChu_dt.setEditable(true);
 			cmbTrangThai.setEnabled(true);
-			
+
 			spnGioDen.setEnabled(true);
-			
+
 		} else {
 			spnGioDen.setEnabled(false);
 			txtSoLuongLam_dt.setEditable(false);
@@ -926,7 +929,6 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		txtSoLuongLam_dt.setText(String.valueOf(Integer.valueOf(dscccn.get(index).getSoLuongLam())));
 
 		txtGhiChu_dt.setText(dscccn.get(index).getGhiChu());
-		
 
 		displayButtonSaveAndCancel(false);
 		setEditableForTextField(false);

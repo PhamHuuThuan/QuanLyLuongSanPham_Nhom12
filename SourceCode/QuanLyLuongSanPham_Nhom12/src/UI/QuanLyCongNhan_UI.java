@@ -52,7 +52,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private Font fontText;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy;
 	private JButton btnEditAvatar;
 	private JLabel lblAvatar;
 	private JPanel pnlAvatar;
@@ -403,16 +403,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		btnXoa.setIcon(new ImageScaler("/image/deleteHD_Icon.png", 24, 24).getScaledImageIcon());
 		btnXoa.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlControl.add(btnXoa);
-		pnlControl.add(Box.createHorizontalStrut(50));
-
-		btnIn = new RoundedButton("Xuất", null, 20, 0, 1.0f);
-		btnIn.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
-		btnIn.setForeground(Color.WHITE);
-		btnIn.setBackground(Color.decode("#17a2b8"));
-		btnIn.setIcon(new ImageScaler("/image/printer_icon.png", 24, 24).getScaledImageIcon());
-		btnIn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-		pnlControl.add(btnIn);
-
+		
 		pnlControl.add(Box.createHorizontalStrut(200));
 
 		btnLuu = new RoundedButton("Lưu", null, 20, 0, 0.6f);
@@ -472,7 +463,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnXoa.addActionListener(this);
-		btnIn.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
 		cmbGioiTinh.addActionListener(this);
@@ -482,7 +472,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		btnThem.addMouseListener(this);
 		btnSua.addMouseListener(this);
 		btnXoa.addMouseListener(this);
-		btnIn.addMouseListener(this);
 		btnLuu.addMouseListener(this);
 		btnHuy.addMouseListener(this);
 		tblCN.addMouseListener(this);
@@ -576,8 +565,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			}
 
 		}
-		if (o == btnIn) {
-		}
 		if (o == btnLuu) {
 			if (isThemCongNhan == true) {
 				themCongNhan();
@@ -604,8 +591,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			btnSua.setAlpha(0.6f);
 			btnXoa.setEnabled(false);
 			btnXoa.setAlpha(0.6f);
-			btnIn.setEnabled(false);
-			btnIn.setAlpha(0.6f);
 
 		} else {
 			btnLuu.setEnabled(false);
@@ -619,8 +604,6 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			btnSua.setAlpha(1f);
 			btnXoa.setEnabled(true);
 			btnXoa.setAlpha(1f);
-			btnIn.setEnabled(true);
-			btnIn.setAlpha(1f);
 		}
 	}
 	// HÀM SET EDIT CÁC JTEXT

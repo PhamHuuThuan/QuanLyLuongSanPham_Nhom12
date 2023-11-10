@@ -1,6 +1,7 @@
 package Entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class BangPhanCongNhanVien {
 	private String maPhanCong;
@@ -93,5 +94,22 @@ public class BangPhanCongNhanVien {
 	public String toString() {
 		return "BangPhanCongNhanVien [maPhanCong=" + maPhanCong + ", nhanVien=" + nhanVien + ", phongBan=" + phongBan
 				+ ", chucVu=" + chucVu + ", ngayCongTac=" + ngayCongTac + ", ghiChu=" + ghiChu + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(chucVu);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BangPhanCongNhanVien other = (BangPhanCongNhanVien) obj;
+		return Objects.equals(chucVu, other.chucVu);
 	}
 }
