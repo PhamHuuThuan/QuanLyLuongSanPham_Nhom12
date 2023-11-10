@@ -54,6 +54,10 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 
 public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseListener, ItemListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
@@ -339,7 +343,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblSDT.setPreferredSize(lblChucVu.getPreferredSize());
 		lblGhiChu.setPreferredSize(lblChucVu.getPreferredSize());
 		
-		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlMessage.setBackground(bgColor);
 		pnlTTRight.add(pnlMessage);
 		pnlMessage.add(lblMessage = new JLabel());
@@ -669,7 +673,6 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 			if(pcnv!=null) {
 				if(!pcnv.getMaPhanCong().equals(new SinhMaTuDong().sinhMaPCNV())) { //đã từng được phân công
 					if(pcnv_Dao.capNhatPhanCong(pcnv)) {
-						System.out.println("Cập nhật!");
 						dsNV = nv_Dao.timNhanVienChuaPhanCong();
 						themTatCaNhanVienVaoBangChuaPC(dsNV);
 						dsPCNV = pcnv_Dao.getAllPhanCong(); // thêm vào bảng mới
@@ -680,9 +683,9 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 					}
 				}else { // phân công mới
 					if(pcnv_Dao.luuPhanCong(pcnv)) {
-						dsNV.remove(tblNV.getSelectedRow());
-						tblNV.remove(tblNV.getSelectedRow()); //xóa thông tin ở bảng chưa phân công
-						dsPCNV.add(pcnv); // thêm vào bảng mới
+						dsNV = nv_Dao.timNhanVienChuaPhanCong();
+						themTatCaNhanVienVaoBangChuaPC(dsNV);
+						dsPCNV = pcnv_Dao.getAllPhanCong(); // thêm vào bảng mới
 						themTatCaPCNhanVienVaoBangPC(dsPCNV);
 						lblMessage.setText("Thêm thành công!");
 					}else {
@@ -715,7 +718,7 @@ public class PhanCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private void xoaPhanCong() {
 		if(tblNVPC.getSelectedRow()!=-1) {
 			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa phân công này?", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
-				if(pcnv_Dao.xoaThongTinPhanCong(dsPCNV.get(tblNVPC.getSelectedRow()).getMaPhanCong())) {
+				if(pcnv_Dao.xoaThongTinPhanCong(dsPCNV.get(tblNVPC.getSelectedRow()))) {
 					dsPCNV = pcnv_Dao.getAllPhanCong();
 					themTatCaPCNhanVienVaoBangPC(dsPCNV);
 					dsNV = nv_Dao.timNhanVienChuaPhanCong();

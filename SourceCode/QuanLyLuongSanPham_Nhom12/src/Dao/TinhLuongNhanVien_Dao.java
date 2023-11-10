@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import ConnectDB.ConnectDB;
 import Entity.BangLuongNhanVien;
@@ -169,4 +172,74 @@ public class TinhLuongNhanVien_Dao {
 
 	    return maBangLuongLonNhat;
 	}
+	// Danh sách top 5 nhân viên lương cao nhất
+	public List<String[]> layTop5NhanVienLuongCaoNhat(String thangNam) {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    List<String[]> danhSachNhanVien = new ArrayList<>();
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String query = "SELECT TOP 5 NhanVien.HoTen, BangLuongNhanVien.thucLanh FROM NhanVien INNER JOIN BangLuongNhanVien ON NhanVien.maNV = BangLuongNhanVien.maNhanVien WHERE BangLuongNhanVien.thangNam = ? ORDER BY BangLuongNhanVien.thucLanh DESC";
+	        st = con.prepareStatement(query);
+	        st.setString(1, thangNam);
+	        ResultSet rs = st.executeQuery();
+	        while (rs.next()) {
+	            String hoTen = rs.getString("HoTen");
+	            double thucLanh = rs.getDouble("thucLanh");
+	            // Lưu tên nhân viên và thực lãnh vào danh sách
+	            danhSachNhanVien.add(new String[] {hoTen, String.valueOf(thucLanh)});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return danhSachNhanVien;
+	}
+
+	// Lấy tên phòng ban và lương trung bình từ csdl và lưu vào Map
+	public Map<String, Double> layTenPhongBanVaLuongTrungBinh(String thangNam) {
+	    Map<String, Double> luongTrungBinhTheoPhongBan = new HashMap<>();
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String sql = "SELECT pb.tenPB, AVG(blnv.thucLanh) as LuongTrungBinh "
+	                    + "FROM PhongBan pb "
+	                    + "JOIN BangPhanCongNhanVien pcnv ON pb.maPB = pcnv.maPhongBan "
+	                    + "JOIN BangLuongNhanVien blnv ON pcnv.maNhanVien = blnv.maNhanVien "
+	                    + "WHERE blnv.thangNam = ? "
+	                    + "GROUP BY pb.tenPB "
+	                    + "ORDER BY pb.tenPB";
+
+	        st = con.prepareStatement(sql);
+	        st.setString(1, thangNam);
+	        rs = st.executeQuery();
+
+	        while (rs.next()) {
+	            String tenPhongBan = rs.getString("tenPB");
+	            double luongTrungBinh = rs.getDouble("LuongTrungBinh");
+	            // Lưu tên phòng ban và lương trung bình vào Map
+	            luongTrungBinhTheoPhongBan.put(tenPhongBan, luongTrungBinh);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return luongTrungBinhTheoPhongBan;
+	}
+
+
 }

@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ConnectDB.ConnectDB;
 import Entity.HopDong;
@@ -178,6 +180,43 @@ public class HopDong_Dao {
 	        }
 	    }
 	    return hd;
+	}
+	// Lấy danh sách tổng giá trị hợp đồng từng tháng của một năm cụ thể
+	public Map<Integer, Double> layTongGiaTriHopDongTheoThang(int nam) {
+	    Map<Integer, Double> tongGiaTriHopDongTheoThang = new HashMap<>();
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String sql = "SELECT MONTH(ngayBatDau) as Thang, SUM(giaTriHopDong) as TongGiaTri "
+	                    + "FROM HopDong "
+	                    + "WHERE YEAR(ngayBatDau) = ? "
+	                    + "GROUP BY MONTH(ngayBatDau) "
+	                    + "ORDER BY Thang";
+
+	        st = con.prepareStatement(sql);
+	        st.setInt(1, nam);
+	        rs = st.executeQuery();
+
+	        while (rs.next()) {
+	            int thang = rs.getInt("Thang");
+	            double tongGiaTri = rs.getDouble("TongGiaTri");
+	            // Lưu tháng và tổng giá trị hợp đồng vào Map
+	            tongGiaTriHopDongTheoThang.put(thang, tongGiaTri);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return tongGiaTriHopDongTheoThang;
 	}
 
 }

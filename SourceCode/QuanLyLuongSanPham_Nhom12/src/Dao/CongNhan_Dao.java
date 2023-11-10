@@ -243,4 +243,28 @@ public class CongNhan_Dao {
 		
 		return listCN;
 	}
+	// Lấy số lượng công nhân từ csdl
+	public int laySoLuongCongNhan() {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    int soLuongCongNhan = 0;
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        st = con.prepareStatement("SELECT COUNT(*) AS SoLuong FROM CongNhan");
+	        ResultSet rs = st.executeQuery();
+	        if (rs.next()) {
+	            soLuongCongNhan = rs.getInt("SoLuong");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return soLuongCongNhan;
+	}
+
 }
