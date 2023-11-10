@@ -62,6 +62,10 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Dimension;
 
 public class TinhLuongNhanVienUI extends JPanel implements ActionListener, MouseListener, ItemListener, ChangeListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");

@@ -2,18 +2,14 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -22,7 +18,6 @@ import org.jdesktop.swingx.plaf.basic.SpinningCalendarHeaderHandler;
 
 import ConnectDB.ConnectDB;
 import Entity.BangPhanCongNhanVien;
-import Entity.NhanVien;
 import Util.ConfigManager;
 import Util.ImportFont;
 import Util.LuuTru;
@@ -30,6 +25,10 @@ import Util.SoundPlay;
 
 public class MainUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	public Font roboto_light, roboto_bold, roboto_regular;
 	private ImportFont impFont;

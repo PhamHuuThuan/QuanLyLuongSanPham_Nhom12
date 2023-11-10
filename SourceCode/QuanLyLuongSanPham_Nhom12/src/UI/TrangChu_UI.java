@@ -9,6 +9,11 @@ import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 
 public class TrangChu_UI extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public TrangChu_UI() {
 		setLayout(new BorderLayout(0, 0));
 		
