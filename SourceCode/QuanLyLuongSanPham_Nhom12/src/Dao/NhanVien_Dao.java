@@ -274,4 +274,29 @@ public class NhanVien_Dao {
 		    }
 		    return nv;
 		}
+		
+		// Lấy số lượng nhân viên từ csdl
+		public int laySoLuongNhanVien() {
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    int soLuongNhanVien = 0;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        st = con.prepareStatement("SELECT COUNT(*) AS SoLuong FROM NhanVien");
+		        ResultSet rs = st.executeQuery();
+		        if (rs.next()) {
+		            soLuongNhanVien = rs.getInt("SoLuong");
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (st != null) st.close();
+		        } catch (SQLException e2) {
+		            e2.printStackTrace();
+		        }
+		    }
+		    return soLuongNhanVien;
+		}
+
 }

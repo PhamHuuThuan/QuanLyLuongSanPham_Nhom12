@@ -7,33 +7,21 @@ import CustomUI.ImageScaler;
 import CustomUI.RoundedBorder;
 import Util.ConvertTime;
 import Util.LuuTru;
-import Util.SoundPlay;
-import groovyjarjarantlr.Utils;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -45,12 +33,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 public class MenuUI extends JPanel implements ActionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MainUI main;
-	private JMenuItem mniTrangChu, mniPhongBan, mniHopDong, mniQuanLySP, mniTimKiemSP, mniQLCD, mniPCCD, mniTimKiemCD,
+	private JMenuItem mniTrangChu, mniPhongBan, mniHopDong, mniQuanLySP, mniTimKiemSP, mniQLCD, mniPCCD,
 			mniQuanLyCN, mniTimKiemCN, mniChamCongCN, mniTinhLuongCN, mniQuanLyNV, mniTimKiem, mniPCNV, mniChamCongNV,
 			mniTinhLuong, mniThongKe, mniCaiDat;
 	private JMenu mnSanPham, mnCongDoan, mnCongNhan, mnNhanVien;
@@ -635,6 +625,10 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mniThongKe.setBackground(Color.decode("#424242"));
 			mniThongKe.setForeground(Color.WHITE);
 			mniThongKe.setIcon(new ImageScaler("/image/trend_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new ThongKeUI(main), BorderLayout.CENTER);// thêm giao diện thống kê vào
+			main.validate(); // cập nhật lại
 
 		}
 		if (o == mniCaiDat) {
