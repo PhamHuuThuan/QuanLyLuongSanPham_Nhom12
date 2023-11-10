@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import ConnectDB.ConnectDB;
 import Entity.BangLuongNhanVien;
@@ -169,4 +170,33 @@ public class TinhLuongNhanVien_Dao {
 
 	    return maBangLuongLonNhat;
 	}
+	// Danh sách top 3 nhân viên lương cao nhất
+	public List<String[]> layTop3NhanVienLuongCaoNhat() {
+	    ConnectDB.getInstance();
+	    PreparedStatement st = null;
+	    List<String[]> danhSachNhanVien = new ArrayList<>();
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String query = "SELECT TOP 5 NhanVien.HoTen, BangLuongNhanVien.thucLanh FROM NhanVien INNER JOIN BangLuongNhanVien ON NhanVien.maNV = BangLuongNhanVien.maNhanVien ORDER BY BangLuongNhanVien.thucLanh DESC";
+	        st = con.prepareStatement(query);
+	        ResultSet rs = st.executeQuery();
+	        while (rs.next()) {
+	            String hoTen = rs.getString("HoTen");
+	            double thucLanh = rs.getDouble("thucLanh");
+	            // Lưu tên nhân viên và thực lãnh vào danh sách
+	            danhSachNhanVien.add(new String[] {hoTen, String.valueOf(thucLanh)});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (st != null) st.close();
+	        } catch (SQLException e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    return danhSachNhanVien;
+	}
+
+
 }

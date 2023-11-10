@@ -184,6 +184,12 @@ public class PhanCongNhanVien_Dao {
 	        st.setString(6, pcnv.getGhiChu());
 
 	        n = st.executeUpdate();
+	        // Cập nhật số nhân viên trong PhongBan
+	        if (n > 0) {
+	            st = con.prepareStatement("UPDATE PhongBan SET soLuongNV = soLuongNV + 1 WHERE maPB = ?");
+	            st.setString(1, pcnv.getPhongBan().getMaPhongBan());
+	            st.executeUpdate();
+	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
@@ -198,11 +204,23 @@ public class PhanCongNhanVien_Dao {
 	//cập nhật phân công
 	public boolean capNhatPhanCong(BangPhanCongNhanVien pcnv) {
 	    ConnectDB.getInstance();
+	    Connection con = null;
 	    PreparedStatement st = null;
 	    int n = 0;
 	    try {
-	        Connection con = ConnectDB.getConnection();
-	        String query = "UPDATE BangPhanCongNhanVien SET maNhanVien = ?, maPhongBan = ?, chucVu = ?, ngayCongTac = ?, ghiChu = ? WHERE maPhanCong = ?";
+	        con = ConnectDB.getConnection();
+	        // Lấy thông tin phòng ban cũ trước khi cập nhật phân công
+	        String query = "SELECT maPhongBan FROM BangPhanCongNhanVien WHERE maPhanCong = ?";
+	        st = con.prepareStatement(query);
+	        st.setString(1, pcnv.getMaPhanCong());
+	        ResultSet rs = st.executeQuery();
+	        String maPhongBanCu = null;
+	        if (rs.next()) {
+	            maPhongBanCu = rs.getString("maPhongBan");
+	        }
+	        
+	        // Cập nhật phân công
+	        query = "UPDATE BangPhanCongNhanVien SET maNhanVien = ?, maPhongBan = ?, chucVu = ?, ngayCongTac = ?, ghiChu = ? WHERE maPhanCong = ?";
 	        st = con.prepareStatement(query);
 	        st.setString(1, pcnv.getNhanVien().getMaNV());
 	        st.setString(2, pcnv.getPhongBan().getMaPhongBan());
@@ -210,8 +228,20 @@ public class PhanCongNhanVien_Dao {
 	        st.setDate(4, new java.sql.Date(pcnv.getNgayCongTac().getTime()));
 	        st.setString(5, pcnv.getGhiChu());
 	        st.setString(6, pcnv.getMaPhanCong());
-
 	        n = st.executeUpdate();
+	        
+	        // Cập nhật số nhân viên trong PhongBan
+	        if (n > 0 && maPhongBanCu != null && !maPhongBanCu.equals(pcnv.getPhongBan().getMaPhongBan())) {
+	            // Giảm số nhân viên trong phòng ban cũ
+	            st = con.prepareStatement("UPDATE PhongBan SET soLuongNV = soLuongNV - 1 WHERE maPB = ?");
+	            st.setString(1, maPhongBanCu);
+	            st.executeUpdate();
+	            
+	            // Tăng số nhân viên trong phòng ban mới
+	            st = con.prepareStatement("UPDATE PhongBan SET soLuongNV = soLuongNV + 1 WHERE maPB = ?");
+	            st.setString(1, pcnv.getPhongBan().getMaPhongBan());
+	            st.executeUpdate();
+	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
@@ -223,8 +253,9 @@ public class PhanCongNhanVien_Dao {
 	    }
 	    return n>0;
 	}
+
 	//Xóa phân công
-	public boolean xoaThongTinPhanCong(String maPhanCong) {
+	public boolean xoaThongTinPhanCong(BangPhanCongNhanVien pcnv) {
 	    ConnectDB.getInstance();
 	    PreparedStatement st = null;
 	    int n = 0;
@@ -232,9 +263,16 @@ public class PhanCongNhanVien_Dao {
 	        Connection con = ConnectDB.getConnection();
 	        String query = "UPDATE BangPhanCongNhanVien SET maPhongBan = NULL, chucVu = NULL, ghiChu = NULL WHERE maPhanCong = ?";
 	        st = con.prepareStatement(query);
-	        st.setString(1, maPhanCong);
+	        st.setString(1, pcnv.getMaPhanCong());
 
 	        n = st.executeUpdate();
+	        
+	        // Cập nhật số nhân viên trong PhongBan
+	        if (n > 0 && pcnv.getPhongBan().getMaPhongBan() != null) {
+	            st = con.prepareStatement("UPDATE PhongBan SET soNhanVien = soNhanVien - 1 WHERE maPhongBan = ?");
+	            st.setString(1, pcnv.getPhongBan().getMaPhongBan());
+	            st.executeUpdate();
+	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
