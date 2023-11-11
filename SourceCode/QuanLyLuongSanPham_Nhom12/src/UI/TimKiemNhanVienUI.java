@@ -685,8 +685,10 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		
 		pnlNorth.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
 		
+		//Ngăn chỉnh sửa thông tin trong bảng thông tin
 		setEditableForTextField(false);
 		
+		//Thêm sự kiện cho các component
 		btnTim.addActionListener(this);
 		btnXoaRong.addActionListener(this);
 		btnXuat.addActionListener(this);
@@ -699,6 +701,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		
 		tblNV.addMouseListener(this);
 		
+		//Xóa rỗng thông tin
 		xoaRong();
 	}
 	@Override
@@ -748,6 +751,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 			xuatDSNhanVienExcel();
 		}
 	}
+	//Cho phép hoặc không cho phép chỉnh sửa thông tin
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtMaNV.setEditable(true);
@@ -776,6 +780,7 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 			txtGhiChu.setEditable(false);
 		}
 	}
+	//Xóa rỗng thông tin trên giao diện
 	private void xoaRong() {
 		dtbModelNV.setRowCount(0);
 		dsNV.removeAll(dsNV);
@@ -832,11 +837,11 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 		dtpNgaySinh.setDate(dsNV.get(index).getNgaySinh()); // Đặt giá trị cho JXDatePicker
 	
 		
-		if(dsPCNV.get(index).getMaPhanCong()==null) {
+		if(dsPCNV.get(index).getMaPhanCong()==null) { // Nếu chưa được phân công
 			cmbPhongBan.setSelectedIndex(0);
 			txtChucVu.setText("");
 			txtGhiChu.setText("");
-		}else {
+		}else { // Nếu đã được phân công
 			for(int i = 0; i < cmbPhongBan.getItemCount(); i++) {
 				if(cmbPhongBan.getItemAt(i).getMaPhongBan().equals(dsPCNV.get(index).getPhongBan().getMaPhongBan())) {
 					cmbPhongBan.setSelectedIndex(i);
@@ -847,15 +852,16 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 			txtGhiChu.setText(dsPCNV.get(index).getGhiChu());
 		}
 		if(dsNV.get(index).getHinhAnh()==null || dsNV.get(index).getHinhAnh().trim().length()<=0)
-			lblAnh.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon());
+			lblAnh.setIcon(new ImageScaler("/image/employee.png", 150, 150).getScaledImageIcon()); //hiển thị ảnh mặc định
 		else
-			lblAnh.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar());
+			lblAnh.setIcon(new ImageScaler(dsNV.get(index).getHinhAnh(), 150, 150).getScaledImageAvatar()); //hiển thị ảnh của nv
 	}
 	// thông báo lỗi
 	private void setTextError(String message) {
 		main.music.playSE(3);
 		lblMessage.setText(message);
 	}
+	//Tìm kiếm nhân viên theo tiêu chí
 	private void timKiemNhanVien() {
 	    String maNV = txtMaNVS.getText();
 	    String tenNV = txtTenNVS.getText();
@@ -867,8 +873,8 @@ public class TimKiemNhanVienUI extends JPanel implements ActionListener, MouseLi
 	    int isNam = chkNamS.isSelected()?1:-1;
 	    int isNu = chkNuS.isSelected()?0:-1;
 	    
-	    dsNV = nv_Dao.timNhanVien(maNV, tenNV, isNam, isNu, sdt, cccd, diaChi, ngaySinh, phongBan.getMaPhongBan());
-	    if(dsNV.size()!=0) {
+	    dsNV = nv_Dao.timNhanVien(maNV, tenNV, isNam, isNu, sdt, cccd, diaChi, ngaySinh, phongBan.getMaPhongBan()); //Get ds nhân viên tìm được
+	    if(dsNV.size()!=0) { //Nếu tìm được nhân viên phù hợp
 	    	dsPCNV = pcnv_Dao.getPhanCong(dsNV);
 	    	lblMessage.setText("Tìm thấy " + dsNV.size() + " nhân viên." );
 	    	themTatCaNhanVienVaoBang(dsNV);
