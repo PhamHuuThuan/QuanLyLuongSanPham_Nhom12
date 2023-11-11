@@ -80,7 +80,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 	private JSpinner spnGioDen;
 
 	private JFrame mainFrame;
-	private JButton btnGetSP, btnChamTatCa, btnGetOutSP;
+	private RoundedButton btnGetSP, btnChamTatCa, btnGetOutSP;
 
 	private int selectedRowIndex = -1;
 
@@ -163,7 +163,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		Component horizontalStrut_8 = Box.createHorizontalStrut(15);
 		horizontalBox.add(horizontalStrut_8);
 
-		JLabel lblMaSanPham = new JLabel("Mã Sản Phẩm");
+		JLabel lblMaSanPham = new JLabel("Mã SP");
 		horizontalBox.add(lblMaSanPham);
 
 		Component horizontalStrut_13 = Box.createHorizontalStrut(10);
@@ -191,7 +191,12 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		Component horizontalStrut_21 = Box.createHorizontalStrut(15);
 		horizontalBox.add(horizontalStrut_21);
 
-		btnGetSP = new JButton("Lấy Sản Phẩm");
+		btnGetSP = new RoundedButton("Lấy sản phẩm", null, 10, 0, 1.0f);
+		btnGetSP.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnGetSP.setForeground(Color.WHITE);
+		btnGetSP.setBackground(Color.decode("#424242"));
+		btnGetSP.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnGetSP.setBorder(new EmptyBorder(5, 10, 5, 10));
 		horizontalBox.add(btnGetSP);
 
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
@@ -230,7 +235,14 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		Component horizontalStrut_12 = Box.createHorizontalStrut(20);
 		box_ChamCong.add(horizontalStrut_12);
 
-		btnChamTatCa = new JButton("Chấm tất cả");
+		
+		btnChamTatCa = new RoundedButton("Chấm tất cả", null, 10, 0, 1.0f);
+		btnChamTatCa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnChamTatCa.setForeground(Color.WHITE);
+		btnChamTatCa.setBackground(Color.decode("#424242"));
+		btnChamTatCa.setIcon(new ImageScaler("/image/icon_get_all.png", 24, 24).getScaledImageIcon());
+		btnChamTatCa.setBorder(new EmptyBorder(5, 10, 5, 10));
+		
 		btnChamTatCa.setEnabled(false);
 		box_ChamCong.add(btnChamTatCa);
 
@@ -711,8 +723,16 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 			}
 		});
 		// BUTTON LẤY THÔNG TIN SẢN PHẨM
-		btnGetOutSP = new JButton("Lấy Thông tin Sản phẩm");
+		
+		btnGetOutSP = new RoundedButton("Lấy Thông tin Sản phẩm", null, 10, 0, 1.0f);
+		btnGetOutSP.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnGetOutSP.setForeground(Color.WHITE);
+		btnGetOutSP.setBackground(Color.decode("#424242"));
+		btnGetOutSP.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnGetOutSP.setBorder(new EmptyBorder(5, 10, 5, 10));
+		
 		btnGetOutSP.setEnabled(false);
+		
 		btnGetOutSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				main.music.playSE(2);
