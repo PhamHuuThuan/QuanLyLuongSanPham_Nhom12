@@ -550,6 +550,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
             }
 		}
 	}
+	//Thay đổi hiển thị và thao tác button
 	private void displayButtonSaveAndCancel(boolean display) {
 		if(display == true) {
 			btnLuu.setEnabled(true);
@@ -582,6 +583,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			btnXoa.setAlpha(1f);
 		}
 	}
+	//Cho phép và không cho phép chỉnh sửa thông tin
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtMatKhau.setEditable(true);
@@ -607,6 +609,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 			radNam.setEnabled(false);
 		}
 	}
+	//Xóa rỗng thông tin trên giao diện
 	private void xoaRong() {
 		dsNV = nv_Dao.getAllNhanVien();
 		themTatCaNhanVienVaoBang(dsNV);
@@ -853,7 +856,7 @@ public class QuanLyNhanVienUI extends JPanel implements ActionListener, MouseLis
 	}
 	//thêm một ds nhân viên vào bảng
 	private void themTatCaNhanVienVaoBang(ArrayList<NhanVien> list) {
-		dtblModel.setRowCount(0);
+		dtblModel.setRowCount(0); //Xóa hết thông tin trên bảng
 	    for (NhanVien nv : list) {
 	        themNhanVienVaoBang(nv);
 	    }
