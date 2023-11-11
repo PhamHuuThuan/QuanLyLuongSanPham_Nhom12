@@ -276,6 +276,9 @@ public class Login_UI extends JFrame implements ItemListener {
 					return true;
 				} else if (pcnv.getChucVu().equals("Nhân viên")) {
 					return true;
+				}else if (pcnv.getChucVu().equals("Thực tập sinh")){
+					alertNotification("Tài khoản chưa phân công hoặc không có quyền đăng nhập");
+					return false;
 				}
 			} else {
 				alertNotification("Tài khoản không tồn tại");

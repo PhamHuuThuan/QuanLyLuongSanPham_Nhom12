@@ -76,7 +76,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 	private JFrame mainFrame;
 
-	private JButton btnGetSP;
+	private RoundedButton btnGetSP;
 	private JTextField txtTenSp;
 
 	private JXDatePicker dpNgayPhanCong;
@@ -304,7 +304,12 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
 		horizontalBox_1.add(horizontalStrut_7);
 
-		btnGetSP = new JButton("Lấy Công Đoạn");
+		btnGetSP = new RoundedButton("Lấy công đoạn", null, 10, 0, 1.0f);
+		btnGetSP.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnGetSP.setForeground(Color.WHITE);
+		btnGetSP.setBackground(Color.decode("#424242"));
+		btnGetSP.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnGetSP.setBorder(new EmptyBorder(5, 10, 5, 10));
 		horizontalBox_1.add(btnGetSP);
 
 		Component verticalStrut_1 = Box.createVerticalStrut(10);

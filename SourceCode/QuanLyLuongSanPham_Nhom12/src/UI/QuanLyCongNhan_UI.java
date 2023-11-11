@@ -17,6 +17,7 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
@@ -35,6 +36,8 @@ import Util.SinhMaTuDong;
 import java.awt.Color;
 import javax.swing.border.EmptyBorder;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -216,6 +219,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		box_1.add(horizontalStrut_6_1);
 
 		cmbGioiTinh = new JComboBox<>();
+		cmbGioiTinh.setPreferredSize(new Dimension(70, 10));
 		cmbGioiTinh.addItem("Nam");
 		cmbGioiTinh.addItem("Nữ");
 		box_1.add(cmbGioiTinh);
