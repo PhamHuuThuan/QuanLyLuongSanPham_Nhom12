@@ -37,6 +37,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
+import java.awt.GridLayout;
 
 public class TinhLuongCongNhan_UI extends JPanel {
 	private MainUI main;
@@ -44,12 +46,13 @@ public class TinhLuongCongNhan_UI extends JPanel {
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JXDatePicker dtbNgayChamCong;
+	private JXDatePicker dtbNgayTinhLuong;
 
 	private DefaultTableModel dtblModelTLCN;
 	private JTable tblDSTL;
 	private JTableHeader tbhCN, tbhCNCC;
 	private RoundedButton btnXuat;
+	private RoundedButton btnTinhLuongTatCa,btnXemChiTiet;
 
 	public TinhLuongCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -82,50 +85,75 @@ public class TinhLuongCongNhan_UI extends JPanel {
 		JPanel pnlCCSelectAll = new JPanel();
 		pnlCCSelectAll.setBackground(new Color(255, 255, 255));
 		pnlCCSelectAll
-				.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin t\u00EDnh l\u01B0\u01A1ng C\u00F4ng Nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(10, 10, 0, 10)));
+				.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin t\u00EDnh l\u01B0\u01A1ng C\u00F4ng Nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(0, 10, 0, 10)));
 		pnlChamCong.add(pnlCCSelectAll, BorderLayout.CENTER);
 		pnlCCSelectAll.setLayout(new BorderLayout(0, 0));
 //		pnlCCSelectAll.setPreferredSize(new Dimension(200, 300));
 
 		JPanel pnlCcAll = new JPanel();
+		pnlCcAll.setBorder(new EmptyBorder(10, 0, 10, 0));
 		pnlCcAll.setBackground(new Color(255, 255, 255));
 		pnlCCSelectAll.add(pnlCcAll, BorderLayout.NORTH);
-		pnlCcAll.setLayout(new BoxLayout(pnlCcAll, BoxLayout.Y_AXIS));
+		pnlCcAll.setLayout(new GridLayout(0, 2, 0, 0));
 
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		pnlCcAll.add(panel);
+		JPanel pnlTL = new JPanel();
+		pnlTL.setBorder(new EmptyBorder(0, 30, 0, 30));
+		pnlTL.setBackground(new Color(255, 255, 255));
+		pnlCcAll.add(pnlTL);
+		pnlTL.setLayout(new BoxLayout(pnlTL, BoxLayout.Y_AXIS));
 
 		Box horizontalBox = Box.createHorizontalBox();
-		panel.add(horizontalBox);
+		pnlTL.add(horizontalBox);
 
-		JLabel lblNgayChamCong = new JLabel("Ngày Chấm");
-		horizontalBox.add(lblNgayChamCong);
+		JLabel lblThangNam = new JLabel("Tháng / Năm");
+		horizontalBox.add(lblThangNam);
 
 		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
 		horizontalBox.add(horizontalStrut_7);
 
-		dtbNgayChamCong = new JXDatePicker((Date) null);
-		dtbNgayChamCong.setFormats(new SimpleDateFormat("MM/yyyy"));
-		dtbNgayChamCong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		dtbNgayChamCong.setLocale(new Locale("vi", "VN"));
-		horizontalBox.add(dtbNgayChamCong);
+		dtbNgayTinhLuong = new JXDatePicker(new Date());
+		dtbNgayTinhLuong.setFormats(new SimpleDateFormat("MM/yyyy"));
+		dtbNgayTinhLuong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dtbNgayTinhLuong.setLocale(new Locale("vi", "VN"));
+		dtbNgayTinhLuong.getMonthView().setUpperBound(new Date());
 		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(60);
-		horizontalBox.add(horizontalStrut_1);
+		horizontalBox.add(dtbNgayTinhLuong);
 		
-		JButton btnChamTatCa = new JButton("Tính lương tất cả");
-		horizontalBox.add(btnChamTatCa);
+		Component verticalStrut = Box.createVerticalStrut(20);
+		pnlTL.add(verticalStrut);
+		
+		Box horizontalBox_1 = Box.createHorizontalBox();
+		pnlTL.add(horizontalBox_1);
+		
+		btnTinhLuongTatCa = new RoundedButton("Tính lương tất cả", (Color) null, 10, 0, 1.0f);
+		btnTinhLuongTatCa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnTinhLuongTatCa.setForeground(Color.WHITE);
+		btnTinhLuongTatCa.setBackground(Color.decode("#3B71CA"));
+		btnTinhLuongTatCa.setIcon(new ImageScaler("/image/icon_get_all.png", 24, 24).getScaledImageIcon());
+		btnTinhLuongTatCa.setBorder(new EmptyBorder(5, 10, 5, 10));
+		horizontalBox_1.add(btnTinhLuongTatCa);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(30);
-		horizontalBox.add(horizontalStrut);
+		horizontalBox_1.add(horizontalStrut);
 		
-		JButton btnXemChiTiet = new JButton("Xem chi tiết");
-		horizontalBox.add(btnXemChiTiet);
-
-		Box box_ChamCong = Box.createHorizontalBox();
-		box_ChamCong.setBorder(new EmptyBorder(0, 0, 10, 0));
-		pnlCcAll.add(box_ChamCong);
+		btnXemChiTiet = new RoundedButton("Xem chi tiết", (Color) null, 10, 0, 1.0f);
+		btnXemChiTiet.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnXemChiTiet.setForeground(Color.WHITE);
+		btnXemChiTiet.setBackground(Color.decode("#424242"));
+		btnXemChiTiet.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnXemChiTiet.setBorder(new EmptyBorder(5, 10, 5, 10));
+		horizontalBox_1.add(btnXemChiTiet);
+		
+		JPanel pnlGhiChu = new JPanel();
+		pnlGhiChu.setBackground(new Color(255, 255, 255));
+		pnlCcAll.add(pnlGhiChu);
+		
+		JTextArea txtrLngCBn = new JTextArea();
+		txtrLngCBn.setEditable(false);
+		txtrLngCBn.setFont(new Font("Arial", Font.BOLD, 16));
+		txtrLngCBn.setTabSize(6);
+		txtrLngCBn.setText("Lương cơ bản: 150.000\r\nLương tháng: lương cơ bản * (làm + phép - nghỉ)\r\nLương CĐ : Đơn giá CĐ * SL CĐ đã làm\r\nThực lãnh: lương tháng + lương CĐ");
+		pnlGhiChu.add(txtrLngCBn);
 
 
 		JPanel pnlBangChamCong = new JPanel();

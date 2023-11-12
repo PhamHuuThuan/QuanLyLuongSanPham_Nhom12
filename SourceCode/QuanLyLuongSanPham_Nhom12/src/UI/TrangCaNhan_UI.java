@@ -20,15 +20,20 @@ import CustomUI.RoundedButton;
 import java.awt.Panel;
 import javax.swing.border.TitledBorder;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
-public class TrangCaNhan extends JPanel implements ActionListener {
+public class TrangCaNhan_UI extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
@@ -39,15 +44,15 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 	private JFrame frameEditTrangCaNhan;
 	private JTextField txtName;
 	private JTextField txtMa;
-	private JComboBox<String> cmbGioiTinh;
-	private JTextField jdcNgaySinh;
+	private JComboBox<String> cmbGioiTinh, cmbChucVu;
+	private JXDatePicker dpNgaySinh,dpNgayVaoLam;
 	private JTextField txtSoDt;
 	private JTextField txtEmail;
 	private JTextField txtSoCCCD;
 	private JTextField txtNgayVaoLam;
 	private RoundedButton btnLogOut, btnEditInfo, btnSave, btnCannelEdit;
 
-	public TrangCaNhan(MainUI main) {
+	public TrangCaNhan_UI(MainUI main) {
 		this.main = main;
 		fontText = main.roboto_regular.deriveFont(Font.PLAIN, 16F);
 
@@ -88,7 +93,7 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		lblName.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		pnlBox_left.add(lblName);
 
-		JLabel lblMa = new JLabel("Mã CN");
+		JLabel lblMa = new JLabel("Mã NV");
 		lblMa.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		pnlBox_left.add(lblMa);
 
@@ -115,17 +120,21 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		JLabel lblNgayVaoLam = new JLabel("Ngày vào làm");
 		lblNgayVaoLam.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		pnlBox_left.add(lblNgayVaoLam);
+		
+		JLabel lblChucVu = new JLabel("Chức vụ");
+		lblChucVu.setFont(new Font("Segoe UI", Font.BOLD, 17));
+		pnlBox_left.add(lblChucVu);
 
 		JPanel pngBox_right = new JPanel();
 		pngBox_right.setBackground(new Color(255, 255, 255));
 		pnlIfnormation.add(pngBox_right);
 		pngBox_right.setLayout(new GridLayout(10, 2, 0, 0));
 
-		txtName = new JTextField("Nguyễn Văn Phong");
+		txtName = new JTextField();
 		pngBox_right.add(txtName);
 		txtName.setColumns(10);
 
-		txtMa = new JTextField("CN00004");
+		txtMa = new JTextField();
 		pngBox_right.add(txtMa);
 		txtMa.setColumns(10);
 
@@ -134,24 +143,41 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		cmbGioiTinh.addItem("nữ");
 		pngBox_right.add(cmbGioiTinh);
 
-		jdcNgaySinh = new JTextField("12/02/2000");
-		pngBox_right.add(jdcNgaySinh);
+		dpNgaySinh = new JXDatePicker(new Date(100,0,1));
+		dpNgaySinh.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
+		dpNgaySinh.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dpNgaySinh.setLocale(new Locale("vi", "VN"));
+		dpNgaySinh.getMonthView().setZoomable(true);
+		
+		pngBox_right.add(dpNgaySinh);
 
-		txtSoDt = new JTextField("0992888832");
+		txtSoDt = new JTextField();
 		pngBox_right.add(txtSoDt);
 		txtSoDt.setColumns(10);
 
-		txtEmail = new JTextField("abcd_admin@gmail.com");
+		txtEmail = new JTextField();
 		pngBox_right.add(txtEmail);
 		txtEmail.setColumns(10);
 
-		txtSoCCCD = new JTextField("123981230982");
+		txtSoCCCD = new JTextField();
 		pngBox_right.add(txtSoCCCD);
 		txtSoCCCD.setColumns(10);
 
-		txtNgayVaoLam = new JTextField("12/09/2018");
-		pngBox_right.add(txtNgayVaoLam);
-		txtNgayVaoLam.setColumns(10);
+		
+		dpNgayVaoLam = new JXDatePicker(new Date(100,0,1));
+		dpNgayVaoLam.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
+		dpNgayVaoLam.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		dpNgayVaoLam.setLocale(new Locale("vi", "VN"));
+		dpNgayVaoLam.getMonthView().setZoomable(true);
+		pngBox_right.add(dpNgayVaoLam);
+		
+		
+		cmbChucVu = new JComboBox<>();
+		cmbChucVu.addItem("Quản lý");
+		cmbChucVu.addItem("Nhân viên");
+		cmbChucVu.setEditable(false);
+		cmbChucVu.setEnabled(false);
+		pngBox_right.add(cmbChucVu);
 
 		JPanel pnlControl = new JPanel();
 		pnlBodyTrangCaNhan.add(pnlControl);
@@ -211,6 +237,26 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 		btnLogOut.addActionListener(this);
 		btnEditInfo.addActionListener(this);
 		btnCannelEdit.addActionListener(this);
+		
+		
+//		lblAvatar.setIcon(new ImageScaler(main.nv.getNhanVien().getHinhAnh(), 340, 340).getScaledImageIcon());
+		
+		txtName.setText(main.nv.getNhanVien().getHoTen());
+		txtMa.setText(main.nv.getNhanVien().getMaNV());
+		cmbGioiTinh.setSelectedItem(main.nv.getNhanVien().isGioiTinh()? 0: 1);
+		
+		dpNgaySinh.setDate(main.nv.getNhanVien().getNgaySinh());	
+		txtSoDt.setText(main.nv.getNhanVien().getSdt());
+		txtEmail.setText(main.nv.getNhanVien().getEmail());
+		txtSoCCCD.setText(main.nv.getNhanVien().getcCCD());
+		dpNgayVaoLam.setDate(main.nv.getNgayCongTac());
+		
+		cmbChucVu.setSelectedItem(main.nv.getChucVu());
+		
+		
+		
+		
+		
 	}
 
 
@@ -249,20 +295,24 @@ public class TrangCaNhan extends JPanel implements ActionListener {
 			txtName.setEditable(true);
 			txtMa.setEditable(true);
 			cmbGioiTinh.setEnabled(true);
-			jdcNgaySinh.setEditable(true);
+			dpNgaySinh.setEditable(true);
+			dpNgaySinh.setEnabled(true);
 			txtSoDt.setEditable(true);
 			txtEmail.setEditable(true);
 			txtSoCCCD.setEditable(true);
-			txtNgayVaoLam.setEditable(true);
+			dpNgayVaoLam.setEditable(true);
+			dpNgayVaoLam.setEnabled(true);
 		} else {
 			txtName.setEditable(false);
 			txtMa.setEditable(false);
 			cmbGioiTinh.setEnabled(false);
-			jdcNgaySinh.setEditable(false);
+			dpNgaySinh.setEditable(false);
+			dpNgaySinh.setEnabled(false);
 			txtSoDt.setEditable(false);
 			txtEmail.setEditable(false);
 			txtSoCCCD.setEditable(false);
-			txtNgayVaoLam.setEditable(false);
+			dpNgayVaoLam.setEditable(false);
+			dpNgayVaoLam.setEnabled(false);
 		}
 	}
 

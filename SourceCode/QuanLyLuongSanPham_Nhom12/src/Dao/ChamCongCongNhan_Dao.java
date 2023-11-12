@@ -56,7 +56,7 @@ public class ChamCongCongNhan_Dao {
 	}
 
 	// HÀM LẤY TẤT CẢ CÔNG NHÂN ĐÃ ĐƯỢC PHÂN CÔNG THỎA SP VÀ CD TRÊN
-	public ArrayList<CongNhan> getALLCongNhan(String maSP, String maCongDoan) {
+	public ArrayList<CongNhan> getALLCongNhan(String maSP, String maCongDoan, java.util.Date ngayPhanCong) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -64,21 +64,44 @@ public class ChamCongCongNhan_Dao {
 
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT cn.maCN , cn.hoTen, cn.ngaySinh, pccd.soLuongCanlam FROM [dbo].[BangPhanCongCongDoan] "
-					+ "pccd JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN "
-					+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan  = cd.maCD JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP "
-					+ "WHERE cd.maSP LIKE ? AND pccd.maCongDoan LIKE ?";
+			String querry = "WITH DanhSachCongNhan AS (\r\n"
+					+ "    SELECT\r\n"
+					+ "        pccd.maPhanCong,\r\n"
+					+ "        pccd.soLuongCanLam,\r\n"
+					+ "        COALESCE(SUM(cccn.soLuongLam), 0) AS soLuongDaCham\r\n"
+					+ "    FROM [dbo].[BangPhanCongCongDoan] pccd\r\n"
+					+ "    LEFT JOIN [dbo].[BangChamCongCongNhan] cccn ON pccd.maPhanCong = cccn.maPhanCong\r\n"
+					+ "	WHERE pccd.soLuongCanLam - COALESCE(cccn.soLuongLam, 0) <> 0\r\n"
+					+ "	GROUP BY pccd.maPhanCong, pccd.soLuongCanLam\r\n"
+					+ ")\r\n"
+					+ "\r\n"
+					+ "SELECT DISTINCT\r\n"
+					+ "    pccd.*,\r\n"
+					+ "	cn.*,\r\n"
+					+ "	cd.*,\r\n"
+					+ "	sp.*,\r\n"
+					+ "    cv.soLuongCanlam AS soLuongDaPhan,\r\n"
+					+ "    cv.soLuongDaCham,\r\n"
+					+ "    cv.soLuongCanLam - cv.soLuongDaCham AS soLuongChuaCham\r\n"
+					+ "FROM [dbo].[BangPhanCongCongDoan] pccd\r\n"
+					+ "JOIN DanhSachCongNhan cv ON pccd.maPhanCong = cv.maPhanCong\r\n"
+					+ "JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN\r\n"
+					+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan = cd.maCD\r\n"
+					+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP "
+					+ "WHERE cd.maSP LIKE ? AND pccd.maCongDoan LIKE ? AND pccd.ngayPhanCong LIKE ?";
 			st = conn.prepareStatement(querry);
 
 			st.setString(1, "%" + maSP + "%");
 			st.setString(2, "%" + maCongDoan + "%");
+			st.setString(3, "%" + new java.sql.Date(ngayPhanCong.getTime()) + "%");
 
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getInt("soLuongCanLam"));
+				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getString("maPhanCong"),rs.getInt("soLuongDaPhan"));
+				BangChamCongCongNhan cccn = new BangChamCongCongNhan(rs.getInt("soLuongDaCham"),rs.getInt("soLuongChuaCham"));
 				CongNhan cn_new = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"), 
-						rs.getDate("ngaySinh"), pccd);
+						rs.getDate("ngaySinh"), pccd, cccn);
 
 				listCN.add(cn_new);
 			}
@@ -116,9 +139,9 @@ public class ChamCongCongNhan_Dao {
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getString("maPhanCong"));
-				CongNhan cn = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
 				CongDoan cd = new CongDoan(rs.getString("maCD"),rs.getString("tenCD"));
+				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getString("maPhanCong"), rs.getInt("soLuongCanLam") );
+				CongNhan cn = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
 				SanPham sp  = new SanPham(rs.getString("maSP"),rs.getString("tenSP"));
 		
 				
@@ -152,7 +175,7 @@ public class ChamCongCongNhan_Dao {
 	}
 	
 
-	// HÀM CHẤM CHÂM CÔNG CÔNG NHÂN ĐÃ PHÂN CÔNG
+	// HÀM CHẤM 1 CÔNG NHÂN ĐÃ PHÂN CÔNG
 	public boolean chamCongNhan(BangChamCongCongNhan cccn) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
@@ -184,5 +207,85 @@ public class ChamCongCongNhan_Dao {
 		return n > 0;
 
 	}
+	// HÀM CẬP NHẬT CHẤM CÔNG CÔNG NHÂN ĐÃ CHẤM CÔNG
+	public boolean capNhatCCCN(BangChamCongCongNhan cccn) {
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		int n = 0;
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "UPDATE [dbo].[BangChamCongCongNhan]\r\n"
+					+ "   SET \r\n"
+					+ "      [soLuongLam] = ? \r\n"
+					+ "      ,[ghiChu] = ? \r\n"
+					+ "      ,[trangThai] = ? \r\n"
+					+ "  WHERE [ngayChamCong] = ? AND "
+					+ "[gioVaoLam] = ? AND "
+					+ "[maPhanCong]= ? ";
+			st = conn.prepareStatement(querry);
+			st.setInt(1, cccn.getSoLuongLam());
+			st.setString(2, cccn.getGhiChu());
+			st.setInt(3, cccn.getTrangThai());
+			st.setDate(4, new java.sql.Date(cccn.getNgayChamCong().getTime()));
+			st.setString(5, cccn.getGioVaoLam());
+			st.setString(6, cccn.getPhanCong().getMaPhanCong());
+			n = st.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null) st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return n>0;
+	}
+	// HÀM XÓA CHẤM CÔNG CÔNG NHÂN ĐÃ CHẤM CÔNG
+	public boolean xoaCCCN(java.util.Date ngayChamCong, String gioVaoLam, String maPC) {
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		int n = 0;
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "DELETE FROM [dbo].[BangChamCongCongNhan] "
+					+ "WHERE [ngayChamCong] = ? AND "
+					+ "[gioVaoLam] = ? AND "
+					+ "[maPhanCong]= ? ";;
+			st = conn.prepareStatement(querry);
+			st.setDate(1, new java.sql.Date(ngayChamCong.getTime()));
+			st.setString(2, gioVaoLam);
+			st.setString(3, maPC);
+			n = st.executeUpdate();
+					
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		return n >0;
+		
+	}
+	
+	
+	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

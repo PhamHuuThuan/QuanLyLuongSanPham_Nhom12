@@ -13,6 +13,7 @@ public class BangChamCongCongNhan {
 	private  int soLuongLam ;
 	private String ghiChu;
 	private Integer trangThai;
+	private int soLuongChuaCham;
 	
 	private CongNhan congNhan;
 	private CongDoan congDoan;
@@ -30,10 +31,19 @@ public class BangChamCongCongNhan {
 	}
 
 
+
+
 	public BangChamCongCongNhan() {
 		super();
 	}
 	
+
+
+	public BangChamCongCongNhan(int soLuongLam, int soLuongChuaCham) {
+		super();
+		this.soLuongLam = soLuongLam;
+		this.soLuongChuaCham = soLuongChuaCham;
+	}
 
 
 	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
@@ -48,6 +58,21 @@ public class BangChamCongCongNhan {
 		this.congNhan = congNhan;
 		this.congDoan = congDoan;
 		this.sanPham = sanPham;
+	}
+	
+	
+	
+	
+	
+
+
+	public int getSoLuongChuaCham() {
+		return soLuongChuaCham;
+	}
+
+
+	public void setSoLuongChuaCham(int soLuongChuaCham) {
+		this.soLuongChuaCham = soLuongChuaCham;
 	}
 
 

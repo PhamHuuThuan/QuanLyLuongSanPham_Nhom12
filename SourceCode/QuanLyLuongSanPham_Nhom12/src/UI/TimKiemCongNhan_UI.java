@@ -83,7 +83,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlTKCN = new JPanel();
-		add(pnlTKCN, BorderLayout.NORTH);
+		add(pnlTKCN, BorderLayout.CENTER);
 		pnlTKCN.setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlBody = new JPanel();

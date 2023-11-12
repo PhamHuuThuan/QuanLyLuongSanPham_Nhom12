@@ -18,6 +18,7 @@ public class CongNhan {
 	private String ghiChu;
 	
 	private BangPhanCongCongDoan phanCongCongDoan;
+	private BangChamCongCongNhan chamCongCongNhan;
 
 	public CongNhan(String maCN, String matKhau, String hoTen, Date ngaySinh, boolean gioiTinh, String sDT,
 			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien, String ghiChu) {
@@ -77,8 +78,24 @@ public class CongNhan {
 	}
 
 	
-	
-	
+	public CongNhan(String maCN, String hoTen, Date ngaySinh, BangPhanCongCongDoan phanCongCongDoan,
+			BangChamCongCongNhan chamCongCongNhan) {
+		super();
+		this.maCN = maCN;
+		this.hoTen = hoTen;
+		this.ngaySinh = ngaySinh;
+		this.phanCongCongDoan = phanCongCongDoan;
+		this.chamCongCongNhan = chamCongCongNhan;
+	}
+
+	public BangChamCongCongNhan getChamCongCongNhan() {
+		return chamCongCongNhan;
+	}
+
+	public void setChamCongCongNhan(BangChamCongCongNhan chamCongCongNhan) {
+		this.chamCongCongNhan = chamCongCongNhan;
+	}
+
 	public BangPhanCongCongDoan getPhanCongCongDoan() {
 		return phanCongCongDoan;
 	}
