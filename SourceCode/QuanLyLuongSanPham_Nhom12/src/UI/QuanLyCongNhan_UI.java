@@ -386,7 +386,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		btnThem.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		btnThem.setForeground(Color.WHITE);
 		btnThem.setBackground(Color.decode("#3B71CA"));
-		btnThem.setIcon(new ImageScaler("/image/addHopDong_icon.png", 24, 24).getScaledImageIcon());
+		btnThem.setIcon(new ImageScaler("/image/icon_add_row.png", 24, 24).getScaledImageIcon());
 		btnThem.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlControl.add(btnThem);
 		pnlControl.add(Box.createHorizontalStrut(50));
@@ -494,6 +494,8 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		if (o == tblCN) {
 			int index = tblCN.getSelectedRow();
 			if (index != -1) {
+				displayButtonSaveAndCancel(false);
+				setEditableForTextField(false);
 				hienThiThongTinCongNhan(index);
 			}
 		}
@@ -547,6 +549,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
 			xoaRong();
+			dpNgayVaoLam.setDate(new Date());
 			isThemCongNhan = true;
 
 		}

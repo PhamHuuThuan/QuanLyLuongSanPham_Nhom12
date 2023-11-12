@@ -29,7 +29,7 @@ public class CongDoan_Dao {
 				st.setDouble(3, cd.getDonGia());
 				st.setBoolean(4, cd.isTinhTrang());
 				st.setDate(5, new java.sql.Date(cd.getNgayHoanThanh().getTime()));
-				st.setString(6, cd.getMaSP());
+				st.setString(6, cd.getSanPham().getMaSP());
 				st.setInt(7, cd.getSoLuong());
 				st.setString(8, cd.getMaCD());
 
@@ -61,7 +61,7 @@ public class CongDoan_Dao {
 				st.setDouble(4, cd.getDonGia());
 				st.setBoolean(5, cd.isTinhTrang());
 				st.setDate(6, new java.sql.Date(cd.getNgayHoanThanh().getTime()));
-				st.setString(7, cd.getMaSP());
+				st.setString(7, cd.getSanPham().getMaSP());
 				st.setInt(8, cd.getSoLuong());
 				
 				
@@ -97,7 +97,7 @@ public class CongDoan_Dao {
 		        	Date ngayHT = rs.getDate("ngayHoanThanh");
 		        	String maSP = rs.getString("maSanPham");
 		        	int soLuong = rs.getInt("soLuong");
-		            CongDoan cd = new CongDoan(maSP, maCd, tenCd, thuTu, soLuong, donGia, tinhTrang, ngayHT, null);
+		            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, donGia, tinhTrang, ngayHT, new SanPham(maSP));
 		            list.add(cd);
 		        }
 		    } catch (SQLException e) {
@@ -199,7 +199,7 @@ public class CongDoan_Dao {
 				        	Date ngayHT = rs.getDate("ngayHoanThanh");
 				        	String maSP = rs.getString("maSanPham");
 				        	int soLuong = rs.getInt("soLuong");
-				            CongDoan cd = new CongDoan(maSP, maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, null);
+				            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, new SanPham(maSP));
 				            list.add(cd);
 				        }
 				    } catch (SQLException e) {
@@ -231,7 +231,7 @@ public class CongDoan_Dao {
 		        	Date ngayHT = rs.getDate("ngayHoanThanh");
 		        	String maSP = rs.getString("maSanPham");
 		        	int soLuong = rs.getInt("soLuong");
-		            cd = new CongDoan(maSP, maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, null);
+		            cd = new CongDoan(maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, new SanPham(maSP));
 		        }
 		    } catch (SQLException e) {
 		        e.printStackTrace();

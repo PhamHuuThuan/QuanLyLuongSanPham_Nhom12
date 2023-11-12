@@ -95,7 +95,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 	private boolean isThemPCCD = false;
 	private JTextField txtTongSoLuong;
-	private JButton btnGetProduct;
+	private RoundedButton btnGetProduct;
 	private JTextField txtSLChuaPC;
 
 	public PhanCongCongDoanUI(MainUI main) {
@@ -222,8 +222,6 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		dpNgayPhanCong.setLocale(new Locale("vi", "VN"));
 		horizontalBox.add(dpNgayPhanCong);
 
-		dpNgayPhanCong.setEnabled(false);
-		dpNgayPhanCong.setEnabled(false);
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalBox.add(horizontalStrut_3);
@@ -724,7 +722,13 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 			}
 		});
 		// BUTTON LẤY THÔNG TIN CÔNG ĐOẠN
-		btnGetProduct = new JButton("Lấy Thông tin công đoạn");
+		btnGetProduct = new RoundedButton("Lấy Thông tin công đoạn", null, 10, 0, 1.0f);
+		btnGetProduct.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnGetProduct.setForeground(Color.WHITE);
+		btnGetProduct.setBackground(Color.decode("#424242"));
+		btnGetProduct.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnGetProduct.setBorder(new EmptyBorder(5, 10, 5, 10));
+		
 		btnGetProduct.setEnabled(false);
 		btnGetProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

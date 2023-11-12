@@ -635,7 +635,7 @@ private CongDoan convertDataToCongDoan() {
 	
 	Date ngayHT = dtpNgayHT.getDate();
 	
-	return new CongDoan( maSP, maCD, tenCD, thuTu, soLuong, donGia, ngayHT);
+	return new CongDoan(maCD, tenCD, thuTu, soLuong, donGia, false, ngayHT, new SanPham(maSP));
 }	
 	
 //get dữ liệu từ csdl lên table
@@ -719,7 +719,7 @@ private void hienThiThongTinCD(int index) {
 	if(index <0 ) {
 		return;
 	}
-	txtMaSP.setText(dsCD.get(index).getMaSP());
+	txtMaSP.setText(dsCD.get(index).getSanPham().getMaSP());
 	txtMaCD.setText(dsCD.get(index).getMaCD());
 	txtTenCD.setText(dsCD.get(index).getTenCD());
 	txtThuTu.setText(dsCD.get(index).getThuTu()+"");

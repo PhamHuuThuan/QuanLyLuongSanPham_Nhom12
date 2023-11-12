@@ -26,7 +26,6 @@ public class SanPham {
 		}
 	}
 
-
 	public HopDong getMaHopDong() {
 		return maHopDong;
 	}
@@ -82,10 +81,20 @@ public class SanPham {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public SanPham(String maSP) {
+		super();
+		this.maSP = maSP;
+	}
 	@Override
 	public String toString() {
 		return "SanPham [maSP=" + maSP + ", tenSP=" + tenSP + ", donViTinh=" + donViTinh + ", soLuong=" + soLuong
 				+ ", yeuCau=" + yeuCau + ", donGia=" + donGia + "]";
+	}
+	public SanPham(String maSP, String tenSP) {
+		super();
+		this.maSP = maSP;
+		this.tenSP = tenSP;
 	}
 	
 	
