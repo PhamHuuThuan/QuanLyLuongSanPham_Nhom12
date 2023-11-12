@@ -95,7 +95,7 @@ public class CongDoan_Dao {
 		        	Double donGia = rs.getDouble("donGia");
 		        	Boolean tinhTrang = rs.getBoolean("tinhTrang");
 		        	Date ngayHT = rs.getDate("ngayHoanThanh");
-		        	String maSP = rs.getString("maSanPham");
+		        	String maSP = rs.getString("maSP");
 		        	int soLuong = rs.getInt("soLuong");
 		            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, donGia, tinhTrang, ngayHT, new SanPham(maSP));
 		            list.add(cd);
