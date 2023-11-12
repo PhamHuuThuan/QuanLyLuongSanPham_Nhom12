@@ -644,7 +644,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		}
 		//Hiển thị nhân viên được chọn từ table lên bảng thông tin
 		private void hienThiThongTinSP(int index) {
-			System.out.println("44444444444444");
+			txtMaHD.setText(dsSP.get(index).getMaHopDong().getMaHD());
 			txtMaSP.setText(dsSP.get(index).getMaSP());
 			txtTenSP.setText(dsSP.get(index).getTenSP());
 			txtDonGia.setText(String.valueOf(dsSP.get(index).getDonGia()));;
@@ -790,7 +790,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 	private void themSanPhamVaoBang(SanPham sp) {
 	    Object[] row = new Object[10];
 	    row[0] = dtblModelSP.getRowCount() + 1;  // STT
-	    row[1] = sp.getMaHopDong();
+	    row[1] = sp.getMaHopDong().getMaHD();
 	    row[2] = sp.getMaSP();  
 	    row[3] = sp.getTenSP();  
 	    row[4] = sp.getDonViTinh();  
