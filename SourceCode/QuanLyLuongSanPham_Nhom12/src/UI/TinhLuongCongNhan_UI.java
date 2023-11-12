@@ -204,8 +204,8 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat);
 
-		String colsTLCN[] = { "STT", "Mã lương", "Mã CN", "Họ Tên", "Ngày Làm", "Ngày TL", "Lương tháng", "Lương CĐ",
-				"Thực lãnh", "Ghi chú" };
+		String colsTLCN[] = { "#", "Mã lương","Ngày TL","Mã CN", "Tên","Làm","Nghỉ Phép","Nghỉ","SL Làm","Lương tháng", "Lương CĐ",
+				"Thực lãnh"};
 		dtblModelTLCN = new DefaultTableModel(colsTLCN, 0);
 		tblDSTL = new JTable(dtblModelTLCN);
 
@@ -217,16 +217,18 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		tblDSTL.setTableHeader(tbhCNCC);
 
 		tblDSTL.setRowHeight(30);
-		tblDSTL.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblDSTL.getColumnModel().getColumn(1).setPreferredWidth(50);
-		tblDSTL.getColumnModel().getColumn(2).setPreferredWidth(80);
-		tblDSTL.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblDSTL.getColumnModel().getColumn(4).setPreferredWidth(30);
-		tblDSTL.getColumnModel().getColumn(5).setPreferredWidth(80);
-		tblDSTL.getColumnModel().getColumn(6).setPreferredWidth(110);
-		tblDSTL.getColumnModel().getColumn(7).setPreferredWidth(110);
-		tblDSTL.getColumnModel().getColumn(8).setPreferredWidth(110);
-		tblDSTL.getColumnModel().getColumn(9).setPreferredWidth(80);
+		tblDSTL.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblDSTL.getColumnModel().getColumn(1).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(2).setPreferredWidth(60);
+		tblDSTL.getColumnModel().getColumn(3).setPreferredWidth(60);
+		tblDSTL.getColumnModel().getColumn(4).setPreferredWidth(80);
+		tblDSTL.getColumnModel().getColumn(5).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(6).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(7).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(8).setPreferredWidth(80);
+		tblDSTL.getColumnModel().getColumn(9).setPreferredWidth(110);
+		tblDSTL.getColumnModel().getColumn(10).setPreferredWidth(110);
+		tblDSTL.getColumnModel().getColumn(11).setPreferredWidth(110);
 
 		// Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSTL, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,

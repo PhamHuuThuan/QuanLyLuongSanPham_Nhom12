@@ -239,7 +239,7 @@ public class TrangCaNhan_UI extends JPanel implements ActionListener {
 		btnCannelEdit.addActionListener(this);
 		
 		
-//		lblAvatar.setIcon(new ImageScaler(main.nv.getNhanVien().getHinhAnh(), 340, 340).getScaledImageIcon());
+		lblAvatar.setIcon(new ImageScaler(main.nv.getNhanVien().getHinhAnh(), 340, 340).getScaledImageAvatar());
 		
 		txtName.setText(main.nv.getNhanVien().getHoTen());
 		txtMa.setText(main.nv.getNhanVien().getMaNV());
