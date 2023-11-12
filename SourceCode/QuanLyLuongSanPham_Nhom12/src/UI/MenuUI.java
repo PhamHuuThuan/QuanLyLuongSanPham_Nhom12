@@ -596,7 +596,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 			main.pnlContent.removeAll(); // Remove all nội dung
 			main.pnlContent.add(new ChamCongNhanVienUI(main), BorderLayout.CENTER);// thêm giao diện chấm công nhân viên
-																					// vào
 			main.validate(); // cập nhật lại
 		}
 		if(o==mniPCCD) {
