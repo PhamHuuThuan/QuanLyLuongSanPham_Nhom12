@@ -632,7 +632,7 @@
 			double giaTriHD = Double.parseDouble(txtDonGia.getText().replace(",", "")); // Lấy giá trị hợp đồng từ trường văn bản
 			double tongTienSP = sp_Dao.tinhTongTien(txtMaHopDong.getText()) + soLuong * giaTriHD;
 		
-			if (tongTienSP < giaTriHD) {
+			if (tongTienSP > giaTriHD) {
 			    setTextError("Tổng tiền của tất cả sản phẩm không được vượt quá giá trị hợp đồng: " + tongTienSP + " > " + giaTriHD);
 			    return false;
 			}
