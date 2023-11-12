@@ -67,7 +67,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 		main.pnlContent.add(new TrangChu_UI(), BorderLayout.CENTER);
 
-		pathFileTheme = l.readFile("src/config/themes/selectedTheme.txt");
+		pathFileTheme = "config/themes/lightmode";
 
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 
