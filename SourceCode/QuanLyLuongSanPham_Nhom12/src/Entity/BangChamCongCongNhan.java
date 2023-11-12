@@ -34,6 +34,15 @@ public class BangChamCongCongNhan {
 
 
 
+	public BangChamCongCongNhan(int soLuongLam) {
+		super();
+		this.soLuongLam = soLuongLam;
+	}
+
+
+
+
+
 	public BangChamCongCongNhan(BangPhanCongCongDoan phanCong, int soLuongLam, int trangThai) {
 		super();
 		this.phanCong = phanCong;

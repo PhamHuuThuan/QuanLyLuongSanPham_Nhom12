@@ -5,6 +5,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,6 +21,8 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -28,6 +32,7 @@ import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.TinhLuongCongNhan_Dao;
 import Entity.BangChamCongCongNhan;
+import Entity.BangLuongCongNhan;
 import Util.SinhMaTuDong;
 
 import java.awt.BorderLayout;
@@ -36,6 +41,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,24 +56,24 @@ import java.awt.GridLayout;
 
 public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, MouseListener {
 	private MainUI main;
-
+	private JFrame mainFrame;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JXDatePicker dtbNgayTinhLuong;
 
-	private DefaultTableModel dtblModelTLCN, dtbModelCN;
-	private JTable tblDSTL, tblCN;
-	private JTableHeader tbhCN, tbhCNCC;
+	private DefaultTableModel dtblModelTLCN, dtblModelCTCN;
+	private JComboBox<String> cmbFilter;
+	private JTable tblDSTL, tblCTCN;
+	private JTableHeader  tbhCNCC,tbhCTCN;
 	private RoundedButton btnXuat;
 	private RoundedButton btnTinhLuongTatCa, btnXemChiTiet;
-	private ArrayList<BangChamCongCongNhan> dsCCCN = new ArrayList<>();
 	private TinhLuongCongNhan_Dao tlcn_dao = new TinhLuongCongNhan_Dao();
+	private ArrayList<BangLuongCongNhan> dsBLCN = new ArrayList<>();
+
 	private SinhMaTuDong maTuDong = new SinhMaTuDong();
 
-	private int ngayLam;
-	private int ngayNghi;
-	private int ngayNghiPhep;
+	private int thang, nam;
 
 	public TinhLuongCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -175,7 +181,7 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		txtrLngCBn.setFont(new Font("Arial", Font.BOLD, 16));
 		txtrLngCBn.setTabSize(6);
 		txtrLngCBn.setText(
-				"Lương cơ bản: 150.000\r\nLương tháng: lương cơ bản * (làm + phép - nghỉ)\r\nLương CĐ : Đơn giá CĐ * SL CĐ đã làm\r\nThực lãnh: lương tháng + lương CĐ");
+				"Lương cơ bản: 250.000\r\nLương tháng: lương cơ bản * (làm + phép - nghỉ)\r\nLương CĐ : Đơn giá CĐ * SL CĐ đã làm\r\nThực lãnh: lương tháng + lương CĐ");
 		pnlGhiChu.add(txtrLngCBn);
 
 		JPanel pnlBangChamCong = new JPanel();
@@ -192,9 +198,15 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		pnlBangChamCong.setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlXuat = new JPanel();
+		pnlXuat.setBorder(new EmptyBorder(5, 10, 5, 10));
 		pnlXuat.setBackground(bgColor);
-		pnlXuat.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnlBangChamCong.add(pnlXuat, BorderLayout.NORTH);
+		pnlXuat.setLayout(new BorderLayout(0, 0));
+
+		cmbFilter = new JComboBox<>();
+		cmbFilter.addItem("Tất cả");
+		cmbFilter.addItem("Tháng/Năm");
+		pnlXuat.add(cmbFilter, BorderLayout.WEST);
 
 		btnXuat = new RoundedButton("Xuất DS", null, 5, 0, 1.0f);
 		btnXuat.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
@@ -202,10 +214,10 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		btnXuat.setBackground(Color.decode("#28a745"));
 		btnXuat.setIcon(new ImageScaler("/image/printer_icon.png", 20, 20).getScaledImageIcon());
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-		pnlXuat.add(btnXuat);
+		pnlXuat.add(btnXuat, BorderLayout.EAST);
 
-		String colsTLCN[] = { "STT", "Mã lương", "Mã CN", "Họ Tên", "Ngày Làm", "Ngày TL", "Lương tháng", "Lương CĐ",
-				"Thực lãnh", "Ghi chú" };
+		String colsTLCN[] = { "#", "Mã lương", "Ngày TL", "Mã CN", "Tên", "Làm", "Nghỉ Phép", "Nghỉ", "SL Làm",
+				"Lương tháng", "Lương CĐ", "Thực lãnh" };
 		dtblModelTLCN = new DefaultTableModel(colsTLCN, 0);
 		tblDSTL = new JTable(dtblModelTLCN);
 
@@ -217,16 +229,18 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		tblDSTL.setTableHeader(tbhCNCC);
 
 		tblDSTL.setRowHeight(30);
-		tblDSTL.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblDSTL.getColumnModel().getColumn(1).setPreferredWidth(50);
-		tblDSTL.getColumnModel().getColumn(2).setPreferredWidth(80);
-		tblDSTL.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblDSTL.getColumnModel().getColumn(4).setPreferredWidth(30);
-		tblDSTL.getColumnModel().getColumn(5).setPreferredWidth(80);
-		tblDSTL.getColumnModel().getColumn(6).setPreferredWidth(110);
-		tblDSTL.getColumnModel().getColumn(7).setPreferredWidth(110);
-		tblDSTL.getColumnModel().getColumn(8).setPreferredWidth(110);
-		tblDSTL.getColumnModel().getColumn(9).setPreferredWidth(80);
+		tblDSTL.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblDSTL.getColumnModel().getColumn(1).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(2).setPreferredWidth(60);
+		tblDSTL.getColumnModel().getColumn(3).setPreferredWidth(60);
+		tblDSTL.getColumnModel().getColumn(4).setPreferredWidth(80);
+		tblDSTL.getColumnModel().getColumn(5).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(6).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(7).setPreferredWidth(70);
+		tblDSTL.getColumnModel().getColumn(8).setPreferredWidth(80);
+		tblDSTL.getColumnModel().getColumn(9).setPreferredWidth(110);
+		tblDSTL.getColumnModel().getColumn(10).setPreferredWidth(110);
+		tblDSTL.getColumnModel().getColumn(11).setPreferredWidth(110);
 
 		// Tạo jscrollpane để tạo scroll cho bảng sản phẩm
 		JScrollPane scrSP = new JScrollPane(tblDSTL, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -236,18 +250,27 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		btnTinhLuongTatCa.addActionListener(this);
 		btnXemChiTiet.addActionListener(this);
 		btnXuat.addActionListener(this);
+		cmbFilter.addActionListener(this);
+
+		tblDSTL.addMouseListener(this);
 
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		main.music.playSE(2);
+		if (o == tblDSTL) {
+			int index = tblDSTL.getSelectedRow();
+			if (index != -1) {
 
+			}
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -275,43 +298,123 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		if (o == btnTinhLuongTatCa) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(dtbNgayTinhLuong.getDate());
-			int thang = calendar.get(Calendar.MONTH) + 1;
-			int nam = calendar.get(Calendar.YEAR);
+			thang = calendar.get(Calendar.MONTH) + 1;
+			nam = calendar.get(Calendar.YEAR);
 			if (tlcn_dao.tinhALL(thang, nam)) {
+				getDataTLCNLenBang();
 				alertSuccess("Tính lương thành công");
 			} else {
-				alertNotification("Tính lương thất bại");
+				String text = String.format("Tính lương thất bại! Do không có danh sách nào trong tháng %s năm %s",
+						thang, nam);
+				alertNotification(text);
+			}
+		}
+		
+		if(o==btnXemChiTiet) {
+			showJDialogSP();
+		}
+
+		if (o == cmbFilter) {
+			if (cmbFilter.getSelectedItem().equals("Tất cả")) {
+				getDataTLCNLenBang();
+			} else if (cmbFilter.getSelectedItem().equals("Tháng/Năm")) {
+				getDataTLCNLenBangTN();
 			}
 		}
 
 	}
 
-	// HÀM LẤY DANH SÁCH CÔNG NHÂN ĐÃ CHẤM THEO THÁNG NĂM
-	public void tinhLuongALL() {
+	private void showJDialogSP() {
+		JDialog listCTCN = new JDialog(mainFrame, "Chi tiết công nhân", JDialog.ModalityType.APPLICATION_MODAL);
+		listCTCN.setSize(1000, 500);
+		listCTCN.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		listCTCN.setLocationRelativeTo(null);
 
+		String cols_cd[] = { "STT", "Mã SP", "Tên SP", "Mã CĐ", "Tên CĐ", "Thứ tự" };
+		dtblModelCTCN = new DefaultTableModel(cols_cd, 0);
+		tblCTCN = new JTable(dtblModelCTCN);
+
+		tbhCTCN = new JTableHeader(tblCTCN.getColumnModel());
+		tbhCTCN.setReorderingAllowed(false);
+		tbhCTCN.setBackground(componentColor);
+		tbhCTCN.setForeground(Color.WHITE);
+		tbhCTCN.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+
+		tblCTCN.setTableHeader(tbhCTCN);
+		tblCTCN.setRowHeight(30);
+		tblCTCN.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblCTCN.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tblCTCN.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tblCTCN.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tblCTCN.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tblCTCN.getColumnModel().getColumn(5).setPreferredWidth(100);
+
+		JScrollPane scrCD = new JScrollPane(tblCTCN, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		
+		JLabel lbl_Ma = new JLabel("Mã CN : ");
+		JLabel lbl_hoTen = new JLabel("Tên CN : ");
+		JPanel pnlBox = new JPanel();
+		pnlBox.setLayout(new FlowLayout());
+		pnlBox.setBorder(new EmptyBorder(10,20,20,10));
+		
+		pnlBox.add(lbl_Ma);
+		pnlBox.add(lbl_hoTen);
+		
+		listCTCN.getContentPane().setLayout(new BorderLayout());
+		listCTCN.getContentPane().add(scrCD, BorderLayout.CENTER);
+		listCTCN.getContentPane().add(pnlBox, BorderLayout.NORTH);
+
+		listCTCN.setVisible(true);
 	}
 
-	// HÀM TÍNH LƯƠNG
-//	public void tinhLuong(ArrayList<BangChamCongCongNhan> list) {
-//		for (BangChamCongCongNhan value : list) {
-//			String maPC = value.getPhanCong().getCongNhan().getMaCN();
-//			int soLuongLam = value.getSoLuongLam();
-//			System.out.println(maPC + "--" + soLuongLam);
-//		}
-//		System.out.println(thang +"/"+nam);
-//		dsCCCN = tlcn_dao.getDSChamCong(thang, nam);
-//		tinhLuong(dsCCCN);
-//		System.out.println(maTuDong.sinhMaBLCN());
-//	}
+	private void getDataTLCNLenBang() {
+		dsBLCN = tlcn_dao.getAllBLCN();
+		themAllTLCNVaoBang(dsBLCN);
+	}
 
-	
-	
-	
-	
-	
-	
+	private void getDataTLCNLenBangTN() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dtbNgayTinhLuong.getDate());
+		thang = calendar.get(Calendar.MONTH) + 1;
+		nam = calendar.get(Calendar.YEAR);
+
+		dsBLCN = tlcn_dao.getAllBLCN_TN(thang, nam);
+		themAllTLCNVaoBang(dsBLCN);
+	}
+
+	// HÀM THÊM TẤT CẢ TLCN VÀO BẢNG
+	private void themAllTLCNVaoBang(ArrayList<BangLuongCongNhan> listLCN) {
+		dtblModelTLCN.setRowCount(0);
+		for (BangLuongCongNhan tlcn : listLCN) {
+			themDataBLCNVaoBang(tlcn);
+		}
+	}
+
+	// HÀM THÊM BLCN VÀO BẢNG
+	private void themDataBLCNVaoBang(BangLuongCongNhan blcn) {
+		String[] row = new String[99];
+		row[0] = String.valueOf(dtblModelTLCN.getRowCount() + 1);
+		row[1] = blcn.getMaBangLuong();
+		row[2] = blcn.getThangNam();
+		row[3] = blcn.getCongNhan().getMaCN();
+		row[4] = blcn.getCongNhan().getHoTen();
+		row[5] = String.valueOf(blcn.getSoNgayLam() + " ngày");
+		row[6] = String.valueOf(blcn.getSoNgayPhep() + " ngày");
+		row[7] = String.valueOf(blcn.getSoNgayNghi() + " ngày");
+		row[8] = String.valueOf(blcn.getChamCongCongNhan().getSoLuongLam());
+		
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+		row[9] = String.valueOf(decimalFormat.format(blcn.getLuongThang()) + " VND");
+		
+		row[10] = String.valueOf(decimalFormat.format(blcn.getLuongCongDoan()) + " VND");
+		row[11] = String.valueOf(decimalFormat.format(blcn.getThucLanh()) + " VND");
+
+		dtblModelTLCN.addRow(row);
+	}
+
 	// ALERT
-
 	public int alertNotification(String textError) {
 		main.music.playSE(3);
 		String[] options = { "Cancel" };

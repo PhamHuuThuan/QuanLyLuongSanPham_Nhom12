@@ -6,139 +6,93 @@ import java.util.ArrayList;
 public class BangLuongCongNhan {
 	private String maBangLuong;
 	private CongNhan congNhan;
-	// bo sung trong class
-	private ArrayList<BangChamCongCongNhan> danhSachChamCong;
-	private int soLuongCongDoanLam;
+	private BangChamCongCongNhan chamCongCongNhan;
 	private int soNgayLam;
 	private int soNgayNghi;
 	private int soNgayPhep;
+	private double luongThang;
+	private double luongCongDoan;
 	private double thucLanh;
-	private YearMonth thangNam;
-
-	private int luongCoban = 150000;
-
-	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, ArrayList<BangChamCongCongNhan> danhSachChamCong,
-			int soLuongCongDoanLam, int soNgayLam, int soNgayNghi, int soNgayPhep, double thucLanh, YearMonth thangNam)
-			throws Exception {
+	private String thangNam;
+	
+	
+	
+	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, BangChamCongCongNhan chamCongCongNhan,
+			int soNgayLam, int soNgayNghi, int soNgayPhep, double luongThang, double luongCongDoan, double thucLanh,
+			String thangNam) {
 		super();
-		setMaBangLuong(maBangLuong);
-		setCongNhan(congNhan);
-		setDanhSachChamCong(danhSachChamCong);
-		setSoLuongCongDoanLam(soLuongCongDoanLam);
-		setSoNgayLam(soNgayLam);
-		setSoNgayNghi(soNgayNghi);
-		setSoNgayPhep(soNgayPhep);
-		setThucLanh(thucLanh);
-		setThangNam(thangNam);
+		this.maBangLuong = maBangLuong;
+		this.congNhan = congNhan;
+		this.chamCongCongNhan = chamCongCongNhan;
+		this.soNgayLam = soNgayLam;
+		this.soNgayNghi = soNgayNghi;
+		this.soNgayPhep = soNgayPhep;
+		this.luongThang = luongThang;
+		this.luongCongDoan = luongCongDoan;
+		this.thucLanh = thucLanh;
+		this.thangNam = thangNam;
 	}
-
-	public BangLuongCongNhan() {
-		super();
-	}
-
 	public String getMaBangLuong() {
 		return maBangLuong;
 	}
-
-	public void setMaBangLuong(String maBangLuong) throws Exception {
-		if (maBangLuong == null || maBangLuong.trim().length() <= 0) {
-			throw new Exception("Mã bảng lương không được rỗng!");
-		}
-		if (!maBangLuong.matches("\\S+")) {
-			throw new Exception("Mã lướng không được chứa khoảng trắng!");
-		} else if (!maBangLuong.matches("^LC\\d{5}$")) {
-			throw new Exception("Mã lương có dạng CD12345");
-		} else {
-			this.maBangLuong = maBangLuong;
-		}
+	public void setMaBangLuong(String maBangLuong) {
+		this.maBangLuong = maBangLuong;
 	}
-
 	public CongNhan getCongNhan() {
 		return congNhan;
 	}
-
 	public void setCongNhan(CongNhan congNhan) {
 		this.congNhan = congNhan;
 	}
-
-	public ArrayList<BangChamCongCongNhan> getDanhSachChamCong() {
-		return danhSachChamCong;
+	public BangChamCongCongNhan getChamCongCongNhan() {
+		return chamCongCongNhan;
 	}
-
-	public void setDanhSachChamCong(ArrayList<BangChamCongCongNhan> danhSachChamCong) {
-		this.danhSachChamCong = danhSachChamCong;
+	public void setChamCongCongNhan(BangChamCongCongNhan chamCongCongNhan) {
+		this.chamCongCongNhan = chamCongCongNhan;
 	}
-
-	public int getSoLuongCongDoanLam() {
-		return soLuongCongDoanLam;
-	}
-
-	public void setSoLuongCongDoanLam(int soLuongCongDoanLam) {
-		this.soLuongCongDoanLam = soLuongCongDoanLam;
-	}
-
 	public int getSoNgayLam() {
 		return soNgayLam;
 	}
-
 	public void setSoNgayLam(int soNgayLam) {
 		this.soNgayLam = soNgayLam;
 	}
-
 	public int getSoNgayNghi() {
 		return soNgayNghi;
 	}
-
 	public void setSoNgayNghi(int soNgayNghi) {
 		this.soNgayNghi = soNgayNghi;
 	}
-
 	public int getSoNgayPhep() {
 		return soNgayPhep;
 	}
-
 	public void setSoNgayPhep(int soNgayPhep) {
 		this.soNgayPhep = soNgayPhep;
 	}
-
+	public double getLuongThang() {
+		return luongThang;
+	}
+	public void setLuongThang(double luongThang) {
+		this.luongThang = luongThang;
+	}
+	public double getLuongCongDoan() {
+		return luongCongDoan;
+	}
+	public void setLuongCongDoan(double luongCongDoan) {
+		this.luongCongDoan = luongCongDoan;
+	}
 	public double getThucLanh() {
 		return thucLanh;
 	}
-
 	public void setThucLanh(double thucLanh) {
 		this.thucLanh = thucLanh;
 	}
-
-	public YearMonth getThangNam() {
+	public String getThangNam() {
 		return thangNam;
 	}
-
-	public void setThangNam(YearMonth thangNam) {
+	public void setThangNam(String thangNam) {
 		this.thangNam = thangNam;
 	}
-
-	@Override
-	public String toString() {
-		return "BangLuongCongNhan [maBangLuong=" + maBangLuong + ", congNhan=" + congNhan + ", danhSachChamCong="
-				+ danhSachChamCong + ", soLuongCongDoanLam=" + soLuongCongDoanLam + ", soNgayLam=" + soNgayLam
-				+ ", soNgayNghi=" + soNgayNghi + ", soNgayPhep=" + soNgayPhep + ", thucLanh=" + thucLanh + ", thangNam="
-				+ thangNam + "]";
-	}
-
-	// HÀM TÍNH LƯƠNG 1 CÔNG NHÂN
-	public void tinhLuongCongNhan(BangChamCongCongNhan cccn) {
-	    // Lương cơ bản
-	    int luongCoBan = 150000;
-
-	    // Lương tháng: lương cơ bản * (làm + phép - nghỉ)
-	    double luongThang = luongCoBan * (soNgayLam + soNgayPhep - soNgayNghi);
-
-	    // Lương CĐ : Đơn giá CĐ * SL CĐ đã làm
-	    double donGiaCongDoan = 0;  // Replace this with the actual unit price for the work done.
-	    double luongCongDoan = donGiaCongDoan * soLuongCongDoanLam;
-
-	    // Thực lãnh: lương tháng + lương CĐ
-	    thucLanh = luongThang + luongCongDoan;
-	}
+	
+	
 
 }

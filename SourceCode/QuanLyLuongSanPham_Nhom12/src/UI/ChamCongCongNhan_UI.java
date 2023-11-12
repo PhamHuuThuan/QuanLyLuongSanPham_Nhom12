@@ -735,7 +735,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		txtTenCongNhan_dt.setText("");
 		txtMaSP_dt.setText("");
 		txtMaCD_dt.setText("");
-		cmbTrangThai.getSelectedItem();
+		cmbTrangThai.setSelectedIndex(0);
 		txtSoLuongLam_dt.setText("");
 		txtGhiChu_dt.setText("");
 		
