@@ -461,7 +461,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			setMenuColorDefault();
 
 			main.pnlContent.removeAll(); // Remove all nội dung
-			main.pnlContent.add(new TrangCaNhan(main), BorderLayout.CENTER); // thêm giao diện trang ca nhan vào
+			main.pnlContent.add(new TrangCaNhan_UI(main), BorderLayout.CENTER); // thêm giao diện trang ca nhan vào
 			main.validate(); // cập nhật lại
 		}
 

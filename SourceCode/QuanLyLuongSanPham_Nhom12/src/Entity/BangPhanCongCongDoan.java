@@ -47,8 +47,12 @@ public class BangPhanCongCongDoan {
 	}
 	
 	
-	
-	
+
+	public BangPhanCongCongDoan(String maPhanCong, CongDoan congDoan) {
+		super();
+		this.maPhanCong = maPhanCong;
+		this.congDoan = congDoan;
+	}
 
 	public BangPhanCongCongDoan(String maPhanCong) {
 		super();
@@ -57,10 +61,25 @@ public class BangPhanCongCongDoan {
 
 	
 
+	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan) {
+		super();
+		this.maPhanCong = maPhanCong;
+		this.congNhan = congNhan;
+	}
+
+	public BangPhanCongCongDoan(String maPhanCong, int soLuongCanLam) {
+		super();
+		this.maPhanCong = maPhanCong;
+		this.soLuongCanLam = soLuongCanLam;
+	}
+
 	public BangPhanCongCongDoan(int soLuongCanLam) {
 		super();
 		this.soLuongCanLam = soLuongCanLam;
 	}
+	
+
+	
 
 	public SanPham getSanPham() {
 		return sanPham;

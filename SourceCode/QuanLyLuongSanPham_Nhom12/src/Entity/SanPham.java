@@ -87,6 +87,11 @@ public class SanPham {
 		return "SanPham [maSP=" + maSP + ", tenSP=" + tenSP + ", donViTinh=" + donViTinh + ", soLuong=" + soLuong
 				+ ", yeuCau=" + yeuCau + ", donGia=" + donGia + "]";
 	}
+	public SanPham(String maSP, String tenSP) {
+		super();
+		this.maSP = maSP;
+		this.tenSP = tenSP;
+	}
 	
 	
 }

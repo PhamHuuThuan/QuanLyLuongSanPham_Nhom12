@@ -3,7 +3,6 @@ package Entity;
 import java.util.Date;
 
 public class CongDoan {
-	private String maSP;
 	private String maCD;
 	private String tenCD;
 	private int thuTu;
@@ -14,17 +13,83 @@ public class CongDoan {
 	private Date ngayHoanThanh;
 	private SanPham sanPham;
 	
+	private int soLuongConLai;
 
 	
+	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong, double donGia, boolean tinhTrang,
+			Date ngayHoanThanh, SanPham sanPham) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+		this.soLuong = soLuong;
+		this.donGia = donGia;
+		this.tinhTrang = tinhTrang;
+		this.ngayHoanThanh = ngayHoanThanh;
+		this.sanPham = sanPham;
+	}
+	
+	public CongDoan(int soLuong, int soLuongConLai) {
+		super();
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
+	}
+
+	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong,int soLuongConLai ,double donGia, boolean tinhTrang,
+			Date ngayHoanThanh, SanPham sanPham) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
+		this.donGia = donGia;
+		this.tinhTrang = tinhTrang;
+		this.ngayHoanThanh = ngayHoanThanh;
+		this.sanPham = sanPham;
+	}
+
+	public CongDoan(String maCD) {
+		super();
+		this.maCD = maCD;
+	}
+	
+	public CongDoan(String maCD, String tenCD) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+	}
+	public CongDoan(String maCD, String tenCD, Integer thuTu) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+	}
+
+	public CongDoan(String maCD,String tenCD, Integer soLuong, Integer soLuongConLai) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
+	}
+	
+	
+	
+	
+
+	public int getSoLuongConLai() {
+		return soLuongConLai;
+	}
+
+	public void setSoLuongConLai(int soLuongConLai) {
+		this.soLuongConLai = soLuongConLai;
+	}
+
 	public String getMaCD() {
 		return maCD;
 	}
-	
-	
 
-	public void setMaSP(String maSP) {
-		this.maSP = maSP;
-	}
 	public void setMaCD(String maCD) throws Exception {
 		if (maCD == null || maCD.trim().length() <= 0) {
 			throw new Exception("Mã công đoạn không được rỗng!");
@@ -100,13 +165,20 @@ public class CongDoan {
 	public SanPham getSanPham() {
 		return sanPham;
 	}
+
 	public void setSanPham(SanPham sanPham) {
 		this.sanPham = sanPham;
 	}
-	public CongDoan(String maSP, String maCD, String tenCD, int thuTu, int soLuong, double donGia, boolean tinhTrang,
-			Date ngayHoanThanh, SanPham sanPham) {
+
+	@Override
+	public String toString() {
+		return "CongDoan [maCD=" + maCD + ", tenCD=" + tenCD + ", thuTu=" + thuTu + ", soLuong=" + soLuong + ", donGia="
+				+ donGia + ", tinhTrang=" + tinhTrang + ", ngayHoanThanh=" + ngayHoanThanh + "]";
+	}
+
+	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong, double donGia, boolean tinhTrang,
+			Date ngayHoanThanh, int soLuongConLai , SanPham sanPham) {
 		super();
-		this.maSP = maSP;
 		this.maCD = maCD;
 		this.tenCD = tenCD;
 		this.thuTu = thuTu;
@@ -114,41 +186,9 @@ public class CongDoan {
 		this.donGia = donGia;
 		this.tinhTrang = tinhTrang;
 		this.ngayHoanThanh = ngayHoanThanh;
+		this.soLuongConLai = soLuongConLai;
 		this.sanPham = sanPham;
 	}
-	public CongDoan() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	public CongDoan(String maCD) {
-		super();
-		this.maCD = maCD;
-	}
 	
 	
-	public CongDoan(String maSP, String maCD, String tenCD, int thuTu, int soLuong, double donGia,
-			Date ngayHoanThanh) {
-		super();
-		this.maSP = maSP;
-		this.maCD = maCD;
-		this.tenCD = tenCD;
-		this.thuTu = thuTu;
-		this.soLuong = soLuong;
-		this.donGia = donGia;
-		this.ngayHoanThanh = ngayHoanThanh;
-	}
-	public String getMaSP() {
-		return maSP;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "CongDoan [maSP=" + maSP + ", maCD=" + maCD + ", tenCD=" + tenCD + ", thuTu=" + thuTu + ", soLuong="
-				+ soLuong + ", donGia=" + donGia + ", tinhTrang=" + tinhTrang + ", ngayHoanThanh=" + ngayHoanThanh
-				+ ", sanPham=" + sanPham + "]";
-	}
-
 }
