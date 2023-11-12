@@ -18,6 +18,8 @@ import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
 import Dao.CongNhan_Dao;
 import Entity.CongNhan;
+import Util.XuatExcel;
+import Util.XuatPDF;
 
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
@@ -76,7 +78,8 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 	
 	private ArrayList<CongNhan> dsCN = new ArrayList<>();
 	private CongNhan_Dao cn_dao = new CongNhan_Dao();
-	
+	private XuatPDF outPDF = new XuatPDF();
+	private XuatExcel outExcel = new XuatExcel();
 
 	public TimKiemCongNhan_UI(MainUI main) {
 		this.main = main;
@@ -612,6 +615,8 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		btnTim.addActionListener(this);
 		btnXoaRong.addActionListener(this);
 		
+		btnXuat.addActionListener(this);
+		
 		tblCN.addMouseListener(this);
 		
 		
@@ -666,6 +671,9 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		}
 		if(o==btnXoaRong) {
 			xoaRong();
+		}
+		if(o==btnXuat) {
+			xuatCongNhan();
 		}
 	}
 
@@ -784,7 +792,19 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 			themMotCongNhanVaoTable(dsCN.get(i));
 		}
 	}
-
+	public void xuatCongNhan() {
+		int index = tblCN.getSelectedRow();
+		if(index !=-1) {
+			try {
+				outPDF.xuatThongTinCongNhan(dsCN.get(index));
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}else {
+			alertNotification("Cần chọn công nhân muốn xuất");
+		}
+	}
 	
 	
 	

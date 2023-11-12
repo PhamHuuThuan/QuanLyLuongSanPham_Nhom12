@@ -10,6 +10,7 @@ import java.util.Map;
 import Entity.BangChamCongNhanVien;
 import Entity.BangLuongNhanVien;
 import Entity.BangPhanCongNhanVien;
+import Entity.CongNhan;
 import Entity.HopDong;
 import Entity.NhanVien;
 import Entity.SanPham;
@@ -161,4 +162,35 @@ public class XuatPDF {
 		JasperViewer.viewReport(print, false);
 		new SoundPlay().playSE(1);
 	}
+	// HÀM XUẤT THÔNG TIN CÔNG NHÂN
+	public void xuatThongTinCongNhan(CongNhan cn) throws JRException {
+		InputStream arq = getClass().getResourceAsStream("/export_template/ThongTinCN.jrxml");
+		
+		JasperReport report = JasperCompileManager.compileReport(arq);
+		
+		Map<String, Object> ttcn = new HashMap<String, Object>();
+		
+		ttcn.put("maCN", cn.getMaCN());
+		ttcn.put("hoTen", cn.getHoTen());
+		ttcn.put("gioiTinh", cn.getGioiTinh()?"Nam":"Nữ");
+		ttcn.put("ngaySinh", new SimpleDateFormat("dd-MM-yyyy").format(cn.getNgaySinh()));
+		ttcn.put("sdt", cn.getSDT());
+		ttcn.put("email", cn.getEmail());
+		ttcn.put("cccd", cn.getSoCCCD());
+		ttcn.put("diaChi", cn.getDiaChi());
+		ttcn.put("ngayVaoLam", new SimpleDateFormat("dd-MM-yyyy").format(cn.getNgayVaoLam()));
+		ttcn.put("ghiChu", cn.getGhiChu());
+		
+		ArrayList<String> content = new ArrayList<>();
+		
+		content.add(null);
+		
+		JasperPrint print = JasperFillManager.fillReport(report, ttcn, new JRBeanCollectionDataSource(content));
+		
+		JasperViewer.viewReport(print, false);
+		new SoundPlay().playSE(1);
+	}
+	
+	
+	
 }
