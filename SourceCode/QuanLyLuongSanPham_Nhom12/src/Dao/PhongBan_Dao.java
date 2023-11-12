@@ -41,6 +41,7 @@ public class PhongBan_Dao {
 	    
 	    return listPB;
 	}
+	//Tìm phòng ban theo mã
 	public PhongBan timPhongBanTheoMa(String maPB) {
 	    ConnectDB.getInstance();
 	    PreparedStatement st = null;
@@ -70,7 +71,7 @@ public class PhongBan_Dao {
 
 	    return pb;
 	}
-
+	//Sửa phòng ban
 	public boolean suaPhongBan(PhongBan pb) {
         ConnectDB.getInstance();
         PreparedStatement st = null;
@@ -98,7 +99,7 @@ public class PhongBan_Dao {
 
         return n > 0;
     }
-
+	//Thêm một phòng ban vào csdl
     public boolean themPhongBan(PhongBan pb) {
         ConnectDB.getInstance();
         PreparedStatement st = null;
@@ -125,7 +126,7 @@ public class PhongBan_Dao {
 
         return n > 0;
     }
-
+    //Xóa phòng ban theo maPB
     public static boolean xoaPhongBan(String maPB) {
         ConnectDB.getInstance();
         PreparedStatement st = null;
@@ -149,7 +150,7 @@ public class PhongBan_Dao {
 
         return n > 0;
     }
-
+    //Lấy mã phòng ban lớn nhất từ csdl
     public String getMaPhongBanLonNhat() {
         ConnectDB.getInstance();
         PreparedStatement st = null;

@@ -635,8 +635,9 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mniThongKe.setBackground(Color.decode("#424242"));
 			mniThongKe.setForeground(Color.WHITE);
 			mniThongKe.setIcon(new ImageScaler("/image/trend_icon(1).png", 24, 24).getScaledImageIcon());
+			
 			main.pnlContent.removeAll(); // Remove all nội dung
-			main.pnlContent.add(new ThongKeUI(main), BorderLayout.CENTER);// thêm giao diện tính lương nhân viên vào
+			main.pnlContent.add(new ThongKeUI(main), BorderLayout.CENTER);// thêm giao diện thống kê vào
 			main.validate(); // cập nhật lại
 		}
 		if (o == mniCaiDat) {
@@ -644,6 +645,10 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mniCaiDat.setBackground(Color.decode("#424242"));
 			mniCaiDat.setForeground(Color.WHITE);
 			mniCaiDat.setIcon(new ImageScaler("/image/cogwheel_icon(1).png", 24, 24).getScaledImageIcon());
+			
+			main.pnlContent.removeAll(); // Remove all nội dung
+			main.pnlContent.add(new OtherUI(main), BorderLayout.CENTER);// thêm giao diện cài đặt vào
+			main.validate(); // cập nhật lại
 		}
 	}
 
