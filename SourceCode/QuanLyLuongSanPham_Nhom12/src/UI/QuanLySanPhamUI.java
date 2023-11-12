@@ -571,6 +571,7 @@
 				txtMaSP.setEditable(false);
 				txtTenSP.setEditable(false);
 				txtDonGia.setEditable(false);
+				txaYeuCau.setEditable(false);
 		
 			}
 		}
