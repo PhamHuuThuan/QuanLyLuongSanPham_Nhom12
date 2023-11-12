@@ -254,7 +254,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		tblNV.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		
-		//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
+		//Tạo jscrollpane để tạo scroll cho bảng nhân viên
 		JScrollPane scrNV = new JScrollPane(tblNV,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangNV.add(scrNV, BorderLayout.CENTER);
 		
@@ -411,7 +411,7 @@ public class TinhLuongNhanVienUI extends JPanel implements ActionListener, Mouse
 		btnChiTiet.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		pnlChucNang.add(btnChiTiet);
 		
-		// tạo jpanel chứa table phân công nhân viên
+		// tạo jpanel chứa table tính lương nhân viên
 		JPanel pnlDSLuong = new JPanel();
 		TitledBorder titleBorderTTNVPC = BorderFactory.createTitledBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), main.read_file_languages.getString("text_border_DSLuong"));

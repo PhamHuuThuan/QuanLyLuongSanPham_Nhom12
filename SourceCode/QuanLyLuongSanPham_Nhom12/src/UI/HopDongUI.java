@@ -584,6 +584,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		
 		pnThongTinHD.add(Box.createVerticalStrut(10));
 		
+		//Tạo jpanel chứ label hiển thị các message
 		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pnlMessage.setBackground(bgColor);
 		pnThongTinHD.add(pnlMessage);
@@ -738,7 +739,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() == tblHD) {
+		if(e.getSource() == tblHD) { //thao tác trên table Hợp Đồng
 			int index = tblHD.getSelectedRow();
 			if(index != -1  && btnFocus!=btnThemHD && btnFocus!=btnSuaHD) {
 				hienThiThongTinHD(index);
@@ -746,7 +747,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 				themTatCaSanPhamVaoBang(dsSP);
 			}
 		}
-		if(e.getSource() == tblSP) {
+		if(e.getSource() == tblSP) { //thao tác trên table Sản phẩm
 			int index = tblSP.getSelectedRow();
 			if(index != -1) {
 				hienThiThongTinSP(index);
@@ -776,8 +777,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		lblMessage.setText("");
-		Object o = e.getSource();
 		main.music.playSE(2);
+		Object o = e.getSource();
 		if(o == btnThemHD) {
 			displayButtonSaveAndCancel(true);
 			setEditableForTextField(true);
@@ -888,7 +889,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//cho phép hoặc ngăn user chỉnh sửa thông tin
 	private void setEditableForTextField(boolean edit) {
-		if(edit == true) {
+		if(edit == true) { //Cho phép chỉnh sửa thông tin
 			txtTenHD.setEditable(true);
 			txtTenHD.requestFocus(true);
 			txtTenKH.setEditable(true);
@@ -903,7 +904,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			txtDonGia.setEditable(true);
 			txaYeuCau.setEditable(true);
 
-		}else {
+		}else { //Không cho phép chỉnh sửa thông tin
 			txtMaHD.setEditable(false);
 			txtTenHD.setEditable(false);
 			txtTenKH.setEditable(false);
@@ -981,39 +982,8 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			btnFocus.setFocusButton(main.borderFocusColor, 3);
 		}
 	}
-	//format lai giá trị và tiền cọc
-	private String formatMoneyText(String money) {
-	    try {
-	        double value = Double.parseDouble(money.replaceAll("\\.", ""));
-	        DecimalFormat formatter = new DecimalFormat("#,###");
-	        return formatter.format(value);
-	    } catch (NumberFormatException ex) {
-	        // handle exception here
-	    }
-	    return null;
-	}
-	//chuyển đổi sang dạng chữ từ trong khoảng trăm - tỷ
-	private String formatMoneyToText(Double money) {
-		String text = "";
-        try {
-            if (money < 100) {
-            	text = String.valueOf(money);
-            } else if (money < 1000) {
-            	text = money / 100 + " trăm";
-            }else if (money < 1000000) {
-            	text = money / 1000 + " nghìn";
-            } else if (money < 1000000000) {
-            	text = money / 1000000 + " triệu";
-            } else {
-            	text = money / 1000000000 + " tỷ";
-            }
-        } catch (NumberFormatException ex) {
-            // handle exception here
-        }
-        return text;
-    }
 	private void xuatHopDong() {
-		if(tblHD.getSelectedRow()!=-1) {
+		if(tblHD.getSelectedRow()!=-1) { // Chọn một hợp đồng trên giao diện
 			HopDong hd = dsHD.get(tblHD.getSelectedRow());
 			try {
 				xf.xuatHD(hd, dsSP);
@@ -1038,6 +1008,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		String thoaThuan = txtThoaThuan.getText();
 		String ghiChu = txtGhiChu.getText();
 		boolean trangThai = (cmbTrangThai.getSelectedItem().equals("Hoàn thành"))?true:false;
+		
 		return new HopDong(maHD, tenHD, tenKH, nguoiDD, ngayBD, ngayKT, giaTri, tienCoc, thoaThuan, trangThai, ghiChu);
 	}
 	//Thêm hợp đồng từ giao diện vào csdl
@@ -1045,7 +1016,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		if(validDataHD()==true) {
 			HopDong hdNew = convertDataToHopDong();
 			if(hdNew != null) {
-				if(sp_Dao.getSanPhamTheoHopDong(hdNew.getMaHD()).size()>=1) {
+				if(sp_Dao.getSanPhamTheoHopDong(hdNew.getMaHD()).size()>=1) { //Số lượng sản phẩm tối thiểu là 1 sp
 					if(hd_Dao.getHopDongTheoMa(hdNew.getMaHD())!=null) {
 						themHopDongVaoBang(hdNew);
 						dsHD.add(hdNew);
@@ -1366,6 +1337,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			setTextError("Có lỗi xảy ra!");
 		}
 	}
+	//Hiển thị thông báo lỗi
 	private void setTextError(String message) {
 		main.music.playSE(3);
 		lblMessage.setText(message);
