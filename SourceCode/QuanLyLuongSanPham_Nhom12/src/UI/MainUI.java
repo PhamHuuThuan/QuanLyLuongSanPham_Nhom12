@@ -38,7 +38,7 @@ public class MainUI extends JFrame {
 	public LuuTru l = new LuuTru();
 	public ConfigManager config = new ConfigManager("/config/config.properties");
 	public ResourceBundle read_file_languages;
-	public ResourceBundle read_file_themes = ResourceBundle.getBundle(l.readFile("src/config/languages/selectedLanguage.txt"));
+	public ResourceBundle read_file_themes = ResourceBundle.getBundle("config/themes/lightmode");
 	public BangPhanCongNhanVien nv;
 	private JLabel clockLabel;
 
