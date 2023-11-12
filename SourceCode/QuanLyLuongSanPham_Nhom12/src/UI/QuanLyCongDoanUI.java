@@ -401,17 +401,17 @@ public class QuanLyCongDoanUI extends JPanel implements ActionListener, MouseLis
 			int index = tblCD.getSelectedRow();
 			if(index != -1) {
 				hienThiThongTinCD(index);
-				System.out.println("Check cong doan: " + dsCD.get(index));
 			}
 		}
 		
-	if(e.getSource() == tblSP) {
-		int index = tblSP.getSelectedRow();
-		System.out.println("lllll: " + index);
-		if(index != -1) {
-			txtMaSP.setText(tblSP.getValueAt(index,0).toString());
+		if(e.getSource() == tblSP) {
+			int index = tblSP.getSelectedRow();
+			if(index != -1) {
+				txtMaSP.setText(tblSP.getValueAt(index,0).toString());
+				dsCD = cd_Dao.getCongDoanTheoSanPham(tblSP.getValueAt(index,0).toString());
+				themTatCaCongDoanVaoBang(dsCD);
+			}
 		}
-	}
 	}
 	
 	@Override
@@ -509,10 +509,17 @@ private void xoaRong(boolean edit) {
 	if (edit == true) {
 		txtDonGia.setEditable(true);
 		txtTenCD.setEditable(true);
+		txtDonGia.setEditable(true);
+		txtThuTu.setEditable(true);
+		txtTinhTrang.setEditable(true);
 		
 	} else {
 		txtMaCD.setEditable(false);
 		txtMaSP.setEditable(false);
+		txtTenCD.setEditable(false);
+		txtDonGia.setEditable(false);
+		txtThuTu.setEditable(false);
+		txtTinhTrang.setEditable(false);
 
 	}
 }
@@ -520,7 +527,6 @@ private void xoaRong(boolean edit) {
 //xóa rỗng thông tin Cong doan
 private void resetTextFiled() {
 	txtMaCD.setText(new SinhMaTuDong().sinhMaCD());
-	txtMaSP.setText("");
 	txtTenCD.setText("");
 	txtThuTu.setText("");
 	txtDonGia.setText("");
@@ -635,7 +641,7 @@ private CongDoan convertDataToCongDoan() {
 	
 	Date ngayHT = dtpNgayHT.getDate();
 	
-	return new CongDoan( maSP, maCD, tenCD, thuTu, soLuong, donGia, ngayHT);
+	return new CongDoan(maCD, tenCD, thuTu, soLuong, donGia, false, ngayHT, new SanPham(maSP));
 }	
 	
 //get dữ liệu từ csdl lên table
@@ -645,10 +651,7 @@ private void getDataToTable(int index) {
 }
 //Thêm sản phẩm từ giao diện vào csdl
 private void themCongDoan() {
-	System.out.println("hhhhhhhhhhhhhhhhh");
-	System.out.println("check cđ: " + cd_Dao.getCongDoanTheoMa(txtMaCD.getText()));
 	if(cd_Dao.getCongDoanTheoMa(txtMaCD.getText())==null) {
-		System.out.println("ccccccccccccccc");
 		if(validDataCD()==true) {
 			CongDoan cdNew = convertDataToCongDoan();
 			if(cdNew != null) {
@@ -719,7 +722,7 @@ private void hienThiThongTinCD(int index) {
 	if(index <0 ) {
 		return;
 	}
-	txtMaSP.setText(dsCD.get(index).getMaSP());
+	txtMaSP.setText(dsCD.get(index).getSanPham().getMaSP());
 	txtMaCD.setText(dsCD.get(index).getMaCD());
 	txtTenCD.setText(dsCD.get(index).getTenCD());
 	txtThuTu.setText(dsCD.get(index).getThuTu()+"");

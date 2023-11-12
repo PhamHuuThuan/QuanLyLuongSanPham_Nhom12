@@ -29,7 +29,7 @@ public class CongDoan_Dao {
 				st.setDouble(3, cd.getDonGia());
 				st.setBoolean(4, cd.isTinhTrang());
 				st.setDate(5, new java.sql.Date(cd.getNgayHoanThanh().getTime()));
-				st.setString(6, cd.getMaSP());
+				st.setString(6, cd.getSanPham().getMaSP());
 				st.setInt(7, cd.getSoLuong());
 				st.setString(8, cd.getMaCD());
 
@@ -61,7 +61,7 @@ public class CongDoan_Dao {
 				st.setDouble(4, cd.getDonGia());
 				st.setBoolean(5, cd.isTinhTrang());
 				st.setDate(6, new java.sql.Date(cd.getNgayHoanThanh().getTime()));
-				st.setString(7, cd.getMaSP());
+				st.setString(7, cd.getSanPham().getMaSP());
 				st.setInt(8, cd.getSoLuong());
 				
 				
@@ -95,9 +95,42 @@ public class CongDoan_Dao {
 		        	Double donGia = rs.getDouble("donGia");
 		        	Boolean tinhTrang = rs.getBoolean("tinhTrang");
 		        	Date ngayHT = rs.getDate("ngayHoanThanh");
-		        	String maSP = rs.getString("maSanPham");
+		        	String maSP = rs.getString("maSP");
 		        	int soLuong = rs.getInt("soLuong");
-		            CongDoan cd = new CongDoan(maSP, maCd, tenCd, thuTu, soLuong, donGia, tinhTrang, ngayHT, null);
+		            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, donGia, tinhTrang, ngayHT, new SanPham(maSP));
+		            list.add(cd);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            st.close();
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    return list;
+		}
+		//get cong doan theo ma san pham
+		//get all công đoạn  trong csdl
+		public ArrayList<CongDoan> getAllCongDoanTheoMaSP() {
+		    ArrayList<CongDoan> list = new ArrayList<>();
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        st = con.prepareStatement("select * from CongDoan");
+		        ResultSet rs = st.executeQuery();
+		        while (rs.next()) {
+		        	String maCd = rs.getString("maCD");
+		        	String tenCd = rs.getString("tenCD");
+		        	int thuTu = rs.getInt("thuTu");
+		        	Double donGia = rs.getDouble("donGia");
+		        	Boolean tinhTrang = rs.getBoolean("tinhTrang");
+		        	Date ngayHT = rs.getDate("ngayHoanThanh");
+		        	String maSP = rs.getString("maSP");
+		        	int soLuong = rs.getInt("soLuong");
+		            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, donGia, tinhTrang, ngayHT, new SanPham(maSP));
 		            list.add(cd);
 		        }
 		    } catch (SQLException e) {
@@ -158,61 +191,61 @@ public class CongDoan_Dao {
 		    return maCDMax;
 		}
 		//get mã công đoạnlớn nhất
-				public String getMaCDLonNhat() {
-				    String maCDLonNhat = null;
-				    ConnectDB.getInstance();
-				    PreparedStatement st = null;
-				    try {
-				        Connection con = ConnectDB.getConnection();
-				        st = con.prepareStatement("SELECT MAX(MaCD) AS MaCDLonNhat FROM CongDoan");
-				        ResultSet rs = st.executeQuery();
-				        if (rs.next()) {
-				            maCDLonNhat = rs.getString("MaCDLonNhat");
-				        }
-				    } catch (SQLException e) {
-				        e.printStackTrace();
-				    } finally {
-				        try {
-				            st.close();
-				        } catch (SQLException e) {
-				            e.printStackTrace();
-				        }
-				    }
-				    return maCDLonNhat;
-				}
-				//get ds sản phẩm của hợp đồng
-				public ArrayList<CongDoan> getCongDoanTheoSanPham(String maCD) {
-				    ArrayList<CongDoan> list = new ArrayList<>();
-				    ConnectDB.getInstance();
-				    PreparedStatement st = null;
-				    try {
-				        Connection con = ConnectDB.getConnection();
-				        st = con.prepareStatement("SELECT * FROM CongDoan WHERE maSP = ?");
-				        st.setString(1, maCD);
-				        ResultSet rs = st.executeQuery();
-				        while (rs.next()) {
-				        	String maCd = rs.getString("maCD");
-				        	String tenCd = rs.getString("tenCD");
-				        	int thuTu = rs.getInt("thuTu");
-				        	Double donGia = rs.getDouble("donGia");
-				        	Boolean tinhTrang = rs.getBoolean("tinhTrang");
-				        	Date ngayHT = rs.getDate("ngayHoanThanh");
-				        	String maSP = rs.getString("maSanPham");
-				        	int soLuong = rs.getInt("soLuong");
-				            CongDoan cd = new CongDoan(maSP, maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, null);
-				            list.add(cd);
-				        }
-				    } catch (SQLException e) {
-				        e.printStackTrace();
-				    } finally {
-				        try {
-				            st.close();
-				        } catch (SQLException e) {
-				            e.printStackTrace();
-				        }
-				    }
-				    return list;
-				}
+		public String getMaCDLonNhat() {
+		    String maCDLonNhat = null;
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        st = con.prepareStatement("SELECT MAX(MaCD) AS MaCDLonNhat FROM CongDoan");
+		        ResultSet rs = st.executeQuery();
+		        if (rs.next()) {
+		            maCDLonNhat = rs.getString("MaCDLonNhat");
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            st.close();
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    return maCDLonNhat;
+		}
+		//get ds sản phẩm của hợp đồng
+		public ArrayList<CongDoan> getCongDoanTheoSanPham(String maSP) {
+		    ArrayList<CongDoan> list = new ArrayList<>();
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        st = con.prepareStatement("SELECT * FROM CongDoan WHERE maSP = ?");
+		        st.setString(1, maSP);
+		        ResultSet rs = st.executeQuery();
+		        while (rs.next()) {
+		        	String maCd = rs.getString("maCD");
+		        	String tenCd = rs.getString("tenCD");
+		        	int thuTu = rs.getInt("thuTu");
+		        	Double donGia = rs.getDouble("donGia");
+		        	Boolean tinhTrang = rs.getBoolean("tinhTrang");
+		        	Date ngayHT = rs.getDate("ngayHoanThanh");
+		        	String maSp = rs.getString("maSP");
+		        	int soLuong = rs.getInt("soLuong");
+		            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, new SanPham(maSP));
+		            list.add(cd);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            st.close();
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    return list;
+		}
 		public CongDoan getCongDoanTheoMa(String maCD) {
 		    ConnectDB.getInstance();
 		    PreparedStatement st = null;
@@ -231,7 +264,7 @@ public class CongDoan_Dao {
 		        	Date ngayHT = rs.getDate("ngayHoanThanh");
 		        	String maSP = rs.getString("maSanPham");
 		        	int soLuong = rs.getInt("soLuong");
-		            cd = new CongDoan(maSP, maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, null);
+		            cd = new CongDoan(maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, new SanPham(maSP));
 		        }
 		    } catch (SQLException e) {
 		        e.printStackTrace();
