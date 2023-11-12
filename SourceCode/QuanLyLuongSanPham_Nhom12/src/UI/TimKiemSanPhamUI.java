@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -13,6 +14,14 @@ import CustomUI.CustomComboBoxUI;
 import CustomUI.CustomListCellRenderer;
 import CustomUI.ImageScaler;
 import CustomUI.RoundedButton;
+import Dao.HopDong_Dao;
+import Dao.SanPham_Dao;
+import Entity.BangPhanCongNhanVien;
+import Entity.HopDong;
+import Entity.NhanVien;
+import Entity.PhongBan;
+import Entity.SanPham;
+import net.sf.jasperreports.engine.JRException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,16 +30,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
 
 import java.awt.Component;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
@@ -42,17 +59,33 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private JTextField txtMaHD, txtMaSP, txtTenSP, txtDonGia;
-	private RoundedButton btnTimKiem, btnXoaRong, btnXuat, btnFocus;
-	private DefaultTableModel dtblModelSP;
+	private RoundedButton btnTimKiem, btnXoaRong, btnXuat, btnTim, btnFocus;
+	private DefaultTableModel dtblModelSP = new DefaultTableModel();
 	private JTable tblSP;
 	private JTableHeader tbhSP;
-	private JPanel pnlChucNang;
-	
+	private JPanel pnlChucNang, pnlBangSP, pnlNorth;
+	private JTextField txtdonViTinh, txtSoLuong, txtYeuCau;
+	private DefaultTableModel dtbModelSP, dtblModelHD;
+	private JTable  tblHD;
+	private JTableHeader  tbhHD;
+	private JSpinner spnSoLuong;
+	private JTable tblPb;
+	private JLabel lblMessage;
+	private JTableHeader tbhPb;
+	private DefaultTableModel tabModel = new DefaultTableModel();
+	private HopDong_Dao hd_Dao = new HopDong_Dao();
+	private ArrayList<HopDong> dsHD = new ArrayList<>();
+	private SanPham_Dao sp_Dao = new SanPham_Dao();
+	private ArrayList<SanPham> dsSP = new ArrayList<>();
+	private boolean isThem = false;
+
 	private JTextField txtMaHDS;
 	private JTextField txtMaSPS;
 	private JTextField txtTenSPS;
 	private JTextField txtDonGiaSan;
 	private JTextField txtDonGiaTran;
+	private Object xuatExcel;
+	private Object xuatPDF;
 	/**
 	 * Create the panel.
 	 */
@@ -246,6 +279,12 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		pnlThongTinSP.setBorder(BorderFactory.createCompoundBorder(titleBorderTTSP, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		b.add(pnlThongTinSP);
 		
+		JPanel pnlMessage = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlMessage.setBackground(bgColor);
+		pnlThongTinSP.add(pnlMessage);
+		pnlMessage.add(lblMessage = new JLabel());
+		lblMessage.setForeground(Color.decode("#dc3545"));
+		lblMessage.setFont(main.roboto_regular.deriveFont(Font.BOLD, 14F));
 		// Tao box chua cac phan tu hang 1: maHD, ma SP, tenSP
 		Box b1 = Box.createHorizontalBox();
 		pnlThongTinSP.add(b1);
@@ -354,8 +393,8 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		
 		b5.add(Box.createHorizontalStrut(15));
 		
-		SpinnerNumberModel modelSL2 = new SpinnerNumberModel(10, 1, 1000000, 100);
-		JSpinner spnSoLuong = new JSpinner(modelSL2);
+//		SpinnerNumberModel modelSL2 = new SpinnerNumberModel(10, 1, 1000000, 100);
+		spnSoLuong = new JSpinner(modelSL1);
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		spnSoLuong.setBorder(cboBorder);
@@ -364,7 +403,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		spnSoLuong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		b5.add(spnSoLuong);
 		b5.add(Box.createHorizontalStrut(75));
-		
+
 		pnlThongTinSP.add(Box.createVerticalStrut(20));
 		
 		Box b6 = Box.createHorizontalBox();
@@ -473,6 +512,8 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		btnTimKiem.addMouseListener(this);
 		btnXoaRong.addMouseListener(this);
 		
+		tblSP.addMouseListener(this);
+		
 		
 		//Không thể chỉnh sửa txt
 		setEditableForTextField(false);
@@ -480,42 +521,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		//Set giá trị mặc định để hiển thị
 		
 	}
-	@Override
-	public void mouseClicked(MouseEvent e) {
 
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		Object o = e.getSource();
-		if (o instanceof RoundedButton) {
-	    }
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if(o == btnTimKiem) {
-			setEditableForTextField(true);
-			xoaRong();
-			
-		}
-		if(o == btnXoaRong) {
-			setEditableForTextField(true);
-			
-		}
-	}
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtMaHD.setEditable(true);
@@ -567,4 +573,277 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
         }
         return text;
     }
-}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource() == tblSP) {
+			int index = tblSP.getSelectedRow();
+			if(index != -1) {
+				hienThiThongTinSP(index);
+			}
+		}
+	}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			Object o = e.getSource();
+			if (o instanceof RoundedButton) {
+				setBorder(getBorder());
+		    }
+		}
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object o = e.getSource();
+			System.out.println("333333333333333333");
+			if(o == btnTimKiem) {
+				timKiemSanPham();
+			}
+			else if(o == btnXoaRong) {
+				xoaRong();
+			}
+		}
+
+		//Hàm get dữ liệu trên txt ra đối tượng nhân viên
+		private SanPham convertDataToSanPham() {
+			String maHopDong = txtMaHD.getText();
+			String maSP = txtMaSP.getText();
+			String tenSP = txtTenSP.getText();
+			String donGia = txtDonGia.getText();
+			String donViTinh = txtdonViTinh.getText();
+			int soLuong = Integer.parseInt(spnSoLuong.getValue().toString());
+			String yeuCau = txtYeuCau.getText();
+			
+			return new SanPham(maSP, new HopDong(maHopDong), tenSP, donViTinh, soLuong, yeuCau, Double.parseDouble(donGia));
+		}
+		
+		//hiển thị border cho button được user nhấn
+		private void setBorderForFocusButton(Object o) {
+			if(btnFocus!=null && btnFocus!=o) {
+				btnFocus.setFocusButton(null, 0);
+			}
+			if(btnFocus==null) {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+			else {
+				btnFocus = (RoundedButton) o;
+				btnFocus.setFocusButton(main.borderFocusColor, 3);
+			}
+		}
+		//Hiển thị nhân viên được chọn từ table lên bảng thông tin
+		private void hienThiThongTinSP(int index) {
+			System.out.println("44444444444444");
+			txtMaSP.setText(dsSP.get(index).getMaSP());
+			txtTenSP.setText(dsSP.get(index).getTenSP());
+			txtDonGia.setText(String.valueOf(dsSP.get(index).getDonGia()));;
+			
+			spnSoLuong = new JSpinner();
+			spnSoLuong.setValue(dsSP.get(index).getSoLuong());
+			System.out.println("spn: " + spnSoLuong.getValue());
+			spnSoLuong.updateUI();
+//			txtYeuCau.setText("444");
+		}
+
+		private boolean validDataSP() {
+			String maHopDong = txtMaHDS.getText();
+			String maSP = txtMaSP.getText();
+			String tenSP  = txtTenSP.getText();
+			String soLuong = txtSoLuong.getText();
+			String donViTinh = txtdonViTinh.getText();
+			String donGia = txtDonGia.getText();
+			String yeuCau = txtYeuCau.getText();
+			
+
+			if(!maHopDong.matches("\\S+") || !maHopDong.matches("^HD\\d{5}$")) {
+				setTextError("Mã HD phải có dạng: PB12345!");
+				return false;
+			}
+			if(!maSP.matches("\\S+") || !maSP.matches("^SP\\d{5}$")) {
+				setTextError("Mã SP phải có dạng: SP12345!");
+				return false;
+			}
+			if(tenSP==null || tenSP.trim().length()<=0) {
+				setTextError("Tên SP không được để trống!");
+				return false;
+			}
+			
+			if (soLuong.matches("\\d+")) { // Kiểm tra xem soNv có phải là một chuỗi chỉ chứa số hay không
+			    int soLuongInt = Integer.parseInt(soLuong); // Chuyển đổi chuỗi thành số nguyên
+			    if (soLuongInt < 0) {
+			    	setTextError("Số Luong phải lớn hơn 0!");
+			        return false;
+			    }
+			}
+			return true;
+
+		}
+	private void setEditTextFiled(boolean edit) {
+		if (edit == true) {
+			txtMaHD.setEditable(true);
+			txtMaSP.setEditable(true);
+			txtTenSP.setEditable(true);
+			txtDonGia.setEditable(true);
+			txtdonViTinh.setEditable(true);
+			txtSoLuong.setEditable(true);
+			txtYeuCau.setEditable(true);
+		} else {
+			txtMaHD.setEditable(false);
+			txtMaSP.setEditable(false);
+			txtTenSP.setEditable(false);
+			txtDonGia.setEditable(false);
+			txtdonViTinh.setEditable(false);
+			txtSoLuong.setEditable(false);
+			txtYeuCau.setEditable(false);
+		}
+	//Tạo jscrollpane để tạo scroll cho bảng sản phẩm
+			JScrollPane scrSP = new JScrollPane(tblSP,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			pnlBangSP.add(scrSP);
+			
+			pnlNorth.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
+			
+			setEditableForTextField(false);
+			
+			btnTim.addActionListener(this);
+			btnXoaRong.addActionListener(this);
+			btnXuat.addActionListener(this);
+			
+			btnTim.addMouseListener(this);
+			btnXoaRong.addMouseListener(this);
+			btnXuat.addMouseListener(this);
+			
+			tblSP.addMouseListener(this);
+			
+			xoaRong();
+		}
+	private void resetTextFiled() {
+		txtMaHD.setText("");
+		txtMaSP.setText("");;
+		txtTenSP.setText("");
+		txtDonGia.setText("");
+		txtdonViTinh.setText("");
+		txtSoLuong.setText("");
+		txtYeuCau.setText("");
+	}
+	// thông báo lỗi
+	private void setTextError(String message) {
+		main.music.playSE(3);
+		lblMessage.setText(message);
+	}
+	private void timKiemSanPham() {	
+		try {
+//			HopDong hopDong = hd_Dao.getHopDongTheoMa(maHopDong);
+//			System.out.println("Check mã hợp đồng: " + maHopDong);
+//			String maSP = txtMaSP.getText();
+//			String tenSP = txtTenSP.getText();
+//			String donGiaSanStr = txtDonGiaSan.getText();
+//			String soLuong = spnSoLuong.getValue().toString();
+			if(txtMaHDS.getText().length() > 0) {
+				String maHopDong = txtMaHDS.getText();
+				dsSP = sp_Dao.timSanPham(maHopDong);
+				if(dsSP.size() > 0) {
+			    	
+			    	lblMessage.setText("Tìm thấy " + dsSP.size() + " sản phẩm." );
+			    	themTatCaSanPhamVaoBang(dsSP);
+			    }else {
+			    	setTextError("Không tìm thấy sản phẩm nào phù hợp!");
+			    }
+				return;
+			}
+			else if(txtDonGiaSan.getText().length() > 0 && txtDonGiaTran.getText().length() > 0){
+				Double giaSan = Double.parseDouble(txtDonGiaSan.getText());
+				Double giaTran = Double.parseDouble(txtDonGiaTran.getText());
+				dsSP = sp_Dao.timKiemSanPhamTheoMucGia(giaSan, giaTran);
+				if(dsSP.size() > 0) {
+			    	
+			    	lblMessage.setText("Tìm thấy " + dsSP.size() + " sản phẩm." );
+			    	themTatCaSanPhamVaoBang(dsSP);
+			    }else {
+			    	setTextError("Không tìm thấy sản phẩm nào phù hợp!");
+			    }
+				return;
+			}
+			
+			
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+	    
+	    
+	}
+	//thêm một nhân viên vào table 
+	private void themSanPhamVaoBang(SanPham sp) {
+	    Object[] row = new Object[10];
+	    row[0] = dtblModelSP.getRowCount() + 1;  // STT
+	    row[1] = sp.getMaHopDong();
+	    row[2] = sp.getMaSP();  
+	    row[3] = sp.getTenSP();  
+	    row[4] = sp.getDonViTinh();  
+	    row[5] = String.valueOf(sp.getSoLuong()); 
+	    row[6] = sp.getDonGia();
+	    row[7] = sp.getYeuCau();  
+	    
+	    
+	    dtblModelSP.addRow(row);
+	}
+	//thêm một ds nhân viên vào bảng
+	private void themTatCaSanPhamVaoBang(ArrayList<SanPham> list) {
+		dtblModelSP.setRowCount(0);
+	    for (SanPham sp : list) {
+	        themSanPhamVaoBang(sp);
+	    }
+	}
+ /*	//xuất thông tin chi tiết 1 san pham
+		private void xuatSanPham() {
+			int index = tblSP.getSelectedRow();
+			if(index!=-1) {
+				try {
+					xuatPDF.xuatThongTinSanPham(dsSP.get(index), dsSP.get(index));
+				} catch (JRException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				setTextError("Bạn phải chọn nhân viên muốn xuất!");
+			}
+		}
+		//xuất thông tin ds nhân viên ra excel
+		private void xuatDSNhanVienExcel() {
+	        JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Chỉ cho phép chọn thư mục
+	        int option = fileChooser.showSaveDialog(null);
+	        if(option == JFileChooser.APPROVE_OPTION){
+	           File file = fileChooser.getSelectedFile();
+	           String saveDir = file.getAbsolutePath(); // Đây là thư mục mà người dùng đã chọn
+	           try {
+	        	   String filePath = saveDir + File.separator + "DanhSachNhanVien" + new SimpleDateFormat("ddMMyyHHmmss").format(new Date()) + ".xlsx";
+					xuatExcel.writeExcelTTPC(dsSP, dsSP, filePath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }else{
+	           setTextError("Phải chọn thư mục lưu file!");
+	           }
+	           }
+	           
+	     */   
+	
+		
+	}
+

@@ -1,5 +1,6 @@
 package Util;
 
+import Dao.CongDoan_Dao;
 import Dao.CongNhan_Dao;
 import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
@@ -54,6 +55,23 @@ public class SinhMaTuDong {
 			try {
 				int ma = Integer.parseInt(maPre.substring(2)) + 1;
 				maNew += String.format("%05d", ma);
+			} catch (NumberFormatException e) {
+				// Xử lý ngoại lệ ở đây
+			}
+		}
+		return maNew;
+	}
+
+	// sinh ma công đoạn +1
+	public String sinhMaCD() {
+		String maNew = "CD";
+		String maPre = new CongDoan_Dao().getMaCDLonNhat();
+		if (maPre == null || maPre.length() < 7) {
+			maNew += "0000001";
+		} else {
+			try {
+				int ma = Integer.parseInt(maPre.substring(2)) + 1;
+				maNew += String.format("%07d", ma);
 			} catch (NumberFormatException e) {
 				// Xử lý ngoại lệ ở đây
 			}

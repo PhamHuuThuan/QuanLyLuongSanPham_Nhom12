@@ -175,4 +175,20 @@ public class CongDoan {
 		return "CongDoan [maCD=" + maCD + ", tenCD=" + tenCD + ", thuTu=" + thuTu + ", soLuong=" + soLuong + ", donGia="
 				+ donGia + ", tinhTrang=" + tinhTrang + ", ngayHoanThanh=" + ngayHoanThanh + "]";
 	}
+
+	public CongDoan(String maCD, String tenCD, int thuTu, int soLuong, double donGia, boolean tinhTrang,
+			Date ngayHoanThanh, int soLuongConLai , SanPham sanPham) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+		this.soLuong = soLuong;
+		this.donGia = donGia;
+		this.tinhTrang = tinhTrang;
+		this.ngayHoanThanh = ngayHoanThanh;
+		this.soLuongConLai = soLuongConLai;
+		this.sanPham = sanPham;
+	}
+	
+	
 }

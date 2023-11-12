@@ -7,21 +7,33 @@ import CustomUI.ImageScaler;
 import CustomUI.RoundedBorder;
 import Util.ConvertTime;
 import Util.LuuTru;
+import Util.SoundPlay;
+import groovyjarjarantlr.Utils;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -33,14 +45,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 public class MenuUI extends JPanel implements ActionListener, MouseListener {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private MainUI main;
-	private JMenuItem mniTrangChu, mniPhongBan, mniHopDong, mniQuanLySP, mniTimKiemSP, mniQLCD, mniPCCD,
+	private JMenuItem mniTrangChu, mniPhongBan, mniHopDong, mniQuanLySP, mniTimKiemSP, mniQLCD, mniPCCD, mniTimKiemCD,
 			mniQuanLyCN, mniTimKiemCN, mniChamCongCN, mniTinhLuongCN, mniQuanLyNV, mniTimKiem, mniPCNV, mniChamCongNV,
 			mniTinhLuong, mniThongKe, mniCaiDat;
 	private JMenu mnSanPham, mnCongDoan, mnCongNhan, mnNhanVien;
@@ -64,9 +74,11 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 	public MenuUI(MainUI main) {
 		this.main = main;
 		l = new LuuTru();
+		main.music = new SoundPlay();
 
 		main.pnlContent.add(new TrangChu_UI(), BorderLayout.CENTER);
 
+		pathFileLanguage = l.readFile("src/config/languages/selectedLanguage.txt");
 		pathFileTheme = l.readFile("src/config/themes/selectedTheme.txt");
 
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
@@ -75,7 +87,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		setLayout(new BorderLayout(0, 0));
 		setUIManagerColor();
 		createGUI();
-		checkUser();
 
 		// thêm sự kiện cho các button
 		mniTrangChu.addActionListener(this);
@@ -110,7 +121,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 	// Tạo giao diện menu
 	public void createGUI() {
 
-		ResourceBundle read_file_languages = main.read_file_languages;
+		ResourceBundle read_file_languages = ResourceBundle.getBundle(pathFileLanguage);
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 
 		JPanel pnlHead = new JPanel();
@@ -165,11 +176,11 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		pnlControl.setBackground(Color.decode(read_file_themes.getString("color_main")));
 		pnlControl.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
-		lblHello = new JLabel(read_file_languages.getString("lblChao"));
+		lblHello = new JLabel("Xin chào, ");
 		lblHello.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 20F));
 		pnlControl.add(lblHello);
 
-		lblNameUser = new JLabel(main.nv.getNhanVien().getHoTen());
+		lblNameUser = new JLabel("Nguyễn Văn Phong");
 		lblNameUser.setFont(main.roboto_bold.deriveFont(Font.BOLD, 20F));
 		pnlControl.add(lblNameUser);
 
@@ -491,8 +502,8 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			mnSanPham.setIcon(new ImageScaler("/image/package_icon(1).png", 24, 24).getScaledImageIcon());
 
 			main.pnlContent.removeAll(); // Remove all nội dung
-			main.pnlContent.add(new QuanLySanPhamUI(main), BorderLayout.CENTER);// thêm giao diện sản phẩm vào
-			main.validate(); // cập nhật lại
+			main.pnlContent.add(new QuanLySanPhamUI(main), BorderLayout.CENTER);// thêm giao diện tìm kiếm sản phẩm vào
+			main.validate(); 
 		}
 		if (o == mniTimKiemSP) {
 			setMenuColorDefault();
@@ -596,7 +607,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 			main.pnlContent.removeAll(); // Remove all nội dung
 			main.pnlContent.add(new ChamCongNhanVienUI(main), BorderLayout.CENTER);// thêm giao diện chấm công nhân viên
-																					// vào
 			main.validate(); // cập nhật lại
 		}
 		if(o==mniPCCD) {
@@ -629,7 +639,6 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 			main.pnlContent.removeAll(); // Remove all nội dung
 			main.pnlContent.add(new ThongKeUI(main), BorderLayout.CENTER);// thêm giao diện thống kê vào
 			main.validate(); // cập nhật lại
-
 		}
 		if (o == mniCaiDat) {
 			setMenuColorDefault();
@@ -776,12 +785,5 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 		clock.start();
 	}
-	private void checkUser() {
-		if(main.nv.getChucVu().equals("Nhân viên")) {
-			mniHopDong.setEnabled(false);
-			mnNhanVien.setEnabled(false);
-			mniPhongBan.setEnabled(false);
-			mniThongKe.setEnabled(false);
-		}
-	}
+
 }
