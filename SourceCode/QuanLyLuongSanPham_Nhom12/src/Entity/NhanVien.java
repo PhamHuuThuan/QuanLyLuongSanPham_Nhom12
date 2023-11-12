@@ -190,8 +190,11 @@ public class NhanVien {
 	public void setHinhAnh(String hinhAnh) {
 		this.hinhAnh = hinhAnh;
 	}
+
+
 	
 //	public static void main(String[] args){
 //		NhanVien nv = new NhanVien("", "123456a@", "123", false, new java.util.Date(Date.UTC(103, 4, 14, 0, 0, 0)), "+84123456789", "", "", "", "");
 //	}
+	
 }

@@ -16,9 +16,9 @@ import Util.SinhMaTuDong;
 
 public class TinhLuongCongNhan_Dao {
 	// HÀM LẤY DS CHƯA TÍNH LƯƠNG THEO THÁNG NĂM
-	
+
 	private SinhMaTuDong maTuDong = new SinhMaTuDong();
-	public double luongCoBan,luongThang,luongCongDoan,thucLanh;
+	public double luongCoBan, luongThang, luongCongDoan, thucLanh;
 
 	// HÀM LẤY MÃ LƯƠNG CN LỚN NHẤT
 	public String getMaBangLuongCNLonNhat() {
@@ -26,7 +26,6 @@ public class TinhLuongCongNhan_Dao {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
 
 		try {
 			Connection con = ConnectDB.getConnection();
@@ -53,7 +52,6 @@ public class TinhLuongCongNhan_Dao {
 
 		return maBangLuongLonNhat;
 	}
-
 
 	// Hàm lấy và tính và thêm
 	public boolean tinhALL(int thang, int nam) {
@@ -83,7 +81,7 @@ public class TinhLuongCongNhan_Dao {
 				int soLuongLam = rs.getInt("soLuongLam");
 				int trangThai = rs.getInt("trangThai");
 				double donGia = rs.getDouble("donGia");
-				
+
 				CongNhan cn = new CongNhan(maCN);
 				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getString("maPhanCong"), cn);
 				BangChamCongCongNhan cccn_new = new BangChamCongCongNhan(pccd, soLuongLam, trangThai);
@@ -94,71 +92,69 @@ public class TinhLuongCongNhan_Dao {
 				int soNgayPhep = 0;
 
 				for (BangChamCongCongNhan chamCong : listCC) {
-				    int trangThai_2 = chamCong.getTrangThai();
+					int trangThai_2 = chamCong.getTrangThai();
 
-				    switch (trangThai_2) {
-				        case 0:
-				            soNgayLam += 1;
-				            break;
-				        case 1:
-				            soNgayPhep += 1;
-				            break;
-				        case 2:
-				            soNgayNghi += 1;
-				            break;
-				    }
+					switch (trangThai_2) {
+					case 0:
+						soNgayLam += 1;
+						break;
+					case 1:
+						soNgayPhep += 1;
+						break;
+					case 2:
+						soNgayNghi += 1;
+						break;
+					}
 				}
-				
-				int soLuongCongDoanLam = soLuongLam;
-                luongCoBan = 150000;
-                luongThang = luongCoBan * (soNgayLam + soNgayPhep - soNgayNghi);
-                luongCongDoan = donGia * soLuongCongDoanLam;
-                thucLanh = luongThang + luongCongDoan;
-                
-                boolean isExisted = checkCongNhanExist(maCN,thang,nam);
-                if (isExisted) {
-                    // Nếu công nhân đã tồn tại, thực hiện UPDATE
-                    String querryUpdate = "UPDATE BangLuongCongNhan "
-                            + "SET soLuongCongDoanLam=?, soNgayLam=?, soNgayNghi=?, soNgayPhep=?, thucLanh=?, "
-                            + "luongThang = ?, luongCongDoan = ? "
-                            + "WHERE maCN=? AND thangNam=?";
-                    
-                    PreparedStatement st_update = conn.prepareStatement(querryUpdate);
-                    st_update.setInt(1, soLuongCongDoanLam);
-                    st_update.setInt(2, soNgayLam);
-                    st_update.setInt(3, soNgayNghi);
-                    st_update.setInt(4, soNgayPhep);
-                    st_update.setDouble(5, thucLanh);
-                    st_update.setDouble(6, luongThang);
-                    st_update.setDouble(7, luongCongDoan);
-                    st_update.setString(8, maCN);
-                    st_update.setString(9, thang+"/"+nam);
-                    
-                    n = st_update.executeUpdate();
-                } else {
-                    // Nếu công nhân chưa tồn tại, thực hiện INSERT
-                    String querryInsert = "INSERT INTO BangLuongCongNhan "
-                            + "(maBangLuong, maCN, soLuongCongDoanLam, soNgayLam, soNgayNghi, soNgayPhep, thucLanh, thangNam, "
-                            + "luongThang, luongCongDoan) "
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-                    
-                    PreparedStatement st_is = conn.prepareStatement(querryInsert);
-                    st_is.setString(1, maTuDong.sinhMaBLCN());
-                    st_is.setString(2, maCN);
-                    st_is.setInt(3, soLuongCongDoanLam);
-                    st_is.setInt(4, soNgayLam);
-                    st_is.setInt(5, soNgayNghi);
-                    st_is.setInt(6, soNgayPhep);
-                    st_is.setDouble(7, thucLanh);
-                    st_is.setString(8, thang+"/"+nam);
-                    st_is.setDouble(9, luongThang);
-                    st_is.setDouble(10, luongCongDoan);
 
-                    n = st_is.executeUpdate();
-                    
-                    listCC.removeAll(listCC);
-                }
-                
+				int soLuongCongDoanLam = soLuongLam;
+				luongCoBan = 250000;
+				luongThang = Math.max(0, luongCoBan * (soNgayLam + soNgayPhep - soNgayNghi));
+				luongCongDoan = Math.max(0, donGia * soLuongCongDoanLam);
+				thucLanh = Math.max(0, luongThang + luongCongDoan);
+
+				boolean isExisted = checkCongNhanExist(maCN, thang, nam);
+				if (isExisted) {
+					// Nếu công nhân đã tồn tại, thực hiện UPDATE
+					String querryUpdate = "UPDATE BangLuongCongNhan "
+							+ "SET soLuongCongDoanLam=?, soNgayLam=?, soNgayNghi=?, soNgayPhep=?, thucLanh=?, "
+							+ "luongThang = ?, luongCongDoan = ? " + "WHERE maCN=? AND thangNam=?";
+
+					PreparedStatement st_update = conn.prepareStatement(querryUpdate);
+					st_update.setInt(1, soLuongCongDoanLam);
+					st_update.setInt(2, soNgayLam);
+					st_update.setInt(3, soNgayNghi);
+					st_update.setInt(4, soNgayPhep);
+					st_update.setDouble(5, thucLanh);
+					st_update.setDouble(6, luongThang);
+					st_update.setDouble(7, luongCongDoan);
+					st_update.setString(8, maCN);
+					st_update.setString(9, thang + "/" + nam);
+
+					n = st_update.executeUpdate();
+					listCC.removeAll(listCC);
+				} else {
+					// Nếu công nhân chưa tồn tại, thực hiện INSERT
+					String querryInsert = "INSERT INTO BangLuongCongNhan "
+							+ "(maBangLuong, maCN, soLuongCongDoanLam, soNgayLam, soNgayNghi, soNgayPhep, thucLanh, thangNam, "
+							+ "luongThang, luongCongDoan) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+
+					PreparedStatement st_is = conn.prepareStatement(querryInsert);
+					st_is.setString(1, maTuDong.sinhMaBLCN());
+					st_is.setString(2, maCN);
+					st_is.setInt(3, soLuongCongDoanLam);
+					st_is.setInt(4, soNgayLam);
+					st_is.setInt(5, soNgayNghi);
+					st_is.setInt(6, soNgayPhep);
+					st_is.setDouble(7, thucLanh);
+					st_is.setString(8, thang + "/" + nam);
+					st_is.setDouble(9, luongThang);
+					st_is.setDouble(10, luongCongDoan);
+
+					n = st_is.executeUpdate();
+
+					listCC.removeAll(listCC);
+				}
 
 			}
 
@@ -175,22 +171,24 @@ public class TinhLuongCongNhan_Dao {
 
 		return n > 0;
 	}
-	// HÀM CHECK ĐÃ TỒN TẠI CÔNG NHÂN TRONG BẢNG TINH LƯƠNG
+
+	// HÀM CHECK ĐÃ TỒN TẠI CÔNG NHÂN TRONG BẢNG TÍNH LƯƠNG
 	private boolean checkCongNhanExist(String maCN, int thang, int nam) throws SQLException {
-	    String querryCheck = "SELECT COUNT(*) FROM BangLuongCongNhan WHERE maCN=? AND thangNam=?";
-	    Connection conn = ConnectDB.getConnection();
-	    PreparedStatement st_check = conn.prepareStatement(querryCheck);
-	    st_check.setString(1, maCN);
-	    st_check.setString(2, thang+"/"+nam);
-	    
-	    ResultSet rs_check = st_check.executeQuery();
-	    rs_check.next();
-	    int count = rs_check.getInt(1);
-	    
-	    return count > 0;
+		String querryCheck = "SELECT COUNT(*) FROM BangLuongCongNhan WHERE maCN=? AND thangNam=?";
+		Connection conn = ConnectDB.getConnection();
+		PreparedStatement st_check = conn.prepareStatement(querryCheck);
+		st_check.setString(1, maCN);
+		st_check.setString(2, thang + "/" + nam);
+
+		ResultSet rs_check = st_check.executeQuery();
+		rs_check.next();
+		int count = rs_check.getInt(1);
+
+		return count > 0;
 	}
-	// HÀM GET DATA BẢNG LƯƠNG 
-	public ArrayList<BangLuongCongNhan> getAllBLCN(){
+
+	// HÀM GET DATA BẢNG LƯƠNG
+	public ArrayList<BangLuongCongNhan> getAllBLCN() {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -198,31 +196,21 @@ public class TinhLuongCongNhan_Dao {
 		try {
 			Connection conn = ConnectDB.getConnection();
 			String querry = "SELECT *  FROM [QuanLyLuongSanPham-TPT].[dbo].[BangLuongCongNhan] blcn\r\n"
-					+ "JOIN [dbo].[CongNhan] cn ON blcn.maCN = cn.maCN";
+					+ "JOIN [dbo].[CongNhan] cn ON blcn.maCN = cn.maCN ";
 			st = conn.prepareStatement(querry);
-			
+
 			rs = st.executeQuery();
-			
-			while(rs.next()) {
-				CongNhan cn = new CongNhan(rs.getString("maCN"));
+
+			while (rs.next()) {
+				CongNhan cn = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
 				BangChamCongCongNhan cccn = new BangChamCongCongNhan(rs.getInt("soLuongCongDoanLam"));
-				BangLuongCongNhan blcn = new BangLuongCongNhan(
-						rs.getString("maBangLuong"),
-						cn,
-						cccn,
-						rs.getInt("soNgayLam"),
-						rs.getInt("soNgayNghi"),
-						rs.getInt("soNgayPhep"),
-						rs.getDouble("luongThang"),
-						rs.getDouble("luongCongDoan"),
-						rs.getDouble("thucLanh"),
-						rs.getString("thangNam")
-						);
+				BangLuongCongNhan blcn = new BangLuongCongNhan(rs.getString("maBangLuong"), cn, cccn,
+						rs.getInt("soNgayLam"), rs.getInt("soNgayNghi"), rs.getInt("soNgayPhep"),
+						rs.getDouble("luongThang"), rs.getDouble("luongCongDoan"), rs.getDouble("thucLanh"),
+						rs.getString("thangNam"));
 				listBLCN.add(blcn);
 			}
-			
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -232,23 +220,49 @@ public class TinhLuongCongNhan_Dao {
 				e.printStackTrace();
 			}
 		}
-		
-		
+
 		return listBLCN;
 
 	}
-	
-	
-	
+
+	// HÀM GET DATA BẢNG LƯƠNG THEO THANG NAM
+	public ArrayList<BangLuongCongNhan> getAllBLCN_TN(int thang, int nam) {
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		ArrayList<BangLuongCongNhan> listBLCN = new ArrayList<>();
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "SELECT *  FROM [QuanLyLuongSanPham-TPT].[dbo].[BangLuongCongNhan] blcn\r\n"
+					+ "JOIN [dbo].[CongNhan] cn ON blcn.maCN = cn.maCN "
+					+ " WHERE thangNam = ?";
+			st = conn.prepareStatement(querry);
+			st.setString(1, thang+"/"+nam);
+
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				CongNhan cn = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
+				BangChamCongCongNhan cccn = new BangChamCongCongNhan(rs.getInt("soLuongCongDoanLam"));
+				BangLuongCongNhan blcn = new BangLuongCongNhan(rs.getString("maBangLuong"), cn, cccn,
+						rs.getInt("soNgayLam"), rs.getInt("soNgayNghi"), rs.getInt("soNgayPhep"),
+						rs.getDouble("luongThang"), rs.getDouble("luongCongDoan"), rs.getDouble("thucLanh"),
+						rs.getString("thangNam"));
+				listBLCN.add(blcn);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return listBLCN;
+
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
