@@ -54,7 +54,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		setLayout(new BorderLayout(0, 0));
 		setBackground(bgColor);
 		
-		
+		//Tạo pnl cài đặt chứa các cài đặt
 		JPanel pnlCaiDat = new JPanel();
 		add(pnlCaiDat, BorderLayout.NORTH);
 		pnlCaiDat.setLayout(new BoxLayout(pnlCaiDat, BoxLayout.Y_AXIS));
@@ -69,6 +69,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		lblTitle1.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle1.add(lblTitle1);
 		
+		// Tạo panel chứa các cài đặt của ứng dụng như: Âm thanh, ngôn ngữ, darkmode
 		GridLayout grid = new GridLayout(2, 3);
 		JPanel pnlCDUD = new JPanel(grid);
 		pnlCDUD.setBackground(bgColor);
@@ -90,6 +91,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		lblDarkMode.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 18F));
 		pnlCDUD.add(lblDarkMode);
 
+		//Sử dụng jslider để điều chỉnh value âm thanh
 		slider = new JSlider(JSlider.HORIZONTAL, 0, 5, config.getSoundSetting());
 		slider.setUI(new CustomSliderUI(slider, componentColor, 5, Color.GREEN, 15));
 		slider.setBackground(bgColor);
@@ -143,6 +145,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		lblTitle2.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle2.add(lblTitle2);
 		
+		//Tạo jpanel Sao Lưu dữ liệu
 		JPanel pnlSaoLuu = new JPanel();
 		pnlSaoLuu.setLayout(new BoxLayout(pnlSaoLuu, BoxLayout.Y_AXIS));
 		pnlSaoLuu.setBackground(bgColor);
@@ -195,6 +198,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		lblTitle3.setFont(main.roboto_bold.deriveFont(Font.BOLD, 22F));
 		pnlTitle3.add(lblTitle3);
 		
+		//Tạo jpanel khôi phục dữ liệu
 		JPanel pnlKhoiPhuc = new JPanel();
 		pnlKhoiPhuc.setBackground(bgColor);
 		pnlKhoiPhuc.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
@@ -243,6 +247,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		lblGhiChu2.setForeground(Color.decode("#dc3545"));
 		lblGhiChu2.setFont(main.roboto_light.deriveFont(Font.ITALIC, 14F));
 		
+		//Add sự kiện cho các component
 		cmbLanguage.addItemListener(this);
 		slider.addChangeListener(this);
 		btnChonFile.addActionListener(this);
@@ -254,15 +259,15 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		if(e.getSource() == cmbLanguage && e.getStateChange() == ItemEvent.SELECTED) {
 			config.setLanguage(cmbLanguage.getSelectedIndex());
 			if(JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng xuất để cập lại lại ngôn ngữ?", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
-				main.dispose();
+				main.dispose(); //ẩn và giải phóng tài nguyên
 				Login_UI loginUi = new Login_UI(main);
-				loginUi.setVisible(true);
+				loginUi.setVisible(true); // hiển thị giao diện đăng nhập
 			}
 		}
 	}
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		if(e.getSource() == slider) {
+		if(e.getSource() == slider) { // khi thay đổi giá trị của slider âm thanh
 			int value = slider.getValue();
 			config.setSoundSetting(value);
 			main.music.music.setVolumeScale(value);
@@ -282,7 +287,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		            directory.mkdir();
 		        }
 		        
-		        //
+		        //Bắt đầu đưa filename vào và backup dữ liệu
 		        String fileName = fileInput + ".bak"; 
 		        if (ht_Dao.BackUp(fileName)) {
 		            JOptionPane.showMessageDialog(this, "Sao lưu dữ liệu thành công!");
@@ -294,7 +299,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		if(o == btnChonFile) {
 			JFileChooser fileChooser = new JFileChooser();
 	        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-	        int option = fileChooser.showOpenDialog(null);
+	        int option = fileChooser.showOpenDialog(null); // hiển thị dialog chọn file
 	        if (option == JFileChooser.APPROVE_OPTION) {
 	            File file = fileChooser.getSelectedFile();
 	            String fileName = file.getAbsolutePath();
@@ -303,7 +308,7 @@ public class OtherUI extends JPanel implements ChangeListener, ItemListener, Act
 		}
 		if(o == btnKhoiPhuc) {
             String fileName = txtKhoiPhuc.getText();
-            if(fileName!=null&&fileName.trim().length()>=0) {
+            if(fileName!=null&&fileName.trim().length()>=0) { // kiểm tra đường dẫn có rỗng kh
             	if(JOptionPane.showConfirmDialog(this, "Tất cả dữ liệu hiện tại sẽ bị ghi đè,Bạn có chắc muốn khôi phục dữ liệu mới?", "Cảnh báo", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
                     if (ht_Dao.Restore(fileName)) {
                         JOptionPane.showMessageDialog(null, "Khôi phục dữ liệu thành công!");

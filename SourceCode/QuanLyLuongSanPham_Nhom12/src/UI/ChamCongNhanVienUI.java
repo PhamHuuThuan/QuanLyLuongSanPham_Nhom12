@@ -516,6 +516,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		JScrollPane scrSP = new JScrollPane(tblDSCC,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangChamCong.add(scrSP, BorderLayout.CENTER);
 		
+		//Thêm sự kiện cho các component
 		btnChamCongALL.addActionListener(this);
 		btnChamCong.addActionListener(this);
 		btnChamLai.addActionListener(this);
@@ -539,11 +540,11 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
-		if(o == tblDSCC) {
+		if(o == tblDSCC) {//Khi click vào ds chấm công
 			tblDSPC.clearSelection();
 			hienThiChamCong(tblDSCC.getSelectedRow());
 		}
-		if(o == tblDSPC) {
+		if(o == tblDSPC) { // Khi click vào ds phân công
 			tblDSCC.clearSelection();
 			xoaRongTTCC();
 			txtMaNV.setText(tblDSPC.getValueAt(tblDSPC.getSelectedRow(), 1).toString());
