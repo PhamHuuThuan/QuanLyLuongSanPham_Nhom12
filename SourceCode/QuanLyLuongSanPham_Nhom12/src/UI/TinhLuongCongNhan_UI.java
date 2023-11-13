@@ -216,7 +216,7 @@ public class TinhLuongCongNhan_UI extends JPanel implements ActionListener, Mous
 		btnXuat.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnlXuat.add(btnXuat, BorderLayout.EAST);
 
-		String colsTLCN[] = { "#", "Mã lương", "Ngày TL", "Mã CN", "Tên", "Làm", "Nghỉ Phép", "Nghỉ", "SL Làm",
+		String colsTLCN[] = { "#", "Mã lương", "Tháng/Năm", "Mã CN", "Tên", "Làm", "Nghỉ Phép", "Nghỉ", "SL Làm",
 				"Lương tháng", "Lương CĐ", "Thực lãnh" };
 		dtblModelTLCN = new DefaultTableModel(colsTLCN, 0);
 		tblDSTL = new JTable(dtblModelTLCN);

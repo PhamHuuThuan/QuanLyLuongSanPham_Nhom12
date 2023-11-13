@@ -246,7 +246,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 //		mnCongDoan.getPopupMenu().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#424242")));
 //		mnuBar.add(mnCongDoan);
 
-		mniQLCD = new JMenuItem(read_file_languages.getString("text_assignment"));
+		mniQLCD = new JMenuItem(read_file_languages.getString("text_stage"));
 		mniQLCD.setFont(this.main.roboto_regular.deriveFont(Font.BOLD, 16F));
 		mniQLCD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode(read_file_themes.getString("color_main_sw"))), 
 				BorderFactory.createEmptyBorder(5, 15, 5, 15)));
@@ -737,7 +737,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		mniCaiDat.setBackground(Color.decode(read_file_themes.getString("color_main")));
 		mniCaiDat.setForeground(Color.decode(read_file_themes.getString("color_main_sw")));
 	}
-
+	
 	public void setUIManagerColor() {
 		ResourceBundle read_file_themes = ResourceBundle.getBundle(pathFileTheme);
 
@@ -773,6 +773,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 		clock.start();
 	}
+	//kiểm tra người dùng: nhân viên or quản lý
 	private void checkUser() {
 		if(main.nv.getChucVu().equals("Nhân viên")) {
 			mniHopDong.setEnabled(false);
