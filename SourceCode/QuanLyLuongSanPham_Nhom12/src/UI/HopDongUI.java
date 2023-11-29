@@ -742,6 +742,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		if(e.getSource() == tblHD) { //thao tác trên table Hợp Đồng
 			int index = tblHD.getSelectedRow();
 			if(index != -1  && btnFocus!=btnThemHD && btnFocus!=btnSuaHD) {
+				xoaRongSP();
 				hienThiThongTinHD(index);
 				dsSP = sp_Dao.getSanPhamTheoHopDong(txtMaHD.getText());
 				themTatCaSanPhamVaoBang(dsSP);

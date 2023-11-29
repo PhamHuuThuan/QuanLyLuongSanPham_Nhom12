@@ -8,20 +8,22 @@ public class BangChamCongNhanVien {
 	private BangPhanCongNhanVien phanCong;
 	private Date ngayChamCong;
 	private int caLam; // 1: nua ngay, 2: ca ngay
-	private int trangThai; // 0: đúng giờ, 1: trễ, 2: nghỉ, 3: nghỉ phép
+	private boolean diLam;
+	private boolean coPhep;
 	private String gioDen;
 	private float gioTangCa;
 	private String ghiChu;
 	
 	//Khởi tạo đối tượng bangchamcongnhanvien đầy đủ tham số
-	public BangChamCongNhanVien(BangPhanCongNhanVien phanCong, Date ngayChamCong, int caLam, int trangThai,
+	public BangChamCongNhanVien(BangPhanCongNhanVien phanCong, Date ngayChamCong, int caLam, boolean diLam, boolean coPhep,
 			String gioDen, float gioTangCa, String ghiChu) {
 		super();
 		try {
 			setPhanCong(phanCong);
 			setNgayChamCong(ngayChamCong);
 			setCaLam(caLam);
-			setTrangThai(trangThai);
+			setDiLam(diLam);
+			setCoPhep(coPhep);
 			setGioDen(gioDen);
 			setGioTangCa(gioTangCa);
 			setGhiChu(ghiChu);
@@ -59,11 +61,17 @@ public class BangChamCongNhanVien {
 	public void setCaLam(int caLam) {
 		this.caLam = caLam;
 	}
-	public int getTrangThai() {
-		return trangThai;
+	public boolean isDiLam() {
+		return diLam;
 	}
-	public void setTrangThai(int trangThai) {
-		this.trangThai = trangThai;
+	public void setDiLam(boolean diLam) {
+		this.diLam = diLam;
+	}
+	public boolean isCoPhep() {
+		return coPhep;
+	}
+	public void setCoPhep(boolean coPhep) {
+		this.coPhep = coPhep;
 	}
 	public String getGioDen() {
 		return gioDen;
@@ -90,7 +98,7 @@ public class BangChamCongNhanVien {
 	@Override
 	public String toString() {
 		return "BangChamCongNhanVien [phanCong=" + phanCong + ", ngayChamCong=" + ngayChamCong + ", caLam=" + caLam
-				+ ", trangThai=" + trangThai + ", gioDen=" + gioDen + ", gioTangCa=" + gioTangCa + ", ghiChu=" + ghiChu
-				+ "]";
+				+ ", diLam=" + diLam + ", coPhep=" + coPhep + ", gioDen=" + gioDen + ", gioTangCa=" + gioTangCa
+				+ ", ghiChu=" + ghiChu + "]";
 	}
 }

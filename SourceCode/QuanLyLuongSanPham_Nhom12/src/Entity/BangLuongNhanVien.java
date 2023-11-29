@@ -193,40 +193,29 @@ public class BangLuongNhanVien {
 	}
 	//tính lương cho nhân viên
 	public void tinhLuongNhanVien(BangPhanCongNhanVien pcnv) {
-		int diTre = 0;
 		int tangCa = 0;
 		//chạy vòng lặp lấy dữ liệu chấm công 1 tháng
 		for(BangChamCongNhanVien ccnv : this.dsChamCong) {
-			switch (ccnv.getTrangThai()) {
-			case 0: {
+			if(ccnv.isDiLam()) {
 				ngayLam+=ccnv.getCaLam();
-				break;
-			}
-			case 1: {
-				ngayLam+=ccnv.getCaLam();
-				diTre += 1;
-				break;
-			}
-			case 2: {
-				ngayNghi += 1;
-				break;
-			}
-			case 3: {
-				ngayNghiPhep += 1;
-				break;
-			}
+			}else {
+				if(ccnv.isCoPhep()) {
+					ngayNghiPhep += 1;
+				}else {
+					ngayNghi += 1;
+				}
 			}
 			tangCa += ccnv.getGioTangCa();
 		}
 		ngayLam/=2; //nửa ngày tính là 1 và cả ngày tính 2
 		
 		//tính lương
-		tinhThucLanh(pcnv, tangCa, diTre);
+		tinhThucLanh(pcnv, tangCa);
 		
 	}
 	//tính lương tháng
-	public double tinhLuongThang(int diTre, float luongCoBan) {
-		luongThang = (ngayLam + ngayNghiPhep - ngayNghi)/30*luongCoBan - diTre*50000;
+	public double tinhLuongThang(float luongCoBan) {
+		luongThang = (ngayLam + ngayNghiPhep - ngayNghi)/30*luongCoBan;
 		return luongThang;
 	}
 	//tính lương tăng ca
@@ -253,7 +242,7 @@ public class BangLuongNhanVien {
 	    return phuCap;
 	}
 	//tính thực lãnh
-	public double tinhThucLanh(BangPhanCongNhanVien pcnv, float gioTangCa, int diTre) {
+	public double tinhThucLanh(BangPhanCongNhanVien pcnv, float gioTangCa) {
 		float luongCB = 0;
 		switch (pcnv.getChucVu()) {
 		case "Quản lý": {
@@ -269,7 +258,7 @@ public class BangLuongNhanVien {
 			break;
 		}
 		}
-		thucLanh = tinhLuongThang(diTre, luongCB) + tinhLuongTangCa(gioTangCa, luongCB) + tinhPhuCap(pcnv.getNgayCongTac(), luongCB);
+		thucLanh = tinhLuongThang(luongCB) + tinhLuongTangCa(gioTangCa, luongCB) + tinhPhuCap(pcnv.getNgayCongTac(), luongCB);
 		return thucLanh;
 	}
 }
