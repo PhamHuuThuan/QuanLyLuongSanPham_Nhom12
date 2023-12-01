@@ -222,6 +222,7 @@ public class TrangCaNhan_UI extends JPanel implements ActionListener {
 		btnEditInfo.setBackground(Color.decode("#424242"));
 		btnEditInfo.setIcon(new ImageScaler("/image/icon_edit.png", 25, 25).getScaledImageIcon());
 		btnEditInfo.setVisible(true);
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel_1.add(btnEditInfo);
 
 		btnSave = new RoundedButton("Lưu", null, 15, 0, 2f);

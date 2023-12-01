@@ -189,6 +189,11 @@ public class CongDoan {
 		this.soLuongConLai = soLuongConLai;
 		this.sanPham = sanPham;
 	}
+
+	public CongDoan(SanPham sanPham) {
+		super();
+		this.sanPham = sanPham;
+	}
 	
 	
 }
