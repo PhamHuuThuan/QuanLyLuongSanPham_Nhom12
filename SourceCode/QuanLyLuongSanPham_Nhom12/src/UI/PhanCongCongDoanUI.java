@@ -100,7 +100,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 	private boolean isThemPCCD = false;
 	private JTextField txtTongSoLuong;
-	private RoundedButton btnGetProduct, btnGetStage;
+	private RoundedButton btnGetProduct;
 	private JTextField txtSLChuaPC;
 
 	public PhanCongCongDoanUI(MainUI main) {
