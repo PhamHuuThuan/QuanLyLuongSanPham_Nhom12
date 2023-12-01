@@ -409,7 +409,7 @@
 				
 				//get danh sách hợp đồng từ cơ sở dữ liệu
 				
-				dsHD= hd_Dao.getAllHopDong();
+				dsHD= hd_Dao.getAllHopDongTheoNguoiDaiDien(main.nv.getNhanVien().getMaNV());
 				themTatCaHopDongVaoBang(dsHD);
 				xoaRongSP(false);
 				resetTextFiled();

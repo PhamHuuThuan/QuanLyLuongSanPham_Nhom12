@@ -26,6 +26,7 @@ public class IntroPage_UI extends JFrame{
 	
 	
 	private boolean isShowPageLogin = false;
+	// HÀM MỞ PAGE LOGIN
 	private void OpenPageLogin() {
 		this.dispose();
 		
@@ -46,19 +47,19 @@ public class IntroPage_UI extends JFrame{
 		JLabel gifAniLabel = new JLabel(gifAnimation);
 		
 		
-		JPanel box_loading = new JPanel();
+		JPanel PnlBoxLoading = new JPanel();
 		
-		box_loading.setPreferredSize(new Dimension(1200,80));
-		box_loading.setBackground(Color.decode("#424242"));
+		PnlBoxLoading.setPreferredSize(new Dimension(1200,80));
+		PnlBoxLoading.setBackground(Color.decode("#424242"));
 		
 		setLayout(new BorderLayout(0,0));
 		
-		//loading
-        JProgressBar loadingBar = new JProgressBar();
-        loadingBar.setPreferredSize(new Dimension(500, 15));
-        loadingBar.setStringPainted(true); 
-        loadingBar.setForeground(Color.decode("#424244")); 
-        loadingBar.setBackground(Color.WHITE); 
+		//thanh loading
+        JProgressBar pgbLoadingBar = new JProgressBar();
+        pgbLoadingBar.setPreferredSize(new Dimension(500, 15));
+        pgbLoadingBar.setStringPainted(true); 
+        pgbLoadingBar.setForeground(Color.decode("#424244")); 
+        pgbLoadingBar.setBackground(Color.WHITE); 
 
         Timer timer = new Timer(10, new ActionListener() {
             int progress = 0;
@@ -68,7 +69,7 @@ public class IntroPage_UI extends JFrame{
             		sound.playSE(0); // chạy âm thanh loading
                 if (progress < 70) {
                     progress++;
-                    loadingBar.setValue(progress);
+                    pgbLoadingBar.setValue(progress);
                 } else {
                     ((Timer) e.getSource()).stop();
                 }
@@ -81,7 +82,7 @@ public class IntroPage_UI extends JFrame{
         Timer timer2 = new Timer(3800, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                loadingBar.setValue(100);
+                pgbLoadingBar.setValue(100);
             }
         });
 
@@ -89,8 +90,8 @@ public class IntroPage_UI extends JFrame{
         timer2.start();
 		
 		add(gifAniLabel,BorderLayout.CENTER);
-		box_loading.add(loadingBar, BorderLayout.NORTH);
-		add(box_loading,BorderLayout.SOUTH);
+		PnlBoxLoading.add(pgbLoadingBar, BorderLayout.NORTH);
+		add(PnlBoxLoading,BorderLayout.SOUTH);
 		
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

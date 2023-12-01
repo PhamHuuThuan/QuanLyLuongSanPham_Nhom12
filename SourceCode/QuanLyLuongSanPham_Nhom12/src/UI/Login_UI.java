@@ -45,18 +45,18 @@ public class Login_UI extends JFrame implements ItemListener {
 
 	private static MainUI main;
 	private JPanel contentPane;
-	private JPanel panel_right;
-	private JPanel panel_in_right;
-	private JLabel text_heading_login;
-	private JPanel panel_input_user;
-	private JLabel text_heading_user;
-	private JTextField input_user;
-	private JPanel panel_input_password;
-	private JLabel text_heading_password;
-	private JPasswordField input_password;
-	private JComboBox<String> combox_languages;
-	private JCheckBox checkbox_remember_user;
-	private RoundedButton button_login;
+	private JPanel pnlRight;
+	private JPanel pnlInRight;
+	private JLabel lblTextHeadingLogin;
+	private JPanel pnlInputUser;
+	private JLabel lblTextHeadingUser;
+	private JTextField txtInputUser;
+	private JPanel pnlInputPassword;
+	private JLabel lblTextHeadingPassword;
+	private JPasswordField txtInputPassword;
+	private JComboBox<String> cmbLanguages;
+	private JCheckBox chkRememberUser;
+	private RoundedButton btnLogin;
 	public LuuTru l = new LuuTru();
 	public ConfigManager config = new ConfigManager("/config/config.properties");
 	public ResourceBundle read_file_languages = l.getLanguageConfig(config.getLanguage());
@@ -79,7 +79,7 @@ public class Login_UI extends JFrame implements ItemListener {
 			}
 		});
 	}
-
+	// HÀM ĐÓNG PAGE
 	private void ClosePage() {
 		this.dispose();
 	}
@@ -111,120 +111,120 @@ public class Login_UI extends JFrame implements ItemListener {
 		panel_logo.add(widthtLogo);
 		contentPane.add(panel_logo);
 
-		panel_right = new JPanel();
-		panel_right.setBackground(Color.decode("#424242"));
-		panel_right.setBounds(571, 0, 540, 456);
-		contentPane.add(panel_right);
-		panel_right.setLayout(null);
+		pnlRight = new JPanel();
+		pnlRight.setBackground(Color.decode("#424242"));
+		pnlRight.setBounds(571, 0, 540, 456);
+		contentPane.add(pnlRight);
+		pnlRight.setLayout(null);
 
-		JButton button_close_page = new JButton("×");
-		button_close_page.addActionListener(new ActionListener() {
+		JButton btnClosePage = new JButton("×");
+		btnClosePage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClosePage();
 			}
 		});
-		button_close_page.setBackground(Color.decode("#424242"));
-		button_close_page.setForeground(Color.decode("#ffffff"));
-		button_close_page.setFont(new Font("Tahoma", Font.BOLD, 35));
-		button_close_page.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(255, 255, 255)));
-		button_close_page.setBounds(493, 0, 45, 45);
-		button_close_page.setMargin(new Insets(3, 3, 3, 3));
-		panel_right.add(button_close_page);
+		btnClosePage.setBackground(Color.decode("#424242"));
+		btnClosePage.setForeground(Color.decode("#ffffff"));
+		btnClosePage.setFont(new Font("Tahoma", Font.BOLD, 35));
+		btnClosePage.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(255, 255, 255)));
+		btnClosePage.setBounds(493, 0, 45, 45);
+		btnClosePage.setMargin(new Insets(3, 3, 3, 3));
+		pnlRight.add(btnClosePage);
 
-		panel_in_right = new JPanel();
-		panel_in_right.setForeground(new Color(255, 255, 255));
-		panel_in_right.setBackground(Color.decode("#424242"));
-		panel_in_right.setBounds(29, 31, 488, 414);
-		panel_right.add(panel_in_right);
-		panel_in_right.setLayout(null);
+		pnlInRight = new JPanel();
+		pnlInRight.setForeground(new Color(255, 255, 255));
+		pnlInRight.setBackground(Color.decode("#424242"));
+		pnlInRight.setBounds(29, 31, 488, 414);
+		pnlRight.add(pnlInRight);
+		pnlInRight.setLayout(null);
 
-		text_heading_login = new JLabel("ĐĂNG NHẬP");
-		text_heading_login.setHorizontalAlignment(SwingConstants.CENTER);
-		text_heading_login.setForeground(Color.WHITE);
-		text_heading_login.setFont(new Font("Segoe UI", Font.BOLD, 22));
-		text_heading_login.setBounds(163, 0, 182, 31);
-		panel_in_right.add(text_heading_login);
+		lblTextHeadingLogin = new JLabel("ĐĂNG NHẬP");
+		lblTextHeadingLogin.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTextHeadingLogin.setForeground(Color.WHITE);
+		lblTextHeadingLogin.setFont(new Font("Segoe UI", Font.BOLD, 22));
+		lblTextHeadingLogin.setBounds(163, 0, 182, 31);
+		pnlInRight.add(lblTextHeadingLogin);
 
-		panel_input_user = new JPanel();
-		panel_input_user.setBounds(10, 64, 439, 86);
-		panel_input_user.setBackground(Color.decode("#424242"));
-		panel_in_right.add(panel_input_user);
-		panel_input_user.setLayout(null);
+		pnlInputUser = new JPanel();
+		pnlInputUser.setBounds(10, 64, 439, 86);
+		pnlInputUser.setBackground(Color.decode("#424242"));
+		pnlInRight.add(pnlInputUser);
+		pnlInputUser.setLayout(null);
 
-		text_heading_user = new JLabel("TÀI KHOẢN");
-		text_heading_user.setForeground(new Color(255, 255, 255));
-		text_heading_user.setFont(new Font("Segoe UI", Font.BOLD, 19));
-		text_heading_user.setBounds(12, 0, 214, 38);
-		panel_input_user.add(text_heading_user);
+		lblTextHeadingUser = new JLabel("TÀI KHOẢN");
+		lblTextHeadingUser.setForeground(new Color(255, 255, 255));
+		lblTextHeadingUser.setFont(new Font("Segoe UI", Font.BOLD, 19));
+		lblTextHeadingUser.setBounds(12, 0, 214, 38);
+		pnlInputUser.add(lblTextHeadingUser);
 
-		input_user = new JTextField();
-		input_user.requestFocusInWindow();
-		input_user.setHorizontalAlignment(SwingConstants.LEFT);
-		input_user.setForeground(new Color(255, 255, 255));
-		input_user.setBackground(Color.decode("#515151"));
-		input_user.setCaretColor(Color.WHITE);
-		input_user.setBounds(12, 38, 427, 35);
-		input_user.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(255, 255, 255)));
-		panel_input_user.add(input_user);
-		input_user.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		input_user.setColumns(10);
-		input_user.setText(config.getUsername());
+		txtInputUser = new JTextField();
+		txtInputUser.requestFocusInWindow();
+		txtInputUser.setHorizontalAlignment(SwingConstants.LEFT);
+		txtInputUser.setForeground(new Color(255, 255, 255));
+		txtInputUser.setBackground(Color.decode("#515151"));
+		txtInputUser.setCaretColor(Color.WHITE);
+		txtInputUser.setBounds(12, 38, 427, 35);
+		txtInputUser.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(255, 255, 255)));
+		pnlInputUser.add(txtInputUser);
+		txtInputUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtInputUser.setColumns(10);
+		txtInputUser.setText(config.getUsername());
 
-		panel_input_password = new JPanel();
-		panel_input_password.setLayout(null);
-		panel_input_password.setBackground(new Color(66, 66, 66));
-		panel_input_password.setBounds(10, 157, 439, 86);
-		panel_in_right.add(panel_input_password);
+		pnlInputPassword = new JPanel();
+		pnlInputPassword.setLayout(null);
+		pnlInputPassword.setBackground(new Color(66, 66, 66));
+		pnlInputPassword.setBounds(10, 157, 439, 86);
+		pnlInRight.add(pnlInputPassword);
 
-		text_heading_password = new JLabel("MẬT KHẨU");
-		text_heading_password.setForeground(Color.WHITE);
-		text_heading_password.setFont(new Font("Tahoma", Font.BOLD, 18));
-		text_heading_password.setBounds(12, 0, 207, 38);
-		panel_input_password.add(text_heading_password);
+		lblTextHeadingPassword = new JLabel("MẬT KHẨU");
+		lblTextHeadingPassword.setForeground(Color.WHITE);
+		lblTextHeadingPassword.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblTextHeadingPassword.setBounds(12, 0, 207, 38);
+		pnlInputPassword.add(lblTextHeadingPassword);
 
-		input_password = new JPasswordField();
-		input_password.setCaretColor(Color.WHITE);
-		input_password.setHorizontalAlignment(SwingConstants.LEFT);
-		input_password.setForeground(Color.WHITE);
-		input_password.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		input_password.setColumns(10);
-		input_password.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(255, 255, 255)));
-		input_password.setBackground(new Color(81, 81, 81));
-		input_password.setBounds(12, 38, 424, 35);
-		panel_input_password.add(input_password);
-		input_password.setText(config.getPassword());
+		txtInputPassword = new JPasswordField();
+		txtInputPassword.setCaretColor(Color.WHITE);
+		txtInputPassword.setHorizontalAlignment(SwingConstants.LEFT);
+		txtInputPassword.setForeground(Color.WHITE);
+		txtInputPassword.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtInputPassword.setColumns(10);
+		txtInputPassword.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(255, 255, 255)));
+		txtInputPassword.setBackground(new Color(81, 81, 81));
+		txtInputPassword.setBounds(12, 38, 424, 35);
+		pnlInputPassword.add(txtInputPassword);
+		txtInputPassword.setText(config.getPassword());
 
-		button_login = new RoundedButton("ĐĂNG NHẬP", null, 15, 0, 2f);
-		button_login.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		button_login.setBounds(20, 282, 429, 35);
-		panel_in_right.add(button_login);
+		btnLogin = new RoundedButton("ĐĂNG NHẬP", null, 15, 0, 2f);
+		btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		btnLogin.setBounds(20, 282, 429, 35);
+		pnlInRight.add(btnLogin);
 
-		checkbox_remember_user = new JCheckBox("Nhớ tài khoản");
-		checkbox_remember_user.setSelected(config.getRememberAccount());
-		checkbox_remember_user.setBackground(Color.decode("#424242"));
-		checkbox_remember_user.setForeground(Color.WHITE);
-		checkbox_remember_user.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		checkbox_remember_user.setBounds(350, 250, 150, 21);
-		panel_in_right.add(checkbox_remember_user);
+		chkRememberUser = new JCheckBox("Nhớ tài khoản");
+		chkRememberUser.setSelected(config.getRememberAccount());
+		chkRememberUser.setBackground(Color.decode("#424242"));
+		chkRememberUser.setForeground(Color.WHITE);
+		chkRememberUser.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		chkRememberUser.setBounds(350, 250, 150, 21);
+		pnlInRight.add(chkRememberUser);
 
-		combox_languages = new JComboBox<>();
-		combox_languages.addItem("Vietnamese");
-		combox_languages.addItem("English");
-		combox_languages.setBounds(20, 353, 150, 31);
-		combox_languages.setSelectedIndex(config.getLanguage());
-		panel_in_right.add(combox_languages);
+		cmbLanguages = new JComboBox<>();
+		cmbLanguages.addItem("Vietnamese");
+		cmbLanguages.addItem("English");
+		cmbLanguages.setBounds(20, 353, 150, 31);
+		cmbLanguages.setSelectedIndex(config.getLanguage());
+		pnlInRight.add(cmbLanguages);
 
-		JComboBox<String> combox_theme = new JComboBox<>();
-		combox_theme.addItem("Lightmode");
-		combox_theme.addItem("Darkmode");
-		combox_theme.setBounds(334, 353, 115, 31);
-		panel_in_right.add(combox_theme);
+		JComboBox<String> cmbTheme = new JComboBox<>();
+		cmbTheme.addItem("Lightmode");
+		cmbTheme.addItem("Darkmode");
+		cmbTheme.setBounds(334, 353, 115, 31);
+		pnlInRight.add(cmbTheme);
 
-		button_login.addActionListener(new ActionListener() {
+		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(),
-						input_password.getText());
+				config.setRememberAccount(chkRememberUser.isSelected(), txtInputUser.getText(),
+						txtInputPassword.getText());
 
 				if (checkLogin()) {
 					new MainUI(pcnv).music.playSE(1);
@@ -235,13 +235,13 @@ public class Login_UI extends JFrame implements ItemListener {
 			}
 		});
 		
-		combox_languages.addItemListener(this);
-		checkbox_remember_user.addItemListener(this);
+		cmbLanguages.addItemListener(this);
+		chkRememberUser.addItemListener(this);
 
 		setTextLanguage();
 
-		input_user.setText("NV00001");
-		input_password.setText("123456a@");
+		txtInputUser.setText("NV00001");
+		txtInputPassword.setText("123456a@");
 
 	}
 
@@ -258,8 +258,8 @@ public class Login_UI extends JFrame implements ItemListener {
 
 	// kiểm tra thông tin nhân viên trong csdl
 	private boolean checkLogin() {
-		String maNV = input_user.getText();
-		String matKhau = input_password.getText();
+		String maNV = txtInputUser.getText();
+		String matKhau = txtInputPassword.getText();
 
 		pcnv = new PhanCongNhanVien_Dao().kiemTraDangNhap(maNV, matKhau);
 
@@ -293,25 +293,25 @@ public class Login_UI extends JFrame implements ItemListener {
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		if (e.getSource() == combox_languages) {
-			config.setLanguage(combox_languages.getSelectedIndex());
+		if (e.getSource() == cmbLanguages) {
+			config.setLanguage(cmbLanguages.getSelectedIndex());
 			setTextLanguage();
 		}
-		if (e.getSource() == checkbox_remember_user) {
-			config.setRememberAccount(checkbox_remember_user.isSelected(), input_user.getText(),
-					input_password.getText());
+		if (e.getSource() == chkRememberUser) {
+			config.setRememberAccount(chkRememberUser.isSelected(), txtInputUser.getText(),
+					txtInputPassword.getText());
 		}
 	}
-
+	// HÀM SET CÁC TRƯỜNG NGÔN NGỮ
 	public void setTextLanguage() {
 		read_file_languages = l.getLanguageConfig(config.getLanguage());
-		text_heading_login.setText(read_file_languages.getString("text_heading_login"));
-		text_heading_user.setText(read_file_languages.getString("text_heading_user"));
-		text_heading_password.setText(read_file_languages.getString("text_heading_password"));
-		checkbox_remember_user.setText(read_file_languages.getString("checkbox_remember_user"));
-		button_login.setText(read_file_languages.getString("text_heading_login"));
+		lblTextHeadingLogin.setText(read_file_languages.getString("text_heading_login"));
+		lblTextHeadingUser.setText(read_file_languages.getString("text_heading_user"));
+		lblTextHeadingPassword.setText(read_file_languages.getString("text_heading_password"));
+		chkRememberUser.setText(read_file_languages.getString("checkbox_remember_user"));
+		btnLogin.setText(read_file_languages.getString("text_heading_login"));
 	}
-
+// HÀM ALERT
 	public int alertNotification(String textError) {
 		String[] options = { "Cancel" };
 		int result = JOptionPane.showOptionDialog(main, textError, "NOTIFICATION", JOptionPane.DEFAULT_OPTION,

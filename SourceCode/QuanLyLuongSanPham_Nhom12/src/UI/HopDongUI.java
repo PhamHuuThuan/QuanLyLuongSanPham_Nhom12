@@ -742,6 +742,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 		if(e.getSource() == tblHD) { //thao tác trên table Hợp Đồng
 			int index = tblHD.getSelectedRow();
 			if(index != -1  && btnFocus!=btnThemHD && btnFocus!=btnSuaHD) {
+				xoaRongSP();
 				hienThiThongTinHD(index);
 				dsSP = sp_Dao.getSanPhamTheoHopDong(txtMaHD.getText());
 				themTatCaSanPhamVaoBang(dsSP);
@@ -924,7 +925,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//Xóa toàn bộ dữ liệt trên bảng thông tin
 	private void xoaRong() {
-		dsHD = hd_Dao.getAllHopDong();
+		dsHD = hd_Dao.getAllHopDongTheoNguoiDaiDien(main.nv.getNhanVien().getMaNV());
 		dtblModelHD.setRowCount(0);
 		themTatCaHopDongVaoBang(dsHD);
 		dsSP.removeAll(dsSP);
@@ -1052,7 +1053,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	}
 	//get dữ liệu từ csdl lên table
 	private void getDataToTable() {
-		dsHD = hd_Dao.getAllHopDong();
+		dsHD = hd_Dao.getAllHopDongTheoNguoiDaiDien(main.nv.getNhanVien().getMaNV());
 		themTatCaHopDongVaoBang(dsHD);
 	}
 	//thêm một hợp đồng vào table 
@@ -1084,7 +1085,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa hợp đồng đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				if(hd_Dao.xoaHopDong(maHD)) {
 					lblMessage.setText("Xóa thành công!");
-					dsHD = hd_Dao.getAllHopDong();
+					dsHD = hd_Dao.getAllHopDongTheoNguoiDaiDien(main.nv.getNhanVien().getMaNV());
 					xoaRong();
 				}else {
 					setTextError("Xóa thất bại! Không tìm thấy hợp đồng!");

@@ -28,13 +28,15 @@ public class ChamCongNhanVien_Dao {
 	        		+ "	   WHERE pcnv.maPhanCong NOT IN "
 	        		+ "    (SELECT bccnv.phanCongNV"
 	        		+ "	   FROM BangChamCongNhanVien bccnv"
-	        		+ "	   WHERE bccnv.ngayChamCong = ?) "
-	        		+ "	   AND (pcnv.maPhongBan = ? OR ? IS NULL)";
+	        		+ "	   WHERE bccnv.ngayChamCong = ?) "	// ds chưa chấm trong ngày đó
+	        		+ "	   AND (pcnv.maPhongBan = ? OR ? IS NULL)"	//được phân công vào pb
+	        		+ "	   AND pcnv.ngayCongTac <= ?"; //ngày công tác trước ngày chấm thì hiển thị
 	 
 	        st = con.prepareStatement(sql);
 	        st.setDate(1, new java.sql.Date(ngay.getTime()));
 	        st.setString(2, maPhongBan);
 	        st.setString(3, maPhongBan);
+	        st.setDate(4, new java.sql.Date(ngay.getTime()));
 	        rs = st.executeQuery();
 
 	        while (rs.next()) {
@@ -80,7 +82,7 @@ public class ChamCongNhanVien_Dao {
 
 	        while (rs.next()) {
 	            BangChamCongNhanVien bccnv = new BangChamCongNhanVien(new PhanCongNhanVien_Dao().getPhanCongTheoMa(rs.getString("phanCongNV")), 
-	            		new java.util.Date(rs.getDate("ngayChamCong").getTime()), rs.getInt("caLam"), rs.getInt("trangThai"), rs.getString("gioDen"), 
+	            		new java.util.Date(rs.getDate("ngayChamCong").getTime()), rs.getInt("caLam"), rs.getBoolean("diLam"), rs.getBoolean("coPhep"), rs.getString("gioDen"), 
 	            		rs.getFloat("gioTangCa"), rs.getString("ghiChu"));
 	            chamCongList.add(bccnv);
 	        }
@@ -103,15 +105,16 @@ public class ChamCongNhanVien_Dao {
 	        int n = 0;
 	        try {
 	            Connection con = ConnectDB.getConnection();
-	            String sql = "INSERT INTO BangChamCongNhanVien (phanCongNV, ngayChamCong, caLam, trangThai, gioDen, gioTangCa, ghiChu) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	            String sql = "INSERT INTO BangChamCongNhanVien (phanCongNV, ngayChamCong, caLam, diLam, coPhep, gioDen, gioTangCa, ghiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	            st = con.prepareStatement(sql);
 	            st.setString(1, bccnv.getPhanCong().getMaPhanCong());
 	            st.setDate(2, new java.sql.Date(bccnv.getNgayChamCong().getTime()));
 	            st.setInt(3, bccnv.getCaLam());
-	            st.setInt(4, bccnv.getTrangThai());
-	            st.setString(5, bccnv.getGioDen());
-	            st.setFloat(6, bccnv.getGioTangCa());
-	            st.setString(7, bccnv.getGhiChu());
+	            st.setBoolean(4, bccnv.isDiLam());
+	            st.setBoolean(5, bccnv.isCoPhep());
+	            st.setString(6, bccnv.getGioDen());
+	            st.setFloat(7, bccnv.getGioTangCa());
+	            st.setString(8, bccnv.getGhiChu());
 	            n = st.executeUpdate();
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -131,15 +134,16 @@ public class ChamCongNhanVien_Dao {
 	        int n = 0;
 	        try {
 	            Connection con = ConnectDB.getConnection();
-	            String sql = "UPDATE BangChamCongNhanVien SET caLam = ?, trangThai = ?, gioDen = ?, gioTangCa = ?, ghiChu = ? WHERE phanCongNV = ? AND ngayChamCong = ?";
+	            String sql = "UPDATE BangChamCongNhanVien SET caLam = ?, diLam = ?, coPhep = ?, gioDen = ?, gioTangCa = ?, ghiChu = ? WHERE phanCongNV = ? AND ngayChamCong = ?";
 	            st = con.prepareStatement(sql);
 	            st.setInt(1, bccnv.getCaLam());
-	            st.setInt(2, bccnv.getTrangThai());
-	            st.setString(3, bccnv.getGioDen());
-	            st.setFloat(4, bccnv.getGioTangCa());
-	            st.setString(5, bccnv.getGhiChu());
-	            st.setString(6, bccnv.getPhanCong().getMaPhanCong());
-	            st.setDate(7, new java.sql.Date(bccnv.getNgayChamCong().getTime()));
+	            st.setBoolean(2, bccnv.isDiLam());
+	            st.setBoolean(3, bccnv.isCoPhep());
+	            st.setString(4, bccnv.getGioDen());
+	            st.setFloat(5, bccnv.getGioTangCa());
+	            st.setString(6, bccnv.getGhiChu());
+	            st.setString(7, bccnv.getPhanCong().getMaPhanCong());
+	            st.setDate(8, new java.sql.Date(bccnv.getNgayChamCong().getTime()));
 	            n = st.executeUpdate();
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -199,7 +203,7 @@ public class ChamCongNhanVien_Dao {
 	            while (rs.next()) {
 	                // Tạo đối tượng BangChamCongNhanVien từ kết quả truy vấn
 		            BangChamCongNhanVien bccnv = new BangChamCongNhanVien(new BangPhanCongNhanVien(rs.getString("phanCongNV")), 
-		            		new java.util.Date(rs.getDate("ngayChamCong").getTime()), rs.getInt("caLam"), rs.getInt("trangThai"), rs.getString("gioDen"), 
+		            		new java.util.Date(rs.getDate("ngayChamCong").getTime()), rs.getInt("caLam"), rs.getBoolean("diLam"), rs.getBoolean("coPhep"), rs.getString("gioDen"), 
 		            		rs.getFloat("gioTangCa"), rs.getString("ghiChu"));
 	                list.add(bccnv);
 	            }

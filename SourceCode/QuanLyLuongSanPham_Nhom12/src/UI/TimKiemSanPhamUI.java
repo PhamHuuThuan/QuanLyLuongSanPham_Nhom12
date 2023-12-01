@@ -70,6 +70,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 	private JTableHeader  tbhHD;
 	private JSpinner spnSoLuong;
 	private JTable tblPb;
+	private JTextArea txaYeuCau;
 	private JLabel lblMessage;
 	private JTableHeader tbhPb;
 	private DefaultTableModel tabModel = new DefaultTableModel();
@@ -415,7 +416,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		b6.add(lblYeuCau);
 		b6.add(Box.createHorizontalStrut(35));
 		
-		JTextArea txaYeuCau = new JTextArea();
+		txaYeuCau = new JTextArea();
 		txaYeuCau.setRows(3);
 		txaYeuCau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, componentColor), 
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -521,7 +522,7 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		//Set giá trị mặc định để hiển thị
 		
 	}
-
+	//HÀM SETEDIT
 	private void setEditableForTextField(boolean edit) {
 		if(edit == true) {
 			txtMaHD.setEditable(true);
@@ -535,12 +536,22 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 			txtDonGia.setEditable(false);
 		}
 	}
+	
+	//HÀM XÓA RỖNG
 	private void xoaRong() {
 		txtMaHD.setText("");
-		txtMaSP.setText("");
+		txtMaSP.setText("");;
 		txtTenSP.setText("");
 		txtDonGia.setText("");
+		txaYeuCau.setText("");
+		txtMaHDS.setText("");
+		txtMaSPS.setText("");
+		txtTenSPS.setText("");
+		txtDonGiaTran.setText("");
+		txtDonGiaSan.setText("");
 	}
+	
+	
 	//hiển thị border cho button được user nhấn
 	//format lai giá trị và tiền cọc
 	private String formatMoneyText(String money) {
@@ -606,7 +617,6 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object o = e.getSource();
-			System.out.println("333333333333333333");
 			if(o == btnTimKiem) {
 				timKiemSanPham();
 			}
@@ -644,12 +654,11 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		}
 		//Hiển thị nhân viên được chọn từ table lên bảng thông tin
 		private void hienThiThongTinSP(int index) {
-			System.out.println("44444444444444");
+			txtMaHD.setText(dsSP.get(index).getMaHopDong().getMaHD());
 			txtMaSP.setText(dsSP.get(index).getMaSP());
 			txtTenSP.setText(dsSP.get(index).getTenSP());
 			txtDonGia.setText(String.valueOf(dsSP.get(index).getDonGia()));;
 			
-			spnSoLuong = new JSpinner();
 			spnSoLuong.setValue(dsSP.get(index).getSoLuong());
 			System.out.println("spn: " + spnSoLuong.getValue());
 			spnSoLuong.updateUI();
@@ -727,14 +736,18 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 			
 			xoaRong();
 		}
+	//HÀM XÓA RỖNG
 	private void resetTextFiled() {
 		txtMaHD.setText("");
 		txtMaSP.setText("");;
 		txtTenSP.setText("");
 		txtDonGia.setText("");
-		txtdonViTinh.setText("");
-		txtSoLuong.setText("");
-		txtYeuCau.setText("");
+		txaYeuCau.setText("");
+		txtMaHDS.setText("");
+		txtMaSPS.setText("");
+		txtTenSPS.setText("");
+		txtDonGiaTran.setText("");
+		txtDonGiaSan.setText("");
 	}
 	// thông báo lỗi
 	private void setTextError(String message) {
@@ -790,12 +803,13 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 	private void themSanPhamVaoBang(SanPham sp) {
 	    Object[] row = new Object[10];
 	    row[0] = dtblModelSP.getRowCount() + 1;  // STT
-	    row[1] = sp.getMaHopDong();
+	    row[1] = sp.getMaHopDong().getMaHD();
 	    row[2] = sp.getMaSP();  
 	    row[3] = sp.getTenSP();  
 	    row[4] = sp.getDonViTinh();  
 	    row[5] = String.valueOf(sp.getSoLuong()); 
-	    row[6] = sp.getDonGia();
+	    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+	    row[6] = decimalFormat.format(sp.getDonGia())  + " VNĐ";
 	    row[7] = sp.getYeuCau();  
 	    
 	    

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -26,19 +28,38 @@ public class TinhLuongNhanVien_Dao {
 
 	    try {
 	        Connection con = ConnectDB.getConnection();
-	        String sql = "SELECT * FROM BangPhanCongNhanVien pcnv "
+	        String sql = "SELECT DISTINCT * FROM BangPhanCongNhanVien pcnv "
 	                    + "JOIN NhanVien nv "
 	                    + "ON pcnv.maNhanVien = nv.maNV "
 	                    + "WHERE pcnv.maNhanVien NOT IN "
 	                    + "(SELECT blnv.maNhanVien "
 	                    + "FROM BangLuongNhanVien blnv "
 	                    + "WHERE blnv.thangNam = ?) "
-	                    + "AND (pcnv.maPhongBan = ? OR ? IS NULL)";
+	                    + "AND (pcnv.maPhongBan = ? OR ? IS NULL)"
+	                    + "AND pcnv.maPhanCong IN "
+	                    + "(SELECT bccnv.phanCongNV "
+	                    + "FROM BangChamCongNhanVien bccnv "
+	                    + "WHERE MONTH(bccnv.ngayChamCong) = MONTH(?) "
+	                    + "AND YEAR(bccnv.ngayChamCong) = YEAR(?))";
 
 	        st = con.prepareStatement(sql);
 	        st.setString(1, thangNam);
 	        st.setString(2, maPhongBan);
 	        st.setString(3, maPhongBan);
+
+	        // Chuyển đổi chuỗi thangNam thành đối tượng java.sql.Date
+	        SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+	        java.util.Date date = null;
+			try {
+				date = sdf.parse(thangNam);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+	        st.setDate(4, sqlDate);
+	        st.setDate(5, sqlDate);
 	        rs = st.executeQuery();
 
 	        while (rs.next()) {
@@ -60,6 +81,7 @@ public class TinhLuongNhanVien_Dao {
 	    }
 	    return phanCongList;
 	}
+
 // lấy danh sách bảng lương theo mã phòng ban và tháng năm
 	public ArrayList<BangLuongNhanVien> getDSTinhLuong(String maPhongBan, String thangNam) {
 	    ArrayList<BangLuongNhanVien> luongList = new ArrayList<>();
