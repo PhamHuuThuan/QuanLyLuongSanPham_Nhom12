@@ -56,7 +56,7 @@ public class ChamCongCongNhan_Dao {
 	}
 
 	// HÀM LẤY TẤT CẢ CÔNG NHÂN ĐÃ ĐƯỢC PHÂN CÔNG THỎA SP VÀ CD TRÊN
-	public ArrayList<CongNhan> getALLCongNhan(String maSP, String maCongDoan, java.util.Date ngayPhanCong) {
+	public ArrayList<CongNhan> getALLCongNhan(String maSP, String maCongDoan) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -88,12 +88,11 @@ public class ChamCongCongNhan_Dao {
 					+ "JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN\r\n"
 					+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan = cd.maCD\r\n"
 					+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP "
-					+ "WHERE cd.maSP LIKE ? AND pccd.maCongDoan LIKE ? AND pccd.ngayPhanCong LIKE ?";
+					+ "WHERE cd.maSP LIKE ? AND pccd.maCongDoan LIKE ? ";
 			st = conn.prepareStatement(querry);
 
 			st.setString(1, "%" + maSP + "%");
 			st.setString(2, "%" + maCongDoan + "%");
-			st.setString(3, "%" + new java.sql.Date(ngayPhanCong.getTime()) + "%");
 
 			rs = st.executeQuery();
 

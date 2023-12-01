@@ -48,7 +48,7 @@ public class PhanCongCongDoan_Dao {
 	}
 
 	// HÀM LẤY DỮ LIỆU ALL CÔNG ĐOẠN
-	public ArrayList<CongDoan> getAllCongDoan() {
+	public ArrayList<CongDoan> getAllCongDoan(String maSP) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -56,26 +56,22 @@ public class PhanCongCongDoan_Dao {
 
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "WITH CongDoanWithConLai AS (\r\n"
-					+ "    SELECT \r\n"
-					+ "        cd.maCD, cd.tenCD, cd.soLuong, cd.maSP, cd.tinhTrang, cd.donGia, cd.thuTu, cd.ngayHoanThanh, \r\n"
-					+ "        cd.soLuong - COALESCE(SUM(pccd.soLuongCanLam), 0) AS soLuongConLai\r\n"
-					+ "    FROM \r\n"
-					+ "        CongDoan cd\r\n"
-					+ "        LEFT JOIN BangPhanCongCongDoan pccd ON pccd.maCongDoan = cd.maCD\r\n"
-					+ "        LEFT JOIN CongNhan cn ON pccd.maCN = cn.maCN \r\n"
-					+ "        LEFT JOIN SanPham sp ON cd.maSP = sp.maSP\r\n"
-					+ "    GROUP BY \r\n"
-					+ "        cd.maCD, cd.tenCD, cd.soLuong, cd.maSP, cd.tinhTrang, cd.ngayHoanThanh, cd.donGia, cd.thuTu\r\n"
+			String querry = "WITH CongDoanWithConLai AS ( \r\n"
+					+ "	SELECT cd.maCD, cd.tenCD, cd.soLuong, cd.maSP, cd.tinhTrang, cd.donGia, cd.thuTu, cd.ngayHoanThanh,\r\n"
+					+ "	cd.soLuong - COALESCE(SUM(pccd.soLuongCanLam), 0) AS soLuongConLai \r\n"
+					+ "	FROM [dbo].[CongDoan] cd LEFT JOIN BangPhanCongCongDoan pccd ON pccd.maCongDoan = cd.maCD \r\n"
+					+ "	LEFT JOIN CongNhan cn ON pccd.maCN = cn.maCN \r\n"
+					+ "	LEFT JOIN SanPham sp ON cd.maSP = sp.maSP\r\n"
+					+ "	GROUP BY cd.maCD, cd.tenCD, cd.soLuong, cd.maSP, cd.tinhTrang, cd.ngayHoanThanh, cd.donGia, cd.thuTu \r\n"
 					+ ")\r\n"
-					+ "SELECT \r\n"
-					+ "    CongDoanWithConLai.*,  sp.*\r\n"
-					+ "FROM \r\n"
-					+ "    CongDoanWithConLai LEFT JOIN SanPham sp ON CongDoanWithConLai.maSP = sp.maSP\r\n"
-					+ "WHERE \r\n"
-					+ "    (CongDoanWithConLai.tinhTrang LIKE '0' OR CongDoanWithConLai.tinhTrang IS NULL)\r\n"
-					+ "    AND CongDoanWithConLai.soLuongConLai > 0;";
+					+ "SELECT CongDoanWithConLai.*, sp.tenSP FROM  \r\n"
+					+ "CongDoanWithConLai LEFT JOIN SanPham sp ON CongDoanWithConLai.maSP = sp.maSP \r\n"
+					+ "WHERE (CongDoanWithConLai.tinhTrang LIKE '0' OR CongDoanWithConLai.tinhTrang IS NULL) \r\n"
+					+ "AND CongDoanWithConLai.soLuongConLai > 0 AND CongDoanWithConLai.maSP LIKE ?";
 			st = conn.prepareStatement(querry);
+			
+			st.setString(1, "%"+ maSP + "%");
+			
 			rs = st.executeQuery();
 
 			while (rs.next()) {
@@ -128,6 +124,37 @@ public class PhanCongCongDoan_Dao {
 		}
 		return listCN;
 	}
+	// HÀM LẤY DANH SÁCH SẢN PHẨM ĐÃ CÓ CÔNG ĐOẠN
+	public ArrayList<SanPham> getAllSPDaCoCongDoan(){
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		ArrayList<SanPham> listSPDaCoCongDoan = new ArrayList<>();
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "SELECT DISTINCT cd.maSP, sp.tenSP, cd.tinhTrang "
+					+ "FROM [dbo].[CongDoan] cd JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP "
+					+ "WHERE cd.tinhTrang <> 1 ";
+			st = conn.prepareStatement(querry);
+			rs = st.executeQuery();
+			
+			while(rs.next()) {
+				SanPham sp = new SanPham(rs.getString("maSP"),rs.getString("tenSP"));
+				listSPDaCoCongDoan.add(sp);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return listSPDaCoCongDoan;
+	}
+	
 
 	// HÀM LẤY DANH SÁCH PHÂN CÔNG CÔNG ĐOẠN
 	public ArrayList<BangPhanCongCongDoan> getAllPhanCongCongDoan() {
@@ -249,6 +276,41 @@ public class PhanCongCongDoan_Dao {
 		
 		return n>0;
 	}
+	// HÀM CHECK XEM NẾU ĐÃ CHẤM CÔNG THÌ KHÔNG XOÁ PHÂN CÔNG ẤY ĐƯỢC
+	public boolean checkPhanCongDaTonTaiOChamCong(String maPhanCong) {
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		boolean n = false;
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "SELECT * FROM [dbo].[BangPhanCongCongDoan] pccd JOIN [dbo].[BangChamCongCongNhan] cccn "
+					+ "ON pccd.maPhanCong = cccn.maPhanCong "
+					+ "WHERE pccd.maPhanCong LIKE ?";
+			st = conn.prepareStatement(querry);
+			st.setString(1,"%"+ maPhanCong + "%");
+			
+			rs = st.executeQuery();
+			
+			while(rs.next()) {
+				n = true;
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return n;
+	}
+	
+	
+	
 	// HÀM XÓA 1 CÔNG ĐOẠN
 	public boolean xoaPCCD(String maPhanCong) {
 		ConnectDB.getInstance();

@@ -865,9 +865,9 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		String maSP = txtMaSP.getText();
 		String maCD = txtMaCD.getText();
 
-		Date ngayPC = dtbNgayChamCong.getDate();
+//		Date ngayPC = dtbNgayChamCong.getDate();
 
-		dspccd_cn = cccn_dao.getALLCongNhan(maSP, maCD, ngayPC);
+		dspccd_cn = cccn_dao.getALLCongNhan(maSP, maCD);
 		themAllCNVaoBang(dspccd_cn);
 	}
 
@@ -904,7 +904,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 
 	}
 
-	/* HÀM CHÂM CÔNG CÔNG NHÂN */
+	/* HÀM CHẤM CÔNG CÔNG NHÂN */
 	// HÀM CONVERT DATA CHAM CONG CONG NHAN
 	public BangChamCongCongNhan convertDataCCCN() {
 		Date ngayChamCong = dtbNgayChamCong.getDate();
