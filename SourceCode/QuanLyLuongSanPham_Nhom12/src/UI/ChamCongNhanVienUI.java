@@ -6,6 +6,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -62,7 +64,7 @@ import javax.swing.JButton;
 import java.awt.Dimension;
 import java.awt.Component;
 
-public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseListener, ItemListener{
+public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseListener, ItemListener, TableModelListener{
 	/**
 	 * 
 	 */
@@ -78,7 +80,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	private JTextField  txtGhiChu;
 	private JComboBox<PhongBan> cmbPhongBan;
 	private JXDatePicker dtbNgayCC;
-	private JComboBox cmbCaLam, cmbTrangThai;
+	private JComboBox cmbCaLam;
 	private JSpinner spnGioDen, spnTangCa;
 	private SpinnerModel spnModelGioDen;
 	private JTextField txtMaNV;
@@ -211,9 +213,33 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 				main.read_file_languages.getString("lblMaNV"), 
 				main.read_file_languages.getString("lblHoTen"), 
 				main.read_file_languages.getString("lblPhongBan1"), 
-				main.read_file_languages.getString("lblChucVu")};
+				main.read_file_languages.getString("lblChucVu"),
+				"Đi làm",
+				"Có phép"
+				};
 		dtblModelDSPC = new DefaultTableModel(cols, 0);
-		tblDSPC = new JTable(dtblModelDSPC);
+		tblDSPC = new JTable(dtblModelDSPC) {
+		    private static final long serialVersionUID = 1L;
+		    @Override
+		    public Class getColumnClass(int column) {
+		        switch (column) {
+		            case 0:
+		                return Integer.class;  // STT
+		            case 1:
+		                return String.class;  // Mã NV
+		            case 2:
+		                return String.class;  // Họ tên
+		            case 3:
+		                return String.class;  // Phòng ban
+		            case 4:
+		                return String.class;  // Chức vụ
+		            case 5:
+		                return Boolean.class;  // Đi làm
+		            default:
+		                return Boolean.class;  // Có phép
+		        }
+		    }
+		};
 
 		tbhNV = new JTableHeader(tblDSPC.getColumnModel());
 		tbhNV.setReorderingAllowed(false);
@@ -226,9 +252,11 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblDSPC.setRowHeight(20);
 		tblDSPC.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblDSPC.getColumnModel().getColumn(1).setPreferredWidth(50);
-		tblDSPC.getColumnModel().getColumn(2).setPreferredWidth(275);
-		tblDSPC.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblDSPC.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tblDSPC.getColumnModel().getColumn(2).setPreferredWidth(175);
+		tblDSPC.getColumnModel().getColumn(3).setPreferredWidth(75);
+		tblDSPC.getColumnModel().getColumn(4).setPreferredWidth(75);
+		tblDSPC.getColumnModel().getColumn(5).setPreferredWidth(100);
+		tblDSPC.getColumnModel().getColumn(6).setPreferredWidth(100);
 		
 		//chỉnh trái phải của dữ liệu trong bảng
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
@@ -290,22 +318,24 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlB1.add(Box.createHorizontalStrut(20));
 		
 		JLabel lblTrangThai = new JLabel(main.read_file_languages.getString("lblTrangThai") + ":");
-		pnlB1.add(lblTrangThai);
+//		pnlB1.add(lblTrangThai);
 		lblTrangThai.setForeground(textColor);
 		lblTrangThai.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
-		cmbTrangThai = new JComboBox<>();
-		cmbTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Đúng giờ", "Trễ", "Nghỉ 0 phép", "Nghỉ phép"}));
-		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
-				BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		cmbTrangThai.setUI(new CustomComboBoxUI(new ImageScaler("/image/down-arrow.png", 18, 18).getScaledImageIcon(), bgColor, cboBorder));
-		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
-				BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		cmbTrangThai.setRenderer(new CustomListCellRenderer(Color.decode("#DADBDD"), bgColor, cboBorder));
-		cmbTrangThai.setBackground(bgColor);
-		cmbTrangThai.setForeground(textColor);
-		cmbTrangThai.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		pnlB1.add(cmbTrangThai);
+		JLabel lblMaNV = new JLabel(main.read_file_languages.getString("lblMaNV") + ":");
+		lblMaNV.setForeground(textColor);
+		lblMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		pnlB1.add(lblMaNV);
+		
+		txtMaNV = new JTextField();
+		txtMaNV.setForeground(textColor);
+		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
+		txtMaNV.setPreferredSize(cmbCaLam.getPreferredSize());
+		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
+						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		txtMaNV.setBackground(Color.WHITE);
+		txtMaNV.setEditable(false);
+		pnlB1.add(txtMaNV);
 		
 		JPanel pnlB2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnlB2.setBackground(bgColor);
@@ -344,6 +374,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		spnGioDen.setPreferredSize(cmbCaLam.getPreferredSize());
         pnlB2.add(spnGioDen);
 		pnlB2.add(Box.createHorizontalStrut(20));
+
 		
 		JLabel lblTangCa = new JLabel(main.read_file_languages.getString("lblTangCa") + ":");
 		pnlB2.add(lblTangCa);
@@ -358,7 +389,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		spnTangCa.setBackground(bgColor);
 		spnTangCa.setForeground(textColor);
 		spnTangCa.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		spnTangCa.setPreferredSize(cmbTrangThai.getPreferredSize());
+		spnTangCa.setPreferredSize(new Dimension(100, 30));
 		pnlB2.add(spnTangCa);
 		
 		JLabel lblGio = new JLabel(main.read_file_languages.getString("lblHour"));
@@ -371,26 +402,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		pnlTTRight.add(pnlB4);
 		cboBorder = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), 
 				BorderFactory.createEmptyBorder(0, 10, 0, 5));
-		
-		JLabel lblMaNV = new JLabel(main.read_file_languages.getString("lblMaNV") + ":");
-		lblMaNV.setForeground(textColor);
-		lblMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		lblMaNV.setPreferredSize(lblGioDen.getPreferredSize());
-		pnlB4.add(lblMaNV);
-		
-		txtMaNV = new JTextField();
-		txtMaNV.setForeground(textColor);
-		txtMaNV.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
-		txtMaNV.setPreferredSize(cmbCaLam.getPreferredSize());
-		txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
-						BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-		txtMaNV.setBackground(Color.WHITE);
-		txtMaNV.setEditable(false);
-		pnlB4.add(txtMaNV);
-		
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		pnlB4.add(horizontalStrut);
-		
+
 		JLabel lblGhiChu = new JLabel(main.read_file_languages.getString("lblGhiChu") + ":");
 		pnlB4.add(lblGhiChu);
 		lblGhiChu.setPreferredSize(lblTrangThai.getPreferredSize());
@@ -398,7 +410,7 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		lblGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		
 		txtGhiChu = new JTextField();
-		txtGhiChu.setPreferredSize(cmbCaLam.getPreferredSize());
+		txtGhiChu.setColumns(25);
 		txtGhiChu.setForeground(textColor);
 		txtGhiChu.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		txtGhiChu.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor), 
@@ -475,13 +487,43 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 				main.read_file_languages.getString("lblHoTen"),
 				main.read_file_languages.getString("lblPhongBan1"), 
 				main.read_file_languages.getString("lblNgayCham"), 
+				"Đi làm",
+				"Có phép",
 				main.read_file_languages.getString("lblCaLam"), 
-				main.read_file_languages.getString("lblTrangThai"), 
 				main.read_file_languages.getString("lblGioDen"), 
 				main.read_file_languages.getString("lblTangCa"), 
 				main.read_file_languages.getString("lblGhiChu")};
 		dtblModelDSCC = new DefaultTableModel(colsPCNV, 0);
-		tblDSCC = new JTable(dtblModelDSCC);
+		tblDSCC = new JTable(dtblModelDSCC) {
+		    private static final long serialVersionUID = 1L;
+		    @Override
+		    public Class getColumnClass(int column) {
+		        switch (column) {
+		            case 0:
+		                return Integer.class;  // STT
+		            case 1:
+		                return String.class;  // Mã NV
+		            case 2:
+		                return String.class;  // Họ tên
+		            case 3:
+		                return String.class;  // Phòng ban
+		            case 4:
+		                return String.class;  // Ngày chấm công
+		            case 5:
+		                return Boolean.class;  // Đi làm
+		            case 6:
+		                return Boolean.class;  // Có phép
+		            case 7:
+		                return String.class;  // Ca làm
+		            case 8:
+		                return String.class;  // Giờ đến
+		            case 9:
+		                return String.class;  // Giờ tăng ca
+		            default:
+		                return String.class;  // Ghi chú
+		        }
+		    }
+		};
 
 		tbhNVPC = new JTableHeader(tblDSCC.getColumnModel());
 		tbhNVPC.setReorderingAllowed(false);
@@ -498,15 +540,15 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		tblDSCC.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(3).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(4).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(75);
-		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(100);
-		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(5).setPreferredWidth(50);
+		tblDSCC.getColumnModel().getColumn(6).setPreferredWidth(50);
+		tblDSCC.getColumnModel().getColumn(7).setPreferredWidth(75);
 		tblDSCC.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblDSCC.getColumnModel().getColumn(9).setPreferredWidth(100);
+		tblDSCC.getColumnModel().getColumn(10).setPreferredWidth(100);
 		
 		//trái phải của dữ liệu
 		tblDSCC.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		tblDSCC.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		
 		tblDSCC.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
 		tblDSCC.getColumnModel().getColumn(7).setCellRenderer(rightRenderer);
@@ -534,6 +576,8 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		
 		cmbPhongBan.addItemListener(this);
 		
+		dtblModelDSPC.addTableModelListener(this);
+		dtblModelDSCC.addTableModelListener(this);
 		//Set giá trị mặc định để hiển thị
 		uploadDataToTable();
 	}
@@ -613,6 +657,8 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	    row[2] = pcnv.getNhanVien().getHoTen();  // Họ tên
 	    row[3] = pcnv.getPhongBan().getTenPhongBan(); // Phòng ban
 	    row[4] = pcnv.getChucVu();  // Chức vụ
+	    row[5] = Boolean.TRUE;  // Auto đi làm
+	    row[6] = Boolean.FALSE;
 	    
 	    dtblModelDSPC.addRow(row);
 	}
@@ -625,17 +671,18 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	}
 	//thêm một phân công vào bảng chấm công
 	private void themCCNhanVienVaoBangChamCong(BangChamCongNhanVien ccnv) {
-	    Object[] row = new Object[10];
+	    Object[] row = new Object[11];
 	    row[0] = dtblModelDSCC.getRowCount() + 1;  // STT
 	    row[1] = ccnv.getPhanCong().getNhanVien().getMaNV();  // Mã NV
 	    row[2] = ccnv.getPhanCong().getNhanVien().getHoTen();  // Họ tên
 	    row[3] = ccnv.getPhanCong().getPhongBan().getTenPhongBan(); // Phòng ban
-	    row[4] = new SimpleDateFormat("dd-MM-yyyy").format(ccnv.getNgayChamCong());  // Chức vụ
-	    row[5] = ccnv.getCaLam()==1?"Nửa ngày":"Cả ngày";
-	    row[6] = cmbTrangThai.getItemAt(ccnv.getTrangThai()).toString();
-	    row[7] = ccnv.getGioDen();
-	    row[8] = ccnv.getGioTangCa() + " giờ";
-	    row[9] = ccnv.getGhiChu();
+	    row[4] = new SimpleDateFormat("dd-MM-yyyy").format(ccnv.getNgayChamCong());  // Ngay cham cong
+	    row[5] = ccnv.isDiLam()?Boolean.TRUE:Boolean.FALSE;
+	    row[6] = ccnv.isCoPhep()?Boolean.TRUE:Boolean.FALSE;
+	    row[7] = ccnv.getCaLam()==1?"Nửa ngày":"Cả ngày";
+	    row[8] = ccnv.getGioDen();
+	    row[9] = ccnv.getGioTangCa() + " giờ";
+	    row[10] = ccnv.getGhiChu();
 	    dtblModelDSCC.addRow(row);
 	}
 	//thêm một ds chấm công vào bảng
@@ -678,18 +725,21 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		if(dsChuaCC.size()>0) {
 			Date ngayCham = dtbNgayCC.getDate();
 			int caLam = cmbCaLam.getSelectedIndex()==0?2:1;
-			int trangThai = cmbTrangThai.getSelectedIndex();
 			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 			String gioDen = format.format(spnModelGioDen.getValue());
 			float tangCa = Float.parseFloat(spnTangCa.getValue().toString());
 			String ghiChu = txtGhiChu.getText();
+			int i = 0;
 			for(BangPhanCongNhanVien pcnv : dsChuaCC) {
-				BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, trangThai, gioDen, tangCa, ghiChu);
+				boolean diLam = (boolean) dtblModelDSPC.getValueAt(i, 5);
+				boolean coPhep = (boolean) dtblModelDSPC.getValueAt(i, 6);
+				BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, diLam, coPhep, gioDen, tangCa, ghiChu);
 				if(ccnv_Dao.themBangChamCongNhanVien(bccnv)) {
 					
 				}else {
 					setTextError("Chấm công thất bại!" + pcnv.getNhanVien().getMaNV());
 				}
+				i++;
 			}
 			uploadDataToTable();
 			lblMessage.setText("Hoàn tất chấm công tất cả nhân viên!");
@@ -699,16 +749,19 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	}
 	//chấm công 1 nhân viên
 	private void chamCongNV() {
-		if(tblDSPC.getSelectedRow()!=-1) {
+		int i = tblDSPC.getSelectedRow();
+		if(i!=-1) {
 			Date ngayCham = dtbNgayCC.getDate();
 			int caLam = cmbCaLam.getSelectedIndex()==0?2:1;
-			int trangThai = cmbTrangThai.getSelectedIndex();
+			boolean diLam = (boolean) tblDSPC.getValueAt(i, 5);
+			boolean coPhep = (boolean) tblDSPC.getValueAt(i, 6);
 			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 			String gioDen = format.format(spnModelGioDen.getValue());
 			float tangCa = Float.parseFloat(spnTangCa.getValue().toString());
 			String ghiChu = txtGhiChu.getText();
 			BangPhanCongNhanVien pcnv = dsChuaCC.get(tblDSPC.getSelectedRow());
-			BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, trangThai, gioDen, tangCa, ghiChu);
+			BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, diLam, coPhep, gioDen, tangCa, ghiChu);
+			System.out.println(bccnv.toString());
 			if(ccnv_Dao.themBangChamCongNhanVien(bccnv)) {
 				lblMessage.setText("Chấm công thành công!");
 			}else {
@@ -724,16 +777,18 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 	}
 	// sửa chấm công 1 nhân viên
 	private void suaChamCongNV() {
-		if(tblDSCC.getSelectedRow()!=-1) {
+		int i = tblDSCC.getSelectedRow();
+		if(i!=-1) {
 			Date ngayCham = dtbNgayCC.getDate();
 			int caLam = cmbCaLam.getSelectedIndex()==0?2:1;
-			int trangThai = cmbTrangThai.getSelectedIndex();
+			boolean diLam = (boolean) tblDSCC.getValueAt(i, 5);
+			boolean coPhep = (boolean) tblDSCC.getValueAt(i, 6);
 			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 			String gioDen = format.format(spnModelGioDen.getValue());
 			float tangCa = Float.parseFloat(spnTangCa.getValue().toString());
 			String ghiChu = txtGhiChu.getText();
 			BangPhanCongNhanVien pcnv = dsChamCong.get(tblDSCC.getSelectedRow()).getPhanCong();
-			BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, trangThai, gioDen, tangCa, ghiChu);
+			BangChamCongNhanVien bccnv = new BangChamCongNhanVien(pcnv, ngayCham, caLam, diLam, coPhep, gioDen, tangCa, ghiChu);
 			if(ccnv_Dao.suaBangChamCongNhanVien(bccnv)) {
 				lblMessage.setText("Sửa chấm công thành công!");
 			}else {
@@ -814,5 +869,23 @@ public class ChamCongNhanVienUI extends JPanel implements ActionListener, MouseL
 		}else{
 			setTextError("Không có thông tin nào để xuất!");
 		}
+	}
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		int row = e.getFirstRow();
+        int column = e.getColumn();
+        if (column == 5 || column == 6) { // Kiểm tra xem cột có phải là cột checkbox không
+            Boolean checked = (Boolean) ((DefaultTableModel) e.getSource()).getValueAt(row, column);
+            if (checked) {
+                // Thực hiện hành động khi checkbox được chọn
+                if (column == 5) {
+                	((DefaultTableModel) e.getSource()).setValueAt(Boolean.FALSE, row, 6); // Đặt giá trị của cột 6 thành false khi cột 5 được chọn
+                } else {
+                	((DefaultTableModel) e.getSource()).setValueAt(Boolean.FALSE, row, 5); // Đặt giá trị của cột 5 thành false khi cột 6 được chọn
+                }
+            } else {
+            	
+            }
+        }
 	}
 }

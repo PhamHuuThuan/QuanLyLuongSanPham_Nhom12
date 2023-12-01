@@ -103,14 +103,12 @@ public class XuatPDF {
 		
 		for(BangChamCongNhanVien ccnv : dscc) {
 			String trangThai;
-			if (ccnv.getTrangThai() == 0) {
-			    trangThai = "Đúng giờ";
-			} else if (ccnv.getTrangThai() == 1) {
-			    trangThai = "Trễ";
-			} else if (ccnv.getTrangThai() == 2) {
-			    trangThai = "Nghỉ k phép";
-			} else {
+			if (ccnv.isDiLam()) {
+			    trangThai = "Đi làm";
+			} else if (ccnv.isCoPhep()) {
 			    trangThai = "Nghỉ có phép";
+			} else {
+			    trangThai = "Nghỉ không phép";
 			}
 
 			XuatChamCongForm xcc = new XuatChamCongForm(new SimpleDateFormat("dd-MM-yyyy").format(ccnv.getNgayChamCong()), 

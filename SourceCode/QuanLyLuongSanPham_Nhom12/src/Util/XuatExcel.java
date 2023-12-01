@@ -107,14 +107,12 @@ public class XuatExcel {
 		cell.setCellValue( ccnv.getCaLam() == 0 ? "Nửa ngày(4h)" : "Cả ngày (8h)");
 		
 		String trangThai;
-		if (ccnv.getTrangThai() == 0) {
-		    trangThai = "Đúng giờ";
-		} else if (ccnv.getTrangThai() == 1) {
-		    trangThai = "Trễ";
-		} else if (ccnv.getTrangThai() == 2) {
-		    trangThai = "Nghỉ k phép";
-		} else {
+		if (ccnv.isDiLam()) {
+		    trangThai = "Đi làm";
+		} else if (ccnv.isCoPhep()) {
 		    trangThai = "Nghỉ có phép";
+		} else {
+		    trangThai = "Nghỉ không phép";
 		}
 
 		cell = row.createCell(6);
