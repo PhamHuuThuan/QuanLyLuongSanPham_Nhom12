@@ -616,7 +616,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	// HÀM SET EDIT CÁC JTEXT
 	private void setEditableForTextField(boolean edit) {
 		if (edit == true) {
-			txtMaCN.setEditable(true);
+			txtMaCN.setEditable(false);
 			txtHoTen.setEditable(true);
 			txtMatKhau.setEditable(true);
 
@@ -799,7 +799,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		String sdt = txtSoDT.getText();
 		String email = txtEmail.getText();
 		String scccd = txtSoCCCD.getText();
-//		Date ngayVaoLam = dpNgayVaoLam.getDate();
+		Date ngayVaoLam = dpNgayVaoLam.getDate();
 
 //		if (pathNameAvatar.equals("image_cn_df.jpg")) {
 //			alertNotification("Ảnh đại diện là bắt buộc ");
@@ -807,23 +807,26 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 //		}
 
 		if (maCN == null || maCN.trim().length() <= 0) {
-			alertNotification("Trường Mã Công Nhân là bắt buộc ");
+			alertNotification("Trường nhập Mã Công Nhân là bắt buộc");
 			return false;
 		} else if (!Pattern.matches("CN\\d{5}", maCN)) {
-			alertNotification("Mã Công Nhân không đúng định dạng (CNXXXXX, X:0-1)");
+			alertNotification("Trường nhập Mã Công Nhân không đúng định dạng (CNXXXXX, X:0-1)");
 			return false;
 		}
 
 		if (tenCN == null || tenCN.trim().length() <= 0) {
 			alertNotification("Trường nhập Tên Công Nhân là bắt buộc");
 			return false;
+		}else if(Pattern.matches(".*\\d.*", tenCN)){
+			alertNotification("Trường nhập Tên Công Nhân không phép chứa số");
+			return false;
 		}
 
-		if (mk == null) {
-			alertNotification("Mật khẩu không rỗng");
+		if (mk == null || mk.trim().length() <= 0) {
+			alertNotification("Trường nhập Mật khẩu không được để trống");
 			return false;
 		} else if (mk.length() < 6) {
-			alertNotification("Mật khẩu phải lớn hơn hoặc bằng 6 kí tự");
+			alertNotification("Trường nhập Mật khẩu phải lớn hơn 6 kí tự");
 			return false;
 		}
 
@@ -831,24 +834,34 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		cal.add(Calendar.YEAR, -18);
 		java.util.Date eighteenYearsAgo = cal.getTime();
 		if (!ngaySinh.before(eighteenYearsAgo)) {
-			alertNotification("Ngày trước sinh phải là ngày hiện tại và trên 18 tuổi");
+			alertNotification("Trường chọn Ngày trước sinh phải là ngày hiện tại và trên 18 tuổi");
 			return false;
 		}
 
-		if (!Pattern.matches("^(\\+84|0)[1-9]\\d{8}$", sdt)) {
-			alertNotification("Số điện thoại không đúng định dạng");
+		if (sdt == null || sdt.trim().length() <= 0) {
+			alertNotification("Trường nhập Số điện thoại không được để trống");
+			return false;
+		}else if (!Pattern.matches("^(\\+84|0)[1-9]\\d{8}$", sdt)) {
+			alertNotification("Trường nhập Số điện thoại không đúng định dạng (bắt đầu bằng +84/0 + 9 số)");
 			return false;
 		}
 
-		if (!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", email)) {
-			alertNotification("Email không đúng định dạng");
+		if (email == null || email.trim().length() <= 0) {
+			alertNotification("Trường nhập Email không được để trống");
+			return false;
+		}else if (!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", email)) {
+			alertNotification("Trường nhập Email không đúng định dạng");
 			return false;
 		}
 
-		if (!Pattern.matches("^\\d{12}$", scccd)) {
-			alertNotification("Số căn cước không đúng định dạng (12 số)");
+		if (scccd == null || scccd.trim().length() <= 0) {
+			alertNotification("Trường nhập Số căn cước không được để trống");
+			return false;
+		}else if (!Pattern.matches("^\\d{12}$", scccd)) {
+			alertNotification("Trường nhập Số căn cước không đúng định dạng (12 số)");
 			return false;
 		}
+		
 //		Date ngayHienTai = new Date();
 //		if (ngayVaoLam.before(ngayHienTai)||ngayVaoLam.equals(ngayHienTai)) {
 //			alertNotification("Ngày vào làm phải bằng hoặc sau ngày hiện tại");
