@@ -708,6 +708,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		txtDiaChi.setText("");
 		txtSoCCCD.setText("");
 		
+		lblAvatar_dt.setIcon(new ImageScaler("/image/image_cn_df.jpg", 140, 140).getScaledImageIcon());
 		txtMaCN_dt.setText("");
 		txtHoTenCN_dt.setText("");
 		txtSoCCCD_dt.setText("");
