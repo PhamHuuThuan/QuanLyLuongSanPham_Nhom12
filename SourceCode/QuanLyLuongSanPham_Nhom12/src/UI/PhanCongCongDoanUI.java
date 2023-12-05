@@ -225,6 +225,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		dpNgayPhanCong.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgayPhanCong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgayPhanCong.setLocale(new Locale("vi", "VN"));
+		dpNgayPhanCong.setEnabled(false);
 		horizontalBox.add(dpNgayPhanCong);
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
@@ -832,12 +833,11 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	private void showJDialogCD() {
 		JDialog listCD = new JDialog(mainFrame, "Danh sách Công đoạn chưa hoàn thành",
 				JDialog.ModalityType.APPLICATION_MODAL);
-		listCD.setSize(1100, 500);
+		listCD.setSize(800, 500);
 		listCD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		listCD.setLocationRelativeTo(null);
 
-		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ Tự", "Đơn giá", "SL", "SL chưa PC", "Tình trạng",
-				"Ngày HT" };
+		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ Tự", "SL", "SL chưa PC"};
 		dtblModelCD = new DefaultTableModel(cols_cd, 0);
 		tblCD = new JTable(dtblModelCD);
 
@@ -854,10 +854,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tblCD.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblCD.getColumnModel().getColumn(3).setPreferredWidth(40);
 		tblCD.getColumnModel().getColumn(4).setPreferredWidth(90);
-		tblCD.getColumnModel().getColumn(5).setPreferredWidth(30);
-		tblCD.getColumnModel().getColumn(6).setPreferredWidth(90);
-		tblCD.getColumnModel().getColumn(7).setPreferredWidth(90);
-		tblCD.getColumnModel().getColumn(8).setPreferredWidth(90);
+		tblCD.getColumnModel().getColumn(5).setPreferredWidth(90);
 
 		JScrollPane scrCD = new JScrollPane(tblCD, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -892,8 +889,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 					String maCD = dtblModelCD.getValueAt(selectedRowIndex, 1).toString();
 					String tenCD = dtblModelCD.getValueAt(selectedRowIndex, 2).toString();
-					String tongSL = dtblModelCD.getValueAt(selectedRowIndex, 5).toString();
-					String slChuaPC = dtblModelCD.getValueAt(selectedRowIndex, 6).toString();
+					String tongSL = dtblModelCD.getValueAt(selectedRowIndex, 4).toString();
+					String slChuaPC = dtblModelCD.getValueAt(selectedRowIndex, 5).toString();
 
 					txtMaCD.setText(maCD);
 					txtTenCD.setText(tenCD);
@@ -937,11 +934,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		row[1] = cd.getMaCD();
 		row[2] = cd.getTenCD();
 		row[3] = String.valueOf(Integer.valueOf(cd.getThuTu()));
-		row[4] = String.valueOf(Double.valueOf(cd.getDonGia()));
-		row[5] = String.valueOf(Integer.valueOf(cd.getSoLuong()));
-		row[6] = String.valueOf(Integer.valueOf(cd.getSoLuongConLai()));
-		row[7] = cd.isTinhTrang() ? "Đã HT" : "Chưa HT";
-		row[8] = new SimpleDateFormat("dd-MM-yyyy").format(cd.getNgayHoanThanh());
+		row[4] = String.valueOf(Integer.valueOf(cd.getSoLuong()));
+		row[5] = String.valueOf(Integer.valueOf(cd.getSoLuongConLai()));
 		dtblModelCD.addRow(row);
 	}
 
@@ -1082,6 +1076,9 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 					alertSuccess("Phân công thành công");
 					txtMaPCCD.setText(new SinhMaTuDong().sinhMaPCCD());
 					xoaRong();
+					displayButtonSaveAndCancel(false);
+					setEditableForTextField(false);
+					btnGetCD.setEnabled(false);
 				} else {
 					alertNotification("Phân công thất bại! Do đã tồn tại mã PC");
 				}
@@ -1159,6 +1156,9 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 			if (pccdNew != null) {
 				if (pccd_dao.suaPCCD(pccdNew)) {
 					alertSuccess("Cập nhật thành công");
+					displayButtonSaveAndCancel(false);
+					setEditableForTextField(false);
+					btnGetCD.setEnabled(false);
 					getDataPCCDLenBang();
 				} else {
 					alertNotification("Cập nhật thất bại do Phân công không tồn tại");

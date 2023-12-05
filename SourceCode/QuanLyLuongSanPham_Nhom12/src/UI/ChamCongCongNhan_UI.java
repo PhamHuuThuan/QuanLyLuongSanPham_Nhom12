@@ -80,7 +80,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 	private JSpinner spnGioDen;
 
 	private JFrame mainFrame;
-	private RoundedButton btnGetSP, btnChamTatCa, btnGetOutSP;
+	private RoundedButton btnGetSP, btnGetOutSP;
 
 	private int selectedRowIndex = -1;
 
@@ -233,19 +233,6 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		txtTenCongDoan.setEditable(false);
 		box_ChamCong.add(txtTenCongDoan);
 		txtTenCongDoan.setColumns(10);
-
-		Component horizontalStrut_12 = Box.createHorizontalStrut(20);
-		box_ChamCong.add(horizontalStrut_12);
-
-		btnChamTatCa = new RoundedButton("Chấm tất cả", null, 10, 0, 1.0f);
-		btnChamTatCa.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		btnChamTatCa.setForeground(Color.WHITE);
-		btnChamTatCa.setBackground(Color.decode("#3B71CA"));
-		btnChamTatCa.setIcon(new ImageScaler("/image/icon_get_all.png", 24, 24).getScaledImageIcon());
-		btnChamTatCa.setBorder(new EmptyBorder(5, 10, 5, 10));
-
-		btnChamTatCa.setEnabled(false);
-		box_ChamCong.add(btnChamTatCa);
 
 		String cols[] = { "#", "Mã CN", "Họ tên", "SL P.Công", "SL đã chấm", "SL chưa chấm" };
 		dtblModelCN = new DefaultTableModel(cols, 0);
@@ -538,7 +525,6 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		pnlBangChamCong.add(scrSP);
 
 		btnGetSP.addActionListener(this);
-		btnChamTatCa.addActionListener(this);
 
 		btnCham.addActionListener(this);
 		btnSua.addActionListener(this);
@@ -546,7 +532,6 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 
 		btnLuu.addActionListener(this);
 		btnHuy.addActionListener(this);
-		btnChamTatCa.addActionListener(this);
 
 		cmbTrangThai.addActionListener(this);
 
@@ -661,9 +646,6 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 				txtSoLuongLam_dt.setEditable(true);
 				spnGioDen.setEnabled(true);
 			}
-		}
-		if (o == btnChamTatCa) {
-			getMaCNFromDSCN();
 		}
 
 	}
@@ -801,7 +783,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		btnGetOutSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				main.music.playSE(2);
-				btnChamTatCa.setEnabled(true);
+//				btnChamTatCa.setEnabled(true);
 				if (selectedRowIndex != -1) {
 
 					String maSP = dspccd_sp.get(selectedRowIndex).getSanPham().getMaSP();
@@ -895,8 +877,10 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 	public void hienthiThongTinPC(int index) {
 		txtMaCN_dt.setText(dspccd_cn.get(index).getMaCN());
 		txtTenCongNhan_dt.setText(dspccd_cn.get(index).getHoTen());
+		
 		soLuongDaPhan = dspccd_cn.get(index).getPhanCongCongDoan().getSoLuongCanLam();
-
+		
+//		System.out.println(soLuongDaPhan);
 		txtMaPhanCong.setText(dspccd_cn.get(index).getPhanCongCongDoan().getMaPhanCong());
 
 		txtMaSP_dt.setText(dspccd_sp.get(index).getSanPham().getMaSP());
@@ -965,20 +949,6 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 			} else {
 				alertNotification("LỖI không mong muốn");
 			}
-		}
-	}
-
-	//
-	public void getMaCNFromDSCN() {
-		int rowCount = dtblModelCN.getRowCount();
-		String[] maCNvalues = new String[rowCount];
-
-		for (int i = 0; i < rowCount; i++) {
-			String maCN = dtblModelCN.getValueAt(i, 1).toString();
-			maCNvalues[i] = maCN;
-		}
-		for (String ma : maCNvalues) {
-//			System.out.println(ma);
 		}
 	}
 

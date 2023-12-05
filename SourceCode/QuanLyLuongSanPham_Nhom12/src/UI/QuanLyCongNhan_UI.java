@@ -55,8 +55,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
 	private Font fontText;
-	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy;
-	private JButton btnEditAvatar;
+	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy,btnEditAvatar;
 	private JLabel lblAvatar;
 	private JPanel pnlAvatar;
 	private DefaultTableModel dtblModel;
@@ -96,6 +95,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		add(pnlContent, BorderLayout.NORTH);
 		pnlContent.setLayout(new BorderLayout(0, 0));
 
+		// TIÊU ĐỀ
 		JPanel pnlTitle = new JPanel();
 		pnlTitle.setBorder(null);
 		pnlTitle.setBackground(new Color(255, 255, 255));
@@ -110,10 +110,10 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlBody.setBackground(bgColor);
 
 		TitledBorder titleBorder = BorderFactory
-				.createTitledBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông tin Công Nhân");
+				.createTitledBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Thông Tin Chi Tiết Công Nhân");
 		pnlBody.setBorder(
-				BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 50, 20, 50)));
-		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
+				BorderFactory.createCompoundBorder(titleBorder, BorderFactory.createEmptyBorder(20, 40, 20, 40)));
+		titleBorder.setTitleFont(main.roboto_regular.deriveFont( Font.BOLD, 16));
 		pnlBody.setLayout(new BoxLayout(pnlBody, BoxLayout.X_AXIS));
 		pnlContent.add(pnlBody, BorderLayout.CENTER);
 
@@ -123,9 +123,14 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlBody.add(pnlAvatar);
 		pnlAvatar.setLayout(new BorderLayout(0, 10));
 
-		// button anh dai dien
+		// BUTTON LẤY ẢNH ĐẠI DIỆN
 
-		btnEditAvatar = new JButton("image_cn_df.jpg");
+		btnEditAvatar = new RoundedButton("image_cn_df.jpg", null, 10, 0, 1.0f);
+		btnEditAvatar.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnEditAvatar.setForeground(Color.WHITE);
+		btnEditAvatar.setBackground(Color.decode("#424242"));
+		btnEditAvatar.setIcon(new ImageScaler("/image/add-image.png", 24, 24).getScaledImageIcon());
+		btnEditAvatar.setBorder(new EmptyBorder(5, 10, 5, 10));
 		pnlAvatar.add(btnEditAvatar, BorderLayout.SOUTH);
 		lblAvatar = new JLabel("");
 		lblAvatar.setIcon(new ImageScaler("/image/" + pathNameAvatar, 150, 150).getScaledImageIcon());
@@ -146,7 +151,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblMaCN = new JLabel("Mã CN");
 		lblMaCN.setForeground(Color.BLACK);
-		lblMaCN.setFont(null);
+		lblMaCN.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_1.add(lblMaCN);
 
 		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
@@ -168,7 +173,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblHoTen = new JLabel("Họ Tên");
 		lblHoTen.setForeground(Color.BLACK);
-		lblHoTen.setFont(null);
+		lblHoTen.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_1.add(lblHoTen);
 
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
@@ -190,7 +195,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblMatKhau = new JLabel("Mật khẩu");
 		lblMatKhau.setForeground(Color.BLACK);
-		lblMatKhau.setFont(null);
+		lblMatKhau.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_1.add(lblMatKhau);
 
 		Component horizontalStrut_4_1 = Box.createHorizontalStrut(20);
@@ -212,7 +217,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblGioiTinh = new JLabel("Giới tính");
 		lblGioiTinh.setForeground(Color.BLACK);
-		lblGioiTinh.setFont(null);
+		lblGioiTinh.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_1.add(lblGioiTinh);
 
 		Component horizontalStrut_6_1 = Box.createHorizontalStrut(20);
@@ -232,7 +237,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblNgaySinh = new JLabel("Ngày sinh");
 		lblNgaySinh.setForeground(Color.BLACK);
-		lblNgaySinh.setFont(null);
+		lblNgaySinh.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_2.add(lblNgaySinh);
 
 		Component horizontalStrut_8_1 = Box.createHorizontalStrut(20);
@@ -251,7 +256,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblSoDienThoai = new JLabel("Số ĐT");
 		lblSoDienThoai.setForeground(Color.BLACK);
-		lblSoDienThoai.setFont(null);
+		lblSoDienThoai.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_2.add(lblSoDienThoai);
 
 		Component horizontalStrut_10_1 = Box.createHorizontalStrut(20);
@@ -265,6 +270,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 
 						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtSoDT.setBackground(Color.WHITE);
 		box_2.add(txtSoDT);
 
 		Component horizontalStrut_11_1 = Box.createHorizontalStrut(20);
@@ -272,7 +278,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setForeground(Color.BLACK);
-		lblEmail.setFont(null);
+		lblEmail.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_2.add(lblEmail);
 
 		Component horizontalStrut_12_1 = Box.createHorizontalStrut(20);
@@ -294,7 +300,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblSoCCCD = new JLabel("Số CCCD");
 		lblSoCCCD.setForeground(Color.BLACK);
-		lblSoCCCD.setFont(null);
+		lblSoCCCD.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_2.add(lblSoCCCD);
 
 		Component horizontalStrut_14_1 = Box.createHorizontalStrut(20);
@@ -308,6 +314,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 
 						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
+		txtSoCCCD.setBackground(Color.WHITE);
 		box_2.add(txtSoCCCD);
 
 		Component verticalStrut_1_1 = Box.createVerticalStrut(20);
@@ -318,7 +325,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblDiaChi = new JLabel("Địa chỉ");
 		lblDiaChi.setForeground(Color.BLACK);
-		lblDiaChi.setFont(null);
+		lblDiaChi.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_3.add(lblDiaChi);
 
 		Component horizontalStrut_15_1 = Box.createHorizontalStrut(30);
@@ -339,6 +346,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		box_3.add(horizontalStrut_1);
 
 		JLabel lblNgayVaoLam = new JLabel("Ngày Vào Làm");
+		lblNgayVaoLam.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_3.add(lblNgayVaoLam);
 
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
@@ -360,7 +368,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 
 		JLabel lblGhiChu = new JLabel("Ghi chú");
 		lblGhiChu.setForeground(Color.BLACK);
-		lblGhiChu.setFont(null);
+		lblGhiChu.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		box_3.add(lblGhiChu);
 
 		Component horizontalStrut_18_1 = Box.createHorizontalStrut(20);
@@ -428,7 +436,12 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlControl.add(btnHuy);
 
 		JPanel pnlTable = new JPanel();
-		pnlTable.setBorder(new CompoundBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Danh s\u00E1ch to\u00E0n b\u1ED9 c\u00F4ng nh\u00E2n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(0, 5, 0, 5)));
+		TitledBorder titleBorderTable = BorderFactory
+				.createTitledBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, componentColor), "Danh Sách Toàn Bộ Công Nhân");
+		pnlTable.setBorder(
+				BorderFactory.createCompoundBorder(titleBorderTable, BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		titleBorderTable.setTitleFont(main.roboto_regular.deriveFont( Font.BOLD, 14));
+		
 		pnlTable.setBackground(new Color(255, 255, 255));
 		add(pnlTable, BorderLayout.CENTER);
 
@@ -624,7 +637,9 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			dpNgaySinh.setEnabled(true);
 
 			txtDiaChi.setEditable(true);
+			txtSoCCCD.setEditable(true);
 			txtEmail.setEditable(true);
+			txtSoDT.setEditable(true);
 
 			txtGhiChu.setEditable(true);
 			cmbGioiTinh.setEnabled(edit);
@@ -640,8 +655,9 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 			dpNgaySinh.setEnabled(false);
 
 			txtDiaChi.setEditable(false);
+			txtSoCCCD.setEditable(false);
 			txtEmail.setEditable(false);
-
+			txtSoDT.setEditable(false);
 
 			txtGhiChu.setEditable(false);
 

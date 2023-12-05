@@ -151,8 +151,8 @@ public class TrangCaNhan_UI extends JPanel implements ActionListener {
 		txtMa.setColumns(10);
 
 		cmbGioiTinh = new JComboBox<>();
-		cmbGioiTinh.addItem("nam");
-		cmbGioiTinh.addItem("nữ");
+		cmbGioiTinh.addItem("Nam");
+		cmbGioiTinh.addItem("Nữ");
 		pngBox_right.add(cmbGioiTinh);
 
 		dpNgaySinh = new JXDatePicker(new Date(100, 0, 1));
@@ -364,6 +364,10 @@ public class TrangCaNhan_UI extends JPanel implements ActionListener {
 			if(nvNew!=null) {
 				if(nv_dao.suaThongTinNhanVien(nvNew)) {
 					alertSuccess("Cập nhật thành công");
+					EditTrangCaNhan(false);
+					btnSave.setVisible(false);
+					btnCannelEdit.setVisible(false);
+					btnEditInfo.setVisible(true);
 				}else {
 					alertNotification("Cập nhật thất bại! Không tồn tại Nhân Viên");
 				}
