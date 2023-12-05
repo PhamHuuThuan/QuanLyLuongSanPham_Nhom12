@@ -204,21 +204,6 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 		cmbTheme.setBounds(334, 353, 115, 31);
 		pnlInRight.add(cmbTheme);
 
-		btnLogin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				config.setRememberAccount(chkRememberUser.isSelected(), txtInputUser.getText(),
-						txtInputPassword.getText());
-
-				if (checkLogin()) {
-					new MainUI(pcnv).music.playSE(1);
-					new MainUI(pcnv).setVisible(true);
-					ClosePage();
-				}
-
-			}
-		});
-
 		cmbLanguages.addItemListener(this);
 		chkRememberUser.addItemListener(this);
 
@@ -273,9 +258,66 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 		btnTogglePassword.setIcon(new ImageScaler("/image/icon_show_password.png", 35, 23).getScaledImageIcon());
 		
 		btnTogglePassword.addActionListener(this);
+		btnLogin.addActionListener(this);
 
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if (o == btnTogglePassword) {
+			if (!isPasswordVisible) {
+				isPasswordVisible = true;
+				txtInputPassword.setEchoChar((char) 0);
+				btnTogglePassword.setIcon(new ImageScaler("/image/icon_hide_password.png", 35, 23).getScaledImageIcon());
+			} else {
+				isPasswordVisible = false;
+				txtInputPassword.setEchoChar('•');
+				btnTogglePassword.setIcon(new ImageScaler("/image/icon_show_password.png", 35, 23).getScaledImageIcon());
+			}
+		};
+		if(o==btnLogin) {
+			config.setRememberAccount(chkRememberUser.isSelected(), txtInputUser.getText(),
+					txtInputPassword.getText());
+
+			if (checkLogin()) {
+				new MainUI(pcnv).music.playSE(1);
+				new MainUI(pcnv).setVisible(true);
+				ClosePage();
+			}
+		}
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 	// HÀM KIỂM TRA MÃ NV CÓ TỒN TẠI
 	private static boolean contrainsMaNV(ArrayList<NhanVien> dsnv, String maNV, String matKhau) {
 		for (NhanVien nv : dsnv) {
@@ -343,7 +385,7 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 		btnLogin.setText(read_file_languages.getString("text_heading_login"));
 	}
 
-// HÀM ALERT
+	// HÀM ALERT
 	public int alertNotification(String textError) {
 		String[] options = { "Cancel" };
 		int result = JOptionPane.showOptionDialog(main, textError, "NOTIFICATION", JOptionPane.DEFAULT_OPTION,
@@ -351,50 +393,4 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 		return result;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if (o == btnTogglePassword) {
-			if (!isPasswordVisible) {
-				isPasswordVisible = true;
-				txtInputPassword.setEchoChar((char) 0);
-				btnTogglePassword.setIcon(new ImageScaler("/image/icon_hide_password.png", 35, 23).getScaledImageIcon());
-			} else {
-				isPasswordVisible = false;
-				txtInputPassword.setEchoChar('•');
-				btnTogglePassword.setIcon(new ImageScaler("/image/icon_show_password.png", 35, 23).getScaledImageIcon());
-			}
-		}
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 }

@@ -27,6 +27,7 @@ import org.jdesktop.swingx.JXDatePicker;
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.Component;
 
 public class TrangCaNhan_UI extends JPanel implements ActionListener {
 	/**
@@ -225,12 +227,26 @@ public class TrangCaNhan_UI extends JPanel implements ActionListener {
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel_1.add(btnEditInfo);
 
-		btnSave = new RoundedButton("Lưu", null, 15, 0, 2f);
+		
+		btnSave = new RoundedButton("Lưu", null, 20, 0, 0.6f);
+		btnSave.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnSave.setForeground(Color.WHITE);
+		btnSave.setBackground(Color.decode("#28a745"));
+		btnSave.setIcon(new ImageScaler("/image/save_Icon.png", 24, 24).getScaledImageIcon());
+		btnSave.setBorder(new EmptyBorder(7, 10, 7, 10));
 		btnSave.setVisible(false);
 		panel_1.add(btnSave);
 
-		btnCannelEdit = new RoundedButton("Hủy", null, 15, 0, 2f);
+		btnCannelEdit = new RoundedButton("Hủy", null, 20, 0, 0.6f);
+		btnCannelEdit.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
+		btnCannelEdit.setForeground(Color.WHITE);
+		btnCannelEdit.setBackground(Color.decode("#ffc107"));
+		btnCannelEdit.setIcon(new ImageScaler("/image/cancelHD_Icon.png", 24, 24).getScaledImageIcon());
+		btnCannelEdit.setBorder(new EmptyBorder(7, 10, 7, 10));
 		btnCannelEdit.setVisible(false);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(30);
+		panel_1.add(horizontalStrut);
 		panel_1.add(btnCannelEdit);
 
 		EditTrangCaNhan(false);

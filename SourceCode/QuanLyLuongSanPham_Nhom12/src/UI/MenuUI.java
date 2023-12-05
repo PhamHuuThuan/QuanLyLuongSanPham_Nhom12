@@ -143,13 +143,13 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 
 		lblDate = new JLabel("?");
 		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDate.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 19F));
+		lblDate.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 18F));
 		lblDate.setForeground(Color.decode("#b22323"));
 		pnlClock.add(lblDate);
 
 		lblTime = new JLabel("?");
 		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTime.setFont(main.roboto_bold.deriveFont(Font.BOLD, 20F));
+		lblTime.setFont(main.roboto_bold.deriveFont(Font.BOLD, 19F));
 		lblTime.setForeground(Color.decode("#b22323"));
 		pnlClock.add(lblTime);
 
@@ -169,7 +169,7 @@ public class MenuUI extends JPanel implements ActionListener, MouseListener {
 		lblHello.setFont(main.roboto_bold.deriveFont(Font.PLAIN, 20F));
 		pnlControl.add(lblHello);
 
-		lblNameUser = new JLabel(main.nv.getNhanVien().getHoTen());
+		lblNameUser = new JLabel(main.nv.getNhanVien().getHoTen().toUpperCase());
 		lblNameUser.setFont(main.roboto_bold.deriveFont(Font.BOLD, 20F));
 		pnlControl.add(lblNameUser);
 
