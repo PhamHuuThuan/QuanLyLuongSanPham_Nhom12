@@ -147,25 +147,37 @@ public class BangLuongNhanVien {
 		return luongThang;
 	}
 	private void setLuongThang(double luongThang) {
-		this.luongThang = luongThang;
+		if(luongThang<0)
+			this.luongThang = 0;
+		else
+			this.luongThang = luongThang;
 	}
 	public double getLuongTangCa() {
 		return luongTangCa;
 	}
 	private void setLuongTangCa(double luongTangCa) {
-		this.luongTangCa = luongTangCa;
+		if(luongTangCa<0)
+			this.luongTangCa = 0;
+		else
+			this.luongTangCa = luongTangCa;
 	}
 	public double getPhuCap() {
 		return phuCap;
 	}
 	private void setPhuCap(double phuCap) {
-		this.phuCap = phuCap;
+		if(phuCap<0)
+			this.phuCap = 0;
+		else
+			this.phuCap = phuCap;
 	}
 	public double getThucLanh() {
 		return thucLanh;
 	}
 	private void setThucLanh(double thucLanh) {
-		this.thucLanh = thucLanh;
+		if(thucLanh<0)
+			this.thucLanh = 0;
+		else
+			this.thucLanh = thucLanh;
 	}
 	public YearMonth getThangNam() {
 		return thangNam;
@@ -258,7 +270,11 @@ public class BangLuongNhanVien {
 			break;
 		}
 		}
-		thucLanh = tinhLuongThang(luongCB) + tinhLuongTangCa(gioTangCa, luongCB) + tinhPhuCap(pcnv.getNgayCongTac(), luongCB);
+		
+		double thucLanh = tinhLuongThang(luongCB) + tinhLuongTangCa(gioTangCa, luongCB) + tinhPhuCap(pcnv.getNgayCongTac(), luongCB);
+		
+		setThucLanh(thucLanh); //set thực lãnh sau khi tính được
+		
 		return thucLanh;
 	}
 }
