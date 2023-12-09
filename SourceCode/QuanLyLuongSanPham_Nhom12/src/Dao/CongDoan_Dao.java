@@ -22,7 +22,7 @@ public class CongDoan_Dao {
 			try {
 				Connection con = ConnectDB.getConnection();
 				st = con.prepareStatement("UPDATE CongDoan SET tenCD=?, thuTu=?, "
-						+ "donGia=?, tinhTrang=?, ngayHoanThanh=?, maSanPham=?,"
+						+ "donGia=?, tinhTrang=?, ngayHoanThanh=?, maSP=?,"
 						+ "soLuong=? WHERE maCD=?");
 				st.setString(1, cd.getTenCD());
 				st.setInt(2, cd.getThuTu());
@@ -232,7 +232,7 @@ public class CongDoan_Dao {
 		        	Date ngayHT = rs.getDate("ngayHoanThanh");
 		        	String maSp = rs.getString("maSP");
 		        	int soLuong = rs.getInt("soLuong");
-		            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, new SanPham(maSP));
+		            CongDoan cd = new CongDoan(maCd, tenCd, thuTu, soLuong, donGia,  tinhTrang, ngayHT, new SanPham(maSP));
 		            list.add(cd);
 		        }
 		    } catch (SQLException e) {
@@ -262,7 +262,7 @@ public class CongDoan_Dao {
 		        	Double donGia = rs.getDouble("donGia");
 		        	Boolean tinhTrang = rs.getBoolean("tinhTrang");
 		        	Date ngayHT = rs.getDate("ngayHoanThanh");
-		        	String maSP = rs.getString("maSanPham");
+		        	String maSP = rs.getString("maSP");
 		        	int soLuong = rs.getInt("soLuong");
 		            cd = new CongDoan(maCd, tenCd, thuTu, soLuong, soLuong, tinhTrang, ngayHT, new SanPham(maSP));
 		        }

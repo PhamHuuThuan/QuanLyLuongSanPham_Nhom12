@@ -20,6 +20,7 @@ import Dao.PhanCongCongDoan_Dao;
 import Entity.BangPhanCongCongDoan;
 import Entity.CongDoan;
 import Entity.CongNhan;
+import Entity.SanPham;
 import Util.SinhMaTuDong;
 
 import java.awt.BorderLayout;
@@ -71,18 +72,22 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	private JTextField txtMaCD;
 	private JTextField txtMaSP;
 	private JTextField txtMaPCCD;
-	private JTextField txtTenCD; 
+	private JTextField txtTenCD;
 	private JTextField txtSoLuongLam;
 
 	private JFrame mainFrame;
 
-	private RoundedButton btnGetSP;
+	private RoundedButton btnGetCD, btnGetSanPham;
+	private JLabel lblSLLMax;
+	private int sLLMax=0;
 	private JTextField txtTenSp;
 
 	private JXDatePicker dpNgayPhanCong;
 
 	private PhanCongCongDoan_Dao pccd_dao = new PhanCongCongDoan_Dao();
 	private ArrayList<CongDoan> dsCD = new ArrayList<>();
+
+	private ArrayList<SanPham> dsSP = new ArrayList<>();
 
 	private PhanCongCongDoan_Dao cncpc_dao = new PhanCongCongDoan_Dao();
 	private ArrayList<CongNhan> dsCNcpc = new ArrayList<>();
@@ -151,13 +156,14 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 						new EmptyBorder(10, 0, 0, 0)));
 		pnlBangNV.setLayout(new BorderLayout());
 		pnlBangNV.setBackground(bgColor);
-		pnlBangNV.setPreferredSize(new Dimension(700, 300));
+		pnlBangNV.setPreferredSize(new Dimension(300, 330));
 		b.add(pnlBangNV);
 		b.add(Box.createHorizontalStrut(5));
 
-		String cols[] = { "STT", "Mã CN", "Tên CN", "Ngày sinh", "Ngày vào làm" };
+		String cols[] = { "STT", "Mã CN", "Tên CN", "Ngày sinh" };
 		dtblModelCNCPC = new DefaultTableModel(cols, 0);
 		tblCNCPC = new JTable(dtblModelCNCPC);
+		tblCNCPC.setAutoCreateRowSorter(true);
 
 		tbhCNCPC = new JTableHeader(tblCNCPC.getColumnModel());
 		tbhCNCPC.setReorderingAllowed(false);
@@ -167,14 +173,13 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tblCNCPC.setTableHeader(tbhCNCPC);
 
 		tblCNCPC.setRowHeight(30);
-		tblCNCPC.getColumnModel().getColumn(0).setPreferredWidth(45);
+		tblCNCPC.getColumnModel().getColumn(0).setPreferredWidth(20);
 		tblCNCPC.getColumnModel().getColumn(1).setPreferredWidth(75);
 		tblCNCPC.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblCNCPC.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tblCNCPC.getColumnModel().getColumn(4).setPreferredWidth(100);
 
 		getDataLenTable();
-		
+
 		tblCNCPC.setEnabled(false);
 
 		// Tạo jscrollpane để tạo scroll cho bảng sản phẩm
@@ -191,7 +196,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		titleBorder.setTitleFont(main.roboto_regular.deriveFont(Font.ITALIC, 18F));
 		pnThongTinNV.setBorder(new CompoundBorder(new TitledBorder(
 				new MatteBorder(1, 1, 1, 1, (Color) new Color(66, 66, 66)), "Th\u00F4ng tin ph\u00E2n c\u00F4ng",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(10, 5, 10, 5)));
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
 		pnThongTinNV.setPreferredSize(new Dimension(700, 300));
 		b.add(pnThongTinNV);
 
@@ -220,8 +225,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		dpNgayPhanCong.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
 		dpNgayPhanCong.setFont(main.roboto_regular.deriveFont(Font.PLAIN, 16F));
 		dpNgayPhanCong.setLocale(new Locale("vi", "VN"));
+		dpNgayPhanCong.setEnabled(false);
 		horizontalBox.add(dpNgayPhanCong);
-
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalBox.add(horizontalStrut_3);
@@ -240,157 +245,196 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		Component verticalStrut_4 = Box.createVerticalStrut(10);
 		pnlThongTinPhanCong.add(verticalStrut_4);
 
-		Box horizontalBox_4 = Box.createHorizontalBox();
-		pnlThongTinPhanCong.add(horizontalBox_4);
+		Box horizontalBox_11 = Box.createHorizontalBox();
+		horizontalBox_11.setBorder(new CompoundBorder());
+		pnlThongTinPhanCong.add(horizontalBox_11);
 
 		JLabel lblMaCN = new JLabel("Mã CN");
-		horizontalBox_4.add(lblMaCN);
+		horizontalBox_11.add(lblMaCN);
 
 		Component horizontalStrut_13 = Box.createHorizontalStrut(20);
-		horizontalBox_4.add(horizontalStrut_13);
+		horizontalBox_11.add(horizontalStrut_13);
 
 		txtMaCN = new JTextField();
 		txtMaCN.setEditable(false);
-		horizontalBox_4.add(txtMaCN);
+		horizontalBox_11.add(txtMaCN);
 		txtMaCN.setColumns(10);
 
 		Component horizontalStrut_14 = Box.createHorizontalStrut(20);
-		horizontalBox_4.add(horizontalStrut_14);
+		horizontalBox_11.add(horizontalStrut_14);
 
 		JLabel lblTenCN = new JLabel("Tên CN");
-		horizontalBox_4.add(lblTenCN);
+		horizontalBox_11.add(lblTenCN);
 
 		Component horizontalStrut_15 = Box.createHorizontalStrut(20);
-		horizontalBox_4.add(horizontalStrut_15);
+		horizontalBox_11.add(horizontalStrut_15);
 
 		txtTenCN = new JTextField();
 		txtTenCN.setEditable(false);
-		horizontalBox_4.add(txtTenCN);
+		horizontalBox_11.add(txtTenCN);
 		txtTenCN.setColumns(10);
 
 		Component verticalStrut = Box.createVerticalStrut(10);
 		pnlThongTinPhanCong.add(verticalStrut);
 
-		Box horizontalBox_1 = Box.createHorizontalBox();
-		pnlThongTinPhanCong.add(horizontalBox_1);
-
-		JLabel lblMaCD = new JLabel("Mã CD");
-		horizontalBox_1.add(lblMaCD);
-
-		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-		horizontalBox_1.add(horizontalStrut_1);
-
-		txtMaCD = new JTextField();
-		txtMaCD.setEditable(false);
-		horizontalBox_1.add(txtMaCD);
-		txtMaCD.setColumns(10);
-
-		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
-		horizontalBox_1.add(horizontalStrut_5);
-
-		JLabel lblTenCD = new JLabel("Tên CD");
-		horizontalBox_1.add(lblTenCD);
-
-		Component horizontalStrut_6 = Box.createHorizontalStrut(20);
-		horizontalBox_1.add(horizontalStrut_6);
-
-		txtTenCD = new JTextField();
-		txtTenCD.setEditable(false);
-		horizontalBox_1.add(txtTenCD);
-		txtTenCD.setColumns(10);
-
-		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
-		horizontalBox_1.add(horizontalStrut_7);
-
-		btnGetSP = new RoundedButton("Lấy công đoạn", null, 10, 0, 1.0f);
-		btnGetSP.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
-		btnGetSP.setForeground(Color.WHITE);
-		btnGetSP.setBackground(Color.decode("#424242"));
-		btnGetSP.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
-		btnGetSP.setBorder(new EmptyBorder(5, 10, 5, 10));
-		horizontalBox_1.add(btnGetSP);
-
-		Component verticalStrut_1 = Box.createVerticalStrut(10);
-		pnlThongTinPhanCong.add(verticalStrut_1);
-
-		Box horizontalBox_2 = Box.createHorizontalBox();
-		pnlThongTinPhanCong.add(horizontalBox_2);
+		Box horizontalBox_33 = Box.createHorizontalBox();
+		horizontalBox_33.setBorder(new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(133, 133, 133)),
+				new EmptyBorder(10, 0, 0, 0)));
+		pnlThongTinPhanCong.add(horizontalBox_33);
 
 		JLabel lblMaSP = new JLabel("Mã SP");
-		horizontalBox_2.add(lblMaSP);
+		horizontalBox_33.add(lblMaSP);
 
 		Component horizontalStrut_2 = Box.createHorizontalStrut(15);
-		horizontalBox_2.add(horizontalStrut_2);
+		horizontalBox_33.add(horizontalStrut_2);
 
 		txtMaSP = new JTextField();
 		txtMaSP.setEditable(false);
-		horizontalBox_2.add(txtMaSP);
+		horizontalBox_33.add(txtMaSP);
 		txtMaSP.setColumns(10);
 
 		Component horizontalStrut_10 = Box.createHorizontalStrut(20);
-		horizontalBox_2.add(horizontalStrut_10);
+		horizontalBox_33.add(horizontalStrut_10);
 
 		JLabel lblTenSP = new JLabel("Tên SP");
-		horizontalBox_2.add(lblTenSP);
+		horizontalBox_33.add(lblTenSP);
 
 		Component horizontalStrut_11 = Box.createHorizontalStrut(15);
-		horizontalBox_2.add(horizontalStrut_11);
+		horizontalBox_33.add(horizontalStrut_11);
 
 		txtTenSp = new JTextField();
 		txtTenSp.setEditable(false);
-		horizontalBox_2.add(txtTenSp);
+		horizontalBox_33.add(txtTenSp);
 		txtTenSp.setColumns(10);
-		
-		Component horizontalStrut_19 = Box.createHorizontalStrut(20);
-		horizontalBox_2.add(horizontalStrut_19);
-		
-		JLabel lblSLChuaPC = new JLabel("SL chưa PC");
-		horizontalBox_2.add(lblSLChuaPC);
-		
+
 		Component horizontalStrut_20 = Box.createHorizontalStrut(20);
-		horizontalBox_2.add(horizontalStrut_20);
-		
-		txtSLChuaPC = new JTextField();
-		txtSLChuaPC.setEditable(false);
-		horizontalBox_2.add(txtSLChuaPC);
-		txtSLChuaPC.setColumns(10);
+		horizontalBox_33.add(horizontalStrut_20);
 
-		Component horizontalStrut_17 = Box.createHorizontalStrut(20);
-		horizontalBox_2.add(horizontalStrut_17);
-
-		JLabel lblTongSoLuong = new JLabel("Tổng SL");
-		horizontalBox_2.add(lblTongSoLuong);
-
-		Component horizontalStrut_18 = Box.createHorizontalStrut(20);
-		horizontalBox_2.add(horizontalStrut_18);
-
-		txtTongSoLuong = new JTextField();
-		txtTongSoLuong.setEditable(false);
-		horizontalBox_2.add(txtTongSoLuong);
-		txtTongSoLuong.setColumns(10);
+		btnGetSanPham = new RoundedButton("Lấy sản phẩm", null, 10, 0, 1.0f);
+		btnGetSanPham.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnGetSanPham.setForeground(Color.WHITE);
+		btnGetSanPham.setBackground(Color.decode("#424242"));
+		btnGetSanPham.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnGetSanPham.setBorder(new EmptyBorder(3, 10, 3, 10));
+		horizontalBox_33.add(btnGetSanPham);
 
 		Component verticalStrut_2 = Box.createVerticalStrut(10);
 		pnlThongTinPhanCong.add(verticalStrut_2);
 
+		Box horizontalBox_22 = Box.createHorizontalBox();
+		pnlThongTinPhanCong.add(horizontalBox_22);
+
+		JLabel lblMaCD = new JLabel("Mã CD");
+		horizontalBox_22.add(lblMaCD);
+
+		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
+		horizontalBox_22.add(horizontalStrut_1);
+
+		txtMaCD = new JTextField();
+		txtMaCD.setEditable(false);
+		horizontalBox_22.add(txtMaCD);
+		txtMaCD.setColumns(10);
+
+		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
+		horizontalBox_22.add(horizontalStrut_5);
+
+		JLabel lblTenCD = new JLabel("Tên CD");
+		horizontalBox_22.add(lblTenCD);
+
+		Component horizontalStrut_6 = Box.createHorizontalStrut(10);
+		horizontalBox_22.add(horizontalStrut_6);
+
+		txtTenCD = new JTextField();
+		txtTenCD.setEditable(false);
+		horizontalBox_22.add(txtTenCD);
+		txtTenCD.setColumns(10);
+
+		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
+		horizontalBox_22.add(horizontalStrut_7);
+
+		JLabel lblSLChuaPC = new JLabel("SL chưa PC");
+		horizontalBox_22.add(lblSLChuaPC);
+
+		Component horizontalStrut_18 = Box.createHorizontalStrut(10);
+		horizontalBox_22.add(horizontalStrut_18);
+
+		txtSLChuaPC = new JTextField();
+		txtSLChuaPC.setHorizontalAlignment(SwingConstants.CENTER);
+		horizontalBox_22.add(txtSLChuaPC);
+		txtSLChuaPC.setEditable(false);
+		txtSLChuaPC.setColumns(10);
+
+		Component horizontalStrut_17 = Box.createHorizontalStrut(20);
+		horizontalBox_22.add(horizontalStrut_17);
+
+		JLabel lblTongSoLuong = new JLabel("Tổng SL");
+		horizontalBox_22.add(lblTongSoLuong);
+
+		Component horizontalStrut_21 = Box.createHorizontalStrut(10);
+		horizontalBox_22.add(horizontalStrut_21);
+
+		txtTongSoLuong = new JTextField();
+		txtTongSoLuong.setHorizontalAlignment(SwingConstants.CENTER);
+		horizontalBox_22.add(txtTongSoLuong);
+		txtTongSoLuong.setEditable(false);
+		txtTongSoLuong.setColumns(10);
+
+		Component horizontalStrut_19 = Box.createHorizontalStrut(20);
+		horizontalBox_22.add(horizontalStrut_19);
+
+		btnGetCD = new RoundedButton("Lấy công đoạn", null, 10, 0, 1.0f);
+		btnGetCD.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnGetCD.setForeground(Color.WHITE);
+		btnGetCD.setBackground(Color.decode("#424242"));
+		btnGetCD.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnGetCD.setBorder(new EmptyBorder(3, 7, 3, 7));
+		horizontalBox_22.add(btnGetCD);
+
+		btnGetCD.setEnabled(false);
+
+		Component verticalStrut_1 = Box.createVerticalStrut(10);
+		pnlThongTinPhanCong.add(verticalStrut_1);
+
 		Box horizontalBox_3 = Box.createHorizontalBox();
-		horizontalBox_3.setBorder(new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(192, 192, 192)),
+		horizontalBox_3.setBorder(new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(133, 133, 133)),
 				new EmptyBorder(10, 0, 0, 0)));
 		pnlThongTinPhanCong.add(horizontalBox_3);
 
 		JLabel lblSoLuongLam = new JLabel("Số lượng làm");
+		lblSoLuongLam.setFont(new Font("Tahoma", Font.BOLD, 13));
 		horizontalBox_3.add(lblSoLuongLam);
 
 		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
 		horizontalBox_3.add(horizontalStrut_8);
+		
+		JLabel lblNewLabel_1 = new JLabel("0<");
+		lblNewLabel_1.setForeground(new Color(255, 0, 0));
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 19));
+		horizontalBox_3.add(lblNewLabel_1);
+		
+		Component horizontalStrut_23 = Box.createHorizontalStrut(10);
+		horizontalBox_3.add(horizontalStrut_23);
 
 		txtSoLuongLam = new JTextField("0");
+		txtSoLuongLam.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		txtSoLuongLam.setHorizontalAlignment(SwingConstants.CENTER);
 		horizontalBox_3.add(txtSoLuongLam);
 		txtSoLuongLam.setColumns(10);
+		
+		Component horizontalStrut_22 = Box.createHorizontalStrut(10);
+		horizontalBox_3.add(horizontalStrut_22);
+		
+		
+		lblSLLMax = new JLabel("<=0");
+		lblSLLMax.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblSLLMax.setForeground(new Color(255, 0, 0));
+		horizontalBox_3.add(lblSLLMax);
 
-		Component horizontalStrut_9 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_9 = Box.createHorizontalStrut(40);
 		horizontalBox_3.add(horizontalStrut_9);
 
 		JLabel lblGhiChu = new JLabel("Ghi Chú");
+		lblGhiChu.setFont(new Font("Tahoma", Font.BOLD, 13));
 		horizontalBox_3.add(lblGhiChu);
 
 		Component horizontalStrut_16 = Box.createHorizontalStrut(20);
@@ -501,7 +545,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pnlBangNVPC.add(scrSP);
 
-		pnlNorth.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
+		pnlNorth.add(Box.createVerticalStrut(5), BorderLayout.SOUTH);
 
 		txtMaPCCD.setText(new SinhMaTuDong().sinhMaPCCD());
 
@@ -510,8 +554,9 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		btnXoaPC.addActionListener(this);
 		btnHuy.addActionListener(this);
 		btnLuu.addActionListener(this);
+		btnGetSanPham.addActionListener(this);
 
-		btnGetSP.addActionListener(this);
+		btnGetCD.addActionListener(this);
 
 		tblCNCPC.addMouseListener(this);
 		tblCDPC.addMouseListener(this);
@@ -525,7 +570,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		
+
 		if (o == tblCNCPC) {
 			int index = tblCNCPC.getSelectedRow();
 			if (index != -1) {
@@ -538,6 +583,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 			if (index != -1) {
 				main.music.playSE(2);
 				hienThithongTinPCCD(index);
+				lblSLLMax.setText("<="+ sLLMax);
 				displayButtonSaveAndCancel(false);
 				setEditableForTextField(false);
 				tblCNCPC.clearSelection();
@@ -592,6 +638,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 				displayButtonSaveAndCancel(true);
 				setEditableForTextField(true);
 				tblCNCPC.setEnabled(true);
+				btnGetCD.setEnabled(true);
 			} else {
 				alertNotification("Cần chọn 1 Phân Công để cập nhật!");
 			}
@@ -620,10 +667,13 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 			displayButtonSaveAndCancel(false);
 			setEditableForTextField(false);
 			xoaRong();
+			btnGetCD.setEnabled(false);
 		}
-
-		if (o == btnGetSP) {
+		if (o == btnGetSanPham) {
 			showJDialogSP();
+		}
+		if (o == btnGetCD) {
+			showJDialogCD();
 		}
 
 	}
@@ -663,24 +713,131 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		if (edit == true) {
 			txtSoLuongLam.setEditable(true);
 			txtGhiChu.setEditable(true);
-			btnGetSP.setEnabled(true);
+			btnGetSanPham.setEnabled(true);
 		} else {
 			txtSoLuongLam.setEditable(false);
 			txtGhiChu.setEditable(false);
-			btnGetSP.setEnabled(false);
+			btnGetSanPham.setEnabled(false);
 		}
 	}
 
-	// HÀM MỞ MODAL LẤY DANH SÁCH CÔNG ĐOẠN
+	// HÀM MỞ MODAL LẤY DANH SAN PHAM
 	private void showJDialogSP() {
+		JDialog listSP = new JDialog(mainFrame, "Danh sách Sản Phẩm đã có Công đoạn",
+				JDialog.ModalityType.APPLICATION_MODAL);
+		listSP.setSize(600, 500);
+		listSP.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		listSP.setLocationRelativeTo(null);
+
+		String cols_sp[] = { "STT", "Mã SP", "Tên SP" };
+		dtblModelSP = new DefaultTableModel(cols_sp, 0);
+		tblSP = new JTable(dtblModelSP);
+
+		tbhSP = new JTableHeader(tblSP.getColumnModel());
+		tbhSP.setReorderingAllowed(false);
+		tbhSP.setBackground(componentColor);
+		tbhSP.setForeground(Color.WHITE);
+		tbhSP.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+
+		tblSP.setTableHeader(tbhSP);
+		tblSP.setRowHeight(35);
+		tblSP.getColumnModel().getColumn(0).setPreferredWidth(5);
+		tblSP.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblSP.getColumnModel().getColumn(2).setPreferredWidth(150);
+
+		JScrollPane scrSP = new JScrollPane(tblSP, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		getDataSanPhamLenTable();
+
+		tblSP.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				if (!e.getValueIsAdjusting()) {
+					main.music.playSE(2);
+					selectedRowIndex = tblSP.getSelectedRow();
+					btnGetProduct.setEnabled(true);
+				}
+			}
+		});
+		// BUTTON LẤY THÔNG TIN SẢN PHẨM
+		btnGetProduct = new RoundedButton("Lấy Thông Tin Sản Phẩm", null, 10, 0, 1.0f);
+		btnGetProduct.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
+		btnGetProduct.setForeground(Color.WHITE);
+		btnGetProduct.setBackground(Color.decode("#424242"));
+		btnGetProduct.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
+		btnGetProduct.setBorder(new EmptyBorder(5, 10, 5, 10));
+
+		btnGetProduct.setEnabled(false);
+		btnGetProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				main.music.playSE(2);
+				if (selectedRowIndex != -1) {
+					
+					// SET CÁC TRƯỜNG HIỆN THỊ MÃ SP VÀ TÊN SP
+					String maSP = dtblModelSP.getValueAt(selectedRowIndex, 1).toString();
+					String tenSP = dtblModelSP.getValueAt(selectedRowIndex, 2).toString();
+					txtMaSP.setText(maSP);
+					txtTenSp.setText(tenSP);
+					
+					// SET CÁC TRƯỜNG VỀ RỖNG SAU KHI LẤY SẢN PHẨM
+					txtMaCD.setText("");
+					txtTenCD.setText("");
+					txtSLChuaPC.setText("");
+					txtTongSoLuong.setText("");
+					txtSoLuongLam.setText("0");
+					txtGhiChu.setText("");
+					lblSLLMax.setText("<=0");
+
+				}
+				btnGetCD.setEnabled(true);
+
+				listSP.dispose();
+			}
+		});
+
+		listSP.getContentPane().setLayout(new BorderLayout());
+		listSP.getContentPane().add(scrSP, BorderLayout.CENTER);
+		listSP.getContentPane().add(btnGetProduct, BorderLayout.SOUTH);
+
+		listSP.setVisible(true);
+
+	}
+
+	// HÀM LẤY DỮ LIỆU SẢN PHẨM LÊN BẢNG
+	private void getDataSanPhamLenTable() {
+		dsSP = pccd_dao.getAllSPDaCoCongDoan();
+		themAllSanPhamVaoBang(dsSP);
+	}
+
+	// THÊM TẤT CẢ SẢN PHẨM LÊN BẢNG
+	private void themAllSanPhamVaoBang(ArrayList<SanPham> listSP) {
+		dtblModelSP.setRowCount(0);
+		for (SanPham sp : listSP) {
+			themSanPhamVaoBang(sp);
+		}
+	}
+
+	// THÊM SẢN PHẨM VÀO BẢNG TỪNG CỘT
+	private void themSanPhamVaoBang(SanPham sp) {
+		String[] row = new String[15];
+		row[0] = String.valueOf(dtblModelSP.getRowCount() + 1);
+		row[1] = sp.getMaSP();
+		row[2] = sp.getTenSP();
+		dtblModelSP.addRow(row);
+	}
+
+	// HÀM MỞ MODAL LẤY DANH SÁCH CÔNG ĐOẠN
+	private void showJDialogCD() {
 		JDialog listCD = new JDialog(mainFrame, "Danh sách Công đoạn chưa hoàn thành",
 				JDialog.ModalityType.APPLICATION_MODAL);
-		listCD.setSize(1280, 500);
+		listCD.setSize(800, 500);
 		listCD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		listCD.setLocationRelativeTo(null);
 
-		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ Tự", "Mã SP", "Tên SP", "Đơn giá", "SL","SL chưa PC", "Tình trạng",
-				"Ngày HT" };
+		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ Tự", "SL", "SL chưa PC"};
 		dtblModelCD = new DefaultTableModel(cols_cd, 0);
 		tblCD = new JTable(dtblModelCD);
 
@@ -696,13 +853,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		tblCD.getColumnModel().getColumn(1).setPreferredWidth(80);
 		tblCD.getColumnModel().getColumn(2).setPreferredWidth(100);
 		tblCD.getColumnModel().getColumn(3).setPreferredWidth(40);
-		tblCD.getColumnModel().getColumn(4).setPreferredWidth(80);
-		tblCD.getColumnModel().getColumn(5).setPreferredWidth(100);
-		tblCD.getColumnModel().getColumn(6).setPreferredWidth(90);
-		tblCD.getColumnModel().getColumn(7).setPreferredWidth(30);
-		tblCD.getColumnModel().getColumn(8).setPreferredWidth(90);
-		tblCD.getColumnModel().getColumn(9).setPreferredWidth(90);
-		tblCD.getColumnModel().getColumn(10).setPreferredWidth(90);
+		tblCD.getColumnModel().getColumn(4).setPreferredWidth(90);
+		tblCD.getColumnModel().getColumn(5).setPreferredWidth(90);
 
 		JScrollPane scrCD = new JScrollPane(tblCD, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -728,26 +880,24 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		btnGetProduct.setBackground(Color.decode("#424242"));
 		btnGetProduct.setIcon(new ImageScaler("/image/icon_add_cd.png", 24, 24).getScaledImageIcon());
 		btnGetProduct.setBorder(new EmptyBorder(5, 10, 5, 10));
-		
+
 		btnGetProduct.setEnabled(false);
 		btnGetProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				main.music.playSE(2);
 				if (selectedRowIndex != -1) {
-					
+
 					String maCD = dtblModelCD.getValueAt(selectedRowIndex, 1).toString();
 					String tenCD = dtblModelCD.getValueAt(selectedRowIndex, 2).toString();
-					String maSP = dtblModelCD.getValueAt(selectedRowIndex, 4).toString();
-					String tenSP = dtblModelCD.getValueAt(selectedRowIndex, 5).toString();
-					String tongSL = dtblModelCD.getValueAt(selectedRowIndex, 7).toString();
-					String slChuaPC = dtblModelCD.getValueAt(selectedRowIndex, 8).toString();
+					String tongSL = dtblModelCD.getValueAt(selectedRowIndex, 4).toString();
+					String slChuaPC = dtblModelCD.getValueAt(selectedRowIndex, 5).toString();
 
 					txtMaCD.setText(maCD);
 					txtTenCD.setText(tenCD);
-					txtMaSP.setText(maSP);
-					txtTenSp.setText(tenSP);
 					txtTongSoLuong.setText(tongSL);
 					txtSLChuaPC.setText(slChuaPC);
+					
+					lblSLLMax.setText("<="+slChuaPC);
 
 				}
 				listCD.dispose();
@@ -762,21 +912,10 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 	}
 
-	// HÀM XÓA RỖNG
-	public void xoaRong() {
-		txtMaCD.setText("");
-		txtTenCD.setText("");
-		txtMaCN.setText("");
-		txtTenCN.setText("");
-		txtMaSP.setText("");
-		txtTenSp.setText("");
-		txtSoLuongLam.setText("0");
-		txtGhiChu.setText("");
-	}
-
 	// HÀM LẤY DỮ LIỆU CÔNG ĐOẠN LÊN BẢNG
 	private void getDataCongDoanLenTable() {
-		dsCD = pccd_dao.getAllCongDoan();
+		String maSP = txtMaSP.getText();
+		dsCD = pccd_dao.getAllCongDoan(maSP);
 		themAllCongDoanVaoBang(dsCD);
 	}
 
@@ -795,14 +934,25 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		row[1] = cd.getMaCD();
 		row[2] = cd.getTenCD();
 		row[3] = String.valueOf(Integer.valueOf(cd.getThuTu()));
-		row[4] = cd.getSanPham().getMaSP();
-		row[5] = cd.getSanPham().getTenSP();
-		row[6] = String.valueOf(Double.valueOf(cd.getDonGia()));
-		row[7] = String.valueOf(Integer.valueOf(cd.getSoLuong()));
-		row[8] = String.valueOf(Integer.valueOf(cd.getSoLuongConLai()));
-		row[9] = cd.isTinhTrang() ? "Đã HT" : "Chưa HT";
-		row[10] = new SimpleDateFormat("dd-MM-yyyy").format(cd.getNgayHoanThanh());
+		row[4] = String.valueOf(Integer.valueOf(cd.getSoLuong()));
+		row[5] = String.valueOf(Integer.valueOf(cd.getSoLuongConLai()));
 		dtblModelCD.addRow(row);
+	}
+
+	// HÀM XÓA RỖNG
+	public void xoaRong() {
+		txtMaCD.setText("");
+		txtTenCD.setText("");
+		txtMaCN.setText("");
+		txtTenCN.setText("");
+		txtMaSP.setText("");
+		txtTenSp.setText("");
+		txtSLChuaPC.setText("");
+		txtTongSoLuong.setText("");
+		lblSLLMax.setText("<=0");
+
+		txtSoLuongLam.setText("0");
+		txtGhiChu.setText("");
 	}
 
 	/* CÁC HÀM LẤY CÔNG NHÂN CẦN PHÂN CÔNG */
@@ -828,7 +978,6 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		row[1] = cn.getMaCN();
 		row[2] = cn.getHoTen();
 		row[3] = new SimpleDateFormat("dd-MM-yyyy").format(cn.getNgaySinh());
-		row[4] = new SimpleDateFormat("dd-MM-yyyy").format(cn.getNgayVaoLam());
 		dtblModelCNCPC.addRow(row);
 	}
 
@@ -882,14 +1031,18 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		txtTenCD.setText(dspccd.get(index).getCongDoan().getTenCD());
 		txtMaSP.setText(dspccd.get(index).getSanPham().getMaSP());
 		txtTenSp.setText(dspccd.get(index).getSanPham().getTenSP());
-		
+
 		txtTongSoLuong.setText(String.valueOf(Integer.valueOf(dspccd.get(index).getCongDoan().getSoLuong())));
 		txtSLChuaPC.setText(String.valueOf(Integer.valueOf(dspccd.get(index).getCongDoan().getSoLuongConLai())));
 
+		int soLuongDaPhan = Integer.valueOf(dspccd.get(index).getSoLuongCanLam());
+		int soLuongChuaPhan = Integer.valueOf(dspccd.get(index).getCongDoan().getSoLuongConLai());
+		
+		sLLMax = Integer.valueOf(soLuongDaPhan+soLuongChuaPhan);
+		
 		txtSoLuongLam.setText(String.valueOf(dspccd.get(index).getSoLuongCanLam()));
 		txtGhiChu.setText(dspccd.get(index).getGhiChu());
 	}
-
 
 	/* CÁC HÀM PHÂN CÔNG CÔNG ĐOẠN */
 
@@ -905,8 +1058,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 		Date ngayPC = dpNgayPhanCong.getDate();
 		Integer soLuongLam = Integer.parseInt(txtSoLuongLam.getText());
-		
-		
+
 		String ghiChu = txtGhiChu.getText();
 
 		return new BangPhanCongCongDoan(maPC, CN, CD, ngayPC, soLuongLam, ghiChu);
@@ -924,6 +1076,9 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 					alertSuccess("Phân công thành công");
 					txtMaPCCD.setText(new SinhMaTuDong().sinhMaPCCD());
 					xoaRong();
+					displayButtonSaveAndCancel(false);
+					setEditableForTextField(false);
+					btnGetCD.setEnabled(false);
 				} else {
 					alertNotification("Phân công thất bại! Do đã tồn tại mã PC");
 				}
@@ -936,15 +1091,14 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 	// HÀM VALID THÊM PHÂN CÔNG
 	public boolean validPCCD() {
 
-		if (txtMaCD.getText().isEmpty() || txtTenCD.getText().isEmpty()) {
-			alertNotification("Vui lòng ấn  Lấy Công đoạn  để chọn công đoạn");
-			return false;
-		}
 		if (txtMaCN.getText().isEmpty() || txtTenCN.getText().isEmpty()) {
 			alertNotification("Vui lòng chọn Công Nhân cần phân công");
 			return false;
 		}
-
+		if (txtMaCD.getText().isEmpty() || txtTenCD.getText().isEmpty()) {
+			alertNotification("Vui lòng ấn  Lấy Công đoạn  để chọn công đoạn");
+			return false;
+		}
 		String soLuongLam = txtSoLuongLam.getText();
 		String slChuaPC = txtSLChuaPC.getText();
 		try {
@@ -965,14 +1119,46 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 
 		return true;
 	}
+	// HÀM VALID CẬP NHẬT PHÂN CÔNG
+		public boolean validCapNhapPCCD() {
+
+			if (txtMaCN.getText().isEmpty() || txtTenCN.getText().isEmpty()) {
+				alertNotification("Vui lòng chọn Công Nhân cần phân công");
+				return false;
+			}
+			if (txtMaCD.getText().isEmpty() || txtTenCD.getText().isEmpty()) {
+				alertNotification("Vui lòng ấn  Lấy Công đoạn  để chọn công đoạn");
+				return false;
+			}
+			String soLuongLam = txtSoLuongLam.getText();
+			try {
+				int sll = Integer.parseInt(soLuongLam);
+				if (sll > sLLMax) {
+					alertNotification("Số lượng làm phải nhỏ hơn hoặc bằng Tổng đã phân công + số lượng còn lại ");
+					return false;
+				} else if (sll <= 0) {
+					alertNotification("Số lượng làm phải lớn hơn 0");
+					return false;
+
+				}
+			} catch (Exception e) {
+				alertNotification("Số lượng làm phải là số nguyên");
+				return false;
+			}
+
+			return true;
+		}
 
 	// HÀM CẬP NHẬT PHÂN CÔNG CÔNG ĐOẠN
 	public void capNhatPCCD() {
-		if (validPCCD()) {
+		if (validCapNhapPCCD()) {
 			BangPhanCongCongDoan pccdNew = convertDataPCCD();
 			if (pccdNew != null) {
 				if (pccd_dao.suaPCCD(pccdNew)) {
 					alertSuccess("Cập nhật thành công");
+					displayButtonSaveAndCancel(false);
+					setEditableForTextField(false);
+					btnGetCD.setEnabled(false);
 					getDataPCCDLenBang();
 				} else {
 					alertNotification("Cập nhật thất bại do Phân công không tồn tại");
@@ -989,14 +1175,19 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 			main.music.playSE(3);
 			int result = JOptionPane.showConfirmDialog(this, message, "NOTIFICATION", JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
-				if (pccd_dao.xoaPCCD(maPhanCong)) {
-					xoaRong();
-					getDataPCCDLenBang();
-					getDataLenTable();
-					alertSuccess("Xóa thành công");
+				if (!pccd_dao.checkPhanCongDaTonTaiOChamCong(maPhanCong)) {
+					if (pccd_dao.xoaPCCD(maPhanCong)) {
+						xoaRong();
+						getDataPCCDLenBang();
+						getDataLenTable();
+						alertSuccess("Xóa thành công");
+					} else {
+						alertNotification("Xóa không thành công! Không tìm thấy phân công cần xóa");
+					}
 				} else {
-					alertNotification("Xóa không thành công! Không tìm thấy phân công cần xóa");
+					alertNotification("Không thể xoá vì Công Nhân này đã được Chấm Công");
 				}
+
 			}
 		}
 	}

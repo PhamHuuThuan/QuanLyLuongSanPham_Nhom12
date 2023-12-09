@@ -24,7 +24,6 @@ import Util.XuatPDF;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -709,6 +708,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 		txtDiaChi.setText("");
 		txtSoCCCD.setText("");
 		
+		lblAvatar_dt.setIcon(new ImageScaler("/image/image_cn_df.jpg", 140, 140).getScaledImageIcon());
 		txtMaCN_dt.setText("");
 		txtHoTenCN_dt.setText("");
 		txtSoCCCD_dt.setText("");
@@ -792,6 +792,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 			themMotCongNhanVaoTable(dsCN.get(i));
 		}
 	}
+	// HÀM XUẤT CÔNG NHÂN SAU KHI THỎA MÃN
 	public void xuatCongNhan() {
 		int index = tblCN.getSelectedRow();
 		if(index !=-1) {
