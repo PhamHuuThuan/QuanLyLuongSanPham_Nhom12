@@ -160,7 +160,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		b.add(pnlBangNV);
 		b.add(Box.createHorizontalStrut(5));
 
-		String cols[] = { "STT", "Mã CN", "Tên CN", "Ngày sinh" };
+		String cols[] = { "#", "Mã CN", "Tên CN", "Ngày sinh" };
 		dtblModelCNCPC = new DefaultTableModel(cols, 0);
 		tblCNCPC = new JTable(dtblModelCNCPC);
 		tblCNCPC.setAutoCreateRowSorter(true);
@@ -513,7 +513,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		pnlBangNVPC.setBackground(bgColor);
 		pnlNhanVien.add(pnlBangNVPC, BorderLayout.CENTER);
 
-		String colsPCNV[] = { "STT", "Mã PC", "Mã CN", "Tên CN", "Mã CD", "Tên CD", "Mã SP", "Tên SP", "Ngày PC",
+		String colsPCNV[] = { "#", "Mã PC", "Mã CN", "Tên CN", "Mã CD", "Tên CD", "Mã SP", "Tên SP", "Ngày PC",
 				"Số Lượng CLam", "Ghi chú" };
 		dtblModelPCCD = new DefaultTableModel(colsPCNV, 0);
 		tblCDPC = new JTable(dtblModelPCCD);
@@ -729,7 +729,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		listSP.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		listSP.setLocationRelativeTo(null);
 
-		String cols_sp[] = { "STT", "Mã SP", "Tên SP" };
+		String cols_sp[] = { "#", "Mã SP", "Tên SP" };
 		dtblModelSP = new DefaultTableModel(cols_sp, 0);
 		tblSP = new JTable(dtblModelSP);
 
@@ -837,7 +837,7 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		listCD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		listCD.setLocationRelativeTo(null);
 
-		String cols_cd[] = { "STT", "Mã CĐ", "Tên CĐ", "Thứ Tự", "SL", "SL chưa PC"};
+		String cols_cd[] = { "#", "Mã CĐ", "Tên CĐ", "Thứ Tự", "SL", "SL chưa PC"};
 		dtblModelCD = new DefaultTableModel(cols_cd, 0);
 		tblCD = new JTable(dtblModelCD);
 

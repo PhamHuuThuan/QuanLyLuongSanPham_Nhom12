@@ -39,18 +39,15 @@ public class BangPhanCongCongDoan {
 	
 
 
-	public BangPhanCongCongDoan(String maPhanCong ,SanPham sanPham, CongDoan congDoan) {
+	public BangPhanCongCongDoan(SanPham sanPham) {
 		super();
-		this.maPhanCong = maPhanCong;
 		this.sanPham = sanPham;
-		this.congDoan = congDoan;
 	}
 	
 	
 
-	public BangPhanCongCongDoan(String maPhanCong, CongDoan congDoan) {
+	public BangPhanCongCongDoan(CongDoan congDoan) {
 		super();
-		this.maPhanCong = maPhanCong;
 		this.congDoan = congDoan;
 	}
 
