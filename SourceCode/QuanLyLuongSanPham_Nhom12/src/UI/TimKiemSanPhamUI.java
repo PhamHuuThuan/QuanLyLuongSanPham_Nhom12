@@ -606,7 +606,6 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object o = e.getSource();
-			System.out.println("333333333333333333");
 			if(o == btnTimKiem) {
 				timKiemSanPham();
 			}
@@ -651,7 +650,6 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 			
 			spnSoLuong = new JSpinner();
 			spnSoLuong.setValue(dsSP.get(index).getSoLuong());
-			System.out.println("spn: " + spnSoLuong.getValue());
 			spnSoLuong.updateUI();
 //			txtYeuCau.setText("444");
 		}
