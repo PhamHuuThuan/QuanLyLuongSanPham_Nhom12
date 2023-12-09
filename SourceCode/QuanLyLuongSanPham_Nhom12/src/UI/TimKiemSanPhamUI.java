@@ -660,7 +660,6 @@ public class TimKiemSanPhamUI extends JPanel implements ActionListener, MouseLis
 			txtDonGia.setText(String.valueOf(dsSP.get(index).getDonGia()));;
 			
 			spnSoLuong.setValue(dsSP.get(index).getSoLuong());
-			System.out.println("spn: " + spnSoLuong.getValue());
 			spnSoLuong.updateUI();
 //			txtYeuCau.setText("444");
 		}

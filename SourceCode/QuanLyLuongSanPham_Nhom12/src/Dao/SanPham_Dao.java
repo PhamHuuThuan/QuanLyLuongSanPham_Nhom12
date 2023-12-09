@@ -79,8 +79,8 @@ public class SanPham_Dao {
 	        st.setString(3, sp.getTenSP());
 	        st.setString(4, sp.getDonViTinh());
 	        st.setInt(5, sp.getSoLuong());
-	        st.setString(6, sp.getYeuCau());
 	        st.setDouble(7, sp.getDonGia());
+	        st.setString(6, sp.getYeuCau());
 	        n = st.executeUpdate();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
