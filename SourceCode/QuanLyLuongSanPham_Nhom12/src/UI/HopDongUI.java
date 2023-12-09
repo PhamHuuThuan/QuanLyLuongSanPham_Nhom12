@@ -7,21 +7,15 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
@@ -31,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -43,7 +35,6 @@ import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -66,7 +57,7 @@ import java.awt.Dimension;
 import javax.swing.JComboBox;
 import java.awt.FlowLayout;
 
-public class HopDongUI extends JPanel implements ActionListener, MouseListener, FocusListener{
+public class HopDongUI extends JPanel implements ActionListener, MouseListener{
 	/**
 	 * 
 	 */
@@ -737,10 +728,6 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener, 
 		tblHD.addMouseListener(this);
 		tblSP.addMouseListener(this);
 		
-		txtGiaTri.addFocusListener(this);
-		txtTienCoc.addFocusListener(this);
-		txtDonGia.addFocusListener(this);
-		
 		//Không thể thao tác với button lưu và hủy
 		displayButtonSaveAndCancel(false);
 		
@@ -755,7 +742,6 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener, 
 		if(e.getSource() == tblHD) { //thao tác trên table Hợp Đồng
 			int index = tblHD.getSelectedRow();
 			if(index != -1  && btnFocus!=btnThemHD && btnFocus!=btnSuaHD) {
-				xoaRongSP();
 				hienThiThongTinHD(index);
 				dsSP = sp_Dao.getSanPhamTheoHopDong(txtMaHD.getText());
 				themTatCaSanPhamVaoBang(dsSP);
@@ -938,7 +924,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener, 
 	}
 	//Xóa toàn bộ dữ liệt trên bảng thông tin
 	private void xoaRong() {
-		dsHD = hd_Dao.getAllHopDongTheoNguoiDaiDien(main.nv.getNhanVien().getMaNV());
+		dsHD = hd_Dao.getAllHopDong();
 		dtblModelHD.setRowCount(0);
 		themTatCaHopDongVaoBang(dsHD);
 		dsSP.removeAll(dsSP);
@@ -1066,7 +1052,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener, 
 	}
 	//get dữ liệu từ csdl lên table
 	private void getDataToTable() {
-		dsHD = hd_Dao.getAllHopDongTheoNguoiDaiDien(main.nv.getNhanVien().getMaNV());
+		dsHD = hd_Dao.getAllHopDong();
 		themTatCaHopDongVaoBang(dsHD);
 	}
 	//thêm một hợp đồng vào table 
@@ -1098,7 +1084,7 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener, 
 			if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa hợp đồng đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				if(hd_Dao.xoaHopDong(maHD)) {
 					lblMessage.setText("Xóa thành công!");
-					dsHD = hd_Dao.getAllHopDongTheoNguoiDaiDien(main.nv.getNhanVien().getMaNV());
+					dsHD = hd_Dao.getAllHopDong();
 					xoaRong();
 				}else {
 					setTextError("Xóa thất bại! Không tìm thấy hợp đồng!");
@@ -1356,26 +1342,4 @@ public class HopDongUI extends JPanel implements ActionListener, MouseListener, 
 		main.music.playSE(3);
 		lblMessage.setText(message);
 	}
-	//Format lại money
-    private String formatMoney(String Strvalue) {
-          try {
-                long value = Long.parseLong(Strvalue.replaceAll(",", ""));
-                return new DecimalFormat("#,###").format(value);
-            } catch (NumberFormatException e) {
-                // handle error
-            }
-          return Strvalue;
-    }
-	@Override
-	public void focusGained(FocusEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void focusLost(FocusEvent e) {
-        // Xử lý khi con trỏ rời khỏi JTextField
-        JTextField source = (JTextField) e.getSource();
-        source.setText(formatMoney(source.getText()));
-	}
-
 }
