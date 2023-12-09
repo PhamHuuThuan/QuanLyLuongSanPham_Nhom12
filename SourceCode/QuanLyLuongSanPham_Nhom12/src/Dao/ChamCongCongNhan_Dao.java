@@ -24,19 +24,17 @@ public class ChamCongCongNhan_Dao {
 
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT cd.maSP, sp.tenSP ,pccd.maCongDoan, "
-					+ "cd.tenCD, cd.thuTu, pccd.maPhanCong FROM [dbo].[BangPhanCongCongDoan] "
-					+ "pccd JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN "
-					+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan  = cd.maCD "
-					+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP "
-					+ "GROUP BY cd.maSP, sp.tenSP, pccd.maCongDoan, cd.tenCD, cd.thuTu, pccd.maPhanCong";
+			String querry = "SELECT cd.maSP, sp.tenSP\r\n"
+					+ "FROM [dbo].[BangPhanCongCongDoan] pccd JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN\r\n"
+					+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan  = cd.maCD \r\n"
+					+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP \r\n"
+					+ "GROUP BY cd.maSP, sp.tenSP";
 			st = conn.prepareStatement(querry);
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				SanPham sp = new SanPham(rs.getString("maSp"), rs.getString("tenSP"));
-				CongDoan cd = new CongDoan(rs.getString("maCongDoan"), rs.getString("tenCD"), rs.getInt("thuTu"));
-				BangPhanCongCongDoan pccd_1 = new BangPhanCongCongDoan(rs.getString("maPhanCong"), sp, cd);
+				SanPham sp = new SanPham(rs.getString("maSP"), rs.getString("tenSP"));
+				BangPhanCongCongDoan pccd_1 = new BangPhanCongCongDoan(sp);
 
 				listSP.add(pccd_1);
 
@@ -54,6 +52,47 @@ public class ChamCongCongNhan_Dao {
 
 		return listSP;
 	}
+	// HÀM LẤY TẤT CẢ CÔNG ĐOẠN ĐÃ ĐƯỢC PHÂN CÔNG TỪ SẢN PHẨM TRÊN
+		public ArrayList<BangPhanCongCongDoan> getALLCDinSP(String maSP) {
+			ConnectDB.getInstance();
+			PreparedStatement st = null;
+			ResultSet rs = null;
+			ArrayList<BangPhanCongCongDoan> listSP = new ArrayList<>();
+
+			try {
+				Connection conn = ConnectDB.getConnection();
+				String querry = "SELECT cd.maCD, cd.tenCD, cd.thuTu \r\n"
+						+ "FROM [dbo].[BangPhanCongCongDoan] pccd JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN\r\n"
+						+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan  = cd.maCD \r\n"
+						+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP \r\n"
+						+ "WHERE cd.maSP LIKE ? "
+						+ "GROUP BY cd.maCD, cd.tenCD, cd.thuTu";
+				st = conn.prepareStatement(querry);
+				
+				st.setString(1, "%" + maSP + "%");
+				
+				rs = st.executeQuery();
+
+				while (rs.next()) {
+					CongDoan cd = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("thuTu"));
+					BangPhanCongCongDoan pccd_1 = new BangPhanCongCongDoan(cd);
+
+					listSP.add(pccd_1);
+
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return listSP;
+		}
 
 	// HÀM LẤY TẤT CẢ CÔNG NHÂN ĐÃ ĐƯỢC PHÂN CÔNG THỎA SP VÀ CD TRÊN
 	public ArrayList<CongNhan> getALLCongNhan(String maSP, String maCongDoan) {
@@ -88,11 +127,11 @@ public class ChamCongCongNhan_Dao {
 					+ "JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN\r\n"
 					+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan = cd.maCD\r\n"
 					+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP "
-					+ "WHERE cd.maSP LIKE ? AND pccd.maCongDoan LIKE ? ";
+					+ "WHERE cd.maSP = ? AND pccd.maCongDoan = ? ";
 			st = conn.prepareStatement(querry);
 
-			st.setString(1, "%" + maSP + "%");
-			st.setString(2, "%" + maCongDoan + "%");
+			st.setString(1, maSP );
+			st.setString(2, maCongDoan);
 
 			rs = st.executeQuery();
 

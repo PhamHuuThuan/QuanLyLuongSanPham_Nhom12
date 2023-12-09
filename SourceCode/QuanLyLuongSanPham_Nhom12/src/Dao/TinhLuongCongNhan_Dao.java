@@ -15,7 +15,6 @@ import Entity.CongNhan;
 import Util.SinhMaTuDong;
 
 public class TinhLuongCongNhan_Dao {
-	// HÀM LẤY DS CHƯA TÍNH LƯƠNG THEO THÁNG NĂM
 
 	private SinhMaTuDong maTuDong = new SinhMaTuDong();
 	public double luongCoBan, luongThang, luongCongDoan, thucLanh;
@@ -57,106 +56,100 @@ public class TinhLuongCongNhan_Dao {
 	public boolean tinhALL(int thang, int nam) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
-		ResultSet rs = null;
-		ArrayList<BangChamCongCongNhan> listCC = new ArrayList<>();
 		int n = 0;
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT cn.maCN, cccn.soLuongLam, pccd.maPhanCong, cccn.trangThai, cd.donGia\r\n"
-					+ "FROM [dbo].[BangChamCongCongNhan] cccn\r\n"
-					+ "JOIN [dbo].[BangPhanCongCongDoan] pccd ON cccn.maPhanCong = pccd.maPhanCong\r\n"
-					+ "JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN\r\n"
-					+ "JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan = cd.maCD\r\n"
-					+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP \r\n"
-					+ "WHERE  MONTH(cccn.ngayChamCong) = ? AND YEAR(cccn.ngayChamCong) = ?\r\n"
-					+ "GROUP BY cn.maCN, cccn.soLuongLam ,pccd.maPhanCong, cccn.trangThai, cd.donGia";
+			String querry = "DECLARE @luongCoBan DECIMAL(18, 2);\r\n"
+					+ "DECLARE @thang INT;\r\n"
+					+ "DECLARE @nam INT; \r\n"
+					+ "\r\n"
+					+ "SET @luongCoBan = 250000;\r\n"
+					+ "SET @thang = ? ;\r\n"
+					+ "SET @nam = ? ;\r\n"
+					+ "\r\n"
+					+ "MERGE INTO [dbo].[BangLuongCongNhan] AS target\r\n"
+					+ "USING (\r\n"
+					+ "    SELECT \r\n"
+					+ "        'LC' + RIGHT('0000000' + CAST(ROW_NUMBER() OVER (ORDER BY cn.maCN) AS VARCHAR(7)), 7) AS maBangLuong,\r\n"
+					+ "        cn.maCN,\r\n"
+					+ "        SUM(soLuongLam) AS soLuongCongDoanLam,\r\n"
+					+ "        SUM(CASE WHEN trangThai = 0 THEN 1 ELSE 0 END) AS soNgayLam,\r\n"
+					+ "        SUM(CASE WHEN trangThai = 1 THEN 1 ELSE 0 END) AS soNgayPhep,\r\n"
+					+ "        SUM(CASE WHEN trangThai = 2 THEN 1 ELSE 0 END) AS soNgayNghi,\r\n"
+					+ "        CASE WHEN (SUM((@luongCoBan * (\r\n"
+					+ "            (CASE WHEN trangThai = 0 THEN 1 ELSE 0 END) + \r\n"
+					+ "            (CASE WHEN trangThai = 1 THEN 1 ELSE 0 END) - \r\n"
+					+ "            (CASE WHEN trangThai = 2 THEN 1 ELSE 0 END)\r\n"
+					+ "        )  + cd.donGia * soLuongLam ))) < 0 THEN 0\r\n"
+					+ "        ELSE\r\n"
+					+ "        (SUM((@luongCoBan * (\r\n"
+					+ "            (CASE WHEN trangThai = 0 THEN 1 ELSE 0 END) + \r\n"
+					+ "            (CASE WHEN trangThai = 1 THEN 1 ELSE 0 END) - \r\n"
+					+ "            (CASE WHEN trangThai = 2 THEN 1 ELSE 0 END)\r\n"
+					+ "        ) + cd.donGia * soLuongLam ))) END AS thucLanh,\r\n"
+					+ "        CONCAT(@thang ,'/', @nam) AS thangNam,\r\n"
+					+ "        CASE WHEN(SUM(@luongCoBan * (\r\n"
+					+ "            (CASE WHEN trangThai = 0 THEN 1 ELSE 0 END) + \r\n"
+					+ "            (CASE WHEN trangThai = 1 THEN 1 ELSE 0 END) - \r\n"
+					+ "            (CASE WHEN trangThai = 2 THEN 1 ELSE 0 END)\r\n"
+					+ "        ))) < 0 THEN 0\r\n"
+					+ "        ELSE\r\n"
+					+ "        (SUM(@luongCoBan * (\r\n"
+					+ "            (CASE WHEN trangThai = 0 THEN 1 ELSE 0 END) + \r\n"
+					+ "            (CASE WHEN trangThai = 1 THEN 1 ELSE 0 END) - \r\n"
+					+ "            (CASE WHEN trangThai = 2 THEN 1 ELSE 0 END)\r\n"
+					+ "        ))) END  AS luongThang,\r\n"
+					+ "        SUM(cd.donGia * soLuongLam) AS luongCongDoan\r\n"
+					+ "    FROM [dbo].[BangChamCongCongNhan] cccn \r\n"
+					+ "    JOIN [dbo].[BangPhanCongCongDoan] pccn ON cccn.maPhanCong = pccn.maPhanCong\r\n"
+					+ "    JOIN [dbo].[CongNhan] cn ON pccn.maCN = cn.maCN\r\n"
+					+ "    JOIN [dbo].[CongDoan] cd ON pccn.maCongDoan = cd.maCD\r\n"
+					+ "    WHERE MONTH(cccn.ngayChamCong) = @thang AND YEAR(cccn.ngayChamCong) = @nam\r\n"
+					+ "    GROUP BY cn.maCN\r\n"
+					+ ") AS source\r\n"
+					+ "ON target.maBangLuong = source.maBangLuong\r\n"
+					+ "WHEN MATCHED THEN\r\n"
+					+ "    UPDATE SET\r\n"
+					+ "        target.maCN = source.maCN,\r\n"
+					+ "        target.soLuongCongDoanLam = source.soLuongCongDoanLam,\r\n"
+					+ "        target.soNgayLam = source.soNgayLam,\r\n"
+					+ "        target.soNgayNghi = source.soNgayNghi,\r\n"
+					+ "        target.soNgayPhep = source.soNgayPhep,\r\n"
+					+ "        target.thucLanh = source.thucLanh,\r\n"
+					+ "        target.thangNam = source.thangNam,\r\n"
+					+ "        target.luongThang = source.luongThang,\r\n"
+					+ "        target.luongCongDoan = source.luongCongDoan\r\n"
+					+ "WHEN NOT MATCHED THEN\r\n"
+					+ "    INSERT (\r\n"
+					+ "        maBangLuong,\r\n"
+					+ "        maCN,\r\n"
+					+ "        soLuongCongDoanLam,\r\n"
+					+ "        soNgayLam,\r\n"
+					+ "        soNgayNghi,\r\n"
+					+ "        soNgayPhep,\r\n"
+					+ "        thucLanh,\r\n"
+					+ "        thangNam,\r\n"
+					+ "        luongThang,\r\n"
+					+ "        luongCongDoan\r\n"
+					+ "    ) VALUES (\r\n"
+					+ "        source.maBangLuong,\r\n"
+					+ "        source.maCN,\r\n"
+					+ "        source.soLuongCongDoanLam,\r\n"
+					+ "        source.soNgayLam,\r\n"
+					+ "        source.soNgayNghi,\r\n"
+					+ "        source.soNgayPhep,\r\n"
+					+ "        source.thucLanh,\r\n"
+					+ "        source.thangNam,\r\n"
+					+ "        source.luongThang,\r\n"
+					+ "        source.luongCongDoan\r\n"
+					+ "    );\r\n"
+					+ "";
 			st = conn.prepareStatement(querry);
 
 			st.setInt(1, thang);
 			st.setInt(2, nam);
-			rs = st.executeQuery();
+			n = st.executeUpdate();
 
-			while (rs.next()) {
-				String maCN = rs.getString("maCN");
-				int soLuongLam = rs.getInt("soLuongLam");
-				int trangThai = rs.getInt("trangThai");
-				double donGia = rs.getDouble("donGia");
-
-				CongNhan cn = new CongNhan(maCN);
-				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getString("maPhanCong"), cn);
-				BangChamCongCongNhan cccn_new = new BangChamCongCongNhan(pccd, soLuongLam, trangThai);
-				listCC.add(cccn_new);
-
-				int soNgayLam = 0;
-				int soNgayNghi = 0;
-				int soNgayPhep = 0;
-
-				for (BangChamCongCongNhan chamCong : listCC) {
-					int trangThai_2 = chamCong.getTrangThai();
-
-					switch (trangThai_2) {
-					case 0:
-						soNgayLam += 1;
-						break;
-					case 1:
-						soNgayPhep += 1;
-						break;
-					case 2:
-						soNgayNghi += 1;
-						break;
-					}
-				}
-
-				int soLuongCongDoanLam = soLuongLam;
-				luongCoBan = 250000;
-				luongThang = Math.max(0, luongCoBan * (soNgayLam + soNgayPhep - soNgayNghi));
-				luongCongDoan = Math.max(0, donGia * soLuongCongDoanLam);
-				thucLanh = Math.max(0, luongThang + luongCongDoan);
-
-				boolean isExisted = checkCongNhanExist(maCN, thang, nam);
-				if (isExisted) {
-					// Nếu công nhân đã tồn tại, thực hiện UPDATE
-					String querryUpdate = "UPDATE BangLuongCongNhan "
-							+ "SET soLuongCongDoanLam=?, soNgayLam=?, soNgayNghi=?, soNgayPhep=?, thucLanh=?, "
-							+ "luongThang = ?, luongCongDoan = ? " + "WHERE maCN=? AND thangNam=?";
-
-					PreparedStatement st_update = conn.prepareStatement(querryUpdate);
-					st_update.setInt(1, soLuongCongDoanLam);
-					st_update.setInt(2, soNgayLam);
-					st_update.setInt(3, soNgayNghi);
-					st_update.setInt(4, soNgayPhep);
-					st_update.setDouble(5, thucLanh);
-					st_update.setDouble(6, luongThang);
-					st_update.setDouble(7, luongCongDoan);
-					st_update.setString(8, maCN);
-					st_update.setString(9, thang + "/" + nam);
-
-					n = st_update.executeUpdate();
-					listCC.removeAll(listCC);
-				} else {
-					// Nếu công nhân chưa tồn tại, thực hiện INSERT
-					String querryInsert = "INSERT INTO BangLuongCongNhan "
-							+ "(maBangLuong, maCN, soLuongCongDoanLam, soNgayLam, soNgayNghi, soNgayPhep, thucLanh, thangNam, "
-							+ "luongThang, luongCongDoan) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-
-					PreparedStatement st_is = conn.prepareStatement(querryInsert);
-					st_is.setString(1, maTuDong.sinhMaBLCN());
-					st_is.setString(2, maCN);
-					st_is.setInt(3, soLuongCongDoanLam);
-					st_is.setInt(4, soNgayLam);
-					st_is.setInt(5, soNgayNghi);
-					st_is.setInt(6, soNgayPhep);
-					st_is.setDouble(7, thucLanh);
-					st_is.setString(8, thang + "/" + nam);
-					st_is.setDouble(9, luongThang);
-					st_is.setDouble(10, luongCongDoan);
-
-					n = st_is.executeUpdate();
-
-					listCC.removeAll(listCC);
-				}
-
-			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -262,6 +255,49 @@ public class TinhLuongCongNhan_Dao {
 		}
 
 		return listBLCN;
+
+	}
+	// HÀM GET THÔNG TIN VÀ ALL CÔNG ĐOẠN CHI TIẾT TÍNH LƯƠNG
+	public ArrayList<BangLuongCongNhan> getAllCD_CTL(String maBangLuong) {
+		ConnectDB.getInstance();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		ArrayList<BangLuongCongNhan> listCD = new ArrayList<>();
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String querry = "SELECT *  FROM [dbo].[BangLuongCongNhan] blcn\r\n"
+					+ "JOIN [dbo].[CongNhan] cn ON cn.maCN = blcn.maCN\r\n"
+					+ "JOIN [dbo].[BangPhanCongCongDoan] pccd ON blcn.maCN = pccd.maCN\r\n"
+					+ "JOIN [dbo].[BangChamCongCongNhan] cccn ON cccn.maPhanCong = pccd.maPhanCong\r\n"
+					+ "WHERE maBangLuong = ?";
+			st = conn.prepareStatement(querry);
+			st.setString(1, maBangLuong);
+
+			rs = st.executeQuery();
+
+//			while (rs.next()) {
+//				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan();
+//				BangChamCongCongNhan cccn = new BangChamCongCongNhan(rs.getInt("soLuongCongDoanLam"));
+//				BangLuongCongNhan blcn = new BangLuongCongNhan(
+//						rs.getString("maBangLuong"),
+//						cccn,
+//						rs.getInt("soNgayLam"), rs.getInt("soNgayNghi"), rs.getInt("soNgayPhep"),
+//						rs.getDouble("luongThang"), rs.getDouble("luongCongDoan"), rs.getDouble("thucLanh"),
+//						rs.getString("thangNam"));
+//				listCD.add(blcn);
+//			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return listCD;
 
 	}
 

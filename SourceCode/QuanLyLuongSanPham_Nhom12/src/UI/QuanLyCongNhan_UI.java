@@ -445,7 +445,7 @@ public class QuanLyCongNhan_UI extends JPanel implements ActionListener, MouseLi
 		pnlTable.setBackground(new Color(255, 255, 255));
 		add(pnlTable, BorderLayout.CENTER);
 
-		String cols[] = { "STT", "Mã CN", "Họ Tên", "Giới tính", "Ngày sinh", "SDT", "Email", "Địa chỉ", "CCCD",
+		String cols[] = { "#", "Mã CN", "Họ Tên", "Giới tính", "Ngày sinh", "SDT", "Email", "Địa chỉ", "CCCD",
 				"Ngày vào làm", "Ghi chú" };
 		dtblModel = new DefaultTableModel(cols, 0);
 		tblCN = new JTable(dtblModel);

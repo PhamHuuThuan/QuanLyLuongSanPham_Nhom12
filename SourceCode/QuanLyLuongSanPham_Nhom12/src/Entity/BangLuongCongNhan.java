@@ -17,6 +17,18 @@ public class BangLuongCongNhan {
 	
 	
 	
+	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, BangChamCongCongNhan chamCongCongNhan, int soNgayLam,
+			double luongThang, double luongCongDoan, double thucLanh, String thangNam) {
+		super();
+		this.maBangLuong = maBangLuong;
+		this.congNhan = congNhan;
+		this.chamCongCongNhan = chamCongCongNhan;
+		this.soNgayLam = soNgayLam;
+		this.luongThang = luongThang;
+		this.luongCongDoan = luongCongDoan;
+		this.thucLanh = thucLanh;
+		this.thangNam = thangNam;
+	}
 	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, BangChamCongCongNhan chamCongCongNhan,
 			int soNgayLam, int soNgayNghi, int soNgayPhep, double luongThang, double luongCongDoan, double thucLanh,
 			String thangNam) {
@@ -32,6 +44,16 @@ public class BangLuongCongNhan {
 		this.thucLanh = thucLanh;
 		this.thangNam = thangNam;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public String getMaBangLuong() {
 		return maBangLuong;
 	}

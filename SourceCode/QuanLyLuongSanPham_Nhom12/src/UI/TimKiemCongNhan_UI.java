@@ -571,7 +571,7 @@ public class TimKiemCongNhan_UI extends JPanel implements ActionListener, MouseL
 				null, new Color(0, 0, 0)), new EmptyBorder(0, 10, 0, 10)));
 		pnlTable.setLayout(new BorderLayout(0, 0));
 
-		String cols[] = { "STT","Mã CN", "Họ tên", "Giới tính", "SĐT", "Email", "Ngày vào làm", "Ghi chú" };
+		String cols[] = { "#","Mã CN", "Họ tên", "Giới tính", "SĐT", "Email", "Ngày vào làm", "Ghi chú" };
 		dtbModelCN = new DefaultTableModel(cols, 0);
 		tblCN = new JTable(dtbModelCN);
 
