@@ -93,6 +93,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 	private ArrayList<BangChamCongCongNhan> dsChuacc_cn = new ArrayList<>();
 
 	private Integer soLuongDaPhan;
+	private Integer soLuongChuaCham;
 	private Boolean isLuu = false;
 	private JTextField txtMaPhanCong;
 
@@ -627,7 +628,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 			if (index != -1) {
 				isLuu = false;
 				displayButtonSaveAndCancel(true);
-				setEditableForTextField(true);
+				txtGhiChu_dt.setEditable(true);
 				btnGetCD.setEnabled(true);
 			} else {
 				alertNotification("Cần chọn chấm công cần sửa");
@@ -933,7 +934,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		dtblModelSP.addRow(row);
 	}
 
-	// --------------------------------------------------------------------//
+	// -----------------------------------------------------------------------------//
 	// HÀM LẤY DỮ LIỆU CD LÊN BẢNG
 	public void getDataCDLenBang() {
 		String maSP = txtMaSP.getText();
@@ -959,7 +960,8 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 
 		dtblModelCD.addRow(row);
 	}
-	//-----------------------------------------------------------------------//
+
+	// -----------------------------------------------------------------------------//
 	/* HÀM LẤY DATA CÔNG NHÂN */
 	// HÀM LẤY DỮ LIỆU CN LÊN BẢNG
 	public void getDataCNLenBang() {
@@ -997,7 +999,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		txtMaCN_dt.setText(dsChuacc_cn.get(index).getPhanCong().getCongNhan().getMaCN());
 		txtTenCongNhan_dt.setText(dsChuacc_cn.get(index).getPhanCong().getCongNhan().getHoTen());
 
-		soLuongDaPhan = dsChuacc_cn.get(index).getPhanCong().getSoLuongCanLam();
+		soLuongChuaCham = dsChuacc_cn.get(index).getSoLuongChuaCham();
 
 		txtMaPhanCong.setText(dsChuacc_cn.get(index).getPhanCong().getMaPhanCong());
 
@@ -1028,8 +1030,8 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		return new BangChamCongCongNhan(ngayChamCong, gioVaoLam, pc, soLuongLam, ghiChu, trangThai);
 	}
 
-	// HÀM VALID CCCN
-	public boolean validCCCN() {
+	// HÀM VALID THÊM CCCN
+	public boolean validThemCCCN() {
 		if (txtMaCN_dt.getText().isEmpty() || txtTenCongNhan_dt.getText().isEmpty()) {
 			alertNotification("Phải chọn thông tin Công Nhân cần chấm (bên trái)");
 			return false;
@@ -1037,7 +1039,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		String soLuongLamDuoc = txtSoLuongLam_dt.getText();
 		try {
 			int slld = Integer.parseInt(soLuongLamDuoc);
-			if (slld > Integer.valueOf(soLuongDaPhan)) {
+			if (slld > Integer.valueOf(soLuongChuaCham)) {
 				alertNotification("Số lượng làm được phải nhỏ hơn  Số Lượng Chưa Chấm");
 				return false;
 			} else if (slld < 0) {
@@ -1054,7 +1056,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 
 	// HÀM CHẤM CÔNG CÔNG NHÂN
 	public void chamCongCongNhan() {
-		if (validCCCN()) {
+		if (validThemCCCN()) {
 			BangChamCongCongNhan cccn_new = convertDataCCCN();
 			if (cccn_new != null) {
 				if (cccn_dao.chamCongNhan(cccn_new)) {
@@ -1145,21 +1147,19 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 
 	// HÀM CẬP NHẬT 1 CHẤM CÔNG CÔNG NHÂN
 	public void capNhatCCCN() {
-		if (validCCCN()) {
-			BangChamCongCongNhan cccn_new = convertDataCCCN();
-			if (cccn_new != null) {
-				if (cccn_dao.capNhatCCCN(cccn_new)) {
-					getDataCCCNLenBang();
-					getDataCNLenBang();
-					xoaRong();
-					displayButtonSaveAndCancel(false);
-					setEditableForTextField(false);
-					alertSuccess("Cập nhật thành công");
-					btnGetCD.setEnabled(false);
-				} else {
-					alertNotification("Cập nhật thất bại do không " + "tồn tại 1 trong giá trị sau: "
-							+ " ngayCC, gioVaoLam, maPC ");
-				}
+		BangChamCongCongNhan cccn_new = convertDataCCCN();
+		if (cccn_new != null) {
+			if (cccn_dao.capNhatCCCN(cccn_new)) {
+				getDataCCCNLenBang();
+				getDataCNLenBang();
+				xoaRong();
+				displayButtonSaveAndCancel(false);
+				setEditableForTextField(false);
+				alertSuccess("Cập nhật thành công");
+				btnGetCD.setEnabled(false);
+			} else {
+				alertNotification(
+						"Cập nhật thất bại do không " + "tồn tại 1 trong giá trị sau: " + " ngayCC, gioVaoLam, maPC ");
 			}
 		}
 	}

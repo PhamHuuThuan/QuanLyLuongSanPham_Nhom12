@@ -13,6 +13,7 @@ public class BangChamCongCongNhan {
 	private Integer trangThai;
 	private int soLuongChuaCham;
 
+	
 	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
 			String ghiChu, Integer trangThai) {
 		super();
@@ -23,17 +24,29 @@ public class BangChamCongCongNhan {
 		this.ghiChu = ghiChu;
 		this.trangThai = trangThai;
 	}
+	
+	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
+			String ghiChu, Integer trangThai,int soLuongChuaCham) {
+		super();
+		this.ngayChamCong = ngayChamCong;
+		this.gioVaoLam = gioVaoLam;
+		this.phanCong = phanCong;
+		this.soLuongLam = soLuongLam;
+		this.ghiChu = ghiChu;
+		this.trangThai = trangThai;
+		this.soLuongChuaCham = soLuongChuaCham;
+	}
 
 	public BangChamCongCongNhan(int soLuongLam) {
 		super();
 		this.soLuongLam = soLuongLam;
 	}
 
-	public BangChamCongCongNhan(BangPhanCongCongDoan phanCong, int soLuongLam, int trangThai) {
+	public BangChamCongCongNhan(BangPhanCongCongDoan phanCong, int soLuongLam, int soLuongChuaCham) {
 		super();
 		this.phanCong = phanCong;
 		this.soLuongLam = soLuongLam;
-		this.trangThai = trangThai;
+		this.soLuongChuaCham = soLuongChuaCham;
 	}
 
 	public BangChamCongCongNhan() {

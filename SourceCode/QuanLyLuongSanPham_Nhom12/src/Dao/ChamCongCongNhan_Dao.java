@@ -141,11 +141,11 @@ public class ChamCongCongNhan_Dao {
 				CongNhan cn_new = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"), 
 						rs.getDate("ngaySinh"));
 				BangPhanCongCongDoan pccn = new BangPhanCongCongDoan(
-						cn_new
+						rs.getString("maPhanCong"),cn_new, rs.getInt("soLuongDaPhan")
 						);
 				BangChamCongCongNhan cccn_cn_new = new BangChamCongCongNhan(
 						pccn,
-						rs.getInt("soLuongLam"),
+						rs.getInt("soLuongDaCham"),
 						rs.getInt("soLuongChuaCham")
 						);
 
@@ -178,7 +178,8 @@ public class ChamCongCongNhan_Dao {
 
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT * FROM [dbo].[BangChamCongCongNhan] cccn JOIN [dbo].[BangPhanCongCongDoan] pccd ON cccn.maPhanCong = pccd.maPhanCong\r\n"
+			String querry = "SELECT *, pccd.soLuongCanLam - cccn.soLuongLam AS soLuongChuaCham \r\n"
+					+ "FROM [dbo].[BangChamCongCongNhan] cccn JOIN [dbo].[BangPhanCongCongDoan] pccd ON cccn.maPhanCong = pccd.maPhanCong\r\n"
 					+ "JOIN [dbo].[CongNhan] cn ON pccd.maCN = cn.maCN JOIN [dbo].[CongDoan] cd ON pccd.maCongDoan = cd.maCD\r\n"
 					+ "JOIN [dbo].[SanPham] sp ON cd.maSP = sp.maSP";
 			st = conn.prepareStatement(querry);
@@ -202,7 +203,8 @@ public class ChamCongCongNhan_Dao {
 						pccd,
 						rs.getInt("soLuongLam"),
 						rs.getString("ghiChu"),
-						rs.getInt("trangThai")
+						rs.getInt("trangThai"),
+						rs.getInt("soLuongChuaCham")
 						);
 
 				listCCCN.add(cccn_new);
