@@ -75,9 +75,10 @@ public class PhanCongCongDoan_Dao {
 			rs = st.executeQuery();
 
 			while (rs.next()) {
+				SanPham sp = new SanPham(rs.getString("maSP"), rs.getString("tenSP"));
 				CongDoan cd = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("thuTu"),
-						rs.getInt("soLuong"),rs.getInt("soLuongConLai"), rs.getDouble("donGia"), rs.getBoolean("tinhTrang"),
-						rs.getDate("ngayHoanThanh"), new SanPham(rs.getString("maSP"), rs.getString("tenSP")));
+						rs.getInt("soLuong"), rs.getDouble("donGia"), rs.getBoolean("tinhTrang"),
+						rs.getDate("ngayHoanThanh"),rs.getInt("soLuongConLai"), sp);
 				listCD.add(cd);
 			}
 
@@ -191,11 +192,11 @@ public class PhanCongCongDoan_Dao {
 
 			while (rs.next()) {
 				CongNhan congNhan = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
-				CongDoan congDoan = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("soLuong"), rs.getInt("soLuongConLai"));
 				SanPham sanPham = new SanPham(rs.getString("maSP"), rs.getString("tenSP"));
+				CongDoan congDoan = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"), rs.getInt("soLuong"), sanPham, rs.getInt("soLuongConLai"));
 
 				BangPhanCongCongDoan cdNew = new BangPhanCongCongDoan(rs.getString("maPhanCong"), congNhan, congDoan,
-						sanPham, rs.getDate("ngayPhanCong"), rs.getInt("soLuongCanLam"), rs.getString("ghiChu"));
+						 rs.getDate("ngayPhanCong"), rs.getInt("soLuongCanLam"), rs.getString("ghiChu"));
 
 				listPCCD.add(cdNew);
 			}

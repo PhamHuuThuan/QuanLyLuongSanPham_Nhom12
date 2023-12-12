@@ -54,7 +54,7 @@
 			private Color componentColor = Color.decode("#424242");
 			private Color textColor = Color.BLACK;
 			private JTextField txtMaHopDong, txtMaSP, txtTenSP, txtDonGia;
-			private JTextArea txaYeuCau;
+			private JTextArea txaYeuCau, txaSoLuong;
 			private JComboBox cmbDonViTinh;
 			private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnIn,btnFocus;
 			private DefaultTableModel dtblModelSP, dtblModelHD;
@@ -457,7 +457,7 @@
 			public void mouseClicked(MouseEvent e) {
 				if(e.getSource() == tblSP) {
 					int index = tblSP.getSelectedRow();
-					if(index != -1) {
+					if(index != -1  ) {
 						hienThiThongTinSP(index);
 					}
 				}
@@ -516,6 +516,7 @@
 			if (o == btnXoa) {
 			  xoaSanPham();
 			}
+			
 			if(o==btnLuu) {
 				if(isThem==true) {
 					themSanpham();	
@@ -531,7 +532,7 @@
 		}
 		}
 		
-		private void hanleButtonSaveAndCanle(boolean display) {
+		private  void hanleButtonSaveAndCanle(boolean display) {
 			if (display == true) {
 				btnLuu.setEnabled(true);
 				btnLuu.setAlpha(1f);
@@ -633,7 +634,7 @@
 			double tongTienSP = sp_Dao.tinhTongTien(txtMaHopDong.getText()) + soLuong * giaTriHD;
 		
 			if (tongTienSP < giaTriHD) {
-			    setTextError("Tổng tiền của tất cả sản phẩm không được vượt quá giá trị hợp đồng: " + tongTienSP + " > " + giaTriHD);
+			    setTextError("Tổng tiền của tất cả sản phẩm không được vượt quá giá trị hợp đồng: " + tongTienSP + " < " + giaTriHD);
 			    return false;
 			}
 		
@@ -661,6 +662,7 @@
 			    String[] row = new String[10];
 			    row[0] = String.valueOf(dtblModelSP.getRowCount() + 1);
 			    row[1] = String.valueOf(dtblModelHD.getRowCount());
+			    row[1] = txtMaHopDong.getText();
 			    row[2] = sp.getMaSP();
 			    row[3] = sp.getTenSP();
 			    row[4] = sp.getDonViTinh();
@@ -700,7 +702,7 @@
 				if(validDataSP()==true) {
 					SanPham spNew = convertDataToSanPham();
 					if(spNew != null) {
-						if(sp_Dao.themCongDoan(spNew)) {
+						if(sp_Dao.themSanPham(spNew)) {
 							lblMessage.setText("Thêm thành công sản phẩm!");
 							themSanPhamVaoBang(spNew);
 							resetTextFiled();
@@ -713,6 +715,7 @@
 				}
 			}else {
 			}
+			
 		}
 		// sửa một sản phẩm được chọn
 		private void suaSanPham() {
@@ -736,37 +739,52 @@
 				setTextError("Bạn cần chọn một sản phẩm cần sửa!");
 			}
 		}
-		
+		private void displayButtonSaveAndCancel(boolean b) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+		private void setEditableForTextField(boolean b) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
 		//Xóa sản phẩm được chọn
 		private void xoaSanPham() {
-			int index = tblSP.getSelectedRow();
-			if(index != -1 && sp_Dao.getSanPhamTheoHopDong(txtMaHopDong.getText()).size()>1) {
-				if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
-					if(sp_Dao.xoaSanPham(tblSP.getValueAt(index, 1).toString())==true) {
-						dsSP = sp_Dao.getSanPhamTheoHopDong(txtMaHopDong.getText());
-						themTatCaSanPhamVaoBang(dsSP);
-						lblMessage.setText("Xóa thành công sản phẩm!");
-						xoaRongSP(false);
-					}else {
-						setTextError("Xóa thất bại! Không tìm thấy sản phẩm trong csdl!");
+				String maSP = txtMaSP.getText();
+				if(maSP != null) {
+					if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+						if(sp_Dao.xoaSanPham(maSP)) {
+							lblMessage.setText("Xóa thành công!");
+							dsSP = sp_Dao.getALLSanPham();
+							resetTextFiled();
+						}else {
+							setTextError("Xóa thất bại! Không tìm thấy sản phẩm trong csdl!");
+						}
 					}
+				}else {
+					setTextError("Bạn cần chọn sản phẩm muốn xóa và không thể xóa toàn bộ sản phẩm");
 				}
-			}else {
-				setTextError("Bạn cần chọn sản phẩm muốn xóa và không thể xóa toàn bộ sản phẩm");
 			}
-		}
+		
+		
 		//Hiển thị sản phẩm được chọn từ table lên bảng thông tin
 		private void hienThiThongTinSP(int index) {
 			txtMaSP.setText(dsSP.get(index).getMaSP());
 			txtTenSP.setText(dsSP.get(index).getTenSP());
-			txtDonGia.setText(new DecimalFormat("#,###").format(dsSP.get(index).getDonGia()));
-			modelSP.setValue(dsSP.get(index).getSoLuong());
 			for(int i = 0; i < cmbDonViTinh.getItemCount(); i++) {
-				if(cmbDonViTinh.getItemAt(index).equals(dsSP.get(index).getDonViTinh())) {
+				if(cmbDonViTinh.getItemAt(i).equals(dsSP.get(index).getDonViTinh())) {
 					cmbDonViTinh.setSelectedIndex(i);
 					break;
 				}
 			}
+			
+			txtDonGia.setText(new DecimalFormat("#,###").format(dsSP.get(index).getDonGia()));
+			txaSoLuong.setText(String.valueOf(dsSP.get(index).getSoLuong()));
 			txaYeuCau.setText(dsSP.get(index).getYeuCau());
 		}
 			
