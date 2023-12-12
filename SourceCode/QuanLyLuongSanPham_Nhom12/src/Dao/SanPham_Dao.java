@@ -18,13 +18,14 @@ public class SanPham_Dao {
 		try {
 			Connection con = ConnectDB.getConnection();
 			st = con.prepareStatement("UPDATE SanPham SET maHopDong=?, tenSP=?, donViTinh=?, "
-					+ "soLuong=?, yeuCau=?, donGia=? where maSP=?");
+					+ "soLuong=?,  donGia=? ,yeuCau=? where maSP=?");
 			st.setString(1, sp.getMaHopDong().getMaHD());
 			st.setString(2, sp.getTenSP());
 			st.setString(3, sp.getDonViTinh());
 			st.setInt(4, sp.getSoLuong());
-			st.setString(5, sp.getYeuCau());
+			
 			st.setDouble(6, sp.getDonGia());
+			st.setString(5, sp.getYeuCau());
 			st.setString(7, sp.getMaSP());
 			n = st.executeUpdate();
 		} catch (SQLException e) {
