@@ -90,7 +90,7 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 	private ArrayList<BangPhanCongCongDoan> dspccd_cd = new ArrayList<>();
 	private ArrayList<BangChamCongCongNhan> dscccn = new ArrayList<>();
 
-	private ArrayList<CongNhan> dspccd_cn = new ArrayList<>();
+	private ArrayList<BangChamCongCongNhan> dsChuacc_cn = new ArrayList<>();
 
 	private Integer soLuongDaPhan;
 	private Boolean isLuu = false;
@@ -802,8 +802,8 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 //				btnChamTatCa.setEnabled(true);
 				if (selectedRowIndex != -1) {
 
-					String maSP = dspccd_sp.get(selectedRowIndex).getSanPham().getMaSP();
-					String tenSP = dspccd_sp.get(selectedRowIndex).getSanPham().getTenSP();
+					String maSP = dspccd_sp.get(selectedRowIndex).getCongDoan().getSanPham().getMaSP();
+					String tenSP = dspccd_sp.get(selectedRowIndex).getCongDoan().getSanPham().getTenSP();
 
 					btnGetCD.setEnabled(true);
 
@@ -927,8 +927,8 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 	public void themSPVaoBang(BangPhanCongCongDoan pccd_sp) {
 		String[] row = new String[50];
 		row[0] = String.valueOf(dtblModelSP.getRowCount() + 1);
-		row[1] = pccd_sp.getSanPham().getMaSP();
-		row[2] = pccd_sp.getSanPham().getTenSP();
+		row[1] = pccd_sp.getCongDoan().getSanPham().getMaSP();
+		row[2] = pccd_sp.getCongDoan().getSanPham().getTenSP();
 
 		dtblModelSP.addRow(row);
 	}
@@ -968,38 +968,38 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 
 //		Date ngayPC = dtbNgayChamCong.getDate();
 
-		dspccd_cn = cccn_dao.getALLCongNhan(maSP, maCD);
-		themAllCNVaoBang(dspccd_cn);
+		dsChuacc_cn = cccn_dao.getALLCongNhan(maSP, maCD);
+		themAllCNVaoBang(dsChuacc_cn);
 	}
 
 	// HÀM THÊM TẤT CẢ CN LÊN BẢNG
-	public void themAllCNVaoBang(ArrayList<CongNhan> listCN) {
+	public void themAllCNVaoBang(ArrayList<BangChamCongCongNhan> listCN) {
 		dtblModelCN.setRowCount(0);
-		for (CongNhan pccd_cn : listCN) {
-			themCNVaoBang(pccd_cn);
+		for (BangChamCongCongNhan cccn_cn : listCN) {
+			themCNVaoBang(cccn_cn);
 		}
 	}
 
 	// HÀM THÊM SẢN PHẨM VÀO TỪNG CỘT
-	public void themCNVaoBang(CongNhan pccd_cn) {
+	public void themCNVaoBang(BangChamCongCongNhan pccd_cn) {
 		String[] row = new String[50];
 		row[0] = String.valueOf(dtblModelCN.getRowCount() + 1);
-		row[1] = pccd_cn.getMaCN();
-		row[2] = pccd_cn.getHoTen();
-		row[3] = String.valueOf(Integer.valueOf(pccd_cn.getPhanCongCongDoan().getSoLuongCanLam()));
-		row[4] = String.valueOf(Integer.valueOf(pccd_cn.getChamCongCongNhan().getSoLuongLam()));
-		row[5] = String.valueOf(Integer.valueOf(pccd_cn.getChamCongCongNhan().getSoLuongChuaCham()));
+		row[1] = pccd_cn.getPhanCong().getCongNhan().getMaCN();
+		row[2] = pccd_cn.getPhanCong().getCongNhan().getHoTen();
+		row[3] = String.valueOf(Integer.valueOf(pccd_cn.getPhanCong().getSoLuongCanLam()));
+		row[4] = String.valueOf(Integer.valueOf(pccd_cn.getSoLuongLam()));
+		row[5] = String.valueOf(Integer.valueOf(pccd_cn.getSoLuongChuaCham()));
 
 		dtblModelCN.addRow(row);
 	}
 
 	public void hienthiThongTinPC(int index) {
-		txtMaCN_dt.setText(dspccd_cn.get(index).getMaCN());
-		txtTenCongNhan_dt.setText(dspccd_cn.get(index).getHoTen());
+		txtMaCN_dt.setText(dsChuacc_cn.get(index).getPhanCong().getCongNhan().getMaCN());
+		txtTenCongNhan_dt.setText(dsChuacc_cn.get(index).getPhanCong().getCongNhan().getHoTen());
 
-		soLuongDaPhan = dspccd_cn.get(index).getPhanCongCongDoan().getSoLuongCanLam();
+		soLuongDaPhan = dsChuacc_cn.get(index).getPhanCong().getSoLuongCanLam();
 
-		txtMaPhanCong.setText(dspccd_cn.get(index).getPhanCongCongDoan().getMaPhanCong());
+		txtMaPhanCong.setText(dsChuacc_cn.get(index).getPhanCong().getMaPhanCong());
 
 //		txtMaSP_dt.setText(dspccd_sp.get(index).getSanPham().getMaSP());
 //		txtMaCD_dt.setText(dspccd_cd.get(index).getCongDoan().getMaCD());
@@ -1091,12 +1091,12 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 	private void themDataCCCNVaoTable(BangChamCongCongNhan cccn) {
 		String[] row = new String[30];
 		row[0] = String.valueOf(dtblModelCNCC.getRowCount() + 1);
-		row[1] = cccn.getCongNhan().getMaCN();
-		row[2] = cccn.getCongNhan().getHoTen();
-		row[3] = cccn.getSanPham().getMaSP();
-		row[4] = cccn.getSanPham().getTenSP();
-		row[5] = cccn.getCongDoan().getMaCD();
-		row[6] = cccn.getCongDoan().getTenCD();
+		row[1] = cccn.getPhanCong().getCongNhan().getMaCN();
+		row[2] = cccn.getPhanCong().getCongNhan().getHoTen();
+		row[3] = cccn.getPhanCong().getCongDoan().getSanPham().getMaSP();
+		row[4] = cccn.getPhanCong().getCongDoan().getSanPham().getTenSP();
+		row[5] = cccn.getPhanCong().getCongDoan().getMaCD();
+		row[6] = cccn.getPhanCong().getCongDoan().getTenCD();
 		row[7] = new SimpleDateFormat("dd-MM-yyyy").format(cccn.getNgayChamCong());
 		row[8] = cmbTrangThai.getItemAt(cccn.getTrangThai());
 		row[9] = cccn.getGioVaoLam();
@@ -1112,11 +1112,11 @@ public class ChamCongCongNhan_UI extends JPanel implements ActionListener, Mouse
 		dtbNgayChamCong.setEnabled(false);
 		dtbNgayChamCong.setDate(dscccn.get(index).getNgayChamCong());
 
-		txtMaCN_dt.setText(dscccn.get(index).getCongNhan().getMaCN());
-		txtTenCongNhan_dt.setText(dscccn.get(index).getCongNhan().getHoTen());
+		txtMaCN_dt.setText(dscccn.get(index).getPhanCong().getCongNhan().getMaCN());
+		txtTenCongNhan_dt.setText(dscccn.get(index).getPhanCong().getCongNhan().getHoTen());
 
-		txtMaSP_dt.setText(dscccn.get(index).getSanPham().getMaSP());
-		txtMaCD_dt.setText(dscccn.get(index).getCongDoan().getMaCD());
+		txtMaSP_dt.setText(dscccn.get(index).getPhanCong().getCongDoan().getSanPham().getMaSP());
+		txtMaCD_dt.setText(dscccn.get(index).getPhanCong().getCongDoan().getMaCD());
 
 		cmbTrangThai.setSelectedIndex(dscccn.get(index).getTrangThai());
 

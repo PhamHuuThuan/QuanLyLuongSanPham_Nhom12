@@ -13,10 +13,6 @@ public class BangChamCongCongNhan {
 	private Integer trangThai;
 	private int soLuongChuaCham;
 
-	private CongNhan congNhan;
-	private CongDoan congDoan;
-	private SanPham sanPham;
-
 	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
 			String ghiChu, Integer trangThai) {
 		super();
@@ -50,51 +46,16 @@ public class BangChamCongCongNhan {
 		this.soLuongChuaCham = soLuongChuaCham;
 	}
 
-	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam,
-			String ghiChu, Integer trangThai, CongNhan congNhan, CongDoan congDoan, SanPham sanPham) {
-		super();
-		this.ngayChamCong = ngayChamCong;
-		this.gioVaoLam = gioVaoLam;
-		this.phanCong = phanCong;
-		this.soLuongLam = soLuongLam;
-		this.ghiChu = ghiChu;
-		this.trangThai = trangThai;
-		this.congNhan = congNhan;
-		this.congDoan = congDoan;
-		this.sanPham = sanPham;
-	}
-
+	
 	public int getSoLuongChuaCham() {
 		return soLuongChuaCham;
 	}
+
 
 	public void setSoLuongChuaCham(int soLuongChuaCham) {
 		this.soLuongChuaCham = soLuongChuaCham;
 	}
 
-	public CongNhan getCongNhan() {
-		return congNhan;
-	}
-
-	public void setCongNhan(CongNhan congNhan) {
-		this.congNhan = congNhan;
-	}
-
-	public CongDoan getCongDoan() {
-		return congDoan;
-	}
-
-	public void setCongDoan(CongDoan congDoan) {
-		this.congDoan = congDoan;
-	}
-
-	public SanPham getSanPham() {
-		return sanPham;
-	}
-
-	public void setSanPham(SanPham sanPham) {
-		this.sanPham = sanPham;
-	}
 
 	public Integer getTrangThai() {
 		return trangThai;

@@ -16,7 +16,6 @@ public class BangLuongCongNhan {
 	private String thangNam;
 	
 	
-	
 	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, BangChamCongCongNhan chamCongCongNhan, int soNgayLam,
 			double luongThang, double luongCongDoan, double thucLanh, String thangNam) {
 		super();
