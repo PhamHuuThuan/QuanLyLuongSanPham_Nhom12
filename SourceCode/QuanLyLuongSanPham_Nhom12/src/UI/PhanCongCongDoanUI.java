@@ -1012,8 +1012,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		row[3] = pccd.getCongNhan().getHoTen();
 		row[4] = pccd.getCongDoan().getMaCD();
 		row[5] = pccd.getCongDoan().getTenCD();
-		row[6] = pccd.getSanPham().getMaSP();
-		row[7] = pccd.getSanPham().getTenSP();
+		row[6] = pccd.getCongDoan().getSanPham().getMaSP();
+		row[7] = pccd.getCongDoan().getSanPham().getTenSP();
 		row[8] = new SimpleDateFormat("dd-MM-yyyy").format(pccd.getNgayPhanCong());
 		row[9] = String.valueOf(Integer.valueOf(pccd.getSoLuongCanLam()));
 		row[10] = pccd.getGhiChu();
@@ -1029,8 +1029,8 @@ public class PhanCongCongDoanUI extends JPanel implements ActionListener, MouseL
 		txtTenCN.setText(dspccd.get(index).getCongNhan().getHoTen());
 		txtMaCD.setText(dspccd.get(index).getCongDoan().getMaCD());
 		txtTenCD.setText(dspccd.get(index).getCongDoan().getTenCD());
-		txtMaSP.setText(dspccd.get(index).getSanPham().getMaSP());
-		txtTenSp.setText(dspccd.get(index).getSanPham().getTenSP());
+		txtMaSP.setText(dspccd.get(index).getCongDoan().getSanPham().getMaSP());
+		txtTenSp.setText(dspccd.get(index).getCongDoan().getSanPham().getTenSP());
 
 		txtTongSoLuong.setText(String.valueOf(Integer.valueOf(dspccd.get(index).getCongDoan().getSoLuong())));
 		txtSLChuaPC.setText(String.valueOf(Integer.valueOf(dspccd.get(index).getCongDoan().getSoLuongConLai())));

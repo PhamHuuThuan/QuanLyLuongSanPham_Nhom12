@@ -8,12 +8,9 @@ public class BangPhanCongCongDoan {
 	private CongDoan congDoan;
 	private Date ngayPhanCong;
 	private int soLuongCanLam;
-	// bo sung trong class
 	private String ghiChu;
 	
-	private SanPham sanPham;
-	
-	
+
 	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan, CongDoan congDoan,Date ngayPhanCong,
 			int soLuongCanLam, String ghiChu) {
 		super();
@@ -25,30 +22,19 @@ public class BangPhanCongCongDoan {
 		this.ghiChu = ghiChu;
 	}
 	
-	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan, CongDoan congDoan,SanPham sanPham,Date ngayPhanCong,
-			int soLuongCanLam, String ghiChu) {
-		super();
-		this.maPhanCong = maPhanCong;
-		this.congNhan = congNhan;
-		this.congDoan = congDoan;
-		this.sanPham = sanPham;
-		this.ngayPhanCong = ngayPhanCong;
-		this.soLuongCanLam = soLuongCanLam;
-		this.ghiChu = ghiChu;
-	}
-	
-
-
-	public BangPhanCongCongDoan(SanPham sanPham) {
-		super();
-		this.sanPham = sanPham;
-	}
-	
 	
 
 	public BangPhanCongCongDoan(CongDoan congDoan) {
 		super();
 		this.congDoan = congDoan;
+	}
+
+	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan, CongDoan congDoan, int soLuongCanLam) {
+		super();
+		this.maPhanCong = maPhanCong;
+		this.congNhan = congNhan;
+		this.congDoan = congDoan;
+		this.soLuongCanLam = soLuongCanLam;
 	}
 
 	public BangPhanCongCongDoan(String maPhanCong) {
@@ -74,21 +60,16 @@ public class BangPhanCongCongDoan {
 		super();
 		this.soLuongCanLam = soLuongCanLam;
 	}
-	
 
-	
-
-	public SanPham getSanPham() {
-		return sanPham;
-	}
-
-	public void setSanPham(SanPham sanPham) {
-		this.sanPham = sanPham;
-	}
 
 	public BangPhanCongCongDoan() {
 		super();
 		
+	}
+
+	public BangPhanCongCongDoan(CongNhan congNhan) {
+		super();
+		this.congNhan = congNhan;
 	}
 
 	public String getMaPhanCong() {

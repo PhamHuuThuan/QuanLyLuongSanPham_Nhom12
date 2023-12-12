@@ -1,6 +1,5 @@
 package Entity;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class CongNhan {
@@ -16,9 +15,6 @@ public class CongNhan {
 	private Date ngayVaoLam;
 	private String anhDaiDien;
 	private String ghiChu;
-	
-	private BangPhanCongCongDoan phanCongCongDoan;
-	private BangChamCongCongNhan chamCongCongNhan;
 
 	public CongNhan(String maCN, String matKhau, String hoTen, Date ngaySinh, boolean gioiTinh, String sDT,
 			String email, String diaChi, String soCCCD, Date ngayVaoLam, String anhDaiDien, String ghiChu) {
@@ -42,13 +38,12 @@ public class CongNhan {
 		super();
 		this.maCN = maCN;
 	}
-	
+
 	public CongNhan(String maCN, String hoTen) {
 		super();
 		this.maCN = maCN;
 		this.hoTen = hoTen;
 	}
-	
 
 	public CongNhan(String maCN, String hoTen, Date ngaySinh, Date ngayVaoLam) {
 		super();
@@ -57,51 +52,12 @@ public class CongNhan {
 		this.ngaySinh = ngaySinh;
 		this.ngayVaoLam = ngayVaoLam;
 	}
-	
-	
 
 	public CongNhan(String maCN, String hoTen, Date ngaySinh) {
 		super();
 		this.maCN = maCN;
 		this.hoTen = hoTen;
 		this.ngaySinh = ngaySinh;
-	}
-	
-	
-
-	public CongNhan(String maCN, String hoTen, Date ngaySinh, BangPhanCongCongDoan phanCongCongDoan) {
-		super();
-		this.maCN = maCN;
-		this.hoTen = hoTen;
-		this.ngaySinh = ngaySinh;
-		this.phanCongCongDoan = phanCongCongDoan;
-	}
-
-	
-	public CongNhan(String maCN, String hoTen, Date ngaySinh, BangPhanCongCongDoan phanCongCongDoan,
-			BangChamCongCongNhan chamCongCongNhan) {
-		super();
-		this.maCN = maCN;
-		this.hoTen = hoTen;
-		this.ngaySinh = ngaySinh;
-		this.phanCongCongDoan = phanCongCongDoan;
-		this.chamCongCongNhan = chamCongCongNhan;
-	}
-
-	public BangChamCongCongNhan getChamCongCongNhan() {
-		return chamCongCongNhan;
-	}
-
-	public void setChamCongCongNhan(BangChamCongCongNhan chamCongCongNhan) {
-		this.chamCongCongNhan = chamCongCongNhan;
-	}
-
-	public BangPhanCongCongDoan getPhanCongCongDoan() {
-		return phanCongCongDoan;
-	}
-
-	public void setPhanCongCongDoan(BangPhanCongCongDoan phanCongCongDoan) {
-		this.phanCongCongDoan = phanCongCongDoan;
 	}
 
 	public String getMaCN() {
@@ -133,10 +89,9 @@ public class CongNhan {
 		if (!matKhau.matches("\\S+")) {
 			throw new Exception("Mật khẩu không được chứa khoảng trắng!");
 		}
-		if (matKhau.trim().length()<6) {
+		if (matKhau.trim().length() < 6) {
 			throw new Exception("Mật khẩu phải lớn hơn 6 kí tự!");
-		} 
-		else {
+		} else {
 			this.matKhau = matKhau;
 		}
 	}
@@ -157,15 +112,7 @@ public class CongNhan {
 		return ngaySinh;
 	}
 
-	public void setNgaySinh(Date ngaySinh) throws Exception{
-//		Calendar cal = Calendar.getInstance();
-//		cal.add(Calendar.YEAR, -18);
-//		java.util.Date eighteenYearsAgo = cal.getTime();
-//		if (!ngaySinh.before(eighteenYearsAgo)) {
-//			throw new Exception("Ngày sinh trước ngày hiện tại và phải đủ 18 tuổi!");
-//		} else {
-//			this.ngaySinh = ngaySinh;
-//		}
+	public void setNgaySinh(Date ngaySinh) throws Exception {
 		this.ngaySinh = ngaySinh;
 	}
 
@@ -223,17 +170,15 @@ public class CongNhan {
 		return soCCCD;
 	}
 
-	public void setSoCCCD(String soCCCD)throws Exception {
-		if(soCCCD==null || soCCCD.trim().length()<=0) {
+	public void setSoCCCD(String soCCCD) throws Exception {
+		if (soCCCD == null || soCCCD.trim().length() <= 0) {
 			throw new Exception("Căn cước công dân không được rỗng!");
 		}
-		if(!soCCCD.matches("\\S+")){
-		    throw new Exception("Căn cước công dân không được chứa khoảng trắng!");
-		}
-		else if(!soCCCD.matches("^\\d{12}$")){
-		    throw new Exception("Căn cước công dân dài 12 kí tự và chỉ chứa số");
-		}
-		else {
+		if (!soCCCD.matches("\\S+")) {
+			throw new Exception("Căn cước công dân không được chứa khoảng trắng!");
+		} else if (!soCCCD.matches("^\\d{12}$")) {
+			throw new Exception("Căn cước công dân dài 12 kí tự và chỉ chứa số");
+		} else {
 			this.soCCCD = soCCCD;
 		}
 	}
@@ -253,7 +198,7 @@ public class CongNhan {
 	public void setAnhDaiDien(String anhDaiDien) {
 		this.anhDaiDien = anhDaiDien;
 	}
-	
+
 	public String getGhiChu() {
 		return ghiChu;
 	}
@@ -269,5 +214,4 @@ public class CongNhan {
 				+ soCCCD + ", ngayVaoLam=" + ngayVaoLam + ", anhDaiDien=" + anhDaiDien + ", ghiChu=" + ghiChu + "]";
 	}
 
-	
 }

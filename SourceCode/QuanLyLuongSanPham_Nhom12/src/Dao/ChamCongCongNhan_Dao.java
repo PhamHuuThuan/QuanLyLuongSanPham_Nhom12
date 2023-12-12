@@ -34,7 +34,8 @@ public class ChamCongCongNhan_Dao {
 
 			while (rs.next()) {
 				SanPham sp = new SanPham(rs.getString("maSP"), rs.getString("tenSP"));
-				BangPhanCongCongDoan pccd_1 = new BangPhanCongCongDoan(sp);
+				CongDoan cd = new CongDoan(sp);
+				BangPhanCongCongDoan pccd_1 = new BangPhanCongCongDoan(cd);
 
 				listSP.add(pccd_1);
 
@@ -95,11 +96,11 @@ public class ChamCongCongNhan_Dao {
 		}
 
 	// HÀM LẤY TẤT CẢ CÔNG NHÂN ĐÃ ĐƯỢC PHÂN CÔNG THỎA SP VÀ CD TRÊN
-	public ArrayList<CongNhan> getALLCongNhan(String maSP, String maCongDoan) {
+	public ArrayList<BangChamCongCongNhan> getALLCongNhan(String maSP, String maCongDoan) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		ArrayList<CongNhan> listCN = new ArrayList<>();
+		ArrayList<BangChamCongCongNhan> listCN = new ArrayList<>();
 
 		try {
 			Connection conn = ConnectDB.getConnection();
@@ -136,12 +137,19 @@ public class ChamCongCongNhan_Dao {
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getString("maPhanCong"),rs.getInt("soLuongDaPhan"));
-				BangChamCongCongNhan cccn = new BangChamCongCongNhan(rs.getInt("soLuongDaCham"),rs.getInt("soLuongChuaCham"));
+				
 				CongNhan cn_new = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"), 
-						rs.getDate("ngaySinh"), pccd, cccn);
+						rs.getDate("ngaySinh"));
+				BangPhanCongCongDoan pccn = new BangPhanCongCongDoan(
+						cn_new
+						);
+				BangChamCongCongNhan cccn_cn_new = new BangChamCongCongNhan(
+						pccn,
+						rs.getInt("soLuongLam"),
+						rs.getInt("soLuongChuaCham")
+						);
 
-				listCN.add(cn_new);
+				listCN.add(cccn_cn_new);
 			}
 
 		} catch (Exception e) {
@@ -177,11 +185,16 @@ public class ChamCongCongNhan_Dao {
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				CongDoan cd = new CongDoan(rs.getString("maCD"),rs.getString("tenCD"));
-				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(rs.getString("maPhanCong"), rs.getInt("soLuongCanLam") );
-				CongNhan cn = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
 				SanPham sp  = new SanPham(rs.getString("maSP"),rs.getString("tenSP"));
+				CongDoan cd = new CongDoan(rs.getString("maCD"),rs.getString("tenCD"), sp);
+				CongNhan cn = new CongNhan(rs.getString("maCN"), rs.getString("hoTen"));
 		
+				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(
+						rs.getString("maPhanCong"), 
+						cn, 
+						cd,
+						rs.getInt("soLuongCanLam")
+						);
 				
 				BangChamCongCongNhan cccn_new = new BangChamCongCongNhan(
 						rs.getDate("ngayChamCong"),
@@ -189,10 +202,7 @@ public class ChamCongCongNhan_Dao {
 						pccd,
 						rs.getInt("soLuongLam"),
 						rs.getString("ghiChu"),
-						rs.getInt("trangThai"),
-						cn,
-						cd,
-						sp
+						rs.getInt("trangThai")
 						);
 
 				listCCCN.add(cccn_new);
