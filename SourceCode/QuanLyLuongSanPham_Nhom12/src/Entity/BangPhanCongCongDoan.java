@@ -24,6 +24,15 @@ public class BangPhanCongCongDoan {
 	
 	
 
+	public BangPhanCongCongDoan(String maPhanCong, CongNhan congNhan, int soLuongCanLam) {
+		super();
+		this.maPhanCong = maPhanCong;
+		this.congNhan = congNhan;
+		this.soLuongCanLam = soLuongCanLam;
+	}
+
+
+
 	public BangPhanCongCongDoan(CongDoan congDoan) {
 		super();
 		this.congDoan = congDoan;
