@@ -6,6 +6,7 @@ import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
 import Dao.PhanCongCongDoan_Dao;
 import Dao.PhanCongNhanVien_Dao;
+import Dao.PhongBan_Dao;
 import Dao.SanPham_Dao;
 import Dao.TinhLuongCongNhan_Dao;
 import Dao.TinhLuongNhanVien_Dao;
@@ -44,7 +45,22 @@ public class SinhMaTuDong {
 		}
 		return maNew;
 	}
-
+	// sinh ma san pham +1
+		public String sinhMaPB() {
+			String maNew = "PB";
+			String maPre = new PhongBan_Dao().getMaPBLonNhat();
+			if (maPre == null || maPre.length() < 7) {
+				maNew += "01";
+			} else {
+				try {
+					int ma = Integer.parseInt(maPre.substring(2)) + 1;
+					maNew += String.format("%07d", ma);
+				} catch (NumberFormatException e) {
+					// Xử lý ngoại lệ ở đây
+				}
+			}
+			return maNew;
+		}
 	// sinh ma nhan vien +1
 	public String sinhMaNV() {
 		String maNew = "NV";

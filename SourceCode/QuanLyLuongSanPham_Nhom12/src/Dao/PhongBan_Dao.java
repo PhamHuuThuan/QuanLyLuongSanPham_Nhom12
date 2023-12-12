@@ -182,7 +182,29 @@ public class PhongBan_Dao {
 
         return maPhongBanLonNhat;
     }
-
+  //get mã sản phẩm lớn nhất
+  	public String getMaPBLonNhat() {
+  	    String maPBLonNhat = null;
+  	    ConnectDB.getInstance();
+  	    PreparedStatement st = null;
+  	    try {
+  	        Connection con = ConnectDB.getConnection();
+  	        st = con.prepareStatement("SELECT MAX(MaSP) AS MaPBLonNhat FROM PhongBan");
+  	        ResultSet rs = st.executeQuery();
+  	        if (rs.next()) {
+  	            maPBLonNhat = rs.getString("MaPBLonNhat");
+  	        }
+  	    } catch (SQLException e) {
+  	        e.printStackTrace();
+  	    } finally {
+  	        try {
+  	            st.close();
+  	        } catch (SQLException e) {
+  	            e.printStackTrace();
+  	        }
+  	    }
+  	    return maPBLonNhat;
+  	}
 
 }
 

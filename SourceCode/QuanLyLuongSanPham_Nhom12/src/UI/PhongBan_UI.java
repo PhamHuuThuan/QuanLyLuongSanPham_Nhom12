@@ -44,6 +44,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 
 public class PhongBan_UI extends JPanel implements ActionListener, MouseListener {
@@ -53,8 +54,9 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
-	private JTextField txtMaPB, txtTenPB, txtSoNv, txtMota;
+	private JTextField txtMaPB, txtTenPB, txtSoNhanVien, txtMota;
 	private Font fontText;
+	private JSpinner spnSoNhanVien;
 	private RoundedButton btnThem, btnSua, btnXoa, btnLuu, btnHuy;
 	private JTable tblPb;
 	private JLabel lblMessage;
@@ -165,17 +167,17 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		box_2.add(horizontalStrut_3);
 
-		txtSoNv = new JTextField();
-		txtSoNv.setForeground(Color.BLACK);
-		txtSoNv.setFont(fontText);
-		txtSoNv.setBackground(bgColor);
-		txtSoNv.setColumns(10);
-		txtSoNv.setBorder(
+		txtSoNhanVien = new JTextField();
+		txtSoNhanVien.setForeground(Color.BLACK);
+		txtSoNhanVien.setFont(fontText);
+		txtSoNhanVien.setBackground(bgColor);
+		txtSoNhanVien.setColumns(10);
+		txtSoNhanVien.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, componentColor),
 
 						BorderFactory.createEmptyBorder(5, 20, 5, 20)));
-		txtSoNv.setBackground(Color.WHITE);
-		box_2.add(txtSoNv);
+		txtSoNhanVien.setBackground(Color.WHITE);
+		box_2.add(txtSoNhanVien);
 
 		Component horizontalStrut_1_1 = Box.createHorizontalStrut(50);
 		box_2.add(horizontalStrut_1_1);
@@ -300,7 +302,7 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		//Set giá trị mặc định để hiển thị
 		txtMaPB.setText("PB12");
 		txtTenPB.setText("PhongBan");
-		txtSoNv.setText("1234");
+		txtSoNhanVien.setText("1234");
 		txtMota.setText("LL");
 
 		
@@ -357,10 +359,8 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 			setEditTextFiled(true);
 		    // Lấy chỉ số của hàng được chọn
 		}
-
-		if (o == btnXoa) {
-		  xoaPhongBan();
-		}
+	
+		
 		if(o==btnLuu) {
 			if(isThem==true) {
 				themPhongban();	
@@ -410,20 +410,20 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		if (edit == true) {
 			txtMaPB.setEditable(true);
 			txtTenPB.setEditable(true);
-			txtSoNv.setEditable(true);
+			txtSoNhanVien.setEditable(true);
 			txtMota.setEditable(true);
 		} else {
 			txtMaPB.setEditable(false);
 			txtTenPB.setEditable(false);
-			txtSoNv.setEditable(false);
+			txtSoNhanVien.setEditable(false);
 			txtMota.setEditable(false);
 		}
 	}
 
 	private void resetTextFiled() {
-		txtMaPB.setText("");
+		txtMaPB.setText(new SinhMaTuDong().sinhMaPB());
 		txtTenPB.setText("");
-		txtSoNv.setText("");
+		txtSoNhanVien.setText("");
 		txtMota.setText("");
 	}
 
@@ -455,7 +455,7 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 	private PhongBan convertDataToPhongBan() {
 		String maPhongBan = txtMaPB.getText();
 		String tenPb = txtTenPB.getText();
-		String soNv = txtSoNv.getText();
+		String soNv = txtSoNhanVien.getText();
 		String moTa = txtMota.getText();
 		
 		return new PhongBan(maPhongBan, tenPb, Integer.parseInt(soNv), moTa);
@@ -464,14 +464,14 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 	private void hienThiThongTinPB(int index) {
 		txtMaPB.setText(dsPB.get(index).getMaPhongBan());
 		txtTenPB.setText(dsPB.get(index).getTenPhongBan());
-		txtSoNv.setText(dsPB.get(index).getSoNhanVien()+"");
+		txtSoNhanVien.setText(dsPB.get(index).getSoNhanVien()+"");
 		txtMota.setText(dsPB.get(index).getMoTa());
 	}
 	
 	private boolean validDataPB() {
 		String maPhongBan = txtMaPB.getText();
 		String tenPb  = txtTenPB.getText();
-		String soNv = txtSoNv.getText();
+		int soNv = Integer.parseInt(spnSoNhanVien.getValue().toString());
 		String moTa = txtMota.getText();
 
 		if(!maPhongBan.matches("\\S+") || !maPhongBan.matches("^PB\\d{2}$")) {
@@ -483,14 +483,10 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 			return false;
 		}
 		
-		if (soNv.matches("\\d+")) { // Kiểm tra xem soNv có phải là một chuỗi chỉ chứa số hay không
-		    int soNvInt = Integer.parseInt(soNv); // Chuyển đổi chuỗi thành số nguyên
-		    if (soNvInt < 0) {
-		    	setTextError("Số nhân viên phải lớn hơn 0!");
-		        return false;
-		    }
-		}
-		return true;
+		if(soNv < 0) {
+			setTextError("Số nhân viên  phải lớn hơn 0");
+			return false;
+		}return true;
 
 	}
 	//Thêm nhân viên từ giao diện vào csdl
@@ -553,12 +549,12 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 		if(tblPb.getSelectedRow()!=-1) {
 			String maPB = txtMaPB.getText();
 			if(maPB != null) {
-				if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+				if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa phòng ban đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 					if(pb_Dao.xoaPhongBan(maPB)) {
 						lblMessage.setText("Xóa thành công!");
 						resetKeyboardActions();
 					}else {
-						setTextError("Xóa thất bại! Không tìm thấy nhân viên!");
+						setTextError("Xóa thất bại! Không tìm thấy phòng ban!");
 					}
 				}
 			}else {
@@ -581,6 +577,7 @@ public class PhongBan_UI extends JPanel implements ActionListener, MouseListener
 	//thêm một phòng ban vào table 
 	private void themPhongBanVaoBang(PhongBan pb) {
 	    Object[] row = new Object[10];
+	    row[0] = String.valueOf(tblPb.getRowCount() + 1);
 	    row[0] = tabModel.getRowCount() + 1;  // STT
 	    row[1] = pb.getMaPhongBan();  // Mã NV
 	    row[2] = pb.getTenPhongBan();  // Họ tên
