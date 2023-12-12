@@ -11,36 +11,36 @@ import Entity.HopDong;
 import Entity.SanPham;
 
 public class SanPham_Dao {
-	public boolean suaSanPham(SanPham sp) {
-		ConnectDB.getInstance();
-		PreparedStatement st = null;
-		int n=0;
-		try {
-			Connection con = ConnectDB.getConnection();
-			st = con.prepareStatement("UPDATE SanPham SET maHopDong=?, tenSP=?, donViTinh=?, "
-					+ "soLuong=?,  donGia=? ,yeuCau=? where maSP=?");
-			st.setString(1, sp.getMaHopDong().getMaHD());
-			st.setString(2, sp.getTenSP());
-			st.setString(3, sp.getDonViTinh());
-			st.setInt(4, sp.getSoLuong());
-			
-			st.setDouble(6, sp.getDonGia());
-			st.setString(5, sp.getYeuCau());
-			st.setString(7, sp.getMaSP());
-			n = st.executeUpdate();
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}finally {
+	//sửa sản phẩm
+		public boolean suaSanPham(SanPham sp) {
+			ConnectDB.getInstance();
+			PreparedStatement st = null;
+			int n=0;
 			try {
-				st.close();
-			} catch (SQLException e2) {
+				Connection con = ConnectDB.getConnection();
+				st = con.prepareStatement("UPDATE SanPham SET maHopDong=?, tenSP=?, donViTinh=?, "
+						+ "soLuong=?, yeuCau=?, donGia=? where maSP=?");
+				st.setString(1, sp.getMaHopDong().getMaHD());
+				st.setString(2, sp.getTenSP());
+				st.setString(3, sp.getDonViTinh());
+				st.setInt(4, sp.getSoLuong());
+				st.setString(5, sp.getYeuCau());
+				st.setDouble(6, sp.getDonGia());
+				st.setString(7, sp.getMaSP());
+				n = st.executeUpdate();
+			} catch (SQLException e) {
 				// TODO: handle exception
-				e2.printStackTrace();
+				e.printStackTrace();
+			}finally {
+				try {
+					st.close();
+				} catch (SQLException e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
 			}
+			return n>0;
 		}
-		return n>0;
-	}
 	public boolean themSanPham(SanPham sp) {
 	    ConnectDB.getInstance();
 	    PreparedStatement st = null;

@@ -727,7 +727,7 @@
 							dsSP.set(tblSP.getSelectedRow(), spNew);
 							themTatCaSanPhamVaoBang(dsSP);
 							lblMessage.setText("Sửa thành công sản phẩm!");
-							resetTextFiled() ;
+							resetTextFiled();
 						}else {
 							setTextError("Sửa sản phẩm thất bại! Không tìm thấy trong csdl!");
 						}
@@ -739,19 +739,6 @@
 				setTextError("Bạn cần chọn một sản phẩm cần sửa!");
 			}
 		}
-		private void displayButtonSaveAndCancel(boolean b) {
-			// TODO Auto-generated method stub
-			
-		}
-
-
-
-		private void setEditableForTextField(boolean b) {
-			// TODO Auto-generated method stub
-			
-		}
-
-
 
 		//Xóa sản phẩm được chọn
 		private void xoaSanPham() {
@@ -784,7 +771,6 @@
 			}
 			
 			txtDonGia.setText(new DecimalFormat("#,###").format(dsSP.get(index).getDonGia()));
-			txaSoLuong.setText(String.valueOf(dsSP.get(index).getSoLuong()));
 			txaYeuCau.setText(dsSP.get(index).getYeuCau());
 		}
 			
