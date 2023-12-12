@@ -82,6 +82,32 @@ public class HopDong_Dao {
 		}
 		return n>0;
 	}
+	//get all hợp đồng trong csdl
+		public ArrayList<HopDong> getAllHopDong() {
+		    ArrayList<HopDong> list = new ArrayList<>();
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    try {
+		        Connection con = ConnectDB.getConnection();
+		        st = con.prepareStatement("select * from HopDong");
+		        ResultSet rs = st.executeQuery();
+		        while (rs.next()) {
+		            HopDong hd = new HopDong(rs.getString(1), rs.getString(2), rs.getString(3), new NhanVien_Dao().timNhanVienTheoMaNV(rs.getString(4)),
+		            		new java.util.Date(rs.getDate(5).getTime()), new java.util.Date(rs.getDate(6).getTime()),
+		            		rs.getDouble(7), rs.getDouble(8), rs.getString(9), rs.getBoolean(10), rs.getString(11));
+		            list.add(hd);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            st.close();
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    return list;
+		}
 	//get all hợp đồng theo người đại diện trong csdl
 	public ArrayList<HopDong> getAllHopDongTheoNguoiDaiDien(String maNguoiDaiDien) {
 	    ArrayList<HopDong> list = new ArrayList<>();
