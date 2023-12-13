@@ -173,7 +173,7 @@ public class SanPham_Dao {
 	    PreparedStatement st = null;
 	    try {
 	        Connection con = ConnectDB.getConnection();
-	        st = con.prepareStatement("SELECT MAX(MaSP) AS MaSPLonNhat FROM SanPham");
+	        st = con.prepareStatement("SELECT MAX(maSP) AS MaSPLonNhat FROM SanPham");
 	        ResultSet rs = st.executeQuery();
 	        if (rs.next()) {
 	            maSPLonNhat = rs.getString("MaSPLonNhat");

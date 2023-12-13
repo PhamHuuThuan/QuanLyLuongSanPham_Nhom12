@@ -502,7 +502,6 @@
 				hanleButtonSaveAndCanle(true);
 				xoaRongSP(true);
 				resetTextFiled();	
-				txtMaSP.setText(new SinhMaTuDong().sinhMaHD());
 		
 				isThem = true;
 			}

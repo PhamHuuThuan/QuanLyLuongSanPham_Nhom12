@@ -36,6 +36,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import Dao.CongNhan_Dao;
 import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
+import Dao.TinhLuongCongNhan_Dao;
 import Dao.TinhLuongNhanVien_Dao;
 
 public class ThongKeUI extends JPanel implements ChangeListener{
@@ -58,6 +59,7 @@ public class ThongKeUI extends JPanel implements ChangeListener{
 	private CongNhan_Dao cn_Dao = new CongNhan_Dao();
 	private HopDong_Dao hd_Dao = new HopDong_Dao();
 	private TinhLuongNhanVien_Dao tlnv_Dao = new TinhLuongNhanVien_Dao();
+	private TinhLuongCongNhan_Dao tlcn_Dao = new TinhLuongCongNhan_Dao();
 	
 	public ThongKeUI(MainUI main) {
 		this.main = main;
@@ -153,7 +155,7 @@ public class ThongKeUI extends JPanel implements ChangeListener{
 			pnlNhanVien.add(lblNV[i]);
 			pnlNhanVien.add(Box.createVerticalStrut(25));
 			lblNV[i].setForeground(textColor);
-			lblNV[i].setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
+			lblNV[i].setFont(main.roboto_regular.deriveFont(Font.PLAIN, 13F));
 		}
         
         //Công nhân
@@ -164,6 +166,7 @@ public class ThongKeUI extends JPanel implements ChangeListener{
         
 		JLabel lblCongNhan = new JLabel("Công Nhân");
 		pnlCongNhan.add(lblCongNhan);
+		pnlCongNhan.add(Box.createVerticalStrut(25));
 		lblCongNhan.setForeground(textColor);
 		lblCongNhan.setFont(main.roboto_regular.deriveFont(Font.BOLD, 18F));
 		
@@ -171,10 +174,10 @@ public class ThongKeUI extends JPanel implements ChangeListener{
 		
 		for(int i = 0; i < 5; i++) {
 			lblCN[i] = new JLabel();
-			pnlNhanVien.add(lblCN[i]);
-			pnlNhanVien.add(Box.createVerticalStrut(25));
+			pnlCongNhan.add(lblCN[i]);
+			pnlCongNhan.add(Box.createVerticalStrut(25));
 			lblCN[i].setForeground(textColor);
-			lblCN[i].setFont(main.roboto_regular.deriveFont(Font.PLAIN, 14F));
+			lblCN[i].setFont(main.roboto_regular.deriveFont(Font.PLAIN, 13F));
 		}
         
         // Tạo tập dữ liệu
@@ -296,7 +299,7 @@ public class ThongKeUI extends JPanel implements ChangeListener{
             Double luongTrungBinh = entry.getValue();
             dataset.addValue(luongTrungBinh, "Lương", maPhongBan);
         }
-        dsLuongCaoNhat(tlnv_Dao.layTop5NhanVienLuongCaoNhat(thangNamString()), null);
+        dsLuongCaoNhat(tlnv_Dao.layTop5NhanVienLuongCaoNhat(thangNamString()), tlcn_Dao.layTop5CongNhanLuongCaoNhat(thangNamString()));
 	}
 	//Đưa Tổng giá trị hợ đồng theo tháng vào biểu đồ
 	private void giaTriHDTheoThang() {

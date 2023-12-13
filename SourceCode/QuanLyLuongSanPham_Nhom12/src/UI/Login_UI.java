@@ -217,7 +217,6 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 		pnlInMa.setLayout(null);
 
 		txtInputUser = new JTextField();
-		txtInputUser.setText((String) null);
 		txtInputUser.setHorizontalAlignment(SwingConstants.LEFT);
 		txtInputUser.setForeground(Color.WHITE);
 		txtInputUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -226,7 +225,7 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 		txtInputUser.setCaretColor(Color.WHITE);
 		txtInputUser.setBackground(new Color(81, 81, 81));
 		txtInputUser.setBounds(10, 0, 417, 36);
-		txtInputUser.setText("NV00001");
+		txtInputUser.setText(config.getUsername());
 		pnlInMa.add(txtInputUser);
 
 		pnlInPass = new JPanel();
@@ -238,7 +237,6 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 
 		txtInputPassword = new JPasswordField();
 		txtInputPassword.setBounds(10, 0, 371, 32);
-		txtInputPassword.setText((String) null);
 		txtInputPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		txtInputPassword.setForeground(Color.WHITE);
 		txtInputPassword.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -247,7 +245,6 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 		txtInputPassword.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(255, 255, 255)));
 		txtInputPassword.setBackground(new Color(81, 81, 81));
 		txtInputPassword.setText(config.getPassword());
-		txtInputPassword.setText("123456a@");
 		pnlInPass.add(txtInputPassword);
 
 		btnTogglePassword = new RoundedButton("", null, 0, 0, 0f);
