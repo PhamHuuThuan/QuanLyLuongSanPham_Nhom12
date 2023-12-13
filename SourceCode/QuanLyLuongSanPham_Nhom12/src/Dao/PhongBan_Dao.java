@@ -182,7 +182,7 @@ public class PhongBan_Dao {
 
         return maPhongBanLonNhat;
     }
-  //get mã sản phẩm lớn nhất
+  //get mã PB lớn nhất
   	public String getMaPBLonNhat() {
   	    String maPBLonNhat = null;
   	    ConnectDB.getInstance();
