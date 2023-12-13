@@ -6,12 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import ConnectDB.ConnectDB;
 import Entity.BangChamCongCongNhan;
 import Entity.BangLuongCongNhan;
 import Entity.BangPhanCongCongDoan;
+import Entity.CongDoan;
 import Entity.CongNhan;
+import Entity.SanPham;
 import Util.SinhMaTuDong;
 
 public class TinhLuongCongNhan_Dao {
@@ -258,34 +261,38 @@ public class TinhLuongCongNhan_Dao {
 
 	}
 	// HÀM GET THÔNG TIN VÀ ALL CÔNG ĐOẠN CHI TIẾT TÍNH LƯƠNG
-	public ArrayList<BangLuongCongNhan> getAllCD_CTL(String maBangLuong) {
+	public List<BangLuongCongNhan> getAllCD_CTL(String maBangLuong) {
 		ConnectDB.getInstance();
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		ArrayList<BangLuongCongNhan> listCD = new ArrayList<>();
 		try {
 			Connection conn = ConnectDB.getConnection();
-			String querry = "SELECT *  FROM [dbo].[BangLuongCongNhan] blcn\r\n"
-					+ "JOIN [dbo].[CongNhan] cn ON cn.maCN = blcn.maCN\r\n"
+			String querry = "SELECT cccn.ngayChamCong,cccn.gioVaoLam, cd.maCD, cd.tenCD, cd.thuTu, sp.maSP, sp.tenSP , cccn.soLuongLam \r\n"
+					+ "FROM [dbo].[BangLuongCongNhan] blcn\r\n"
+					+ "JOIN [dbo].[CongNhan] cn ON cn.maCN = blcn.maCN \r\n"
 					+ "JOIN [dbo].[BangPhanCongCongDoan] pccd ON blcn.maCN = pccd.maCN\r\n"
+					+ "JOIN [dbo].[CongDoan] cd ON cd.maCD = pccd.maCongDoan\r\n"
+					+ "JOIN [dbo].[SanPham] sp ON sp.maSP = cd.maSP\r\n"
 					+ "JOIN [dbo].[BangChamCongCongNhan] cccn ON cccn.maPhanCong = pccd.maPhanCong\r\n"
-					+ "WHERE maBangLuong = ?";
+					+ "WHERE maBangLuong = ? ";
 			st = conn.prepareStatement(querry);
 			st.setString(1, maBangLuong);
 
 			rs = st.executeQuery();
 
-//			while (rs.next()) {
-//				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan();
-//				BangChamCongCongNhan cccn = new BangChamCongCongNhan(rs.getInt("soLuongCongDoanLam"));
-//				BangLuongCongNhan blcn = new BangLuongCongNhan(
-//						rs.getString("maBangLuong"),
-//						cccn,
-//						rs.getInt("soNgayLam"), rs.getInt("soNgayNghi"), rs.getInt("soNgayPhep"),
-//						rs.getDouble("luongThang"), rs.getDouble("luongCongDoan"), rs.getDouble("thucLanh"),
-//						rs.getString("thangNam"));
-//				listCD.add(blcn);
-//			}
+			while (rs.next()) {
+				SanPham sp = new SanPham(rs.getString("maSP"), rs.getString("tenSP"));
+				CongDoan cd = new CongDoan(rs.getString("maCD"), rs.getString("tenCD"),rs.getInt("thuTu"), sp);
+				BangPhanCongCongDoan pccd = new BangPhanCongCongDoan(cd);
+				BangChamCongCongNhan cccn = new BangChamCongCongNhan(
+						rs.getDate("ngayChamCong"),
+						rs.getString("gioVaoLam"),
+						pccd,
+						rs.getInt("soLuongLam"));
+				BangLuongCongNhan blcn = new BangLuongCongNhan(cccn);
+				listCD.add(blcn);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

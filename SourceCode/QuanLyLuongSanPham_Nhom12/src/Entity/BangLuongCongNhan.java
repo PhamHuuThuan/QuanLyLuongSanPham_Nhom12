@@ -45,10 +45,10 @@ public class BangLuongCongNhan {
 	}
 	
 	
-	
-	
-	
-	
+	public BangLuongCongNhan(BangChamCongCongNhan chamCongCongNhan) {
+		super();
+		this.chamCongCongNhan = chamCongCongNhan;
+	}
 	
 	
 	
@@ -112,6 +112,13 @@ public class BangLuongCongNhan {
 	}
 	public void setThangNam(String thangNam) {
 		this.thangNam = thangNam;
+	}
+	@Override
+	public String toString() {
+		return "BangLuongCongNhan [maBangLuong=" + maBangLuong + ", congNhan=" + congNhan + ", chamCongCongNhan="
+				+ chamCongCongNhan + ", soNgayLam=" + soNgayLam + ", soNgayNghi=" + soNgayNghi + ", soNgayPhep="
+				+ soNgayPhep + ", luongThang=" + luongThang + ", luongCongDoan=" + luongCongDoan + ", thucLanh="
+				+ thucLanh + ", thangNam=" + thangNam + "]";
 	}
 	
 	
