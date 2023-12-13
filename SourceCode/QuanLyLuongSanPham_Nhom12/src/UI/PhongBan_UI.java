@@ -557,7 +557,7 @@
 				if(tblPb.getSelectedRow()!=-1) {
 					String maPB = txtMaPB.getText();
 					if(maPB != null) {
-						if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+						if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa phòng ban đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 							if(pb_Dao.xoaPhongBan(maPB)) {
 								lblMessage.setText("Xóa thành công!");
 								displayButtonSaveAndCancel(false);
@@ -566,14 +566,14 @@
 								dsPB = pb_Dao.getAllPhongBan();
 								themTatCaPhongBanVaoBang(dsPB);
 							}else {
-								setTextError("Xóa thất bại! Không tìm thấy nhân viên!");
+								setTextError("Xóa thất bại! Không tìm thấy phòng ban!");
 							}
 						}
 					}else {
 						setTextError("Xóa thất bại! Có lỗi xảy ra!");
 					}
 				}else {
-					setTextError("Bạn cần chọn nhân viên muốn xóa!");
+					setTextError("Bạn cần chọn phòng ban muốn xóa!");
 				}
 			}
 			// thông báo lỗi
