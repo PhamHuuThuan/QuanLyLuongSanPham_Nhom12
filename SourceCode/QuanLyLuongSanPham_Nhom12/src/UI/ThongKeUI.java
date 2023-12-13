@@ -283,7 +283,7 @@ public class ThongKeUI extends JPanel implements ChangeListener{
 			for (String[] congNhan : dsCN) {
 			    String hoTen = congNhan[0];
 			    String thucLanh = congNhan[1];
-			    lblCN[i++].setText(hoTen + thucLanh + " VNĐ");
+			    lblCN[i++].setText(i + ". " +hoTen + "   -   " + new DecimalFormat("#,###").format(Double.parseDouble(thucLanh)) + " VNĐ");
 			}
 		}
 	}
