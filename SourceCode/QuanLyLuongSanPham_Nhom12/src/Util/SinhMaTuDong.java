@@ -45,7 +45,7 @@ public class SinhMaTuDong {
 		}
 		return maNew;
 	}
-	// sinh ma san pham +1
+	// sinh ma PB +1
 		public String sinhMaPB() {
 			String maNew = "PB";
 			String maPre = new PhongBan_Dao().getMaPBLonNhat();
