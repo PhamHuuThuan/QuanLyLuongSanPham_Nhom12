@@ -307,5 +307,35 @@ public class TinhLuongCongNhan_Dao {
 		return listCD;
 
 	}
+	// DANH SÁCH TOP 5 CÔNG NHÂN TIỀN LƯƠNG CAO NHẤT
+		public List<String[]> layTop5CongNhanLuongCaoNhat(String thangNam) {
+		    ConnectDB.getInstance();
+		    PreparedStatement st = null;
+		    List<String[]> danhSachCN = new ArrayList<>();
+		    try {
+		        Connection conn = ConnectDB.getConnection();
+		        String query = "SELECT TOP 5 cn.HoTen, blcn.thucLanh FROM [dbo].[CongNhan] cn \r\n"
+		        		+ "JOIN [dbo].[BangLuongCongNhan] blcn ON blcn.maCN = cn.maCN\r\n"
+		        		+ "WHERE blcn.thangNam = ? \r\n"
+		        		+ "ORDER BY blcn.thucLanh DESC";
+		        st = conn.prepareStatement(query);
+		        st.setString(1, thangNam);
+		        ResultSet rs = st.executeQuery();
+		        while (rs.next()) {
+		            String hoTen = rs.getString("HoTen");
+		            double thucLanh = rs.getDouble("thucLanh");
+		            danhSachCN.add(new String[] {hoTen, String.valueOf(thucLanh)});
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (st != null) st.close();
+		        } catch (SQLException e2) {
+		            e2.printStackTrace();
+		        }
+		    }
+		    return danhSachCN;
+		}
 
 }
