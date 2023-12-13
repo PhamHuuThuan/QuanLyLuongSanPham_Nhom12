@@ -310,7 +310,6 @@ public class ThongKeUI extends JPanel implements ChangeListener{
             double tongGiaTri = entry.getValue();
             dataset2.addValue(tongGiaTri, "Tổng giá trị", "T"+thang);
         }
-        dsLuongCaoNhat(tlnv_Dao.layTop5NhanVienLuongCaoNhat(thangNamString()), null);
 	}
 	//Clear dữ liệu trong label
 	private void clearData() {

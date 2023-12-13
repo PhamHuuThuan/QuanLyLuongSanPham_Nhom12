@@ -408,7 +408,6 @@
 		
 			private void setEditTextFiled(boolean edit) {
 				if (edit == true) {
-					txtMaPB.setEditable(true);
 					txtTenPB.setEditable(true);
 					txtSoNv.setEditable(true);
 					txtMota.setEditable(true);

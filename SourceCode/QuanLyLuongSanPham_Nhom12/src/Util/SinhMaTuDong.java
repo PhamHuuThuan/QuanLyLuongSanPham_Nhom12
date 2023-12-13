@@ -49,12 +49,12 @@ public class SinhMaTuDong {
 		public String sinhMaPB() {
 			String maNew = "PB";
 			String maPre = new PhongBan_Dao().getMaPBLonNhat();
-			if (maPre == null || maPre.length() < 7) {
+			if (maPre == null || maPre.length() < 4) {
 				maNew += "01";
 			} else {
 				try {
 					int ma = Integer.parseInt(maPre.substring(2)) + 1;
-					maNew += String.format("%07d", ma);
+					maNew += String.format("%02d", ma);
 				} catch (NumberFormatException e) {
 					// Xử lý ngoại lệ ở đây
 				}

@@ -189,7 +189,7 @@ public class PhongBan_Dao {
   	    PreparedStatement st = null;
   	    try {
   	        Connection con = ConnectDB.getConnection();
-  	        st = con.prepareStatement("SELECT MAX(MaSP) AS MaPBLonNhat FROM PhongBan");
+  	        st = con.prepareStatement("SELECT MAX(MaPB) AS MaPBLonNhat FROM PhongBan");
   	        ResultSet rs = st.executeQuery();
   	        if (rs.next()) {
   	            maPBLonNhat = rs.getString("MaPBLonNhat");

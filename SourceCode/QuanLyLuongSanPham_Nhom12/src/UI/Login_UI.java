@@ -72,20 +72,7 @@ public class Login_UI extends JFrame implements ItemListener, MouseListener, Act
 	private JTextField txtInputUser;
 	private JPanel pnlInPass;
 	private JPasswordField txtInputPassword;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login_UI frame = new Login_UI(main);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	// HÀM ĐÓNG PAGE
 	private void ClosePage() {
 		this.dispose();
