@@ -6,12 +6,15 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.Box;
@@ -25,6 +28,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import CustomUI.RoundedButton;
 import Dao.TinhLuongCongNhan_Dao;
 import Entity.BangLuongCongNhan;
@@ -33,7 +38,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 
 public class BangLuongCongNhan_Dialog extends JDialog {
-
+	
 	private static final long serialVersionUID = 1L;
 	private final JPanel pnlContent = new JPanel();
 	private JTextField txtMaCN;
@@ -45,39 +50,37 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 	private JTextField txtLuongCoBan;
 
 	private MainUI main;
-	private DefaultTableModel dtblModelTLCN, dtblModelCTCN;
-	private JComboBox<String> cmbFilter;
-	private JTable tblDSTL, tblCTCN;
-	private JTableHeader tbhCNCC, tbhCTCN;
-	private RoundedButton btnXuat;
-	private RoundedButton btnTinhLuongTatCa, btnXemChiTiet;
-	private TinhLuongCongNhan_Dao tlcn_dao = new TinhLuongCongNhan_Dao();
-	private ArrayList<BangLuongCongNhan> dsBLCN = new ArrayList<>();
+	private DefaultTableModel  dtblModelCTCN;
+	private JTable  tblCTCN;
+	private JTableHeader tbhCTCN;
 	private Color bgColor = Color.WHITE;
 	private Color componentColor = Color.decode("#424242");
 	private Color textColor = Color.BLACK;
+	
+	private String maBL;
+	private static String maCN, tenCN;
+	private static Integer tongSNL;
+	private static double tongLT, tongLCD, thucLanh;
+	private DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			BangLuongCongNhan_Dialog dialog = new BangLuongCongNhan_Dialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
-	public BangLuongCongNhan_Dialog() {
-		setBounds(100, 100, 859, 471);
+	public BangLuongCongNhan_Dialog(int thang, int nam, String maCN,String tenCN, int tongSNL, double tongLT, double tongLCD, double thucLanh,List<BangLuongCongNhan> blcn) {
+		this.main = main;
+		setSize(1100, 700);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		pnlContent.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(pnlContent, BorderLayout.CENTER);
+		pnlContent.setLayout(new BorderLayout(0, 0));
 		pnlContent.setLayout(new BorderLayout(0, 0));
 		{
 			JPanel pnlBoxInfo = new JPanel();
@@ -95,6 +98,7 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 				}
 				{
 					JLabel lblNgayThangTinhLuong = new JLabel("??/????");
+					lblNgayThangTinhLuong.setText(thang + "/" + nam);
 					lblNgayThangTinhLuong.setFont(new Font("Tahoma", Font.BOLD, 18));
 					horizontalBox.add(lblNgayThangTinhLuong);
 				}
@@ -124,7 +128,8 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 					}
 					{
 						txtMaCN = new JTextField();
-						txtMaCN.setEnabled(false);
+						txtMaCN.setEditable(false);
+						txtMaCN.setText(maCN);
 						pnlBox1.add(txtMaCN);
 						txtMaCN.setColumns(10);
 					}
@@ -145,8 +150,11 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 					}
 					{
 						txtTenCN = new JTextField();
-						txtTenCN.setEnabled(false);
+						txtTenCN.setEditable(false);
 						txtTenCN.setColumns(10);
+
+						txtTenCN.setText(tenCN);
+
 						pnlBox2.add(txtTenCN);
 					}
 				}
@@ -156,7 +164,7 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 					pnlInformaion.add(pnlBox3);
 					pnlBox3.setLayout(new BoxLayout(pnlBox3, BoxLayout.X_AXIS));
 					{
-						JLabel lblTongSoNgayLam = new JLabel("Tổng Số Ngày Làm : ");
+						JLabel lblTongSoNgayLam = new JLabel("Số ngày làm : ");
 						lblTongSoNgayLam.setFont(new Font("Tahoma", Font.BOLD, 15));
 						pnlBox3.add(lblTongSoNgayLam);
 					}
@@ -165,8 +173,8 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 						pnlBox3.add(horizontalStrut);
 					}
 					{
-						txtSoNgayLam = new JTextField();
-						txtSoNgayLam.setEnabled(false);
+						txtSoNgayLam = new JTextField(String.valueOf(tongSNL));
+						txtSoNgayLam.setEditable(false);
 						txtSoNgayLam.setColumns(10);
 						pnlBox3.add(txtSoNgayLam);
 					}
@@ -186,8 +194,8 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 						pnlBox4.add(horizontalStrut);
 					}
 					{
-						txtTongLuongThang = new JTextField();
-						txtTongLuongThang.setEnabled(false);
+						txtTongLuongThang = new JTextField(String.valueOf(decimalFormat.format(tongLT)) + "VND");
+						txtTongLuongThang.setEditable(false);
 						txtTongLuongThang.setColumns(10);
 						pnlBox4.add(txtTongLuongThang);
 					}
@@ -207,8 +215,8 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 						pnlBox5.add(horizontalStrut);
 					}
 					{
-						txtTongLuongCongDoan = new JTextField();
-						txtTongLuongCongDoan.setEnabled(false);
+						txtTongLuongCongDoan = new JTextField(String.valueOf(decimalFormat.format(tongLCD)) + "VND");
+						txtTongLuongCongDoan.setEditable(false);
 						txtTongLuongCongDoan.setColumns(10);
 						pnlBox5.add(txtTongLuongCongDoan);
 					}
@@ -228,8 +236,8 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 						pnlBox6.add(horizontalStrut);
 					}
 					{
-						txtThucLanh = new JTextField();
-						txtThucLanh.setEnabled(false);
+						txtThucLanh = new JTextField(String.valueOf(decimalFormat.format(thucLanh)) + "VND");
+						txtThucLanh.setEditable(false);
 						txtThucLanh.setColumns(10);
 						pnlBox6.add(txtThucLanh);
 					}
@@ -250,9 +258,9 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 					}
 					{
 						txtLuongCoBan = new JTextField();
+						txtLuongCoBan.setEditable(false);
 						txtLuongCoBan.setFont(new Font("Tahoma", Font.ITALIC, 12));
 						txtLuongCoBan.setText("250,000 VND");
-						txtLuongCoBan.setEnabled(false);
 						txtLuongCoBan.setColumns(10);
 						pnlBox7.add(txtLuongCoBan);
 					}
@@ -296,15 +304,16 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 
 				pnlContent.add(pnlTableLuong, BorderLayout.CENTER);
 				{
-					String cols_cd[] = { "STT", "Mã SP", "Tên SP", "Mã CĐ", "Tên CĐ", "Thứ tự" };
+					String cols_cd[] = { "STT", "Ngày Chấm", "Giờ VL", "Mã CĐ", "Tên CĐ", "Mã SP", "Tên SP", "Thứ tự",
+							"SL Làm" };
 					dtblModelCTCN = new DefaultTableModel(cols_cd, 0);
+					dtblModelCTCN.setRowCount(0);
 					tblCTCN = new JTable(dtblModelCTCN);
 
 					tbhCTCN = new JTableHeader(tblCTCN.getColumnModel());
 					tbhCTCN.setReorderingAllowed(false);
 					tbhCTCN.setBackground(componentColor);
 					tbhCTCN.setForeground(Color.WHITE);
-					tbhCTCN.setFont(main.roboto_regular.deriveFont(Font.BOLD, 16F));
 
 					tblCTCN.setTableHeader(tbhCTCN);
 					tblCTCN.setRowHeight(30);
@@ -314,15 +323,30 @@ public class BangLuongCongNhan_Dialog extends JDialog {
 					tblCTCN.getColumnModel().getColumn(3).setPreferredWidth(100);
 					tblCTCN.getColumnModel().getColumn(4).setPreferredWidth(100);
 					tblCTCN.getColumnModel().getColumn(5).setPreferredWidth(100);
+					tblCTCN.getColumnModel().getColumn(6).setPreferredWidth(100);
+					tblCTCN.getColumnModel().getColumn(7).setPreferredWidth(100);
+					tblCTCN.getColumnModel().getColumn(8).setPreferredWidth(100);
 					pnlTableLuong.setLayout(new BorderLayout(0, 0));
 
+
+					for (BangLuongCongNhan ctcd : blcn) {
+						String[] row = new String[99];
+						row[0] = String.valueOf(dtblModelCTCN.getRowCount() + 1);
+						row[1] = String.valueOf(ctcd.getChamCongCongNhan().getNgayChamCong());
+						row[2] = ctcd.getChamCongCongNhan().getGioVaoLam();
+						row[3] = ctcd.getChamCongCongNhan().getPhanCong().getCongDoan().getMaCD();
+						row[4] = ctcd.getChamCongCongNhan().getPhanCong().getCongDoan().getTenCD();
+						row[5] = ctcd.getChamCongCongNhan().getPhanCong().getCongDoan().getSanPham().getMaSP();
+						row[6] = ctcd.getChamCongCongNhan().getPhanCong().getCongDoan().getSanPham().getTenSP();
+						row[7] = String.valueOf(ctcd.getChamCongCongNhan().getPhanCong().getCongDoan().getThuTu());
+						row[8] = String.valueOf(ctcd.getChamCongCongNhan().getSoLuongLam());
+
+						dtblModelCTCN.addRow(row);
+					}
+					
 					JScrollPane scrCD = new JScrollPane(tblCTCN, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 							JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 					pnlTableLuong.add(scrCD);
-					{
-						JLabel lblNewLabel = new JLabel("New label");
-						scrCD.setRowHeaderView(lblNewLabel);
-					}
 				}
 			}
 		}

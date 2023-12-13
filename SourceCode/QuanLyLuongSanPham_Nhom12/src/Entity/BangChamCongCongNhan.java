@@ -60,6 +60,14 @@ public class BangChamCongCongNhan {
 	}
 
 	
+	public BangChamCongCongNhan(Date ngayChamCong, String gioVaoLam, BangPhanCongCongDoan phanCong, int soLuongLam) {
+		super();
+		this.ngayChamCong = ngayChamCong;
+		this.gioVaoLam = gioVaoLam;
+		this.phanCong = phanCong;
+		this.soLuongLam = soLuongLam;
+	}
+
 	public int getSoLuongChuaCham() {
 		return soLuongChuaCham;
 	}

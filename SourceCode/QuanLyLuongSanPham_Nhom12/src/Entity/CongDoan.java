@@ -50,11 +50,11 @@ public class CongDoan {
 		this.sanPham = sanPham;
 	}
 
-	public CongDoan(String maCD, String tenCD, int soLuong, SanPham sanPham) {
+	public CongDoan(String maCD, String tenCD, int thuTu, SanPham sanPham) {
 		super();
 		this.maCD = maCD;
 		this.tenCD = tenCD;
-		this.soLuong = soLuong;
+		this.thuTu = thuTu;
 		this.sanPham = sanPham;
 	}
 
@@ -75,6 +75,7 @@ public class CongDoan {
 		this.tenCD = tenCD;
 		this.thuTu = thuTu;
 	}
+	
 
 	public CongDoan(String maCD,String tenCD, Integer soLuong, Integer soLuongConLai) {
 		super();
@@ -104,6 +105,14 @@ public class CongDoan {
 		this.tenCD = tenCD;
 		this.sanPham = sanPham;
 	}
+
+	public CongDoan(String maCD, String tenCD, int thuTu) {
+		super();
+		this.maCD = maCD;
+		this.tenCD = tenCD;
+		this.thuTu = thuTu;
+	}
+
 
 	public int getSoLuongConLai() {
 		return soLuongConLai;
