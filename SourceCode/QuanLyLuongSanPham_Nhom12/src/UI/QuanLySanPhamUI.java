@@ -746,8 +746,11 @@
 					if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 						if(sp_Dao.xoaSanPham(maSP)) {
 							lblMessage.setText("Xóa thành công!");
-							dsSP = sp_Dao.getALLSanPham();
+							hanleButtonSaveAndCanle(false);
+							xoaRongSP(false);
 							resetTextFiled();
+							dsSP = sp_Dao.getALLSanPham();
+							themTatCaSanPhamVaoBang(dsSP);
 						}else {
 							setTextError("Xóa thất bại! Không tìm thấy sản phẩm trong csdl!");
 						}

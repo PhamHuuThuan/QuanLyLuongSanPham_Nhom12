@@ -560,7 +560,11 @@
 						if(JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên đã chọn?", "Cảnh báo!", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 							if(pb_Dao.xoaPhongBan(maPB)) {
 								lblMessage.setText("Xóa thành công!");
-								resetKeyboardActions();
+								displayButtonSaveAndCancel(false);
+								setEditableForTextField(false);
+								resetTextFiled();
+								dsPB = pb_Dao.getAllPhongBan();
+								themTatCaPhongBanVaoBang(dsPB);
 							}else {
 								setTextError("Xóa thất bại! Không tìm thấy nhân viên!");
 							}
